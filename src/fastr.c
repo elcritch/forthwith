@@ -11,7 +11,7 @@
 #define jump(r) _jump(reg_ # r)
 /* #define jump(reg) goto *((fcell_t*)reg); */
 #define jump_to(r) _jump(reg_ # r)
-#endif
+#endif // LOCAL
 
 
 #define fcell_t intptr_t
@@ -39,8 +39,15 @@
 
 #define FORTH_REG_CALL w, ip, psp, rsp, x, y, tos, up
 
-#define push(reg) *(psp++) = reg
-#define pop(reg) *(psp--) = reg
+#define check(cond, err_code) if (cond) { w = err_code; jump_to("abort"); }
+#define check(cond, err_code)
+
+#define push(reg) \
+  check(psp > FORTH_PSP_SIZE, JFORTH_ERR_STACK_OVERFLOW); \
+  *(psp++) = reg;
+#define pop(reg) \
+  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACK_UNDERFLOW); \
+  *(psp--) = reg;
 
 forth_call next(FORTH_REGISTERS) {
   /* (IP) -> W  fetch memory pointed by IP into "W" register
