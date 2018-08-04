@@ -24,3 +24,4 @@ forth_call char_fetch(FORTH_REGISTERS) {
     mov bh,0
     jump(next);
 }
+
