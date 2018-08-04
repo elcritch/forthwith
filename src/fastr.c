@@ -43,11 +43,25 @@
 #define check(cond, err_code)
 
 #define push(reg) \
-  check(psp > FORTH_PSP_SIZE, JFORTH_ERR_STACK_OVERFLOW); \
+  check(psp > FORTH_PSP_SIZE, JFORTH_ERR_STACKOVERFLOW); \
   *(psp++) = reg;
 #define pop(reg) \
-  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACK_UNDERFLOW); \
+  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW); \
   *(psp--) = reg;
+#define pick(reg, addr)                                      \
+  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW); \
+  *(psp-addr-1) = reg;
+
+#define pushr(reg)                                         \
+  check(rsp > FORTH_RSP_SIZE, JFORTH_ERR_STACK_OVERFLOW); \
+  *(rsp++) = reg;
+#define popr(reg)                                              \
+  check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACK_UNDERFLOW); \
+  *(rsp--) = reg;
+#define pickr(reg, addr)                                       \
+  check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW);  \
+  *(rsp-addr-1) = reg;
+
 
 forth_call next(FORTH_REGISTERS) {
   /* (IP) -> W  fetch memory pointed by IP into "W" register
