@@ -55,7 +55,7 @@ typedef  fcell_t  X;  // Scratch Register
   check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW);  \
   *(rsp-addr-1) = reg;
 
-struct forth { /**< FORTH environment */
+struct forth_ctx { /**< FORTH environment */
 	uint8_t header[sizeof(header)]; /**< ~~ header for core file */
 	fcell_t core_size;  /**< size of VM */
 
@@ -66,4 +66,10 @@ struct forth { /**< FORTH environment */
 
 	fcell_t memory[];    /**< ~~ Forth Virtual Machine memory */
 };
+
+
+typedef fcell_t (*fastr_call_0)();
+typedef fcell_t (*fastr_call_1)(fcell_t a);
+typedef fcell_t (*fastr_call_2)(fcell_t a, fcell_t b);
+typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
 

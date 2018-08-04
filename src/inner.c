@@ -64,15 +64,40 @@ forth_call dovar(FORTH_REGISTERS) {
   jump(next);
 }
 
-/* Primitive "," ( n n -- ) ~ comma, create new var in dict */
-forth_call comma(FORTH_REGISTERS) {
-  y = tos
-  *HERE = x;
-  popd(tos);
+/* primitive: `docall` {count} {addr} {ret} ( -- addr ) : execute varaddr */
+forth_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
+  x = *(ip++); // load function param count
+
+  switch (x) {
+  case 0: {
+    y = ((fastr_call_0) *(ip++))();
+    break;
+    }
+  case 1: {
+    popd(a);
+    y = ((fastr_call_1) *(ip++))(a);
+    break;
+    }
+  case 2: {
+    popd(a);
+    popd(b);
+    y = ((fastr_call_1) *(ip++))(a, b);
+    break;
+    }
+  case 3: {
+    popd(a);
+    popd(b);
+    popd(c);
+    y = ((fastr_call_3) *(ip++))(a, b, c);
+    break;
+    }
+  }
+
+  x = *(ip++); // load function param count
+  if (x != 0) {
+    pushd(y);
+  }
+
+  jump(next);
 }
 
-  pop %eax // Get the top of the stack
-  mov HERE, %edi // Load HERE address in %edi
-  stosl // Store the top of the stak in %edi
-  mov %edi, HERE // Update HERE address
-  NEXT
