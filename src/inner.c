@@ -31,6 +31,7 @@ forth_call next(FORTH_REGISTERS) {
   jump_addr(x);
 }
 
+/* Exit current thread */
 forth_call exits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
   popr(ip);
@@ -38,6 +39,8 @@ forth_call exits(FORTH_REGISTERS) {
 }
 
 /* Core Execution Token Implementations */
+
+/* primitive: `docolon` ( --r cond ) : execute indirect thread */
 forth_call docolon(FORTH_REGISTERS) {
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
@@ -47,6 +50,7 @@ forth_call docolon(FORTH_REGISTERS) {
   jump(next);
 }
 
+/* primitive: `doconst` {const} ( -- const ) : execute const */
 forth_call doconst(FORTH_REGISTERS) {
   /* `load IP` -> `RSP` -- onto the "return address stack" */
   x = *ip;
@@ -54,32 +58,21 @@ forth_call doconst(FORTH_REGISTERS) {
   jump(next);
 }
 
+/* primitive: `dovar` {addr} ( -- addr ) : execute varaddr */
 forth_call dovar(FORTH_REGISTERS) {
   /* TODO: impl.... push address of a "variable" onto PSP */
-  x = *ip;
-  pushd(x);
   jump(next);
 }
 
-// Table stuff
-
-struct header {
-  uint8_t count;
-  char[] head;
-  fcell_t* code;
-};
-
-#define _HEADER(nstr, nval) {sizeof(nstr), nstr, &nval}
-#define HEADER(n) _HEADER("" ## n "", n)
-
-struct header words[] = [HEADER(enter),
-                         HEADER(next),
-                         HEADER(docolon),
-                         HEADER(doexit),
-                         ];
-
-int main() {
-
-  printf(words);
+/* Primitive "," ( n n -- ) ~ comma, create new var in dict */
+forth_call comma(FORTH_REGISTERS) {
+  y = tos
+  *HERE = x;
+  popd(tos);
 }
 
+  pop %eax // Get the top of the stack
+  mov HERE, %edi // Load HERE address in %edi
+  stosl // Store the top of the stak in %edi
+  mov %edi, HERE // Update HERE address
+  NEXT

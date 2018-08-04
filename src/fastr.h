@@ -55,7 +55,6 @@ typedef  fcell_t  X;  // Scratch Register
   check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW);  \
   *(rsp-addr-1) = reg;
 
-
 struct forth { /**< FORTH environment */
 	uint8_t header[sizeof(header)]; /**< ~~ header for core file */
 	fcell_t core_size;  /**< size of VM */
