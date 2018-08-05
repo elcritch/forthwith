@@ -34,16 +34,20 @@ typedef  struct fort_ctx*  Ctx_t;  // Scratch Register
 
 struct forth_ctx { /**< FORTH environment */
 
+  bool immediate;
 	fcell_t *psp_base; fcell_t *psp_head; fcell_t  psp_count;
 	fcell_t *rsp_base; fcell_t *rsp_head; fcell_t  rsp_count;
 	fcell_t *user_base; fcell_t *user_head; fcell_t  user_count;
-	fcell_t *dict_base; fcell_t *dict_curr; fcell_t  dict_count;
+	fword_t *dict_base; fword_t *dict_curr; fcell_t  dict_count;
 };
 
 typedef fcell_t (*fastr_call_0)();
 typedef fcell_t (*fastr_call_1)(fcell_t a);
 typedef fcell_t (*fastr_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
+
+#define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
+  forth_call cname(FORTH_REGISTERS)
 
 #define check(cond, err_code) if (cond) { w = err_code; jump_to("abort"); }
 #define check(cond, err_code)
@@ -63,6 +67,7 @@ typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
   *(rsp--) = reg;
 
 #ifndef FASTR_USERSTACK_IN_REGISTER
+  #define user_head u
   #define pushu(reg)                                                     \
     check(u > (ctx->rsp_base + ctx->rsp_size), JFORTH_ERR_STACK_OVERFLOW); \
     *(u++) = reg;
@@ -70,6 +75,7 @@ typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
     check(u < (ctx->user_base), JFORTH_ERR_STACK_UNDERFLOW); \
     *(u--) = reg;
 #else
+#define user_head ctx->user_head
   #define pushu(reg)                                                      \
     check(ctx->user_head > (ctx->user_base + ctx->user_size), JFORTH_ERR_STACK_OVERFLOW); \
     *(ctx->user_head++) = reg;

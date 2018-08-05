@@ -1,16 +1,19 @@
 
 #include "fastr.h"
 
+#define FORTH_DROP  "drop", f_normal // ( n -- )
 forth_call drop(FORTH_REGISTERS) {
   popd(tos);
   jump(next);
 }
 
+#define FORTH_DUP  "dup", f_normal // ( n -- n n )
 forth_call dup(FORTH_REGISTERS) {
   pushd(OS);
   jump(next);
 }
 
+#define FORTH_SWAP  "swap", f_normal // ( x y -- x y )
 forth_call swap(FORTH_REGISTERS) {
   x = tos;
   popd(tos);
@@ -18,13 +21,14 @@ forth_call swap(FORTH_REGISTERS) {
   jump(next);
 }
 
+#define FORTH_ADD  "add", f_normal // ( n n -- n )
 forth_call add(FORTH_REGISTERS) {
   pop(x);
   tos += x;
   jump(next);
 }
 
-/* primitive '=', equals */
+#define FORTH_EQUALS  "=", f_normal // ( n n -- n )
 forth_call equals(FORTH_REGISTERS) {
   pop(x);
   tos = tos == x;
@@ -32,6 +36,7 @@ forth_call equals(FORTH_REGISTERS) {
 }
 
 /* primitive: `0branch` {offset} ( cond – ) :  If cond is 0, increment */
+#define FORTH_ZBRANCH  "0branch", f_normal // {offst } ( cond -- )
 forth_call zbranch(FORTH_REGISTERS) {
 {
   if (tos == 0) {
@@ -43,6 +48,7 @@ forth_call zbranch(FORTH_REGISTERS) {
 }
 
 /* primitive: `branch` {offset} ( – ) :  Increments the IP by offset */
+#define FORTH_BRANCH  "branch", f_normal // {offset} ( -- )
 forth_call branch(FORTH_REGISTERS) {
 {
   x = *ip; // dereference 'offset' stored at `*IP`
