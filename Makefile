@@ -1,10 +1,10 @@
 CFLAGS = -Wall -O3 -g
 
-fastr: fastr.c fastr.h
-	$(CC) fastr.c -o $@ $(CFLAGS)
+forthwith: forthwith.c forthwith.h
+	$(CC) forthwith.c -o $@ $(CFLAGS)
 
-test: fastr
-	./fastr test.fth
+test: forthwith
+	./forthwith test.fth
 
 
 .PHONY: clean examples test

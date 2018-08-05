@@ -73,25 +73,25 @@ forth_call dovar(FORTH_REGISTERS) {
 
     switch (x) {
     case 0: {
-      w = ((fastr_call_0) w)();
+      w = ((forthwith_call_0) w)();
       break;
       }
     case 1: {
       a = tos; //popd(a);
-      w = ((fastr_call_1) w)(a);
+      w = ((forthwith_call_1) w)(a);
       break;
       }
     case 2: {
       a = tos; //popd(a);
       popd(b);
-      w = ((fastr_call_1) w)(a, b);
+      w = ((forthwith_call_1) w)(a, b);
       break;
       }
     case 3: {
       a = tos; //popd(a);
       popd(b);
       popd(c);
-      w = ((fastr_call_3) w)(a, b, c);
+      w = ((forthwith_call_3) w)(a, b, c);
       break;
       }
     }

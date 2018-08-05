@@ -1,5 +1,5 @@
 
-#include "fastr.h"
+#include "forthwith.h"
 
 /* Native Primities */
 

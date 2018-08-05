@@ -1,5 +1,5 @@
 
-#include "fastr.h"
+#include "forthwith.h"
 
 #define FORTH_DROP  "drop", f_normal // ( n -- )
 forth_call drop(FORTH_REGISTERS) {

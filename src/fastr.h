@@ -41,10 +41,10 @@ struct forth_ctx { /**< FORTH environment */
 	fword_t *dict_base; fword_t *dict_curr; fcell_t  dict_count;
 };
 
-typedef fcell_t (*fastr_call_0)();
-typedef fcell_t (*fastr_call_1)(fcell_t a);
-typedef fcell_t (*fastr_call_2)(fcell_t a, fcell_t b);
-typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
+typedef fcell_t (*forthwith_call_0)();
+typedef fcell_t (*forthwith_call_1)(fcell_t a);
+typedef fcell_t (*forthwith_call_2)(fcell_t a, fcell_t b);
+typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
   forth_call cname(FORTH_REGISTERS)
