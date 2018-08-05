@@ -25,7 +25,10 @@ int forth_init() {
 
 }
 
-int forth_exec(char *command, int len) {
+int forth_bootstrap(forth_ctx* ctx) {
+  fcell_t* user_head = ctx->user_head;
+
+  user_head
 }
 
 fcell_t* forth_alloc_var(struct forth_ctx * ctx) {

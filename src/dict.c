@@ -3,10 +3,22 @@ typedef struct forth_word fword_t;
 
 struct forth_word {
   fword_t *prev;
-  int8_t len;
-  char *name;
+  uint_t meta;
   fcell_xt *body;
+  char *name;
 };
+
+fword_t* dict_create(forth_ctx* ctx, int8_t len, char *name) {
+  // make new entry dict head
+  fword_t* next_word = ctx->dict_head + 1;
+  next_word->prev = ctx->dict_head;
+  next_word->len = ctx->len;
+  memcpy(next_word->name, name, len);
+
+  // update dict head
+  ctx->dict_head = next_word;
+  return
+}
 
 /* FIND (name? – address). */
 fword_t* find(int8_t len, char *name) {
