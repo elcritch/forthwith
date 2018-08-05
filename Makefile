@@ -1,4 +1,4 @@
-CFLAGS = -Wall -O0 
+CFLAGS = -Wall -O3 -fno-asynchronous-unwind-tables
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)

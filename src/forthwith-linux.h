@@ -2,6 +2,8 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
+#define FORTHWITH_NO_CHECKS
+
 #define reg_w %rdi
 #define reg_ip %rsi
 #define reg_psp %rdx
@@ -12,7 +14,8 @@
 
 /* #define __jump(reg) asm("jmp "##reg) */
 #define __jump(r) __asm__("jmp " #r)
-#define _jump(r) __jump( _ ## r)
+/* #define _jump(r) __jump( _ ## r) */
+#define _jump(r) __jump( r)
 #define jump(reg) _jump( reg )
 
 /* #define jump(reg) goto *((fcell_t*)reg); */
