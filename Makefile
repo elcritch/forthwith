@@ -10,7 +10,7 @@ OBJS = $(SRCS:src/%.c=_build/%.o)
 _build/%.o: src/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
-forthwith: $(OBJS)
+forthwith-linux: _build/impl_x86.o $(OBJS)
 	$(CC) -o $@ $(CFLAGS) $<
 
 test: forthwith
