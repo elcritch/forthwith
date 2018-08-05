@@ -72,7 +72,7 @@ fw_call char_comma(FORTH_REGISTERS)
 fw_call lit(FORTH_REGISTERS)
 {
   pushd(tos); // ??
-  tos = *ip; // ??
+  tos = (fcell_t) *ip; // ??
   jump(next);
 }
 
@@ -95,10 +95,10 @@ fw_call rbrac(FORTH_REGISTERS)
 fw_call count(FORTH_REGISTERS)
 {
   // ??
-  w = (uint8_t)tos;
+  w = (fcell_xt)tos;
   tos += 1;
-  push(tos);
-  tos = w;
+  pushd(tos);
+  tos = (fcell_t)w;
   jump(next);
 }
 

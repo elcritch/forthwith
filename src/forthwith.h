@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#include "impl_x86.h"
-
 /* Standard Forth Cell */
 typedef int64_t fcell_t;
 
@@ -32,16 +30,17 @@ typedef  fcell_t  X_t;  // Scratch Register
 typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
 
 /* Forth "native C" function return type */
-#define fw_call inline void
+#define fw_call void
 
 /* Define C params... compilers vary in which registers they use */
-#define FORTH_REGISTERS W_t   w,            \
-                        IP_t  ip,           \
-                        PSP_t psp,          \
-                        RSP_t rsp,          \
-                        X_t   x,            \
-                        TOS_t tos,          \
-                        Ctx_t ctx
+#define FORTH_REGISTERS \
+  W_t   w,                                  \
+  IP_t  ip,           \
+  PSP_t psp,          \
+  RSP_t rsp,          \
+  X_t   x,            \
+  TOS_t tos,          \
+  Ctx_t ctx
 
 #define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, up
 

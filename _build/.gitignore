@@ -2,3 +2,6 @@
 *.o
 *.a
 forthwith
+*.S
+*.post.c
+
