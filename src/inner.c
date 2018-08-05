@@ -35,7 +35,7 @@ fw_call next(FORTH_REGISTERS) {
       one of docol, dovar, doconst, or native instruction */
   x = *w;
   /* JP (X)  -- jump to the address in the X register */
-  jump_addr(x);
+  jump_reg(x);
 }
 
 /* Exit current thread */

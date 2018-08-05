@@ -17,10 +17,10 @@
 
 /* #define jump(reg) goto *((fcell_t*)reg); */
 
-#define ___jump_addr(r) __asm__("jmp *"r)
-#define __jump_addr(r) ___jump_addr( #r )
-#define _jump_addr(r) __jump_addr( r )
-#define jump_addr(r) _jump_addr( reg_ ## r )
+#define ___jump_reg(r) __asm__("jmp *"r)
+#define __jump_reg(r) ___jump_reg( #r )
+#define _jump_reg(r) __jump_reg( r )
+#define jump_reg(r) _jump_reg( reg_ ## r )
 
 
 #endif // __HEADER_IMPL_X86__
