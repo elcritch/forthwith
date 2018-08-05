@@ -110,20 +110,3 @@ forth_call dovar(FORTH_REGISTERS) {
   }
 #endif // FORTH_NO_SYSCALL
 
-struct forth_ctx ctx;
-
-int forth_init() {
-  ctx = {
-    .psp_count = 128,
-    .rsp_count = 128,
-    .var_count = 64,
-    .dict_count = 512,
-  };
-
-  ctx.psp_head = calloc(sizeof(fcell_t), ctx.psp_count);
-  ctx.rsp_head = calloc(sizeof(fcell_t), ctx.rsp_count);
-  ctx.var_head = calloc(sizeof(fcell_t), ctx.var_count);
-  ctx.dict_head = calloc(sizeof(fcell_t), ctx.dict_count);
-
-}
-

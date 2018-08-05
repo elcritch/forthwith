@@ -28,7 +28,7 @@ int forth_init() {
 int forth_bootstrap(forth_ctx* ctx) {
   fcell_t* user_head = ctx->user_head;
 
-  user_head
+  dict_create
 }
 
 fcell_t* forth_alloc_var(struct forth_ctx * ctx) {
