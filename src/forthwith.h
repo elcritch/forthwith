@@ -71,7 +71,7 @@ typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
   fw_call cname(FORTH_REGISTERS)
 
 #ifndef FORTHWITH_NO_CHECKS
-#define check(cond, err_code) if (cond) { x = err_code; jump("abort"); }
+#define check(cond, err_code) if (cond) { x = err_code; jump(abort); }
 #else
 #define check(cond, err_code)
 #endif // FORTHWITH_NO_CHECKS

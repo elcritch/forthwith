@@ -12,7 +12,7 @@
 
 /* #define __jump(reg) asm("jmp "##reg) */
 #define __jump(r) __asm__("jmp " #r)
-#define _jump(r) __jump(r)
+#define _jump(r) __jump( _ ## r)
 #define jump(reg) _jump( reg )
 
 /* #define jump(reg) goto *((fcell_t*)reg); */
