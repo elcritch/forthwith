@@ -1,15 +1,17 @@
 CFLAGS = -Wall -O3 -g
 
-SRCS = src/forthwith.c src/access.c src/dict.c src/inner.c src/core.c
+SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
+OBJS = $(SRCS:src/%.c=_build/%.o)
+
 
 %.o: %.c *.h
-	@echo "cc $< -c -o $@"
-	@${CC} ${CFLAGS} $< -c -o $@
+	${CC} ${CFLAGS} $< -c -o $@
 
-forthwith: forthwith.c forthwith.h
+_build/%.o: src/%.c
+	${CC} ${CFLAGS} $< -c -o $@
 
-forthwith: forthwith.c forthwith.h
-	$(CC) forthwith.c -o $@ $(CFLAGS)
+forthwith: $(OBJS)
+	$(CC) -o $@ $(CFLAGS) $<
 
 test: forthwith
 	./forthwith test.fth
