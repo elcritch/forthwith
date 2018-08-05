@@ -16,7 +16,7 @@
  */
 
 /* Execute Indirect Thread's XT (mnemonic handle 'next XT')*/
-forth_call next(FORTH_REGISTERS) {
+fw_call next(FORTH_REGISTERS) {
   /* `load(IP)` -> `W`  -- fetch memory pointed by IP into "W" register
       ...W now holds address of the thread's execution-token */
   w = *ip;
@@ -32,7 +32,7 @@ forth_call next(FORTH_REGISTERS) {
 }
 
 /* Exit current thread */
-forth_call exits(FORTH_REGISTERS) {
+fw_call exits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
   popr(ip);
   jump(next);
@@ -41,7 +41,7 @@ forth_call exits(FORTH_REGISTERS) {
 /* Core Execution Token Implementations */
 
 /* primitive: `docolon` ( --r cond ) : execute indirect thread */
-forth_call docolon(FORTH_REGISTERS) {
+fw_call docolon(FORTH_REGISTERS) {
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
@@ -51,7 +51,7 @@ forth_call docolon(FORTH_REGISTERS) {
 }
 
 /* primitive: `doconst` {const} ( -- const ) : execute const */
-forth_call doconst(FORTH_REGISTERS) {
+fw_call doconst(FORTH_REGISTERS) {
   /* `load IP` -> `RSP` -- onto the "return address stack" */
   x = *ip;
   pushd(x);
@@ -59,14 +59,14 @@ forth_call doconst(FORTH_REGISTERS) {
 }
 
 /* primitive: `dovar` {addr} ( -- addr ) : execute varaddr */
-forth_call dovar(FORTH_REGISTERS) {
+fw_call dovar(FORTH_REGISTERS) {
   /* TODO: impl.... push address of a "variable" onto PSP */
   jump(next);
 }
 
 #ifndef FORTH_NO_SYSCALL
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
-  forth_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
+  fw_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
     /* pushd(tos); // save tos */
     x = *(ip++); // load function param count
     w = *(ip++); // load addr

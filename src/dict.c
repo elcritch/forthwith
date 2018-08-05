@@ -46,7 +46,7 @@ fword_t* find(int8_t len, char *name) {
 
 /* create new var in user stack */
 #define FORTH_COMMA ",", f_normal // ( n -- )
-forth_call comma(FORTH_REGISTERS)
+fw_call comma(FORTH_REGISTERS)
 {
   x = user_head;
   *x = tos;
@@ -57,7 +57,7 @@ forth_call comma(FORTH_REGISTERS)
 
 /* create new var in dict */
 #define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
-forth_call char_comma(FORTH_REGISTERS)
+fw_call char_comma(FORTH_REGISTERS)
 {
   x = Global(variable_stack);
   *x = tos;
@@ -67,7 +67,7 @@ forth_call char_comma(FORTH_REGISTERS)
 }
 
 #define FORTH_LIT "lit", f_normal // ( -- )
-forth_call lit(FORTH_REGISTERS)
+fw_call lit(FORTH_REGISTERS)
 {
   pushd(tos); // ??
   tos = *ip; // ??
@@ -75,14 +75,14 @@ forth_call lit(FORTH_REGISTERS)
 }
 
 #define FORTH_LBRAC "[", f_immed // ( -- )
-forth_call lbrac(FORTH_REGISTERS)
+fw_call lbrac(FORTH_REGISTERS)
 {
   ctx->immediate = true;
   jump(next);
 }
 
 #define FORTH_RBRAC  "]", ~ f_immed // ( -- )
-forth_call rbrac(FORTH_REGISTERS)
+fw_call rbrac(FORTH_REGISTERS)
 {
   ctx->immediate = false;
   jump(next);
@@ -90,7 +90,7 @@ forth_call rbrac(FORTH_REGISTERS)
 
 /* primitive 'count',count */
 #define FORTH_COUNT  "count", f_normal // ( -- )
-forth_call count(FORTH_REGISTERS)
+fw_call count(FORTH_REGISTERS)
 {
   // ??
   w = (uint8_t)tos;

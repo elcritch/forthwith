@@ -19,7 +19,7 @@ typedef  fcell_t  X_t;  // Scratch Register
 typedef  struct fort_ctx*  Ctx_t;  // Scratch Register
 
 /* Forth "native C" function return type */
-#define forth_call inline void
+#define fw_call inline void
 
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS W_t   w,            \
@@ -47,7 +47,7 @@ typedef fcell_t (*forthwith_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
-  forth_call cname(FORTH_REGISTERS)
+  fw_call cname(FORTH_REGISTERS)
 
 #define check(cond, err_code) if (cond) { w = err_code; jump_to("abort"); }
 #define check(cond, err_code)
