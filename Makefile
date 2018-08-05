@@ -1,4 +1,4 @@
-CFLAGS = -Wall -O3 -g
+CFLAGS = -Wall -O3 -g --std=c99
 
 SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 OBJS = $(SRCS:src/%.c=_build/%.o)

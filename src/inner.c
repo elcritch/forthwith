@@ -1,5 +1,7 @@
 #include <stdint.h>
 
+#include "forthwith.h"
+
 /*
   Example of Direct Threaded vs Indirect Threaded code:
 
@@ -13,11 +15,16 @@
   |   &EXIT       |   &EXIT   |
   |---------------|-----------|
 
+  fcell_xt === machine code pointer => uintptr_t
+  XT = (fcell_xt)&DOCOL
+  IP = &XT
+  RSP = &IP
+
  */
 
 /* Execute Indirect Thread's XT (mnemonic handle 'next XT')*/
 fw_call next(FORTH_REGISTERS) {
-  /* `load(IP)` -> `W`  -- fetch memory pointed by IP into "W" register
+  /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
   w = *ip;
   /* IP++ -> IP advance IP, just like a program counter */
@@ -46,14 +53,14 @@ fw_call docolon(FORTH_REGISTERS) {
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
       so `W++` is the address of the thread body (list of IDC addrs)!  */
-  ip = w + sizeof(fcell_t);
+  ip = (fcell_xt*)(w+sizeof(IP_t));
   jump(next);
 }
 
 /* primitive: `doconst` {const} ( -- const ) : execute const */
 fw_call doconst(FORTH_REGISTERS) {
   /* `load IP` -> `RSP` -- onto the "return address stack" */
-  x = *ip;
+  x = (fcell_t) *ip;
   pushd(x);
   jump(next);
 }
@@ -68,30 +75,31 @@ fw_call dovar(FORTH_REGISTERS) {
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
     /* pushd(tos); // save tos */
-    x = *(ip++); // load function param count
+    x = (fcell_t)*(ip++); // load function param count
     w = *(ip++); // load addr
 
+    fcell_t ret;
     switch (x) {
     case 0: {
-      w = ((forthwith_call_0) w)();
+      ret = ((forthwith_call_0) w)();
       break;
       }
     case 1: {
       a = tos; //popd(a);
-      w = ((forthwith_call_1) w)(a);
+      ret = ((forthwith_call_1) w)(a);
       break;
       }
     case 2: {
       a = tos; //popd(a);
       popd(b);
-      w = ((forthwith_call_1) w)(a, b);
+      ret = ((forthwith_call_2) w)(a, b);
       break;
       }
     case 3: {
       a = tos; //popd(a);
       popd(b);
       popd(c);
-      w = ((forthwith_call_3) w)(a, b, c);
+      ret = ((forthwith_call_3) w)(a, b, c);
       break;
       }
     }
@@ -100,10 +108,10 @@ fw_call dovar(FORTH_REGISTERS) {
       popd(tos);
     }
 
-    a = *(ip++); // load function ret count
+    a = (fcell_t) *(ip++); // load function ret count
     if (a) {
       pushd(tos);
-      tos = w;
+      tos = ret;
     }
 
     jump(next);

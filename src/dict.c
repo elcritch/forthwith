@@ -1,37 +1,40 @@
 
-typedef struct forth_word fword_t;
+#include "forthwith.h"
+#include <stdlib.h>
+#include <string.h>
 
-struct forth_word {
-  fword_t *prev;
-  uint_t meta;
-  fcell_xt *body;
-  char *name;
-};
+#define DICT_LEN(len) (len & 0xF)
 
-fword_t* dict_create(forth_ctx* ctx, int8_t len, char *name) {
+fword_t* dict_create(fw_ctx_t* ctx, int8_t len, char *name) {
+  // 'allocate' new entry in dict head
+  fword_t* next_word = ctx->dict_head + sizeof(fword_t) + len;
+
   // make new entry dict head
-  fword_t* next_word = ctx->dict_head + 1;
-  next_word->prev = ctx->dict_head;
-  next_word->len = ctx->len;
+  if (ctx->dict_head != ctx->dict_base)
+    next_word->prev = ctx->dict_head;
+  else
+    next_word->prev = NULL;
+
+  next_word->meta |= DICT_LEN(len);
   memcpy(next_word->name, name, len);
 
   // update dict head
   ctx->dict_head = next_word;
-  return
+  return next_word;
 }
 
 /* FIND (name? – address). */
-fword_t* find(int8_t len, char *name) {
+fword_t* find(fw_ctx_t *ctx, int8_t len, char *name) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict_curr;
+  fword_t* word_ptr = ctx->dict_head;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
-    word = *word_ptr;
-    if (word.len == len) {
+    fword_t word = *word_ptr;
+    if (DICT_LEN(word.meta) == len) {
       int8_t i;
       for (i = 0; i < len; i++) {
-        if (name[i] != word.name)
+        if (name[i] != word.name[i])
           break;
       }
       // word found
@@ -42,15 +45,15 @@ fword_t* find(int8_t len, char *name) {
     // no match
     word_ptr = word.prev;
   }
+  return NULL;
 }
 
 /* create new var in user stack */
 #define FORTH_COMMA ",", f_normal // ( n -- )
 fw_call comma(FORTH_REGISTERS)
 {
-  x = user_head;
-  *x = tos;
-  user_head += sizeof(fcell_t);
+  *user_here = tos;
+  user_here += sizeof(fcell_t*);
   popd(tos);
   jump(next);
 }
@@ -59,9 +62,8 @@ fw_call comma(FORTH_REGISTERS)
 #define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
 fw_call char_comma(FORTH_REGISTERS)
 {
-  x = Global(variable_stack);
-  *x = tos;
-  Global(variable_stack) += sizeof(char);
+  *user_here = tos;
+  user_here += sizeof(fcell_t*);
   popd(tos);
   jump(next);
 }
@@ -77,14 +79,14 @@ fw_call lit(FORTH_REGISTERS)
 #define FORTH_LBRAC "[", f_immed // ( -- )
 fw_call lbrac(FORTH_REGISTERS)
 {
-  ctx->immediate = true;
+  ctx->immediate = 1;
   jump(next);
 }
 
 #define FORTH_RBRAC  "]", ~ f_immed // ( -- )
 fw_call rbrac(FORTH_REGISTERS)
 {
-  ctx->immediate = false;
+  ctx->immediate = 0;
   jump(next);
 }
 
