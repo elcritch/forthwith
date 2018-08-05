@@ -22,5 +22,6 @@
 #define _jump_reg(r) __jump_reg( r )
 #define jump_reg(r) _jump_reg( reg_ ## r )
 
+extern struct forthwith_context *ctx;
 
 #endif // __HEADER_IMPL_X86__

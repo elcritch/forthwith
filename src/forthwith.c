@@ -4,7 +4,9 @@
 
 
 // TODO: fix implicit global...
-struct forthwith_context ctx;
+struct forthwith_context context;
+
+fw_context_t *ctx;
 
 #define global_state ctx->var_head
 
@@ -12,19 +14,20 @@ struct forthwith_context ctx;
 int forth_init() {
   uint8_t cell_sz = sizeof(fcell_t);
 
-  struct forthwith_context default_ctx = {
+  struct forthwith_context nctx = {
     .psp_size =  128 * cell_sz,
     .rsp_size =  128 * cell_sz,
     .user_size =   64 * cell_sz,
     .dict_size = 512 * cell_sz,
   };
 
-  ctx.psp_base = ctx.psp_head = calloc(1, ctx.psp_size);
-  ctx.rsp_base = ctx.rsp_head = calloc(1, ctx.rsp_size);
-  ctx.user_base = ctx.user_head = calloc(1, ctx.user_size);
-  ctx.dict_base = ctx.dict_head = calloc(1, ctx.dict_size);
+  nctx.psp_base = nctx.psp_head = calloc(1, nctx.psp_size);
+  nctx.rsp_base = nctx.rsp_head = calloc(1, nctx.rsp_size);
+  nctx.user_base = nctx.user_head = calloc(1, nctx.user_size);
+  nctx.dict_base = nctx.dict_head = calloc(1, nctx.dict_size);
 
-  ctx = default_ctx;
+  context = default_ctx;
+  ctx = &context;
 
   return -1;
 }

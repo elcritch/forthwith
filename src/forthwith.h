@@ -39,8 +39,7 @@ typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
   PSP_t psp,          \
   RSP_t rsp,          \
   X_t   x,            \
-  TOS_t tos,          \
-  Ctx_t ctx
+  TOS_t tos
 
 #define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, up
 
