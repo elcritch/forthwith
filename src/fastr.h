@@ -15,8 +15,8 @@ typedef fcell_t*  PSP_t;  // Parameter Stack Pointer
 typedef fcell_t   TOS_t;  // Top of Stack
 
 /* Extra Registers */
-typedef  fcell_t* UP; // User Pointer (?) -- not used in all forth's
-typedef  fcell_t  X;  // Scratch Register
+typedef  fcell_t  X_t;  // Scratch Register
+typedef  struct fort_ctx*  Ctx_t;  // Scratch Register
 
 /* Forth "native C" function return type */
 #define forth_call inline void
@@ -28,48 +28,58 @@ typedef  fcell_t  X;  // Scratch Register
                         RSP_t rsp,          \
                         X_t   x,            \
                         TOS_t tos,          \
-                        UP_t  up
+                        Ctx_t ctx
 
 #define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, up
 
-#define check(cond, err_code) if (cond) { w = err_code; jump_to("abort"); }
-#define check(cond, err_code)
-
-#define pushd(reg) \
-  check(psp > FORTH_PSP_SIZE, JFORTH_ERR_STACKOVERFLOW); \
-  *(psp++) = reg;
-#define popd(reg) \
-  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW); \
-  *(psp--) = reg;
-#define pickd(reg, addr)                                      \
-  check(psp - psp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW); \
-  *(psp-addr-1) = reg;
-
-#define pushr(reg)                                         \
-  check(rsp > FORTH_RSP_SIZE, JFORTH_ERR_STACK_OVERFLOW); \
-  *(rsp++) = reg;
-#define popr(reg)                                              \
-  check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACK_UNDERFLOW); \
-  *(rsp--) = reg;
-#define pickr(reg, addr)                                       \
-  check(rsp - rsp_stack_mem < 0, JFORTH_ERR_STACKUNDERFLOW);  \
-  *(rsp-addr-1) = reg;
-
 struct forth_ctx { /**< FORTH environment */
-	uint8_t header[sizeof(header)]; /**< ~~ header for core file */
-	fcell_t core_size;  /**< size of VM */
 
-	fcell_t *psp_head; // parameter stack pointer
-	fcell_t *psp_curr; // parameter stack header
-	fcell_t *dsp_head;/**< index into m[] where variable stack starts*/
-	fcell_t *dsp_curr;  /**< index into m[] where variable stack ends*/
-
-	fcell_t memory[];    /**< ~~ Forth Virtual Machine memory */
+	fcell_t *psp_base; fcell_t *psp_head; fcell_t  psp_count;
+	fcell_t *rsp_base; fcell_t *rsp_head; fcell_t  rsp_count;
+	fcell_t *user_base; fcell_t *user_head; fcell_t  user_count;
+	fcell_t *dict_base; fcell_t *dict_curr; fcell_t  dict_count;
 };
-
 
 typedef fcell_t (*fastr_call_0)();
 typedef fcell_t (*fastr_call_1)(fcell_t a);
 typedef fcell_t (*fastr_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*fastr_call_3)(fcell_t a, fcell_t b, fcell_t c);
+
+#define check(cond, err_code) if (cond) { w = err_code; jump_to("abort"); }
+#define check(cond, err_code)
+
+#define pushd(reg)                                       \
+  check(psp < (ctx->psp_base + ctx->psp_size), JFORTH_ERR_STACKOVERFLOW); \
+  *(psp++) = reg;
+#define popd(reg) \
+  check(psp > ctx->psp_base, JFORTH_ERR_STACKUNDERFLOW);  \
+  *(psp--) = reg;
+
+#define pushr(reg)                                         \
+  check(rsp > (ctx->rsp_base + ctx->rsp_size), JFORTH_ERR_STACK_OVERFLOW); \
+  *(rsp++) = reg;
+#define popr(reg)                                              \
+  check(rsp < (ctx->rsp_base), JFORTH_ERR_STACK_UNDERFLOW);    \
+  *(rsp--) = reg;
+
+#ifndef FASTR_USERSTACK_IN_REGISTER
+  #define pushu(reg)                                                     \
+    check(u > (ctx->rsp_base + ctx->rsp_size), JFORTH_ERR_STACK_OVERFLOW); \
+    *(u++) = reg;
+  #define popu(reg)                                           \
+    check(u < (ctx->user_base), JFORTH_ERR_STACK_UNDERFLOW); \
+    *(u--) = reg;
+#else
+  #define pushu(reg)                                                      \
+    check(ctx->user_head > (ctx->user_base + ctx->user_size), JFORTH_ERR_STACK_OVERFLOW); \
+    *(ctx->user_head++) = reg;
+  #define popu(reg)                                           \
+    check(ctx->user_head < (ctx->user_base), JFORTH_ERR_STACK_UNDERFLOW); \
+    *(ctx->user_head--) = reg;
+#endif // FASTR_NO_USERSTACK_OPS
+
+
+#define F_IMMED 0x80
+#define F_HIDDEN 0x20
+#define F_LENMASK 0x1F	// length mask
 

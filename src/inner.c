@@ -65,41 +65,65 @@ forth_call dovar(FORTH_REGISTERS) {
 }
 
 #ifndef FORTH_NO_SYSCALL
-  /* primitive: `docall` {count} {addr} {ret} ( -- addr ) : execute varaddr */
+  /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   forth_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
+    /* pushd(tos); // save tos */
     x = *(ip++); // load function param count
+    w = *(ip++); // load addr
 
     switch (x) {
     case 0: {
-      y = ((fastr_call_0) *(ip++))();
+      w = ((fastr_call_0) w)();
       break;
       }
     case 1: {
-      popd(a);
-      y = ((fastr_call_1) *(ip++))(a);
+      a = tos; //popd(a);
+      w = ((fastr_call_1) w)(a);
       break;
       }
     case 2: {
-      popd(a);
+      a = tos; //popd(a);
       popd(b);
-      y = ((fastr_call_1) *(ip++))(a, b);
+      w = ((fastr_call_1) w)(a, b);
       break;
       }
     case 3: {
-      popd(a);
+      a = tos; //popd(a);
       popd(b);
       popd(c);
-      y = ((fastr_call_3) *(ip++))(a, b, c);
+      w = ((fastr_call_3) w)(a, b, c);
       break;
       }
     }
 
-    x = *(ip++); // load function param count
-    if (x != 0) {
-      pushd(y);
+    if (x) {
+      popd(tos);
+    }
+
+    a = *(ip++); // load function ret count
+    if (a) {
+      pushd(tos);
+      tos = w;
     }
 
     jump(next);
   }
 #endif // FORTH_NO_SYSCALL
+
+struct forth_ctx ctx;
+
+int forth_init() {
+  ctx = {
+    .psp_count = 128,
+    .rsp_count = 128,
+    .var_count = 64,
+    .dict_count = 512,
+  };
+
+  ctx.psp_head = calloc(sizeof(fcell_t), ctx.psp_count);
+  ctx.rsp_head = calloc(sizeof(fcell_t), ctx.rsp_count);
+  ctx.var_head = calloc(sizeof(fcell_t), ctx.var_count);
+  ctx.dict_head = calloc(sizeof(fcell_t), ctx.dict_count);
+
+}
 
