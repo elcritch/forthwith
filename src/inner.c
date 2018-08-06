@@ -28,7 +28,7 @@ fw_call next(FORTH_REGISTERS) {
       ...W now holds address of the thread's execution-token */
   w = *ip;
   /* IP++ -> IP advance IP, just like a program counter */
-  ip++;
+  ip += sizeof(IP_t);
   /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
       e.g. fetch memory pointed by W into "X" register
       ...X now holds address of the machine code to exec,
@@ -113,7 +113,8 @@ fw_call dovar(FORTH_REGISTERS) {
       popd(tos);
     }
 
-    a = (fcell_t) *(ip++); // load function ret count
+    ip += sizeof(IP_t);
+    a = (fcell_t) *(ip); // load function ret count
     if (a) {
       pushd(tos);
       tos = ret;
