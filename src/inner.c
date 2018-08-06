@@ -77,8 +77,10 @@ fw_call dovar(FORTH_REGISTERS) {
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS) {
     /* pushd(tos); // save tos */
-    x = (fcell_t)*(ip++); // load function param count
-    w = *(ip++); // load addr
+    ip += sizeof(IP_t);
+    x = (fcell_t) *ip; // load function param count
+    ip += sizeof(IP_t);
+    w = *ip; // load addr
     fcell_t a, b, c;
 
     fcell_t ret;
