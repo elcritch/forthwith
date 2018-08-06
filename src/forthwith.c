@@ -32,8 +32,15 @@ int forth_init() {
   return -1;
 }
 
+#define ADDR(x) ((IP_t)&x)
+
 int forth_bootstrap(fw_ctx_t* ctx) {
   /* fcell_t* user_head = ctx->user_head; */
+
+  IP_t symbols[] = [
+                    ADDR(docolon),
+                    ADDR(doconst),
+                    ];
 
   /* dict_create */
   return -1;

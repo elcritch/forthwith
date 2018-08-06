@@ -42,7 +42,6 @@ typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
   TOS_t tos
 
 #define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, ctx
-#define FORTH_RET (fcell_t)w+(fcell_t)ip+(fcell_t)psp+(fcell_t)rsp+(fcell_t)x+(fcell_t)tos+(fcell_t)ctx
 
 typedef struct forth_word fword_t;
 
@@ -66,6 +65,10 @@ typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
 typedef fcell_t (*forthwith_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
+
+int forth_bootstrap(fw_ctx_t* ctx);
+int forth_init();
+fcell_t* forth_alloc_var(fw_ctx_t* ctx);
 
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
   fw_call cname(FORTH_REGISTERS)

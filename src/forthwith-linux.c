@@ -6,7 +6,12 @@
 #include "core.c"
 #include "dict.c"
 
-/* int main(int argc, char** argv) { */
-  /* return 0; */
-/* } */
+int main(int argc, char** argv) {
+
+
+  forth_init();
+  forth_bootstrap(ctx);
+
+  return 0;
+}
 
