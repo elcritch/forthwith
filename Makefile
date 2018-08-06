@@ -1,10 +1,12 @@
-CFLAGS = -Wall -O3 -fomit-frame-pointer -fno-asynchronous-unwind-tables
+CFLAGS = -Wall -O0 -g -fomit-frame-pointer -fno-asynchronous-unwind-tables
 # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -m64
 
 # CC = clang
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)
+
+all: _build/forthwith-linux
 
 _build/forthwith-linux.a: _build/forthwith-linux.o
 	ar rcs $@ $<

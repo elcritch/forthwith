@@ -48,8 +48,9 @@ typedef struct forth_word fword_t;
 struct forth_word {
   fword_t *prev;
   uint8_t meta;
+  uint8_t len;
   fcell_xt *body;
-  char *name;
+  char name;
 };
 
 struct forthwith_context { /**< FORTH environment */

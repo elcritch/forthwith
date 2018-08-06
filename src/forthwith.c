@@ -6,7 +6,7 @@
 // TODO: fix implicit global...
 struct forthwith_context context;
 
-fw_context_t *ctx;
+fw_ctx_t *ctx;
 
 #define global_state ctx->var_head
 
@@ -26,7 +26,7 @@ int forth_init() {
   nctx.user_base = nctx.user_head = calloc(1, nctx.user_size);
   nctx.dict_base = nctx.dict_head = calloc(1, nctx.dict_size);
 
-  context = default_ctx;
+  context = nctx;
   ctx = &context;
 
   return -1;
@@ -37,10 +37,10 @@ int forth_init() {
 int forth_bootstrap(fw_ctx_t* ctx) {
   /* fcell_t* user_head = ctx->user_head; */
 
-  IP_t symbols[] = [
-                    ADDR(docolon),
-                    ADDR(doconst),
-                    ];
+  /* IP_t test[] = [ */
+  /*                   ADDR(lit), */
+  /*                   ADDR(doconst), */
+  /*                   ]; */
 
   /* dict_create */
   return -1;

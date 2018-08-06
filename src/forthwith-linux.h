@@ -17,7 +17,7 @@
 
 /* #define __jump(reg) asm("jmp "##reg) */
 #define __jump(r) \
-  __asm__("jmp " #r);                           \
+  __asm__("jmp " "_" # r);                      \
   __asm__ __volatile__("" :: "r" (w));          \
   __asm__ __volatile__("" :: "r" (ip));         \
   __asm__ __volatile__("" :: "r" (psp));        \
@@ -26,7 +26,7 @@
   __asm__ __volatile__("" :: "r" (tos))
 
 /* #define _jump(r) __jump( _ ## r) */
-#define _jump(r) __jump( r)
+#define _jump(r) __jump( r )
 #define jump(reg) _jump( reg )
 
 /* #define jump(reg) goto *((fcell_t*)reg); */

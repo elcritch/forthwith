@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DICT_LEN(len) (len & 0xF)
-
 fword_t* dict_create(fw_ctx_t* ctx, int8_t len, char *name) {
   // 'allocate' new entry in dict head
   fword_t* next_word = ctx->dict_head + sizeof(fword_t) + len;
@@ -15,8 +13,8 @@ fword_t* dict_create(fw_ctx_t* ctx, int8_t len, char *name) {
   else
     next_word->prev = NULL;
 
-  next_word->meta |= DICT_LEN(len);
-  memcpy(next_word->name, name, len);
+  next_word->len = len;
+  memcpy(&next_word->name, name, len);
 
   // update dict head
   ctx->dict_head = next_word;
@@ -31,10 +29,10 @@ fword_t* find(fw_ctx_t *ctx, int8_t len, char *name) {
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
     fword_t word = *word_ptr;
-    if (DICT_LEN(word.meta) == len) {
+    if (word.len == len) {
       int8_t i;
       for (i = 0; i < len; i++) {
-        if (name[i] != word.name[i])
+        if (name[i] != *(&word.name + i) )
           break;
       }
       // word found
