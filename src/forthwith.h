@@ -34,14 +34,15 @@ typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
 
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS \
-  W_t   w,                                  \
-  IP_t  ip,           \
-  PSP_t psp,          \
-  RSP_t rsp,          \
-  X_t   x,            \
+  W_t   w,              \
+  IP_t  ip,             \
+  PSP_t psp,            \
+  RSP_t rsp,            \
+  X_t   x,              \
   TOS_t tos
 
-#define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, up
+#define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, ctx
+#define FORTH_RET (fcell_t)w+(fcell_t)ip+(fcell_t)psp+(fcell_t)rsp+(fcell_t)x+(fcell_t)tos+(fcell_t)ctx
 
 typedef struct forth_word fword_t;
 
@@ -86,6 +87,7 @@ typedef enum forthwith_the_errors fw_error_t;
 #define pushd(reg)                                       \
   check(psp < (ctx->psp_base + ctx->psp_size), FW_ERR_STACKOVERFLOW); \
   *(psp++) = reg;
+
 #define popd(reg) \
   check(psp > ctx->psp_base, FW_ERR_STACKUNDERFLOW);  \
   reg = *(psp--);
@@ -93,6 +95,7 @@ typedef enum forthwith_the_errors fw_error_t;
 #define pushr(reg)                                         \
   check(rsp > (ctx->rsp_base + ctx->rsp_size), FW_ERR_STACKOVERFLOW); \
   *(rsp++) = reg;
+
 #define popr(reg)                                              \
   check(rsp < ctx->rsp_base, FW_ERR_STACKUNDERFLOW);    \
   reg = *(rsp--);

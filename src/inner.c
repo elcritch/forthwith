@@ -24,7 +24,7 @@
 
 /* Execute Indirect Thread's XT (mnemonic handle 'next XT')*/
 fw_call next(FORTH_REGISTERS) {
-  __asm__("next:");
+  fw_label(next);
   /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
   w = *ip;
@@ -42,7 +42,7 @@ fw_call next(FORTH_REGISTERS) {
 /* Exit current thread */
 fw_call exits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
-  __asm__("exits:");
+  fw_label(exits);
   popr(ip);
   jump(next);
 }
@@ -50,19 +50,21 @@ fw_call exits(FORTH_REGISTERS) {
 /* Core Execution Token Implementations */
 
 /* primitive: `docolon` ( --r cond ) : execute indirect thread */
-fw_call docolon(FORTH_REGISTERS) {
-  __asm__("docolon:");
+void docolon(FORTH_REGISTERS) {
+  fw_label(docolon);
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
       so `W++` is the address of the thread body (list of IDC addrs)!  */
   ip = (fcell_xt*)(w+sizeof(IP_t));
+  /* __asm__ __volatile__("" :: "m" (ip)); */
   jump(next);
+  /* return FORTH_RET; */
 }
 
 /* primitive: `doconst` {const} ( -- const ) : execute const */
 fw_call doconst(FORTH_REGISTERS) {
-  __asm__("doconst:");
+  fw_label(doconst);
   /* `load IP` -> `RSP` -- onto the "return address stack" */
   x = (fcell_t) *ip;
   pushd(x);
@@ -71,7 +73,7 @@ fw_call doconst(FORTH_REGISTERS) {
 
 /* primitive: `dovar` {addr} ( -- addr ) : execute varaddr */
 fw_call dovar(FORTH_REGISTERS) {
-  __asm__("dovar:");
+  fw_label(dovar);
   /* TODO: impl.... push address of a "variable" onto PSP */
   jump(next);
 }
@@ -79,7 +81,7 @@ fw_call dovar(FORTH_REGISTERS) {
 #ifndef FORTH_NO_SYSCALL
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS, fcell_t a, fcell_t b, fcell_t c) {
-    __asm__("dosys:");
+    fw_label(dosys);
     /* pushd(tos); // save tos */
     x = (fcell_t)*(ip++); // load function param count
     w = *(ip++); // load addr
