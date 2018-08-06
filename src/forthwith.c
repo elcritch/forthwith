@@ -13,6 +13,11 @@ fw_ctx_t *ctx;
 #include <stdio.h>
 #include <string.h>
 
+IP_t *forth_alloc_var(fw_ctx_t* ctx) {
+  ctx->user_head = ctx->user_head + sizeof(IP_t);
+  return ctx->user_head;
+}
+
 int forth_init() {
   uint8_t cell_sz = sizeof(fcell_t);
 
@@ -53,7 +58,22 @@ int forth_bootstrap(fw_ctx_t* ctx) {
   return -1;
 }
 
-fcell_t* forth_alloc_var(fw_ctx_t* ctx) {
-  return ctx->user_head++;
+fw_call forth_exec(FORTH_REGISTERS) {
+  forth_exec(FORTH_CALL_PARAMS);
+  jump(next);
+}
+
+int forth_eval(fw_ctx_t* ctx, IP_t *instr) {
+
+  W_t   w = 0;
+  IP_t  ip = *instr;
+  PSP_t psp = ctx->psp_head;
+  RSP_t rsp = ctx->rsp_head;
+  X_t   x = 0;
+  TOS_t tos = 0;
+
+  forth_exec(FORTH_CALL_PARAMS);
+
+  return 0;
 }
 

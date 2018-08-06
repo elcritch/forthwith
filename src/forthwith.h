@@ -41,7 +41,7 @@ typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
   X_t   x,              \
   TOS_t tos
 
-#define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos, ctx
+#define FORTH_CALL_PARAMS w, ip, psp, rsp, x, tos
 
 typedef struct forth_word fword_t;
 
@@ -56,8 +56,8 @@ struct forth_word {
 struct forthwith_context { /**< FORTH environment */
   uint8_t immediate;
 	fcell_t *psp_base; fcell_t *psp_head; fcell_t  psp_size;
-	fcell_xt* *rsp_base; fcell_xt* *rsp_head; fcell_t  rsp_size;
-	fcell_t *user_base; fcell_t *user_head; fcell_t  user_size;
+	IP_t *rsp_base; IP_t *rsp_head; fcell_t rsp_size;
+	IP_t *user_base; IP_t *user_head; fcell_t user_size;
 	fword_t *dict_base; fword_t *dict_head; fcell_t  dict_size;
 };
 typedef struct forthwith_context fw_ctx_t;
@@ -69,7 +69,7 @@ typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 
 int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
-fcell_t* forth_alloc_var(fw_ctx_t* ctx);
+IP_t *forth_alloc_var(fw_ctx_t* ctx);
 
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
   fw_call cname(FORTH_REGISTERS)

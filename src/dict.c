@@ -50,7 +50,7 @@ fword_t* find(fw_ctx_t *ctx, int8_t len, char *name) {
 #define FORTH_COMMA ",", f_normal // ( n -- )
 fw_call comma(FORTH_REGISTERS)
 {
-  *user_here = tos;
+  *user_here = (IP_t)tos;
   user_here += sizeof(fcell_t*);
   popd(tos);
   jump(next);
@@ -60,7 +60,7 @@ fw_call comma(FORTH_REGISTERS)
 #define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
 fw_call char_comma(FORTH_REGISTERS)
 {
-  *user_here = tos;
+  *user_here = (IP_t)tos;
   user_here += sizeof(fcell_t*);
   popd(tos);
   jump(next);
