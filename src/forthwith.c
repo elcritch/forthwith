@@ -10,6 +10,8 @@ fw_ctx_t *ctx;
 
 #define global_state ctx->var_head
 
+#include <stdio.h>
+#include <string.h>
 
 int forth_init() {
   uint8_t cell_sz = sizeof(fcell_t);
@@ -25,6 +27,11 @@ int forth_init() {
   nctx.rsp_base = nctx.rsp_head = calloc(1, nctx.rsp_size);
   nctx.user_base = nctx.user_head = calloc(1, nctx.user_size);
   nctx.dict_base = nctx.dict_head = calloc(1, nctx.dict_size);
+
+  printf("psp base: %p\n", nctx.psp_base);
+  printf("rsp base: %p\n", nctx.rsp_base);
+  printf("user base: %p\n", nctx.user_base);
+  printf("dict base: %p\n", nctx.dict_base);
 
   context = nctx;
   ctx = &context;
