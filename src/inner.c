@@ -31,21 +31,17 @@ fw_call next(FORTH_REGISTERS) {
   /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
   load_addr(w, ip);
-  /* w = *ip; */
+
+  /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
+     e.g. fetch memory pointed by W into "X" register
+     ...X now holds address of the machine code to exec,
+     one of docol, dovar, doconst, or native instruction */
   load_addr(x, w);
-  /* x = *w; */
 
   /* IP++ -> IP advance IP, just like a program counter */
   add_const(ip, $64);
-  /* ip = ip + sizeof(IP_t); */
 
-  /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
-      e.g. fetch memory pointed by W into "X" register
-      ...X now holds address of the machine code to exec,
-      one of docol, dovar, doconst, or native instruction */
   /* JP (X)  -- jump to the address in the X register */
-  /* __asm__("jmpq *%0" : "+x" (x)); */
-  /* _asm_jump(); */
   jump_reg(x);
 }
 
