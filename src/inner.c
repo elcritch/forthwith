@@ -2,6 +2,10 @@
 
 #include "forthwith.h"
 
+fw_call fcallend(FORTH_REGISTERS) {
+  _asm_jump();
+}
+
 /*
   Example of Direct Threaded vs Indirect Threaded code:
 
@@ -26,15 +30,22 @@
 fw_call next(FORTH_REGISTERS) {
   /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
-  w = *ip;
+  load_addr(w, ip);
+  /* w = *ip; */
+  load_addr(x, w);
+  /* x = *w; */
+
   /* IP++ -> IP advance IP, just like a program counter */
-  ip += sizeof(IP_t);
+  add_const(ip, $64);
+  /* ip = ip + sizeof(IP_t); */
+
   /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
       e.g. fetch memory pointed by W into "X" register
       ...X now holds address of the machine code to exec,
       one of docol, dovar, doconst, or native instruction */
-  x = *w;
   /* JP (X)  -- jump to the address in the X register */
+  /* __asm__("jmpq *%0" : "+x" (x)); */
+  /* _asm_jump(); */
   jump_reg(x);
 }
 
@@ -68,6 +79,7 @@ void docolon(FORTH_REGISTERS) {
 
 /* primitive: `doconst` {const} ( -- const ) : execute const */
 fw_call doconst(FORTH_REGISTERS) {
+  /* X_t x; */
   /* `load IP` -> `RSP` -- onto the "return address stack" */
   x = (fcell_t) *ip;
   pushd(x);
@@ -83,6 +95,7 @@ fw_call dovar(FORTH_REGISTERS) {
 #ifndef FORTH_NO_SYSCALL
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS) {
+    /* X_t x; */
     /* pushd(tos); // save tos */
     ip += sizeof(IP_t);
     x = (fcell_t) *ip; // load function param count
