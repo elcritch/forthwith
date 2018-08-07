@@ -92,28 +92,34 @@ typedef enum forthwith_the_errors fw_error_t;
 
 #define pushd(reg)                                       \
   check(psp < (ctx->psp_base + ctx->psp_size), FW_ERR_STACKOVERFLOW); \
-  *(psp++) = reg;
+  _pushd(reg)
+  /* *(psp++) = reg; */
 
 #define popd(reg) \
   check(psp > ctx->psp_base, FW_ERR_STACKUNDERFLOW);  \
-  reg = *(psp--);
+  _popd(reg)
+  /* reg = *(psp--); */
 
 #define pushr(reg)                                         \
   check(rsp > (ctx->rsp_base + ctx->rsp_size), FW_ERR_STACKOVERFLOW); \
-  *(rsp++) = reg;
+  _pushr(reg)
+  /* *(rsp++) = reg; */
 
 #define popr(reg)                                              \
   check(rsp < ctx->rsp_base, FW_ERR_STACKUNDERFLOW);    \
-  reg = *(rsp--);
+  _popr(reg)
+  /* reg = *(rsp--); */
 
 #ifdef FASTR_USERSTACK_IN_REGISTER
   #define user_here u
   #define pushu(reg)                                                     \
     check(u > (ctx->rsp_base + ctx->rsp_size), FW_ERR_STACK_OVERFLOW); \
-    *(u++) = reg;
+    _pushu(reg)
+    /* *(u++) = reg; */
   #define popu(reg)                                           \
     check(u < (ctx->user_base), FW_ERR_STACK_UNDERFLOW); \
-    reg = *(u--);
+    _popu(reg)
+    /* reg = *(u--); */
 #else
 #define user_here  ctx->user_head
   #define pushu(reg)                                                      \

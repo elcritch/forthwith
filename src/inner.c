@@ -34,8 +34,8 @@ fw_call next(FORTH_REGISTERS) {
   load_addr(x, w); /* x = *w; */
 
   /* IP++ -> IP advance IP, just like a program counter */
-  add_const(ip, $64); /* ip = ip + sizeof(IP_t); */
-  sub_const(ip, $64); /* ip = ip + sizeof(IP_t); */
+  add_const(ip, $word_sz); /* ip = ip + sizeof(IP_t); */
+  sub_const(ip, $word_ptr_sz); /* ip = ip + sizeof(IP_t); */
 
   /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
       e.g. fetch memory pointed by W into "X" register

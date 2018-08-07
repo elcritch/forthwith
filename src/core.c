@@ -26,7 +26,8 @@ fw_call swap(FORTH_REGISTERS) {
 fw_call add(FORTH_REGISTERS) {
   /* X_t x; */
   popd(x);
-  tos += x;
+  /* tos += x; */
+  add_reg(tos, x);
   jump(next);
 }
 
