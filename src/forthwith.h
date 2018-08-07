@@ -35,13 +35,13 @@ typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS \
   X_t   x,              \
+  TOS_t tos,            \
   W_t   w,              \
   IP_t  ip,             \
   PSP_t psp,            \
-  RSP_t rsp,            \
-  TOS_t tos
+  RSP_t rsp
 
-#define FORTH_CALL_PARAMS x, w, ip, psp, rsp, tos
+#define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp
 
 extern fw_call fcallend(FORTH_REGISTERS);
 
