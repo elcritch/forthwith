@@ -85,56 +85,53 @@ fw_call doconst(FORTH_REGISTERS) {
 /* primitive: `dovar` {addr} ( -- addr ) : execute varaddr */
 fw_call dovar(FORTH_REGISTERS) {
   /* TODO: impl.... push address of a "variable" onto PSP */
+  popd(x);
   jump(next);
+}
+
+void __attribute__ ((noinline)) docall() {
+  fcell_t addr = *forth_pop(ctx);
+  fcell_t params = *forth_pop(ctx);
+  fcell_t ret = *forth_pop(ctx);
+
+  fcell_t a, b, c;
+
+  switch (params) {
+  case 0: {
+    ret = ((forthwith_call_0) addr)();
+    break;
+    }
+  case 1: {
+    a = *forth_pop(ctx);
+    ret = ((forthwith_call_1) addr)(a);
+    break;
+    }
+  case 2: {
+    a = *forth_pop(ctx);
+    b = *forth_pop(ctx);
+    ret = ((forthwith_call_2) addr)(a, b);
+    break;
+    }
+  case 3: {
+    a = *forth_pop(ctx);
+    b = *forth_pop(ctx);
+    c = *forth_pop(ctx);
+    ret = ((forthwith_call_3) addr)(a, b, c);
+    break;
+    }
+  }
+
+  if (ret) {
+    pushd(tos);
+  }
 }
 
 #ifndef FORTH_NO_SYSCALL
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS) {
-    /* X_t x; */
-    /* pushd(tos); // save tos */
-    ip += sizeof(IP_t);
-    x = (fcell_t) *ip; // load function param count
-    ip += sizeof(IP_t);
-    w = *ip; // load addr
-    fcell_t a, b, c;
-
-    fcell_t ret;
-    switch (x) {
-    case 0: {
-      ret = ((forthwith_call_0) w)();
-      break;
-      }
-    case 1: {
-      a = tos; //popd(a);
-      ret = ((forthwith_call_1) w)(a);
-      break;
-      }
-    case 2: {
-      a = tos; //popd(a);
-      popd(b);
-      ret = ((forthwith_call_2) w)(a, b);
-      break;
-      }
-    case 3: {
-      a = tos; //popd(a);
-      popd(b);
-      popd(c);
-      ret = ((forthwith_call_3) w)(a, b, c);
-      break;
-      }
-    }
-
-    if (x) {
-      popd(tos);
-    }
-
-    ip += sizeof(IP_t);
-    a = (fcell_t) *(ip); // load function ret count
-    if (a) {
-      pushd(tos);
-      tos = ret;
-    }
+    pushd(tos);
+    docall();
+    popd(tos);
 
     jump(next);
   }

@@ -135,4 +135,8 @@ typedef enum forthwith_the_errors fw_error_t;
 #define F_HIDDEN 0x20
 #define F_LENMASK 0x1F	// length mask
 
+
+fcell_t *forth_pop(fw_ctx_t* ctx);
+int forth_push(fw_ctx_t* ctx, fcell_t val);
+
 #endif // _FORTHWITH_HEADER_

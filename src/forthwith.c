@@ -53,6 +53,16 @@ fcell_t *forth_pop(fw_ctx_t* ctx) {
     return NULL;
 }
 
+int forth_push(fw_ctx_t* ctx, fcell_t val) {
+  if (ctx->rsp_head < ctx->rsp_base + ctx->rsp_size) {
+    ctx->psp_head++;
+    *ctx->psp_head = val;
+    return 1;
+  }
+  else
+    return -1;
+}
+
 int forth_bootstrap(fw_ctx_t* ctx) {
   /* fcell_t* user_head = ctx->user_head; */
 

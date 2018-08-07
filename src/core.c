@@ -1,5 +1,6 @@
 
 #include "forthwith.h"
+#include <stdint.h>
 
 #define FORTH_DROP  "drop", f_normal // ( n -- )
 fw_call drop(FORTH_REGISTERS) {
@@ -35,7 +36,12 @@ fw_call add(FORTH_REGISTERS) {
 fw_call equals(FORTH_REGISTERS) {
   /* X_t x; */
   popd(x);
-  tos = tos == x;
+  /* tos = tos == x; */
+  /* tos = 0xFFFFFFFFFFFFFFFF; */
+  xor_reg(tos, x);
+  load_const(a, $word_max);
+  xor_reg(tos, a);
+  /* tos = ~0; */
   jump(next);
 }
 
@@ -44,8 +50,10 @@ fw_call equals(FORTH_REGISTERS) {
 fw_call zbranch(FORTH_REGISTERS) {
   /* X_t x; */
   if (tos == 0) {
-    x = (fcell_t) *ip; // dereference 'offset' stored at `*IP`
-    ip += x; // add offset to `IP`
+    load_addr(x, ip);
+    /* x = (fcell_t) *ip; // dereference 'offset' stored at `*IP` */
+    add_reg(ip, x);
+    /* ip += x; // add offset to `IP` */
   }
   popd(tos);
   jump(next);
@@ -57,6 +65,7 @@ fw_call branch(FORTH_REGISTERS) {
   /* X_t x; */
   x = (fcell_t) *ip; // dereference 'offset' stored at `*IP`
   ip += x; // add offset to `IP`
+  incr_reg(ip);
   jump(next);
 }
 

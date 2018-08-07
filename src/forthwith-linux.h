@@ -5,6 +5,7 @@
 #define FORTHWITH_NO_CHECKS
 
 #define $word_sz $64
+#define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $64
 
 #define reg_w   %rdi
@@ -53,16 +54,24 @@
 #define _fw_asm_from_addr(c, x, y) _fw_asm(#c, "(", x, ")", "", y, "")
 #define _fw_asm_const(c, x, y) _fw_asm(#c, "", x, "", "", y, "")
 
+#define load_const(x, y) _fw_asm_const("movq", y, reg_##x)
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
 #define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
 
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
 
+#define xor_reg(x, y) _fw_asm_const("xorq", reg_##y, reg_##x)
+/* #define xorl_const(x, y) _fw_asm_const("xorq", y, reg_##x) */
+
 #define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
+#define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 
 extern struct forthwith_context *ctx;
+
+#define incr_reg(reg) add_const(ip, $word_sz)
+#define decr_reg(reg) sub_const(ip, $word_sz)
 
 #define _pushd(reg) load_addr(reg, psp); add_const(psp, $word_sz)
 #define _popd(reg) load_addr(reg, psp); sub_const(psp, $word_sz)
