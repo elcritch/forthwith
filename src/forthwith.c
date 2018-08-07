@@ -46,6 +46,13 @@ int forth_init() {
 
 #define ADDR(x) ((IP_t)&x)
 
+fcell_t *forth_pop(fw_ctx_t* ctx) {
+  if (ctx->rsp_head > ctx->rsp_base)
+    return ctx->psp_head--;
+  else
+    return NULL;
+}
+
 int forth_bootstrap(fw_ctx_t* ctx) {
   /* fcell_t* user_head = ctx->user_head; */
 
@@ -58,21 +65,28 @@ int forth_bootstrap(fw_ctx_t* ctx) {
   return -1;
 }
 
-fw_call forth_exec(FORTH_REGISTERS) {
-  forth_exec(FORTH_CALL_PARAMS);
+fw_call forth_exec(FORTH_REGISTERS, fw_ctx_t* ctx, IP_t *instr) {
+  w = (W_t) -1;
+  ip = (IP_t) *instr;
+  psp = ctx->psp_head;
+  rsp = ctx->rsp_head;
+  x = -1;
+  tos = -2;
+
   jump(next);
 }
 
-int forth_eval(fw_ctx_t* ctx, IP_t *instr) {
+int forth_eval(FORTH_REGISTERS, fw_ctx_t* ctx, IP_t *instr) {
 
-  W_t   w = 0;
-  IP_t  ip = *instr;
-  PSP_t psp = ctx->psp_head;
-  RSP_t rsp = ctx->rsp_head;
-  X_t   x = 0;
-  TOS_t tos = 0;
+  /* W_t   w = 0; */
+  /* IP_t  ip = *instr; */
+  /* PSP_t psp = ctx->psp_head; */
+  /* RSP_t rsp = ctx->rsp_head; */
+  /* X_t   x = 0; */
+  /* TOS_t tos = 0; */
 
-  forth_exec(FORTH_CALL_PARAMS);
+  /* jump(next); */
+  forth_exec(FORTH_CALL_PARAMS, ctx, instr);
 
   return 0;
 }

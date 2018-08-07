@@ -12,7 +12,6 @@
 
 int main(int argc, char** argv) {
 
-
   forth_init();
   forth_bootstrap(ctx);
 
@@ -28,6 +27,7 @@ int main(int argc, char** argv) {
   IP_t* var4 = forth_alloc_var(ctx);
   IP_t* var5 = forth_alloc_var(ctx);
   IP_t* var6 = forth_alloc_var(ctx);
+  IP_t* var7 = forth_alloc_var(ctx);
 
   printf("var1: %p\n", var1);
   printf("var2: %p\n", var2);
@@ -35,15 +35,17 @@ int main(int argc, char** argv) {
   printf("var4: %p\n", var4);
   printf("var5: %p\n", var5);
   printf("var6: %p\n", var6);
+  printf("var7: %p\n", var7);
 
-  *var1 = &docolon;
-  *var2 = &doconst;
-  *var3 = 3;
-  *var4 = &doconst;
-  *var5 = 5;
-  *var4 = &add;
+  *var1 = (IP_t) &docolon;
+  *var2 = (IP_t) &doconst;
+  *var3 = (IP_t) 3;
+  *var4 = (IP_t) &doconst;
+  *var5 = (IP_t) 5;
+  *var6 = (IP_t) &add;
+  *var7 = (IP_t) &quits;
 
-  forth_eval(ctx, var1);
+  forth_eval(0, 0, 0, 0, 0, 0, ctx, var1);
 
   return 0;
 }

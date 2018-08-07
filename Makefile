@@ -1,4 +1,4 @@
-CFLAGS = -Wall -O0 -g -fomit-frame-pointer -fno-asynchronous-unwind-tables
+CFLAGS = -Wall -O1  -fomit-frame-pointer -fno-asynchronous-unwind-tables
 
 # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -m64
 

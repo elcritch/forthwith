@@ -45,6 +45,13 @@ fw_call exits(FORTH_REGISTERS) {
   jump(next);
 }
 
+/* Quit inner interpreter */
+void quits(FORTH_REGISTERS) {
+  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
+  popr(ip);
+  return;
+}
+
 /* Core Execution Token Implementations */
 
 /* primitive: `docolon` ( --r cond ) : execute indirect thread */
