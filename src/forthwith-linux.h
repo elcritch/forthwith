@@ -14,7 +14,7 @@
 #define reg_ip  %rcx
 #define reg_psp %r8
 #define reg_rsp %r9
-#define reg_ctx %r10
+#define reg_u %r10
 #define reg_a %r11
 #define reg_b %r12
 #define reg_c %r13
@@ -26,17 +26,14 @@
   __asm__ ("" :: "r" (ip));         \
   __asm__ ("" :: "r" (psp));        \
   __asm__ ("" :: "r" (rsp));        \
-  __asm__ ("" :: "r" (ctx));          \
   __asm__ ("" :: "r" (tos))
 
 /* #define __jump(reg) asm("jmp "##reg) */
-#define __jump(r) \
-  __asm__("jmp " "_" # r);                      \
-  _asm_jump()
+#define __jump(r) __asm__("jmp " "_" # r)
 
 /* #define _jump(r) __jump( _ ## r) */
 #define _jump(r) __jump( r )
-#define jump(reg) _jump( reg )
+#define jump(reg) _jump( reg ); _asm_jump()
 
 /* #define jump(reg) goto *((fcell_t*)reg); */
 
@@ -82,4 +79,6 @@ extern struct forthwith_context *ctx;
 #define _pushu(reg) load_addr(reg, u); add_const(u, $word_sz)
 #define _popu(reg) load_addr(reg, u); sub_const(u, $word_sz)
 
+
 #endif // __HEADER_IMPL_X86__
+

@@ -75,33 +75,30 @@ int forth_bootstrap(fw_ctx_t* ctx) {
   return -1;
 }
 
-fw_call forth_exec(FORTH_REGISTERS) {
+fw_call forth_exec() {
 
-  /* w = (W_t) -1; */
-  /* ip = (IP_t) instr; */
-  psp = ((fw_ctx_t*)w)->psp_head;
-  rsp = ((fw_ctx_t*)w)->rsp_head;
-  /* x = -1; */
-  tos = -2;
-
-  jump(next);
+  popd(w);
+  popd(tos);
+  popd(x);
+  popd(ip);
+  popd(psp);
+  popd(rsp);
+  popd(u);
+  
+  __jump(next);
 }
 
 int forth_eval(fw_ctx_t* ctx, IP_t *instr) {
 
-  /* W_t   y = (W_t)0; */
-  W_t   w = 0;
-  IP_t  ip = *instr;
-  PSP_t psp = ctx->psp_head;
-  RSP_t rsp = ctx->rsp_head;
-  X_t   x = (X_t)0;
-  TOS_t tos = 0;
+  forth_push(ctx, /* w */ 0);
+  forth_push(ctx, /* tos */ 0);
+  forth_push(ctx, /* x */ 0);
+  forth_push(ctx, /* ip */ instr);
+  forth_push(ctx, /* psp */ ctx->psp_head);
+  forth_push(ctx, /* rsp */ ctx->rsp_head);
+  forth_push(ctx, /* u */ ctx);
 
-  w = (W_t)ctx;
-  ip = (IP_t)instr;
-
-  forth_exec(FORTH_CALL_PARAMS);
-  _asm_jump();
+  forth_exec();
   return 0;
 }
 
