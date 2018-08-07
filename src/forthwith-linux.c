@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
   for (IP_t *i = var1; i <= var7; i += sizeof(IP_t*))
     printf("\tinstr: %p => %p\n", i, *i);
 
-  forth_eval(ctx, var1);
+  forth_eval(var1);
 
   return 0;
 }

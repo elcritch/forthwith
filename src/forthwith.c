@@ -46,14 +46,14 @@ int forth_init() {
 
 #define ADDR(x) ((IP_t)&x)
 
-fcell_t *forth_pop(fw_ctx_t* ctx) {
+__attribute__ ((noinline)) fcell_t *forth_pop(fw_ctx_t* ctx) {
   if (ctx->rsp_head > ctx->rsp_base)
     return ctx->psp_head--;
   else
     return NULL;
 }
 
-int forth_push(fw_ctx_t* ctx, fcell_t val) {
+__attribute__ ((noinline)) int forth_push(fw_ctx_t* ctx, fcell_t val) {
   if (ctx->rsp_head < ctx->rsp_base + ctx->rsp_size) {
     ctx->psp_head++;
     *ctx->psp_head = val;
@@ -75,30 +75,39 @@ int forth_bootstrap(fw_ctx_t* ctx) {
   return -1;
 }
 
-fw_call forth_exec() {
+__attribute__ ((noinline))
+fw_call forth_exec(FORTH_REGISTERS) {
 
-  popd(w);
-  popd(tos);
-  popd(x);
-  popd(ip);
-  popd(psp);
-  popd(rsp);
+  // ...
+  copy_reg(psp, tos);
+
   popd(u);
-  
-  __jump(next);
+  popd(rsp);
+  popd(ip);
+  popd(x);
+  popd(tos);
+  popd(w);
+
+  /* __jump(next); */
+  jump(next);
 }
 
-int forth_eval(fw_ctx_t* ctx, IP_t *instr) {
+__attribute__ ((noinline)) int forth_eval(IP_t *instr) {
 
   forth_push(ctx, /* w */ 0);
   forth_push(ctx, /* tos */ 0);
   forth_push(ctx, /* x */ 0);
   forth_push(ctx, /* ip */ instr);
-  forth_push(ctx, /* psp */ ctx->psp_head);
   forth_push(ctx, /* rsp */ ctx->rsp_head);
   forth_push(ctx, /* u */ ctx);
 
-  forth_exec();
+  fcell_t p = ctx->psp_head;
+
+  printf("context: psp_head: %p %p %p\n", p, ctx->psp_head, ctx->psp_base);
+  printf("context: rsp_head: %p %p\n", ctx->rsp_head, ctx->rsp_base);
+  printf("context: instr: %p \n", instr);
+  forth_exec(0, p, 0, 0, 0, 0);
+
   return 0;
 }
 

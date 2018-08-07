@@ -4,9 +4,11 @@
 
 #define FORTHWITH_NO_CHECKS
 
-#define $word_sz $64
+#define $word_sz $8
 #define $word_max $0xFFFFFFFFFFFFFFFF
-#define $word_ptr_sz $64
+#define $word_ptr_sz $8
+
+/* %rdi %rsi %rdx %rcx %r8 %r9 %r10 */
 
 #define reg_w   %rdi
 #define reg_tos %rsi
