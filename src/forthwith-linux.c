@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
 
   forth_eval(var1);
 
+  printf("Done...\n\n");
   fcell_t *x;
   while ((x = forth_pop(ctx)) != NULL) {
     printf("remaining stack: %d, %p\n", *x, x);

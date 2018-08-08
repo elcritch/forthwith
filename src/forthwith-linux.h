@@ -77,8 +77,8 @@
 
 extern struct forthwith_context *ctx;
 
-#define incr_reg(reg) add_const(ip, $word_sz)
-#define decr_reg(reg) sub_const(ip, $word_sz)
+#define incr_reg(reg) add_const(reg, $word_sz)
+#define decr_reg(reg) sub_const(reg, $word_sz)
 
 #define _pushd(reg) store_addr(psp, reg); add_const(psp, $word_sz)
 #define _popd(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
