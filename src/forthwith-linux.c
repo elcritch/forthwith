@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   *var6 = (IP_t) &add;
   *var7 = (IP_t) &quits;
 
-  printf("");
+  printf(" ");
   for (IP_t *i = var1; i <= var7; i += sizeof(IP_t*))
     printf("\tinstr: %p => %p\n", i, *i);
 

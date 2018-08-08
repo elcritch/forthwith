@@ -97,13 +97,13 @@ __attribute__ ((noinline)) int forth_eval(IP_t *instr) {
   forth_push(ctx, /* w */ 0);
   forth_push(ctx, /* tos */ 0);
   forth_push(ctx, /* x */ 0);
-  forth_push(ctx, /* ip */ instr);
-  forth_push(ctx, /* rsp */ ctx->rsp_head);
-  forth_push(ctx, /* u */ ctx);
+  forth_push(ctx, /* ip */ (fcell_t)instr);
+  forth_push(ctx, /* rsp */ (fcell_t)ctx->rsp_head);
+  forth_push(ctx, /* u */ (fcell_t)ctx);
 
-  fcell_t p = ctx->psp_head;
+  fcell_t p = (fcell_t)ctx->psp_head;
 
-  printf("context: psp_head: %p %p %p\n", p, ctx->psp_head, ctx->psp_base);
+  printf("context: psp_head: %lx %p %p\n", p, ctx->psp_head, ctx->psp_base);
   printf("context: rsp_head: %p %p\n", ctx->rsp_head, ctx->rsp_base);
   printf("context: instr: %p \n", instr);
   forth_exec(0, p, 0, 0, 0, 0);

@@ -31,7 +31,13 @@
   __asm__ ("" :: "r" (tos))
 
 /* #define __jump(reg) asm("jmp "##reg) */
-#define __jump(r) __asm__("jmp " "_" # r)
+#ifdef __MACH__
+#define __jump(r) __asm__("jmp " "_" #r)
+#elseif __linux__
+#define __jump(r) __asm__("jmp " #r)
+#else
+#define __jump(r) __asm__("jmp " #r)
+#endif
 
 /* #define _jump(r) __jump( _ ## r) */
 #define _jump(r) __jump( r )
@@ -49,9 +55,9 @@
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
 
-#define _fw_asm_to_addr(c, x, y) _fw_asm(#c, "", x, "", "(", y, ")")
-#define _fw_asm_from_addr(c, x, y) _fw_asm(#c, "(", x, ")", "", y, "")
-#define _fw_asm_const(c, x, y) _fw_asm(#c, "", x, "", "", y, "")
+#define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
+#define _fw_asm_from_addr(c, x, y) _fw_asm(c, "(", x, ")", "", y, "")
+#define _fw_asm_const(c, x, y) _fw_asm(c, "", x, "", "", y, "")
 
 #define load_const(x, y) _fw_asm_const("movq", y, reg_##x)
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
