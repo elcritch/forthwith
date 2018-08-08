@@ -31,11 +31,13 @@ fw_call next(FORTH_REGISTERS) {
   /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
   load_addr(w, ip); /* w = *ip; */
+  /* IP++ -> IP advance IP, just like a program counter */
+  incr_reg(ip); /* ip = ip + sizeof(IP_t); *\/ */
+  /* decr_reg(ip); /\* ip = ip + sizeof(IP_t); *\\/ *\/ */
+
   load_addr(x, w); /* x = *w; */
 
-  /* IP++ -> IP advance IP, just like a program counter */
-  add_const(ip, $word_sz); /* ip = ip + sizeof(IP_t); */
-  sub_const(ip, $word_ptr_sz); /* ip = ip + sizeof(IP_t); */
+  /* sub_const(ip, $word_ptr_sz); /\* ip = ip + sizeof(IP_t); *\/ */
 
   /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
       e.g. fetch memory pointed by W into "X" register
@@ -45,19 +47,6 @@ fw_call next(FORTH_REGISTERS) {
   jump_reg(x);
 }
 
-/* Exit current thread */
-fw_call exits(FORTH_REGISTERS) {
-  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
-  popr(ip);
-  jump(next);
-}
-
-/* Quit inner interpreter */
-void quits(FORTH_REGISTERS) {
-  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
-  popr(ip);
-  return;
-}
 
 /* Core Execution Token Implementations */
 
@@ -67,7 +56,11 @@ void docolon(FORTH_REGISTERS) {
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
       so `W++` is the address of the thread body (list of IDC addrs)!  */
-  ip = (fcell_xt*)(w+sizeof(IP_t));
+  /* ip = (fcell_xt*)(w+sizeof(IP_t)); */
+  incr_reg(w); // W++
+  /* decr_reg(w); // W++  */
+  copy_reg(ip, w);
+
   /* __asm__ __volatile__("" :: "m" (ip)); */
   jump(next);
   /* return FORTH_RET; */
@@ -87,6 +80,21 @@ fw_call dovar(FORTH_REGISTERS) {
   /* TODO: impl.... push address of a "variable" onto PSP */
   popd(x);
   jump(next);
+}
+
+/* Exit current thread */
+fw_call exits(FORTH_REGISTERS) {
+  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
+  popr(ip);
+  jump(next);
+}
+
+/* Quit inner interpreter */
+void quits(FORTH_REGISTERS) {
+  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
+  pushd(tos);
+  popr(ip);
+  return;
 }
 
 void __attribute__ ((noinline)) docall() {

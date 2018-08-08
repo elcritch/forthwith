@@ -9,6 +9,8 @@
 #define $word_ptr_sz $8
 
 /* %rdi %rsi %rdx %rcx %r8 %r9 %r10 */
+/* gdb> info register rdi rsi rdx rcx r8 r9 r10 */
+/* lldb> register read rdi rsi rdx rcx r8 r9 r10 */
 
 #define reg_w   %rdi
 #define reg_tos %rsi
@@ -78,14 +80,14 @@ extern struct forthwith_context *ctx;
 #define incr_reg(reg) add_const(ip, $word_sz)
 #define decr_reg(reg) sub_const(ip, $word_sz)
 
-#define _pushd(reg) load_addr(reg, psp); add_const(psp, $word_sz)
-#define _popd(reg) load_addr(reg, psp); sub_const(psp, $word_sz)
+#define _pushd(reg) store_addr(psp, reg); add_const(psp, $word_sz)
+#define _popd(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
 
-#define _pushr(reg) load_addr(reg, rsp); add_const(rsp, $word_sz)
-#define _popr(reg) load_addr(reg, rsp); sub_const(rsp, $word_sz)
+#define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
+#define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
 
-#define _pushu(reg) load_addr(reg, u); add_const(u, $word_sz)
-#define _popu(reg) load_addr(reg, u); sub_const(u, $word_sz)
+#define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
+#define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
 
 #endif // __HEADER_IMPL_X86__
