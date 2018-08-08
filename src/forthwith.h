@@ -56,13 +56,14 @@ struct forth_word {
 };
 
 struct forthwith_context { /**< FORTH environment */
-  uint8_t immediate;
 	fcell_t *psp_base; fcell_t *psp_head; fcell_t  psp_size;
 	IP_t *rsp_base; IP_t *rsp_head; fcell_t rsp_size;
 	IP_t *user_base; IP_t *user_head; fcell_t user_size;
 	fword_t *dict_base; fword_t *dict_head; fcell_t  dict_size;
+  uint8_t immediate;
 };
 typedef struct forthwith_context fw_ctx_t;
+
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);

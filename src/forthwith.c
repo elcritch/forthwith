@@ -118,7 +118,8 @@ __attribute__ ((noinline)) int forth_eval(IP_t *instr) {
   printf("context: ctx: %p \n", ctx);
   forth_exec(0, p, 0, 0, 0, 0);
 
-  ctx->psp_head -= 6;
+  /* ctx->psp_head = p; */
+  save_psp(psp);
 
   return 0;
 }

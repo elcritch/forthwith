@@ -2,6 +2,8 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
+#include <stddef.h>
+
 #define FORTHWITH_NO_CHECKS
 
 #define $word_sz $8
@@ -22,6 +24,8 @@
 #define reg_a %r11
 #define reg_b %r12
 #define reg_c %r13
+#define reg_rax %rax
+#define reg_rip %rip
 
 #define fw_label(l) __asm__("" #l ":")
 /* #define fw_label(l) _fw_label(l) */
@@ -60,10 +64,15 @@
 #define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
 #define _fw_asm_from_addr(c, x, y) _fw_asm(c, "(", x, ")", "", y, "")
 #define _fw_asm_const(c, x, y) _fw_asm(c, "", x, "", "", y, "")
+#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm(c, "", x, "", o "(", y, ")")
+#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm(c, o "(", x, ")", "", y, "")
 
 #define load_const(x, y) _fw_asm_const("movq", y, reg_##x)
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
 #define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
+
+#define load_addr_off(x, y, o) _fw_asm_from_addr_off("movq", reg_##y, reg_##x, o)
+#define store_addr_off(x, y, o) _fw_asm_to_addr_off("movq", reg_##y, reg_##x, o)
 
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
@@ -89,6 +98,10 @@ extern struct forthwith_context *ctx;
 #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
+#define save_psp(reg) \
+  load_addr_off(rax, rip, "ctx"); \ 
+  store_addr_off(rax, reg, "8" ) // sizeof one word
+  /* store_addr_off(reg, rax, offsetof(fw_ctx_t, psp_head) ) */
 
 #endif // __HEADER_IMPL_X86__
 
