@@ -64,6 +64,8 @@ struct forthwith_context { /**< FORTH environment */
 };
 typedef struct forthwith_context fw_ctx_t;
 
+/// Global Forthwith Context
+extern struct forthwith_context *ctx;
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
