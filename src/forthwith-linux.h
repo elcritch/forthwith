@@ -102,7 +102,6 @@
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
 #define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 
-extern struct forthwith_context *ctx;
 
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
