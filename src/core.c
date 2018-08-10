@@ -26,7 +26,7 @@ fw_call dup(FORTH_REGISTERS) {
 #define FORTH_SWAP  "swap", f_normal // ( x y -- x y )
 fw_call swap(FORTH_REGISTERS) {
   /* X_t x; */
-  x = tos;
+  copy_reg(x,tos);
   popd(tos);
   pushd(x);
   jump(next);
@@ -34,16 +34,13 @@ fw_call swap(FORTH_REGISTERS) {
 
 #define FORTH_ADD  "add", f_normal // ( n n -- n )
 fw_call add(FORTH_REGISTERS) {
-  /* X_t x; */
   popd(x);
-  /* tos += x; */
-  add_reg(tos, x);
+  add_reg(tos, x); /* tos += x; */
   jump(next);
 }
 
 #define FORTH_EQUALS  "=", f_normal // ( n n -- n )
 fw_call equals(FORTH_REGISTERS) {
-  /* X_t x; */
   popd(x);
   /* tos = tos == x; */
   /* tos = 0xFFFFFFFFFFFFFFFF; */
@@ -51,6 +48,15 @@ fw_call equals(FORTH_REGISTERS) {
   load_const(a, $word_max);
   xor_reg(tos, a);
   /* tos = ~0; */
+  jump(next);
+}
+
+/* primitive: `branch` {offset} ( – ) :  Increments the IP by offset */
+#define FORTH_BRANCH  "branch", f_normal // {offset} ( -- )
+fw_call branch(FORTH_REGISTERS) {
+  /* X_t x; */
+  load_addr(x, ip); /* x = (fcell_t) *ip; // dereference 'offset' stored at `*IP` */
+  add_reg(ip, x); /* ip += x; // add offset to `IP` */
   jump(next);
 }
 
@@ -65,16 +71,6 @@ fw_call zbranch(FORTH_REGISTERS) {
     /* ip += x; // add offset to `IP` */
   }
   popd(tos);
-  jump(next);
-}
-
-/* primitive: `branch` {offset} ( – ) :  Increments the IP by offset */
-#define FORTH_BRANCH  "branch", f_normal // {offset} ( -- )
-fw_call branch(FORTH_REGISTERS) {
-  /* X_t x; */
-  x = (fcell_t) *ip; // dereference 'offset' stored at `*IP`
-  ip += x; // add offset to `IP`
-  incr_reg(ip);
   jump(next);
 }
 
