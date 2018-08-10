@@ -15,6 +15,8 @@ fcell_xt xt_doconst = (fcell_xt)&doconst;
 fcell_xt xt_add = (fcell_xt)&add;
 fcell_xt xt_quits = (fcell_xt)&quits;
 
+extern fw_ctx_t *ctx;
+
 int main(int argc, char** argv) {
 
   forth_init();

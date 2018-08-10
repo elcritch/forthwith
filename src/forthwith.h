@@ -27,7 +27,7 @@ typedef fcell_t* fcell_xt;
 
 /* Extra Registers */
 typedef  fcell_t  X_t;  // Scratch Register
-typedef  struct forthwith_context*  Ctx_t;  // Scratch Register
+/* typedef  struct forthwith_context*  Ctx_t;  // Scratch Register */
 
 /* Forth "native C" function return type */
 #define fw_call void
@@ -52,7 +52,7 @@ struct forth_word {
   uint8_t meta;
   uint8_t len;
   fcell_xt *body;
-  char name;
+  char name
 };
 
 struct forthwith_context { /**< FORTH environment */
@@ -62,7 +62,9 @@ struct forthwith_context { /**< FORTH environment */
 	fword_t *dict_base; fword_t *dict_head; fcell_t  dict_size;
   uint8_t immediate;
 };
+#ifndef FW_CONTEXT_T
 typedef struct forthwith_context fw_ctx_t;
+#endif
 
 /// Global Forthwith Context
 extern struct forthwith_context *ctx;

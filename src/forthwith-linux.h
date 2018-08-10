@@ -54,7 +54,7 @@
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #ifdef __MACH__
 #define __jump(r) __asm__("jmp " "_" #r)
-#elseif __linux__
+#elif __linux__
 #define __jump(r) __asm__("jmp " #r)
 #else
 #define __jump(r) __asm__("jmp " #r)
@@ -118,7 +118,7 @@
 #define $fw_ctx_offset_psp_header "8"
 
 #define save_psp(reg) \
-  load_addr_off(rax, rip, "ctx"); \ 
+  load_addr_off(rax, rip, "_ctx"); \ 
   store_addr_off(rax, reg, $fw_ctx_offset_psp_header) // sizeof one word
 
 #endif // __HEADER_IMPL_X86__
