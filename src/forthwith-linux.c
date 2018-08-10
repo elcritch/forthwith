@@ -11,7 +11,7 @@
 #include <string.h>
 
 fcell_xt xt_docolon = (fcell_xt)&docolon;
-fcell_xt xt_doconst = (fcell_xt)&doconst;
+fcell_xt xt_lit = (fcell_xt)&lit;
 fcell_xt xt_add = (fcell_xt)&add;
 fcell_xt xt_quits = (fcell_xt)&quits;
 
@@ -45,20 +45,20 @@ int main(int argc, char** argv) {
   printf("var7: %p\n", var7);
 
   *var1 = (IP_t) &xt_docolon;
-  /* *var2 = (IP_t) &xt_doconst; */
-  /* *var3 = (IP_t) 3; */
-  /* *var4 = (IP_t) &xt_doconst; */
-  /* *var5 = (IP_t) 5; */
-  /* *var6 = (IP_t) &xt_add; */
-  /* *var7 = (IP_t) &xt_quits; */
-  *var2 = (IP_t) &xt_add;
-  *var3 = (IP_t) &xt_quits;
+  *var2 = (IP_t) &xt_lit;
+  *var3 = (IP_t) 3;
+  *var4 = (IP_t) &xt_lit;
+  *var5 = (IP_t) 5;
+  *var6 = (IP_t) &xt_add;
+  *var7 = (IP_t) &xt_quits;
+  /* *var2 = (IP_t) &xt_add; */
+  /* *var3 = (IP_t) &xt_quits; */
 
-  forth_push(ctx, 7);
-  forth_push(ctx, 5);
+  /* forth_push(ctx, 30); */
+  /* forth_push(ctx, 50); */
 
   printf(" ");
-  for (IP_t *i = var1; i <= var3; i += 1)
+  for (IP_t *i = var1; i <= var5; i += 1)
     printf("\tinstr: %p => %p\n", i, *i);
 
   forth_eval(var1);

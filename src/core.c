@@ -2,6 +2,15 @@
 #include "forthwith.h"
 #include <stdint.h>
 
+#define FORTH_LIT  "lit", f_normal // ( n -- )
+fw_call lit(FORTH_REGISTERS) {
+  load_addr(x, ip); /* x = (fcell_t) *ip; */
+  incr_reg(ip);
+  pushd(tos);
+  copy_reg(tos, x);
+  jump(next);
+}
+
 #define FORTH_DROP  "drop", f_normal // ( n -- )
 fw_call drop(FORTH_REGISTERS) {
   popd(tos);

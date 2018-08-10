@@ -66,13 +66,13 @@ fw_call char_comma(FORTH_REGISTERS)
   jump(next);
 }
 
-#define FORTH_LIT "lit", f_normal // ( -- )
-fw_call lit(FORTH_REGISTERS)
-{
-  pushd(tos); // ??
-  tos = (fcell_t) *ip; // ??
-  jump(next);
-}
+/* #define FORTH_LIT "lit", f_normal // ( -- ) */
+/* fw_call lit(FORTH_REGISTERS) */
+/* { */
+/*   pushd(tos); // ?? */
+/*   tos = (fcell_t) *ip; // ?? */
+/*   jump(next); */
+/* } */
 
 #define FORTH_LBRAC "[", f_immed // ( -- )
 fw_call lbrac(FORTH_REGISTERS)

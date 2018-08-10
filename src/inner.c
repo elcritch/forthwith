@@ -66,22 +66,6 @@ void docolon(FORTH_REGISTERS) {
   /* return FORTH_RET; */
 }
 
-/* primitive: `doconst` {const} ( -- const ) : execute const */
-fw_call doconst(FORTH_REGISTERS) {
-  /* X_t x; */
-  /* `load IP` -> `RSP` -- onto the "return address stack" */
-  x = (fcell_t) *ip;
-  pushd(x);
-  jump(next);
-}
-
-/* primitive: `dovar` {addr} ( -- addr ) : execute varaddr */
-fw_call dovar(FORTH_REGISTERS) {
-  /* TODO: impl.... push address of a "variable" onto PSP */
-  popd(x);
-  jump(next);
-}
-
 /* Exit current thread */
 fw_call exits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
