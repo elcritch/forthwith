@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
   *var2 = (IP_t) &xt_add;
   *var3 = (IP_t) &xt_quits;
 
-  forth_push(ctx, 3);
+  forth_push(ctx, 7);
   forth_push(ctx, 5);
 
   printf(" ");

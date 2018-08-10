@@ -97,14 +97,12 @@ fw_call forth_exec(FORTH_REGISTERS) {
 
 __attribute__ ((noinline)) int forth_eval(IP_t *instr) {
 
-  forth_push(ctx, 9);
-  forth_push(ctx, 11);
-
   fcell_t *tosptr = forth_pop(ctx);
-  printf("context: tos: %p %lld \n", tosptr, tosptr == NULL ? 0 : *tosptr);
+  fcell_t *tos = tosptr == NULL ? 0 : *tosptr;
+  printf("context: tos: %p %lld \n", tosptr, tos);
 
   forth_push(ctx, /* w */ (fcell_t)instr);
-  forth_push(ctx, /* tos */ 10);
+  forth_push(ctx, /* tos */ tos);
   forth_push(ctx, /* x */ 0);
   forth_push(ctx, /* ip */ (fcell_t)instr+8);
   forth_push(ctx, /* rsp */ (fcell_t)ctx->rsp_head);
