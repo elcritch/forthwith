@@ -51,7 +51,7 @@ fw_call next(FORTH_REGISTERS) {
 /* Core Execution Token Implementations */
 
 /* primitive: `docolon` ( --r cond ) : execute indirect thread */
-void docolon(FORTH_REGISTERS) {
+fw_call docolon(FORTH_REGISTERS) {
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
@@ -74,14 +74,15 @@ fw_call exits(FORTH_REGISTERS) {
 }
 
 /* Quit inner interpreter */
-void quits(FORTH_REGISTERS) {
+fw_call quits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
   pushd(tos);
   popr(ip);
   return;
 }
 
-void __attribute__ ((noinline)) docall() {
+/* void __attribute__ ((noinline)) docall() { */
+fw_call docall() {
   fcell_t addr = *forth_pop(ctx);
   fcell_t params = *forth_pop(ctx);
   fcell_t ret = *forth_pop(ctx);

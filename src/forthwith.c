@@ -8,6 +8,12 @@ struct forthwith_context context;
 
 fw_ctx_t *ctx;
 
+// TODO: add to dict 
+fcell_xt xt_docolon = (fcell_xt)&docolon;
+fcell_xt xt_lit = (fcell_xt)&lit;
+fcell_xt xt_add = (fcell_xt)&add;
+fcell_xt xt_quits = (fcell_xt)&quits;
+
 #define global_state ctx->var_head
 
 #include <stdio.h>
@@ -19,6 +25,7 @@ IP_t *forth_alloc_var(fw_ctx_t* ctx) {
   return ctx->user_head;
 }
 
+__fw_noinline__ 
 int forth_init() {
   uint8_t cell_sz = sizeof(fcell_t);
 
@@ -45,9 +52,8 @@ int forth_init() {
   return -1;
 }
 
-#define ADDR(x) ((IP_t)&x)
-
-__attribute__ ((noinline)) int forth_push(fw_ctx_t* ctx, fcell_t val) {
+__fw_noinline__ 
+int forth_push(fw_ctx_t* ctx, fcell_t val) {
   if (ctx->psp_head <= ctx->psp_base + ctx->psp_size) {
     *ctx->psp_head = val;
     ctx->psp_head++;
@@ -57,7 +63,8 @@ __attribute__ ((noinline)) int forth_push(fw_ctx_t* ctx, fcell_t val) {
     return -1;
 }
 
-__attribute__ ((noinline)) fcell_t *forth_pop(fw_ctx_t* ctx) {
+__fw_noinline__ 
+fcell_t *forth_pop(fw_ctx_t* ctx) {
   if (ctx->psp_head > ctx->psp_base) {
     ctx->psp_head--;
     return ctx->psp_head;
@@ -66,19 +73,13 @@ __attribute__ ((noinline)) fcell_t *forth_pop(fw_ctx_t* ctx) {
     return NULL;
 }
 
+__fw_noinline__ 
 int forth_bootstrap(fw_ctx_t* ctx) {
-  /* fcell_t* user_head = ctx->user_head; */
 
-  /* IP_t test[] = [ */
-  /*                   ADDR(lit), */
-  /*                   ADDR(doconst), */
-  /*                   ]; */
-
-  /* dict_create */
   return -1;
 }
 
-__attribute__ ((noinline))
+__fw_noinline__ 
 fw_call forth_exec(FORTH_REGISTERS) {
 
   // ...
@@ -95,7 +96,8 @@ fw_call forth_exec(FORTH_REGISTERS) {
   jump(next);
 }
 
-__attribute__ ((noinline)) int forth_eval(IP_t *instr) {
+__fw_noinline__ 
+int forth_eval(IP_t *instr) {
 
   fcell_t *tosptr = forth_pop(ctx);
   fcell_t *tos = tosptr == NULL ? 0 : *tosptr;
