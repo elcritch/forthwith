@@ -2,36 +2,31 @@
 #include "forthwith.h"
 #include <stdint.h>
 
-#define FORTH_DROP  "drop", f_normal // ( n -- )
-fw_call drop(FORTH_REGISTERS) {
+forth_primitive("drop", 3, f_normal, "( n -- )",  {
   popd(tos);
   jump(next);
-}
+});
 
-#define FORTH_DUP  "dup", f_normal // ( n -- n n )
-fw_call dup(FORTH_REGISTERS) {
+forth_primitive("dup", 3, f_normal, "( n -- n n )",  {
   pushd(tos);
   jump(next);
-}
+});
 
-#define FORTH_SWAP  "swap", f_normal // ( x y -- x y )
-fw_call swap(FORTH_REGISTERS) {
+forth_primitive("swap", 3, f_normal, "( x y -- x y )",  {
   /* X_t x; */
   copy_reg(x,tos);
   popd(tos);
   pushd(x);
   jump(next);
-}
+});
 
-#define FORTH_ADD  "add", f_normal // ( n n -- n )
-fw_call add(FORTH_REGISTERS) {
+forth_primitive("add", 3, f_normal, "( n n -- n )",  {
   popd(x);
   add_reg(tos, x); /* tos += x; */
   jump(next);
-}
+});
 
-#define FORTH_EQUALS  "=", f_normal // ( n n -- n )
-fw_call equals(FORTH_REGISTERS) {
+forth_primitive("=", 3, f_normal, "( n n -- n )",  {
   popd(x);
   /* tos = tos == x; */
   /* tos = 0xFFFFFFFFFFFFFFFF; */
@@ -40,20 +35,18 @@ fw_call equals(FORTH_REGISTERS) {
   xor_reg(tos, a);
   /* tos = ~0; */
   jump(next);
-}
+});
 
-/* primitive: `branch` {offset} ( – ) :  Increments the IP by offset */
-#define FORTH_BRANCH  "branch", f_normal // {offset} ( -- )
-fw_call branch(FORTH_REGISTERS) {
+/* Increments the IP by offset to affect branching */
+forth_primitive("branch", 6, f_normal, branch, "{offset} ( -- )", {
   /* X_t x; */
   load_addr(x, ip); /* x = (fcell_t) *ip; // dereference 'offset' stored at `*IP` */
   add_reg(ip, x); /* ip += x; // add offset to `IP` */
   jump(next);
-}
+});
 
-/* primitive: `0branch` {offset} ( cond – ) :  If cond is 0, increment */
-#define FORTH_ZBRANCH  "0branch", f_normal // {offst } ( cond -- )
-fw_call zbranch(FORTH_REGISTERS) {
+/* Increments the IP by offset to affect branching */
+forth_primitive("0branch", 7, f_normal, zbranch, "{offset} ( -- )", {
   /* X_t x; */
   if (tos == 0) {
     load_addr(x, ip);
@@ -63,5 +56,5 @@ fw_call zbranch(FORTH_REGISTERS) {
   }
   popd(tos);
   jump(next);
-}
+});
 

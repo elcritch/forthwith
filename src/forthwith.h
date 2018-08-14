@@ -57,12 +57,31 @@ struct forth_word {
 };
 
 struct forthwith_context { /**< FORTH environment */
-	fcell_t *psp_base; fcell_t *psp_head; fcell_t  psp_size;
-	IP_t *rsp_base; IP_t *rsp_head; fcell_t rsp_size;
-	IP_t *user_base; IP_t *user_head; fcell_t user_size;
-	fword_t *dict_base; fword_t *dict_head; fcell_t  dict_size;
+  // ForthWith State
+  fcell_t *psp;
+  fcell_t *rsp;
+  fcell_t *u;
+  fcell_t ip;
+  fcell_t tos;
+  fcell_t w;
+
+  /* fcell_t *psp_head; */
+	fcell_t *psp_base;
+  fcell_t  psp_size;
+
+  /* IP_t *rsp_head; */
+	IP_t *rsp_base;
+  fcell_t rsp_size;
+
+	IP_t *user_base;
+  fcell_t user_size;
+
+	fword_t *dict_base;
+  fword_t *dict_head;
+  fcell_t  dict_size;
   uint8_t immediate;
 };
+
 #ifndef FW_CONTEXT_T
 typedef struct forthwith_context fw_ctx_t;
 #endif

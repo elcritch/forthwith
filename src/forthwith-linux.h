@@ -9,6 +9,7 @@
 #define $word_sz $8
 #define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $8
+#define $context "_ctx"
 
 
 // ========================================================================== //
@@ -28,8 +29,14 @@
 #define reg_a %r11
 #define reg_b %r12
 #define reg_c %r13
+
+#define reg_rdi %rdi
+#define reg_rsi %rsi
+#define reg_rdx %rdx
+#define reg_rcx %rcx
 #define reg_rax %rax
 #define reg_rip %rip
+
 /* %rdi %rsi %rdx %rcx %r8 %r9 %r10 */
 /* gdb> info register rdi rsi rdx rcx r8 r9 r10 */
 /* lldb> register read rdi rsi rdx rcx r8 r9 r10 */
@@ -89,6 +96,9 @@
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
 #define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
 
+#define load_addr_byte(x, y, ) _fw_asm_from_addr("movb", reg_##y, reg_##x)
+#define store_addr_byte(x, y) _fw_asm_to_addr("movb", reg_##y, reg_##x)
+
 #define load_addr_off(x, y, o) _fw_asm_from_addr_off("movq", reg_##y, reg_##x, o)
 #define store_addr_off(x, y, o) _fw_asm_to_addr_off("movq", reg_##y, reg_##x, o)
 
@@ -102,7 +112,6 @@
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
 #define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 
-
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 
@@ -115,11 +124,41 @@
 #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
-#define $fw_ctx_offset_psp_header "8"
+#define $fw_ctx_offset_psp "0"
 
 #define save_psp(reg) \
-  load_addr_off(rax, rip, "_ctx"); \ 
-  store_addr_off(rax, reg, $fw_ctx_offset_psp_header) // sizeof one word
+  load_addr_off(rax, rip, $context); \ 
+  store_addr_off(rax, reg, $fw_ctx_offset_psp) // sizeof one word
+
+#define load_psp(reg)                           \
+  load_addr_off(rax, rip, $context); \ 
+  load_addr_off(reg, rax, $fw_ctx_offset_psp) // sizeof one word
+
+#define $fw_ctx_offset_psp "0"
+#define $fw_ctx_offset_rsp "8"
+#define $fw_ctx_offset_u   "16"
+#define $fw_ctx_offset_ip  "24"
+#define $fw_ctx_offset_tos "32"
+#define $fw_ctx_offset_w   "40"
+
+// improvement: load "reg file" from mem, not sure if x86_64 does that... 
+#define save_state()                             \
+  load_addr_off(rax, rip, $context);             \ 
+  store_addr_off(rax, reg_psp, $fw_ctx_offset_psp);  \
+  store_addr_off(rax, reg_rsp, $fw_ctx_offset_rsp);  \
+  store_addr_off(rax, reg_u, $fw_ctx_offset_u);    \
+  store_addr_off(rax, reg_ip, $fw_ctx_offset_ip);   \
+  store_addr_off(rax, reg_tos, $fw_ctx_offset_tos);  \
+  store_addr_off(rax, reg_w, $fw_ctx_offset_w)
+
+#define load_state()                            \
+  load_addr_off(rax, rip, $context);            \ 
+  load_addr_off(reg_psp, rax, $fw_ctx_offset_psp);  \
+  load_addr_off(reg_rsp, rax, $fw_ctx_offset_rsp);    \
+  load_addr_off(reg_u, rax, $fw_ctx_offset_u);      \
+  load_addr_off(reg_ip, rax, $fw_ctx_offset_ip);     \
+  load_addr_off(reg_tos, rax, $fw_ctx_offset_tos);    \
+  load_addr_off(reg_w, rax, $fw_ctx_offset_w) 
 
 #endif // __HEADER_IMPL_X86__
 
