@@ -18,6 +18,7 @@
 #include <string.h>
 
 extern fw_ctx_t *ctx;
+extern fw_ctx_stack_t *ctx_psp;
 
 int main(int argc, char** argv) {
 

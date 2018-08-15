@@ -2,7 +2,8 @@
 
 #include "forthwith.h"
 
-fw_ctx_t *ctx;
+fw_ctx_t *ctx = NULL;
+fw_ctx_stack_t *ctx_psp = NULL;
 
 // TODO: add to dict 
 fcell_xt xt_docolon = (fcell_xt)&docolon;
@@ -26,6 +27,8 @@ int forth_init() {
   ctx->user = calloc(1, sizeof(fw_ctx_stack_t));
   ctx->dict = calloc(1, sizeof(fw_ctx_dict_stack_t));
   ctx->strings = calloc(1, sizeof(fw_ctx_str_stack_t));
+
+  ctx_psp = ctx->psp;
 
   // Configure default stack sizes
   ctx->psp->size =  128 * sizeof(fw_ctx_stack_t);
