@@ -107,6 +107,7 @@ fw_call forth_exec(FORTH_REGISTERS) {
 __fw_noinline__ 
 int forth_eval(fcell_xt *instr) {
 
+  forth_pop();
   ctx->vars->error = FW_OK;
   printf("\nforth_eval: %d\n\n", forth_count());
 
