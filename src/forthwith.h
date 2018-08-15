@@ -50,8 +50,8 @@ typedef struct forth_word fword_t;
 
 struct forth_word {
   fword_t *prev;
-  uint8_t meta;
   fcell_xt *body;
+  uint8_t meta;
   uint8_t len;
   char name;
 };

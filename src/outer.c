@@ -77,20 +77,12 @@ forth_primitive("find", 4, f_normal, find, "( c n -- )", {
   });
 
 forth_primitive(">CFA", 4, f_normal, cfa, "( p -- )", {
-    save_state();
-    {
-      // ...
-    }
-    load_state();
+    // ...
     jump(next);
 });
 
 forth_primitive(">DFA", 4, f_normal, dfa, "( p -- )", {
-    save_state();
-    {
-      // ...
-    }
-    load_state();
+    // ...
     jump(next);
 });
 
@@ -124,22 +116,27 @@ forth_primitive(";", 6, f_immed, semicolon, "( p -- )", {
     jump(next);
   });
 
-forth_primitive("immed", 5, f_immed, immed, "( p -- )", {
+forth_colon("immed", 5, f_immed, immed, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive("hidden", 5, f_normal, hidden, "( p -- )", {
+forth_colon("hidden", 5, f_normal, hidden, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive("hide", 5, f_normal, hide, "( p -- )", {
+forth_colon("hide", 5, f_normal, hide, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive("'", 5, f_normal, tick, "( p -- )", {
+forth_colon("'", 5, f_normal, tick, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_colon("interpret", 5, f_normal, tick, "( p -- )", {
     // ...
     jump(next);
   });
