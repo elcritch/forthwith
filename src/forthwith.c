@@ -42,6 +42,7 @@ int forth_init() {
   ctx->rsp->base = ctx->rsp->head = calloc(1, ctx->rsp->size);
   ctx->user->base = ctx->user->head = calloc(1, ctx->user->size);
   ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
+  ctx->strings->base = ctx->strings->head = calloc(1, ctx->strings->size);
 
   printf("psp base: %p\n", ctx->psp->base);
   printf("rsp base: %p\n", ctx->rsp->base);
@@ -84,7 +85,8 @@ __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
 
   // ...
-  copy_reg(psp, tos);
+  load_psp(psp);
+  /* copy_reg(psp, tos); */
 
   popd(u);
   popd(rsp);
@@ -101,6 +103,7 @@ __fw_noinline__
 int forth_eval(fcell_xt *instr) {
 
   fcell_t tos = forth_pop();
+  ctx->vars->error = FW_OK;
 
   forth_push(/* w */ (fcell_t)instr);
   forth_push(/* tos */ tos);

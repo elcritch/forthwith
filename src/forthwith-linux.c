@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
   *var4 = (fcell_xt) &xt_lit;
   *var5 = (fcell_xt) 5;
   *var6 = (fcell_xt) &xt_add;
-  *var7 = (fcell_xt) &xt_exits;
+  *var7 = (fcell_xt) &xt_quits;
   /* *var2 = (IP_t) &xt_add; */
   /* *var3 = (IP_t) &xt_quits; */
 
@@ -67,11 +67,12 @@ int main(int argc, char** argv) {
 
   forth_eval(var1);
 
-  printf("Done...\n\n");
+  printf("Done...\nerror: %ld\n", ctx->vars->error);
   fcell_t x;
   while ((x = forth_pop(ctx)) && (ctx->vars->error == 0)) {
     printf("remaining stack: %ld\n", x);
   }
+  printf("... stack done\n");
 
   return 0;
 }
