@@ -117,7 +117,7 @@
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
 #define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
 
-#define load_addr_byte(x, y, ) _fw_asm_from_addr("movb", reg_##y, reg_##x)
+#define load_addr_byte(x, y) _fw_asm_from_addr("movb", reg_##y, reg_##x)
 #define store_addr_byte(x, y) _fw_asm_to_addr("movb", reg_##y, reg_##x)
 
 #define load_addr_off(x, y, o) _fw_asm_from_addr_off("movq", reg_##y, reg_##x, o)
@@ -145,17 +145,17 @@
 #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
-#define save_psp(reg)                \
-  load_const(rax, rip, $ctx_psp); \ 
-  store_addr_off(rax, reg, $stack_offset_head) // sizeof one word
+#define save_psp(reg)                          \
+  load_const(rax, rip, $ctx_psp);              \
+  store_addr_off(rax, reg, $stack_offset_head) 
 
 #define load_psp(reg)                \
-  load_const(rax, rip, $ctx_psp); \ 
+  load_const(rax, rip, $ctx_psp); \
   load_addr_off(reg, rax, $stack_offset_head) // sizeof one word
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that... 
-#define save_state()                                   \
-  load_const(rax, rip, $ctx_regs);                  \ 
+#define save_state()                                \
+  load_const(rax, rip, $ctx_regs);                  \
   store_addr_off(rax, reg_ip, $ctx_offset_psp);     \
   store_addr_off(rax, reg_ip, $ctx_offset_rsp);     \
   store_addr_off(rax, reg_ip, $ctx_offset_ip);      \
@@ -163,12 +163,12 @@
   store_addr_off(rax, reg_w, $ctx_offset_w)
 
 
-#define load_state()                                    \
-  load_const(rax, rip, $ctx_regs);                  \ 
-  load_addr_off(reg_ip, rax, $ctx_offset_psp);       \
-  load_addr_off(reg_ip, rax, $ctx_offset_rsp);       \
-  load_addr_off(reg_ip, rax, $ctx_offset_ip);        \
-  load_addr_off(reg_tos, rax, $ctx_offset_tos);      \
+#define load_state()                                \
+  load_const(rax, rip, $ctx_regs);                  \
+  load_addr_off(reg_ip, rax, $ctx_offset_psp);      \
+  load_addr_off(reg_ip, rax, $ctx_offset_rsp);      \
+  load_addr_off(reg_ip, rax, $ctx_offset_ip);       \
+  load_addr_off(reg_tos, rax, $ctx_offset_tos);     \
   load_addr_off(reg_w, rax, $ctx_offset_w) 
 
 #endif // __HEADER_IMPL_X86__

@@ -3,12 +3,12 @@
 #include "forthwith.h"
 
 struct forthwith_context ctx;
-struct forthwith_regs ctx.re->s;
-struct forthwith_vars ctx.va->s;
-struct forthwith_stack ctx.p->p;
-struct forthwith_stack ctx.r->p;
-struct forthwith_stack ctx.us->r;
-struct forthwith_stack ctx.di->t;
+struct forthwith_regs ctx_regs;
+struct forthwith_vars ctx_vars;
+struct forthwith_stack ctx_psp;
+struct forthwith_stack ctx_rsp;
+struct forthwith_stack ctx_user;
+struct forthwith_stack ctx_dict;
 
 // TODO: add to dict 
 fcell_xt xt_docolon = (fcell_xt)&docolon;

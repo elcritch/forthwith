@@ -46,47 +46,55 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 extern fw_call fcallend(FORTH_REGISTERS);
 
-typedef struct forth_word fword_t;
 
-struct forth_word {
+typedef struct forth_word {
   fword_t *prev;
   fcell_xt *body;
   uint8_t meta;
   uint8_t len;
   char name;
-};
+} fword_t;
 
-struct forthwith_regs { /**< FORTH environment */
+typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
   fcell_t *psp;
   fcell_t *rsp;
   fcell_t ip;
   fcell_t tos;
   fcell_t w;
-};
+} fw_ctx_regs_t;
 
-struct forthwith_vars { /**< FORTH environment */
+typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t base;
   fcell_t state;
 
   fcell_t tib_idx;
   fcell_t tib_len;
   char   *tib_str; 
-};
+} fw_ctx_vars_t;
 
-struct forthwith_stack { /**< FORTH environment */
+typedef struct forthwith_stack { /**< FORTH environment */
   fcell_t *head;
   fcell_t *base;
   fcell_t size;
-};
+} fw_ctx_stack_t;
+
+typedef struct forthwith_context { /**< FORTH environment */
+  fw_ctx_regs_t *ctx_regs;
+  fw_ctx_vars_t *ctx_vars;
+  fw_ctx_stack_t *ctx_psp;
+  fw_ctx_stack_t *ctx_rsp;
+  fw_ctx_stack_t *ctx_user;
+  fw_ctx_stack_t *ctx_dict;
+} fw_ctx_stack_t;
 
 /// Global Forthwith Context
-extern struct forthwith_context *ctx_regs;
-extern struct forthwith_vars *ctx_vars;
-extern struct forthwith_stack *ctx_psp;
-extern struct forthwith_stack *ctx_rsp;
-extern struct forthwith_stack *ctx_user;
-extern struct forthwith_stack *ctx_dict;
+extern fw_ctx_regs_t *ctx_regs;
+extern fw_ctx_vars_t *ctx_vars;
+extern fw_ctx_stack_t *ctx_psp;
+extern fw_ctx_stack_t *ctx_rsp;
+extern fw_ctx_stack_t *ctx_user;
+extern fw_ctx_stack_t *ctx_dict;
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
