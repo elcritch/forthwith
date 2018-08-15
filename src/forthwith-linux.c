@@ -2,8 +2,13 @@
 #include "forthwith-linux.h"
 #include "forthwith.h"
 
-#include "inner.c"
-#include "core.c"
+// Define Primitives, including function bodies, etc
+#define FORTH_DEFINE_PRIMITIVES
+  #include "xmacros.h"
+  #include "inner.c"
+  #include "core.c"
+#undef FORTH_DEFINE_PRIMITIVES
+
 #include "dict.c"
 #include "forthwith.c"
 

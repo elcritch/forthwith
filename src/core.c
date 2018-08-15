@@ -1,18 +1,17 @@
 
-#include "forthwith.h"
-#include <stdint.h>
+// #include "forthwith.h"
 
-forth_primitive("drop", 4, f_normal, "( n -- )",  {
+forth_primitive("drop", 4, f_normal, drop, "( n -- )",  {
   popd(tos);
   jump(next);
 });
 
-forth_primitive("dup", 3, f_normal, "( n -- n n )",  {
+forth_primitive("dup", 3, f_normal, dup, "( n -- n n )",  {
   pushd(tos);
   jump(next);
 });
 
-forth_primitive("swap", 4, f_normal, "( x y -- x y )",  {
+forth_primitive("swap", 4, f_normal, swap, "( x y -- x y )",  {
   /* X_t x; */
   copy_reg(x,tos);
   popd(tos);

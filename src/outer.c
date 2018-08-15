@@ -1,6 +1,5 @@
 
-#include "forthwith.h"
-#include <stdint.h>
+// #include "forthwith.h"
 
 forth_primitive("lit", 3, f_normal, lit, "( -- n)", {
   load_addr(x, ip); /* x = (fcell_t) *ip; */
@@ -12,19 +11,19 @@ forth_primitive("lit", 3, f_normal, lit, "( -- n)", {
 
 
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
-forth_variable("STATE", 5, ctx_vars, $vars_offset_state, 0);
+forth_variable(STATE, 5, ctx_vars, $vars_offset_state, 0);
 
 /* 	HERE		Points to the next free byte of memory.  When compiling, compiled words go here. */
-forth_variable("HERE", 5, ctx_user, $stack_offset_head, 0);
+forth_variable(HERE, 5, ctx_user, $stack_offset_head, 0);
 
 /* LATEST		Points to the latest (most recently defined) word in the dictionary. */
-forth_variable("LASTEST", 6, ctx_dict, $stack_offset_head, 0);
+forth_variable(LASTEST, 6, ctx_dict, $stack_offset_head, 0);
 
 /* Stores the address of the top of the parameter stack. */
-forth_variable("S0", 2, ctx_psp, $stack_offset_base, 0);
+forth_variable(S0, 2, ctx_psp, $stack_offset_base, 0);
 
 /* number base */
-forth_variable("BASE", 4, ctx_vars, $vars_offset_base, 10);
+forth_variable(BASE, 4, ctx_vars, $vars_offset_base, 10);
 
 /* /\* next character in input buffer *\/ */
 /* forth_variable(">in", 3, to_in, 0); */
@@ -142,21 +141,17 @@ forth_colon("interpret", 5, f_normal, tick, "( p -- )", {
   });
 
 /* create new var in user stack */
-#define FORTH_COMMA ",", f_normal // ( n -- )
-fw_call comma(FORTH_REGISTERS)
-{
-  *user_here = (IP_t)tos;
-  user_here += sizeof(fcell_t*);
-  popd(tos);
+forth_colon(",", 1, f_normal, comma, "( n -- )", {
+  /* *user_here = (IP_t)tos; */
+  /* user_here += sizeof(fcell_t*); */
+  /* popd(tos); */
   jump(next);
-}
+});
 
-/* create new var in dict */
-#define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
-fw_call char_comma(FORTH_REGISTERS)
-{
-  *user_here = (IP_t)tos;
-  user_here += sizeof(fcell_t*);
-  popd(tos);
+/* create new var in dict (?) */
+forth_colon("c,", 2, f_normal, char_comma, "( n -- )", {
+  /* *user_here = (IP_t)tos; */
+  /* user_here += sizeof(fcell_t*); */
+  /* popd(tos); */
   jump(next);
-}
+});
