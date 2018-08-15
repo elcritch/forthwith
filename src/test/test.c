@@ -17,18 +17,6 @@ void test_setup() {
 void test_basic(void) {
   test_setup();
 
-  fword_t *a = dict_create(F_NORMAL, 5, "test2");
-  fword_t *b = dict_create(F_NORMAL, 5, "test1");
-  fword_t *c = dict_create(F_NORMAL, 4, "tst3");
-
-  fword_t *item1 = dict_find(5, "test1");
-  fword_t *item2 = dict_find(4, "tst3");
-  fword_t *item3 = dict_find(5, "test2");
-
-  /* printf("find word: '%s' -> %p\n", "test1", dict_find(5, "test1")); */
-  TEST_CHECK_(item1 == b, "Expected %p, got %p", b, item1);
-  TEST_CHECK_(item2 == c, "Expected %p, got %p", c, item2);
-  TEST_CHECK_(item3 == a, "Expected %d, got %d", a, item3);
 
   fcell_xt* var1 = forth_alloc_var();
   fcell_xt* var2 = forth_alloc_var();
@@ -79,9 +67,6 @@ void test_basic(void) {
 
 void test_parsing(void)
 {
-  int a = 1;
-  int b = 2;
-
   test_setup();
 
   char *basic_words = "dup";
@@ -89,9 +74,18 @@ void test_parsing(void)
   char *basic_colon = ": inc 1 + ";
 
 
-  TEST_CHECK_(a + b == 3, "Expected %d, got %d", 3, a + b);
+  fword_t *a = dict_create(F_NORMAL, 5, "test2");
+  fword_t *b = dict_create(F_NORMAL, 5, "test1");
+  fword_t *c = dict_create(F_NORMAL, 4, "tst3");
 
+  fword_t *item1 = dict_find(5, "test1");
+  fword_t *item2 = dict_find(4, "tst3");
+  fword_t *item3 = dict_find(5, "test2");
 
+  /* printf("find word: '%s' -> %p\n", "test1", dict_find(5, "test1")); */
+  TEST_CHECK_(item1 == b, "Expected %p, got %p", b, item1);
+  TEST_CHECK_(item2 == c, "Expected %p, got %p", c, item2);
+  TEST_CHECK_(item3 == a, "Expected %d, got %d", a, item3);
 }
 
 
