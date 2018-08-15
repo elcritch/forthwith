@@ -97,8 +97,8 @@ fw_call forth_exec(FORTH_REGISTERS) {
   popd(rsp);
   popd(ip);
   popd(x);
-  popd(tos);
   popd(w);
+  popd(tos);
 
   /* __jump(next); */
   jump(next);
@@ -107,15 +107,16 @@ fw_call forth_exec(FORTH_REGISTERS) {
 __fw_noinline__ 
 int forth_eval(fcell_xt *instr) {
 
-  fcell_t tos = forth_pop();
   ctx->vars->error = FW_OK;
+  printf("\nforth_eval: %d\n\n", forth_count());
 
   forth_push(/* w */ (fcell_t)instr);
-  forth_push(/* tos */ tos);
+  /* forth_push(/\* tos *\/ tos); */
   forth_push(/* x */ 0);
   forth_push(/* ip */ (fcell_t)instr+8);
   forth_push(/* rsp */ (fcell_t)ctx->rsp->head);
   forth_push(/* u */ (fcell_t)ctx);
+
 
   fcell_t p = (fcell_t)ctx->psp->head;
 
@@ -123,6 +124,7 @@ int forth_eval(fcell_xt *instr) {
   printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);
   printf("context: instr: %p \n", instr);
   printf("context: ctx: %p \n", ctx);
+  printf("\nforth_eval: %d\n\n", forth_count());
   forth_exec(0, p, 0, 0, 0, 0);
 
   /* ctx.psp->head = p; */

@@ -12,15 +12,12 @@ all: _build/forthwith-linux _build/test-forthwith-linux
 _build/forthwith-linux.a: _build/forthwith-linux.o
 	ar rcs $@ $<
 
-_build/forthwith-linux: src/forthwith-main.o src/forthwith-linux.o
+_build/forthwith-linux: _build/forthwith-main.o _build/forthwith-linux.o
 	$(CC) -o $@.S $(CFLAGS) -S $^
 	$(CC) -o $@ $(CFLAGS) $^
 
 _build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o 
 	$(CC) -o $@ $(CFLAGS) -Isrc/ $^
-
-%.o: %.c *.h
-	${CC} ${CFLAGS} $< -c -o $@
 
 _build/%.o: src/%.c
 	${CC} ${CFLAGS} $< -E -o $@.post.c

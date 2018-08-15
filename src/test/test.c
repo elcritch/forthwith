@@ -25,14 +25,17 @@ void test_basic(void) {
   fcell_xt* var5 = forth_alloc_var();
   fcell_xt* var6 = forth_alloc_var();
   fcell_xt* var7 = forth_alloc_var();
+  fcell_xt* var8 = forth_alloc_var();
+  fcell_xt* var9 = forth_alloc_var();
+  fcell_xt* varA = forth_alloc_var();
 
-  printf("var1: %p\n", var1);
-  printf("var2: %p\n", var2);
-  printf("var3: %p\n", var3);
-  printf("var4: %p\n", var4);
-  printf("var5: %p\n", var5);
-  printf("var6: %p\n", var6);
-  printf("var7: %p\n", var7);
+  /* printf("var1: %p\n", var1); */
+  /* printf("var2: %p\n", var2); */
+  /* printf("var3: %p\n", var3); */
+  /* printf("var4: %p\n", var4); */
+  /* printf("var5: %p\n", var5); */
+  /* printf("var6: %p\n", var6); */
+  /* printf("var7: %p\n", var7); */
 
 
   *var1 = (fcell_xt) &xt_docolon;
@@ -42,6 +45,10 @@ void test_basic(void) {
   *var5 = (fcell_xt) 5;
   *var6 = (fcell_xt) &xt_add;
   *var7 = (fcell_xt) &xt_quits;
+  /* *var7 = (fcell_xt) &xt_lit; */
+  /* *var8 = (fcell_xt) 1; */
+  /* *var9 = (fcell_xt) &xt_add; */
+  /* *varA = (fcell_xt) &xt_quits; */
 
   printf(" ");
   for (fcell_xt *i = var1; i <= var5; i += 1)
@@ -54,14 +61,18 @@ void test_basic(void) {
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
 
-  fcell_t x = forth_pop(ctx);
-  /* do { */
-  /*   x = forth_pop(ctx); */
-  /*   printf("remaining stack: %ld\n", x); */
-  /* } while (ctx->vars->error == 0); */
+  int cnt = forth_count();
+  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+
+  fcell_t x;
+  while (forth_count()) {
+    x = forth_pop();
+    printf("remaining stack: %ld\n", x);
+  }
 
   printf("... stack done\n");
   TEST_CHECK_(x == 8, "Expected %d, got %d", 8, x);
+
 
 }
 
