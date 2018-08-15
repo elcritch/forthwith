@@ -67,7 +67,11 @@ struct forthwith_regs { /**< FORTH environment */
 
 struct forthwith_vars { /**< FORTH environment */
   fcell_t base;
-  fcell_t immediate;
+  fcell_t state;
+
+  fcell_t tib_idx;
+  fcell_t tib_len;
+  char   *tib_str; 
 };
 
 struct forthwith_stack { /**< FORTH environment */

@@ -29,16 +29,19 @@ __fw_noinline__
 int forth_init() {
   uint8_t cell_sz = sizeof(fcell_t);
 
+  // Configure default context addresses
   ctx.psp = &ctx_psp;
   ctx.rsp = &ctx_rsp;
   ctx.user = &ctx_user;
   ctx.dict = &ctx_dict;
 
+  // Configure default stack sizes
   ctx.psp->size =  128 * cell_sz,
   ctx.rsp->size =  128 * cell_sz,
   ctx.user->size =   64 * cell_sz,
   ctx.dict->size = 512 * cell_sz,
 
+  // Allocate default stacks
   ctx.psp->base = ctx.psp->head = calloc(1, ctx.psp->size);
   ctx.rsp->base = ctx.rsp->head = calloc(1, ctx.rsp->size);
   ctx.user->base = ctx.user->head = calloc(1, ctx.user->size);

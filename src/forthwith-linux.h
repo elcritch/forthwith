@@ -27,6 +27,11 @@
 #define $stack_offset_base  "8"
 #define $stack_offset_size  "16"
 
+#define $vars_offset_base       "0"
+#define $vars_offset_state      "8"
+#define $vars_offset_tib_idx    "16"
+#define $vars_offset_tib_len    "24"
+#define $vars_offset_tib_str    "32"
 
 // ========================================================================== //
 // Platform Registers 
@@ -140,19 +145,17 @@
 #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
-#define $fw_ctx_offset_psp "0"
-
 #define save_psp(reg)                \
-  load_addr_off(rax, rip, $ctx_psp); \ 
+  load_const(rax, rip, $ctx_psp); \ 
   store_addr_off(rax, reg, $stack_offset_head) // sizeof one word
 
 #define load_psp(reg)                \
-  load_addr_off(rax, rip, $ctx_psp); \ 
+  load_const(rax, rip, $ctx_psp); \ 
   load_addr_off(reg, rax, $stack_offset_head) // sizeof one word
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that... 
 #define save_state()                                   \
-  load_addr_off(rax, rip, $ctx_regs);                  \ 
+  load_const(rax, rip, $ctx_regs);                  \ 
   store_addr_off(rax, reg_ip, $ctx_offset_psp);     \
   store_addr_off(rax, reg_ip, $ctx_offset_rsp);     \
   store_addr_off(rax, reg_ip, $ctx_offset_ip);      \
@@ -161,7 +164,7 @@
 
 
 #define load_state()                                    \
-  load_addr_off(rax, rip, $ctx_regs);                  \ 
+  load_const(rax, rip, $ctx_regs);                  \ 
   load_addr_off(reg_ip, rax, $ctx_offset_psp);       \
   load_addr_off(reg_ip, rax, $ctx_offset_rsp);       \
   load_addr_off(reg_ip, rax, $ctx_offset_ip);        \
