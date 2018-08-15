@@ -99,6 +99,51 @@ forth_primitive("create", 6, f_normal, create, "( p -- )", {
     jump(next);
 });
 
+forth_primitive(",", 6, f_normal, comma, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("[", 6, f_normal, lbrac, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("]", 6, f_normal, rbrac, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive(":", 6, f_normal, colon, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive(";", 6, f_immed, semicolon, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("immed", 5, f_immed, immed, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("hidden", 5, f_normal, hidden, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("hide", 5, f_normal, hide, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
+forth_primitive("'", 5, f_normal, tick, "( p -- )", {
+    // ...
+    jump(next);
+  });
+
 /* create new var in user stack */
 #define FORTH_COMMA ",", f_normal // ( n -- )
 fw_call comma(FORTH_REGISTERS)
