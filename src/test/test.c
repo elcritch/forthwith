@@ -129,13 +129,21 @@ void test_parsing(void)
 
   tib_idx = parse_word(0, strlen(basic_words), basic_words);
 
-
   x = forth_pop();
   TEST_CHECK_(3 == x, "Expected %p, got %p", 3, x);
   x = forth_pop();
-  TEST_CHECK_(basic_words == x, "Expected %p, got %p", 3, basic_words);
+  TEST_CHECK_(basic_words + 0 == x, "Expected %p, got %p", basic_words + 0, x);
+  TEST_CHECK_(strncmp(basic_words, x, 3) == 0, "Expected %p, got %p", basic_words + 0, x);
 
-  printf(" >>>>>>>> parsing test: leftover stacK: \n");
+  tib_idx = parse_word(tib_idx, strlen(basic_words), basic_words);
+
+  x = forth_pop();
+  TEST_CHECK_(4 == x, "Expected %p, got %p", 3, x);
+  x = forth_pop();
+  TEST_CHECK_(basic_words + 4 == x, "Expected %p, got %p", basic_words + 4, x);
+  TEST_CHECK_(strncmp(basic_words + 4, x, 4) == 0, "Expected %p, got %p", basic_words + 4, x);
+
+  printf("\n <<<<<<<<<<<<<< parsing test: leftover stacK: \n");
   while (forth_count()) {
     x = forth_pop();
     printf("remaining stack: %ld (%p)\n", x, (void*)x);
