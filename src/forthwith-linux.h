@@ -10,6 +10,8 @@
 #define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $8
 
+#define $ctx "_ctx"
+
 #define $ctx_of_regs "0"
 #define $ctx_of_vars "8"
 #define $ctx_of_psp "16"
