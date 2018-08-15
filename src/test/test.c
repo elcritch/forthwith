@@ -135,6 +135,7 @@ void test_parsing(void)
   x = forth_pop();
   TEST_CHECK_(basic_words == x, "Expected %p, got %p", 3, basic_words);
 
+  printf(" >>>>>>>> parsing test: leftover stacK: \n");
   while (forth_count()) {
     x = forth_pop();
     printf("remaining stack: %ld (%p)\n", x, (void*)x);
