@@ -184,7 +184,19 @@ typedef enum forthwith_the_errors fw_error_t;
 
 
 
-fcell_t forth_pop();
-int forth_push(fcell_t val);
+extern fcell_t forth_pop();
+extern int forth_push(fcell_t val);
+
+extern int forth_init();
+extern int forth_bootstrap(fw_ctx_t* ctx);
+extern fw_call forth_exec(FORTH_REGISTERS);
+extern int forth_eval(fcell_xt *instr);
+
+
+extern fcell_xt xt_docolon;
+extern fcell_xt xt_lit;
+extern fcell_xt xt_add;
+extern fcell_xt xt_quits;
+extern fcell_xt xt_exits;
 
 #endif // _FORTHWITH_HEADER_

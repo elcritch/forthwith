@@ -6,3 +6,5 @@ forthwith
 *.post.c
 
 forthwith-linux
+test-forthwith-linux
+*
