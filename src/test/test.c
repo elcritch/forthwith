@@ -69,11 +69,7 @@ void test_parsing(void)
 {
   test_setup();
 
-  char *basic_words = "dup";
-  char *basic_add = "1 2 +";
-  char *basic_colon = ": inc 1 + ";
-
-
+  // test dictionary 
   fword_t *a = dict_create(F_NORMAL, 5, "test2");
   fword_t *b = dict_create(F_NORMAL, 5, "test1");
   fword_t *c = dict_create(F_NORMAL, 4, "tst3");
@@ -86,6 +82,15 @@ void test_parsing(void)
   TEST_CHECK_(item1 == b, "Expected %p, got %p", b, item1);
   TEST_CHECK_(item2 == c, "Expected %p, got %p", c, item2);
   TEST_CHECK_(item3 == a, "Expected %d, got %d", a, item3);
+
+  // test parsing 
+  char *basic_words = "dup";
+  char *basic_add = "1 2 +";
+  char *basic_colon = ": inc 1 + ";
+
+  int cnt = forth_count();
+  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+
 }
 
 

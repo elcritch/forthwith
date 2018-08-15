@@ -76,6 +76,11 @@ fcell_t forth_pop() {
 }
 
 __fw_noinline__ 
+fcell_t forth_count() {
+  return ctx->psp->head - ctx->psp->base;
+}
+
+__fw_noinline__ 
 int forth_bootstrap(fw_ctx_t* ctx) {
 
   return -1;
