@@ -58,11 +58,17 @@ void test_basic(void) {
 
   forth_eval(var1);
 
-  printf("Done...\nerror: %ld\n", ctx->vars->error);
-  fcell_t x;
-  while ((x = forth_pop(ctx)) && (ctx->vars->error == 0)) {
-    printf("remaining stack: %ld\n", x);
-  }
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %u\n\n", ctx->psp->head - ctx->psp->base);
+
+  fcell_t x = forth_pop(ctx);
+  /* do { */
+  /*   x = forth_pop(ctx); */
+  /*   printf("remaining stack: %ld\n", x); */
+  /* } while (ctx->vars->error == 0); */
+
   printf("... stack done\n");
   TEST_CHECK_(x == 8, "Expected %d, got %d", 8, x);
 
@@ -72,6 +78,14 @@ void test_parsing(void)
 {
   int a = 1;
   int b = 2;
+
+  test_setup();
+
+  char *basic_words = "dup";
+  char *basic_add = "1 2 +";
+  char *basic_colon = ": inc 1 + ";
+
+
   TEST_CHECK_(a + b == 3, "Expected %d, got %d", 3, a + b);
 
 
@@ -79,6 +93,7 @@ void test_parsing(void)
 
 
 TEST_LIST = {
+  { "basic", test_basic },
   { "parsing", test_parsing },
   { 0 }
 };
