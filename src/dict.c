@@ -80,8 +80,7 @@ static bool is_whitespace(char c) {
   return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
-
-void parse_word(uint8_t idx, uint8_t len, char *tib) {
+uint8_t parse_word(uint8_t idx, uint8_t len, char *tib) {
 
   uint8_t word_start;
   char c;
@@ -92,14 +91,14 @@ whitespace:
 
   /* backcomment: */
   if (c == '\\') {
-    while ((c = tib[idx]) && (c != '\n'))
+    while ((c = tib[idx]) && ((idx < len) & (c != '\n')))
       idx++;
     goto whitespace;
   }
 
   /* parcomment: */
   if (c == '(') {
-    while ((c = tib[idx]) && (c != ')'))
+    while ((c = tib[idx]) && ((idx < len) & (c != ')')))
       idx++;
     goto whitespace;
   }
@@ -111,13 +110,18 @@ word:
   while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
-  // save the new tib idx
-  ctx->vars->tib_idx = idx;
+  printf("idx: i: %u ws: %u of %u\n", idx, word_start, len);
+  printf("   ---  %p\n", tib[word_start]);
+  printf("   ---  %s\n", tib + word_start);
+
   // push word addr
   char *word_head = tib + word_start;
   forth_push( (fcell_t)word_head );
+
   // push word count
   forth_push(idx - word_start);
+
+  return idx;
 }
 
 const char num_basis[] = "-0123456789ABCDEF";

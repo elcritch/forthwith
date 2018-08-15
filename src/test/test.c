@@ -88,11 +88,13 @@ void test_basic(void) {
               forth_errno(),
               FW_OK);
 
+  printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
 void test_parsing(void)
 {
   test_setup();
+  fcell_t x;
 
   // test dictionary 
   fword_t *a = dict_create(F_NORMAL, 5, "test2");
@@ -108,14 +110,37 @@ void test_parsing(void)
   TEST_CHECK_(item2 == c, "Expected %p, got %p", c, item2);
   TEST_CHECK_(item3 == a, "Expected %d, got %d", a, item3);
 
+
   // test parsing 
-  char *basic_words = "dup";
+  char *basic_words = "dup drop";
   char *basic_add = "1 2 +";
   char *basic_colon = ": inc 1 + ";
 
   int cnt = forth_count();
   TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
 
+  /* char tib_buff[128] = {0}; */
+
+  uint8_t tib_idx = 0;
+  /* uint8_t tib_len = 0; */
+  /* char *tib_str = basic_words; */
+
+  printf("parse test: basic_words: %p -- %s\n", basic_words, basic_words);
+
+  tib_idx = parse_word(0, strlen(basic_words), basic_words);
+
+
+  x = forth_pop();
+  TEST_CHECK_(3 == x, "Expected %p, got %p", 3, x);
+  x = forth_pop();
+  TEST_CHECK_(basic_words == x, "Expected %p, got %p", 3, basic_words);
+
+  while (forth_count()) {
+    x = forth_pop();
+    printf("remaining stack: %ld (%p)\n", x, (void*)x);
+  }
+
+  printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
 }
 
 
