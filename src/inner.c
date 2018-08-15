@@ -83,9 +83,9 @@ fw_call quits(FORTH_REGISTERS) {
 
 /* void __attribute__ ((noinline)) docall() { */
 fw_call docall() {
-  fcell_t addr = *forth_pop(ctx);
-  fcell_t params = *forth_pop(ctx);
-  fcell_t ret = *forth_pop(ctx);
+  fcell_t addr = forth_pop();
+  fcell_t params = forth_pop();
+  fcell_t ret = forth_pop();
 
   fcell_t a, b, c;
 
@@ -95,20 +95,20 @@ fw_call docall() {
     break;
     }
   case 1: {
-    a = *forth_pop(ctx);
+    a = forth_pop();
     ret = ((forthwith_call_1) addr)(a);
     break;
     }
   case 2: {
-    a = *forth_pop(ctx);
-    b = *forth_pop(ctx);
+    a = forth_pop();
+    b = forth_pop();
     ret = ((forthwith_call_2) addr)(a, b);
     break;
     }
   case 3: {
-    a = *forth_pop(ctx);
-    b = *forth_pop(ctx);
-    c = *forth_pop(ctx);
+    a = forth_pop();
+    b = forth_pop();
+    c = forth_pop();
     ret = ((forthwith_call_3) addr)(a, b, c);
     break;
     }

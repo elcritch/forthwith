@@ -36,14 +36,14 @@ forth_variable(BASE, 4, ctx_vars, $vars_offset_base, 10);
 
 forth_primitive("key", 3, f_normal, key, "( -- n)", {
     pushd(tos);
-    load_const(rax, $vars_offset_tib);
-    load_addr_off(x, tox, $ctx_offset_ip);
+    /* load_const(rax, $vars_offset_tib); */
+    /* load_addr_off(x, tox, $ctx_offset_ip); */
     jump(next);
 });
 
 forth_primitive("emit", 4, f_normal, emit, "( n -- )", {
-    load_const(x, $ctx_vars);
-    store_addr_off(x, tox, $ctx_offset_ip);
+    /* load_const(x, $ctx_vars); */
+    /* store_addr_off(x, tox, $ctx_offset_ip); */
     popd(tos);
     jump(next);
 });
@@ -64,16 +64,16 @@ forth_primitive("number", 6, f_normal, number, "( c n -- n )", {
     }
     load_state();
     jump(next);
-  });
+});
 
 forth_primitive("find", 4, f_normal, find, "( c n -- )", {
     save_state();
     {
-      dict_find();
+      dict_find((uint8_t)forth_pop(), (char*)forth_pop());
     }
     load_state();
     jump(next);
-  });
+});
 
 forth_primitive(">CFA", 4, f_normal, cfa, "( p -- )", {
     // ...

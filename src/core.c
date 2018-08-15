@@ -19,7 +19,7 @@ forth_primitive("swap", 4, f_normal, swap, "( x y -- x y )",  {
   jump(next);
 });
 
-forth_primitive("rot", 3, f_normal, "( n1 n2 n3  ---  n2 n3 n1 )",  {
+forth_primitive("rot", 3, f_normal, rot, "( n1 n2 n3  ---  n2 n3 n1 )",  {
     /* X_t x; */
     copy_reg(c,tos);
     popd(b);
@@ -32,13 +32,13 @@ forth_primitive("rot", 3, f_normal, "( n1 n2 n3  ---  n2 n3 n1 )",  {
     jump(next);
 });
 
-forth_primitive("add", 3, f_normal, "( n n -- n )",  {
+forth_primitive("add", 3, f_normal, add, "( n n -- n )",  {
   popd(x);
   add_reg(tos, x); /* tos += x; */
   jump(next);
 });
 
-forth_primitive("=", 3, f_normal, "( n n -- n )",  {
+forth_primitive("=", 3, f_normal, equals, "( n n -- n )",  {
   popd(x);
   /* tos = tos == x; */
   /* tos = 0xFFFFFFFFFFFFFFFF; */

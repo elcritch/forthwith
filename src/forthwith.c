@@ -2,64 +2,64 @@
 
 #include "forthwith.h"
 
-struct forthwith_context ctx;
-struct forthwith_regs ctx_regs;
-struct forthwith_vars ctx_vars;
-struct forthwith_stack ctx_psp;
-struct forthwith_stack ctx_rsp;
-struct forthwith_stack ctx_user;
-struct forthwith_stack ctx_dict;
+/* fw_ctx_regs_t *ctx_regs; */
+/* fw_ctx_vars_t *ctx_vars; */
+/* fw_ctx_stack_t *ctx_psp; */
+/* fw_ctx_stack_t *ctx_rsp; */
+/* fw_ctx_stack_t *ctx_user; */
+/* fw_ctx_dict_stack_t *ctx_dict; */
+/* fw_ctx_str_stack_t *ctx_strings; */
+fw_ctx_t *ctx;
 
 // TODO: add to dict 
 fcell_xt xt_docolon = (fcell_xt)&docolon;
 fcell_xt xt_lit = (fcell_xt)&lit;
 fcell_xt xt_add = (fcell_xt)&add;
 fcell_xt xt_quits = (fcell_xt)&quits;
+fcell_xt xt_exits = (fcell_xt)&exits;
 
 #include <stdio.h>
 #include <string.h>
 
-IP_t *forth_alloc_var(fw_ctx_t* ctx) {
-  // this incrs in multipls of IP_t size
-  ctx.user->head = ctx.user->head + 1;
-  return ctx.user->head;
-}
-
 __fw_noinline__ 
 int forth_init() {
-  uint8_t cell_sz = sizeof(fcell_t);
+  // Initialize contexts
+  ctx = calloc(1, sizeof(fw_ctx_t));
 
-  // Configure default context addresses
-  ctx.psp = &ctx_psp;
-  ctx.rsp = &ctx_rsp;
-  ctx.user = &ctx_user;
-  ctx.dict = &ctx_dict;
+  ctx->regs = calloc(1, sizeof(fw_ctx_regs_t));
+  ctx->vars = calloc(1, sizeof(fw_ctx_vars_t));
+  ctx->psp = calloc(1, sizeof(fw_ctx_stack_t));
+  ctx->rsp = calloc(1, sizeof(fw_ctx_stack_t));
+  ctx->user = calloc(1, sizeof(fw_ctx_stack_t));
+  ctx->dict = calloc(1, sizeof(fw_ctx_dict_stack_t));
+  ctx->strings = calloc(1, sizeof(fw_ctx_str_stack_t));
 
   // Configure default stack sizes
-  ctx.psp->size =  128 * cell_sz,
-  ctx.rsp->size =  128 * cell_sz,
-  ctx.user->size =   64 * cell_sz,
-  ctx.dict->size = 512 * cell_sz,
+  ctx->psp->size =  128 * sizeof(fw_ctx_stack_t);
+  ctx->rsp->size =  128 * sizeof(fw_ctx_stack_t);
+  ctx->user->size =   64 * sizeof(fw_ctx_stack_t);
+  ctx->dict->size = 512 * sizeof(fw_ctx_dict_stack_t);
+  ctx->strings->size = 512 * sizeof(fw_ctx_str_stack_t);
 
   // Allocate default stacks
-  ctx.psp->base = ctx.psp->head = calloc(1, ctx.psp->size);
-  ctx.rsp->base = ctx.rsp->head = calloc(1, ctx.rsp->size);
-  ctx.user->base = ctx.user->head = calloc(1, ctx.user->size);
-  ctx.dict->base = ctx.dict->head = calloc(1, ctx.dict->size);
+  ctx->psp->base = ctx->psp->head = calloc(1, ctx->psp->size);
+  ctx->rsp->base = ctx->rsp->head = calloc(1, ctx->rsp->size);
+  ctx->user->base = ctx->user->head = calloc(1, ctx->user->size);
+  ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
 
-  printf("psp base: %p\n", ctx.psp->base);
-  printf("rsp base: %p\n", ctx.rsp->base);
-  printf("user base: %p\n", ctx.user->base);
-  printf("dict base: %p\n", ctx.dict->base);
+  printf("psp base: %p\n", ctx->psp->base);
+  printf("rsp base: %p\n", ctx->rsp->base);
+  printf("user base: %p\n", ctx->user->base);
+  printf("dict base: %p\n", ctx->dict->base);
 
   return -1;
 }
 
 __fw_noinline__ 
 int forth_push(fcell_t val) {
-  if (ctx.psp->head <= ctx.psp->base + ctx.psp->size) {
-    *ctx.psp->head = val;
-    ctx.psp->head++;
+  if (ctx->psp->head <= ctx->psp->base + ctx->psp->size) {
+    *ctx->psp->head = val;
+    ctx->psp->head++;
     return 1;
   }
   else
@@ -67,13 +67,15 @@ int forth_push(fcell_t val) {
 }
 
 __fw_noinline__ 
-fcell_t *forth_pop() {
-  if (ctx.psp->head > ctx.psp->base) {
-    ctx.psp->head--;
-    return ctx.psp->head;
+fcell_t forth_pop() {
+  if (ctx->psp->head > ctx->psp->base) {
+    ctx->psp->head--;
+    return *ctx->psp->head;
   }
-  else
-    return NULL;
+  else {
+    ctx->vars->error = FW_ERR_STACKUNDERFLOW;
+    return 0;
+  }
 }
 
 __fw_noinline__ 
@@ -100,23 +102,21 @@ fw_call forth_exec(FORTH_REGISTERS) {
 }
 
 __fw_noinline__ 
-int forth_eval(IP_t *instr) {
+int forth_eval(fcell_xt *instr) {
 
-  fcell_t *tosptr = forth_pop(ctx);
-  fcell_t *tos = tosptr == NULL ? 0 : *tosptr;
-  printf("context: tos: %p %lld \n", tosptr, tos);
+  fcell_t tos = forth_pop();
 
-  forth_push(ctx, /* w */ (fcell_t)instr);
-  forth_push(ctx, /* tos */ tos);
-  forth_push(ctx, /* x */ 0);
-  forth_push(ctx, /* ip */ (fcell_t)instr+8);
-  forth_push(ctx, /* rsp */ (fcell_t)ctx.rsp->head);
-  forth_push(ctx, /* u */ (fcell_t)ctx);
+  forth_push(/* w */ (fcell_t)instr);
+  forth_push(/* tos */ tos);
+  forth_push(/* x */ 0);
+  forth_push(/* ip */ (fcell_t)instr+8);
+  forth_push(/* rsp */ (fcell_t)ctx->rsp->head);
+  forth_push(/* u */ (fcell_t)ctx);
 
-  fcell_t p = (fcell_t)ctx.psp->head;
+  fcell_t p = (fcell_t)ctx->psp->head;
 
-  printf("context: psp.head: %p (%p)\n", ctx.psp->head, ctx.psp->base);
-  printf("context: rsp.head: %p (%p)\n", ctx.rsp->head, ctx.rsp->base);
+  printf("context: psp.head: %p (%p)\n", ctx->psp->head, ctx->psp->base);
+  printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);
   printf("context: instr: %p \n", instr);
   printf("context: ctx: %p \n", ctx);
   forth_exec(0, p, 0, 0, 0, 0);

@@ -44,16 +44,16 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp
 
-extern fw_call fcallend(FORTH_REGISTERS);
+/* extern fw_call fcallend(FORTH_REGISTERS); */
 
-
-typedef struct forth_word {
+typedef struct forth_word fword_t;
+struct forth_word {
   fword_t *prev;
   fcell_xt *body;
   uint8_t meta;
   uint8_t len;
-  char name;
-} fword_t;
+  char *name;
+};
 
 typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
@@ -67,6 +67,7 @@ typedef struct forthwith_regs { /**< FORTH environment */
 typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t base;
   fcell_t state;
+  fcell_t error;
 
   fcell_t tib_idx;
   fcell_t tib_len;
@@ -79,22 +80,37 @@ typedef struct forthwith_stack { /**< FORTH environment */
   fcell_t size;
 } fw_ctx_stack_t;
 
+typedef struct forthwith_dict_stack { /**< FORTH environment */
+  fword_t *head;
+  fword_t *base;
+  fcell_t size;
+} fw_ctx_dict_stack_t;
+
+typedef struct forthwith_str_stack { /**< FORTH environment */
+  char *head;
+  char *base;
+  fcell_t size; // bytes
+} fw_ctx_str_stack_t;
+
 typedef struct forthwith_context { /**< FORTH environment */
-  fw_ctx_regs_t *ctx_regs;
-  fw_ctx_vars_t *ctx_vars;
-  fw_ctx_stack_t *ctx_psp;
-  fw_ctx_stack_t *ctx_rsp;
-  fw_ctx_stack_t *ctx_user;
-  fw_ctx_stack_t *ctx_dict;
-} fw_ctx_stack_t;
+  fw_ctx_regs_t *regs;
+  fw_ctx_vars_t *vars;
+  fw_ctx_stack_t *psp;
+  fw_ctx_stack_t *rsp;
+  fw_ctx_stack_t *user;
+  fw_ctx_dict_stack_t *dict;
+  fw_ctx_str_stack_t *strings;
+} fw_ctx_t;
 
 /// Global Forthwith Context
-extern fw_ctx_regs_t *ctx_regs;
-extern fw_ctx_vars_t *ctx_vars;
-extern fw_ctx_stack_t *ctx_psp;
-extern fw_ctx_stack_t *ctx_rsp;
-extern fw_ctx_stack_t *ctx_user;
-extern fw_ctx_stack_t *ctx_dict;
+/* extern fw_ctx_regs_t *ctx_regs; */
+/* extern fw_ctx_vars_t *ctx_vars; */
+/* extern fw_ctx_stack_t *ctx_psp; */
+/* extern fw_ctx_stack_t *ctx_rsp; */
+/* extern fw_ctx_stack_t *ctx_user; */
+/* extern fw_ctx_dict_stack_t *ctx_dict; */
+/* extern fw_ctx_str_stack_t *ctx_strings; */
+extern fw_ctx_t *ctx;
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
@@ -103,7 +119,6 @@ typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 
 int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
-IP_t *forth_alloc_var(fw_ctx_t* ctx);
 
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
   fw_call cname(FORTH_REGISTERS)
@@ -163,12 +178,13 @@ typedef enum forthwith_the_errors fw_error_t;
 #endif // FASTR_NO_USERSTACK_OPS
 
 
+#define F_NORMAL 0x00
 #define F_IMMED 0x80
 #define F_HIDDEN 0x20
-#define F_LENMASK 0x1F	// length mask
 
 
-fcell_t *forth_pop(fw_ctx_t* ctx);
-int forth_push(fw_ctx_t* ctx, fcell_t val);
+
+fcell_t forth_pop();
+int forth_push(fcell_t val);
 
 #endif // _FORTHWITH_HEADER_

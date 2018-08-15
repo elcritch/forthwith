@@ -1,11 +1,13 @@
 
 #include "forthwith-linux.h"
 #include "forthwith.h"
+#include "dict.h"
 
 // Define Primitives, including function bodies, etc
 #define FORTH_DEFINE_PRIMITIVES
   #include "xmacros.h"
   #include "inner.c"
+  #include "outer.c"
   #include "core.c"
 #undef FORTH_DEFINE_PRIMITIVES
 
@@ -22,22 +24,19 @@ int main(int argc, char** argv) {
   forth_init();
   forth_bootstrap(ctx);
 
-  printf("word: %p\n", dict_create(ctx, 5, "test2"));
-  printf("word: %p\n", dict_create(ctx, 5, "test1"));
-  printf("word: %p\n", dict_create(ctx, 5, "test3"));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test2"));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test1"));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test3"));
 
-  printf("find word: '%s' -> %p\n", "test1", find(ctx, 5, "test1"));
+  printf("find word: '%s' -> %p\n", "test1", dict_find(5, "test1"));
 
-  *variable_base0 = (IP_t) &xt_lit;
-  *variable_base1 = (IP_t) &base;
-
-  IP_t* var1 = forth_alloc_var(ctx);
-  IP_t* var2 = forth_alloc_var(ctx);
-  IP_t* var3 = forth_alloc_var(ctx);
-  IP_t* var4 = forth_alloc_var(ctx);
-  IP_t* var5 = forth_alloc_var(ctx);
-  IP_t* var6 = forth_alloc_var(ctx);
-  IP_t* var7 = forth_alloc_var(ctx);
+  fcell_xt* var1 = forth_alloc_var();
+  fcell_xt* var2 = forth_alloc_var();
+  fcell_xt* var3 = forth_alloc_var();
+  fcell_xt* var4 = forth_alloc_var();
+  fcell_xt* var5 = forth_alloc_var();
+  fcell_xt* var6 = forth_alloc_var();
+  fcell_xt* var7 = forth_alloc_var();
 
   printf("var1: %p\n", var1);
   printf("var2: %p\n", var2);
@@ -48,13 +47,13 @@ int main(int argc, char** argv) {
   printf("var7: %p\n", var7);
 
 
-  *var1 = (IP_t) &xt_docolon;
-  *var2 = (IP_t) &xt_lit;
-  *var3 = (IP_t) 3;
-  *var4 = (IP_t) &xt_lit;
-  *var5 = (IP_t) 5;
-  *var6 = (IP_t) &xt_add;
-  *var7 = (IP_t) &xt_exits;
+  *var1 = (fcell_xt) &xt_docolon;
+  *var2 = (fcell_xt) &xt_lit;
+  *var3 = (fcell_xt) 3;
+  *var4 = (fcell_xt) &xt_lit;
+  *var5 = (fcell_xt) 5;
+  *var6 = (fcell_xt) &xt_add;
+  *var7 = (fcell_xt) &xt_exits;
   /* *var2 = (IP_t) &xt_add; */
   /* *var3 = (IP_t) &xt_quits; */
 
@@ -62,15 +61,15 @@ int main(int argc, char** argv) {
   /* forth_push(ctx, 50); */
 
   printf(" ");
-  for (IP_t *i = var1; i <= var5; i += 1)
+  for (fcell_xt *i = var1; i <= var5; i += 1)
     printf("\tinstr: %p => %p\n", i, *i);
 
   forth_eval(var1);
 
   printf("Done...\n\n");
-  fcell_t *x;
-  while ((x = forth_pop(ctx)) != NULL) {
-    printf("remaining stack: %d, %p\n", *x, x);
+  fcell_t x;
+  while ((x = forth_pop(ctx)) && (ctx->vars->error == 0)) {
+    printf("remaining stack: %ld\n", x);
   }
 
   return 0;

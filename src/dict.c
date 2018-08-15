@@ -2,29 +2,59 @@
 #include "forthwith.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-fword_t* dict_create(int8_t len, char *name) {
+fcell_xt *forth_alloc_var_len(fcell_t len) {
+  // this incrs in multipls of IP_t size
+  ctx->user->head = ctx->user->head + len;
+  return (fcell_xt *)ctx->user->head;
+}
+fcell_xt *forth_alloc_var() {
+  return (fcell_xt *)forth_alloc_var_len(1);
+}
+
+fword_t* alloc_dict() {
   // 'allocate' new entry in dict head
-  fword_t* next_word = ctx->dict_head + sizeof(fword_t) + len;
-
-  // make new entry dict head
-  if (ctx->dict_head != ctx->dict_base)
-    next_word->prev = ctx->dict_head;
-  else
-    next_word->prev = NULL;
-
-  next_word->len = len;
-  memcpy(&next_word->name, name, len);
+  fword_t* curr_dict = ctx->dict->head;
+  fword_t* next_dict = ctx->dict->head + 1;
 
   // update dict head
-  ctx->dict_head = next_word;
-  return next_word;
+  next_dict->prev = curr_dict;
+  ctx->dict->head = next_dict;
+
+  return curr_dict;
+}
+
+char* alloc_string(uint8_t len) {
+  // 'allocate' new entry in dict head
+  char* curr_string = ctx->strings->head;
+  char* next_string = ctx->strings->head + len + 1; // for extra null term and len
+
+  // update dict head
+  ctx->strings->head = next_string;
+  curr_string[len] = '\0'; // just in case 
+
+  return curr_string;
+}
+
+fword_t* dict_create(uint8_t mask, uint8_t len, char *name) {
+
+  fword_t *entry = alloc_dict();
+
+  entry->meta = mask;
+  entry->len = len;
+  entry->name = alloc_string(len);
+
+  memcpy(entry->name, name, len);
+
+  return entry;
 }
 
 /* FIND (name? – address). */
-fword_t* dict_find(fw_ctx_t *ctx, int8_t len, char *name) {
+fword_t* dict_find(int8_t len, char *name) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict_head;
+  fword_t* word_ptr = ctx->dict->head;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
@@ -32,7 +62,7 @@ fword_t* dict_find(fw_ctx_t *ctx, int8_t len, char *name) {
     if (word.len == len) {
       int8_t i;
       for (i = 0; i < len; i++) {
-        if (name[i] != *(&word.name + i) )
+        if (name[i] != word.name[i])
           break;
       }
       // word found
@@ -47,44 +77,47 @@ fword_t* dict_find(fw_ctx_t *ctx, int8_t len, char *name) {
 }
 
 static bool is_whitespace(char c) {
-  return c == '\0' | c == ' ' | c == '\t' | c == '\r' | c == '\n';
+  return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
 void parse_word() {
-  fcell_t idx = ctx_vars.tib_idx;
-  char   *tib = ctx_vars.tib_str;
-  uint8_t len = ctx_vars.tib_len;
+  uint8_t idx = ctx->vars->tib_idx;
+  char   *tib = ctx->vars->tib_str;
+  uint8_t len = ctx->vars->tib_len;
 
   uint8_t word_start;
-  char   c;
+  char c;
 
 whitespace:
-  while ((c = tib[idx]) & (idx < len) & is_whitespace(c))
+  while ((c = tib[idx]) && ((idx < len) & is_whitespace(c)))
     idx++;
 
-backcomment:
+  /* backcomment: */
   if (c == '\\') {
-    while ((c = tib[idx]) & c != '\n')
+    while ((c = tib[idx]) && (c != '\n'))
       idx++;
     goto whitespace;
   }
 
-parcomment:
+  /* parcomment: */
   if (c == '(') {
-    while ((c = tib[idx]) & c != ')')
+    while ((c = tib[idx]) && (c != ')'))
       idx++;
     goto whitespace;
   }
+
+  goto word;
 
 word:
   word_start = idx++;
-  while ((c = tib[idx]) & (idx < len) & !is_whitespace(c))
+  while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
   // save the new tib idx
-  ctx_vars.tib_idx = idx;
+  ctx->vars->tib_idx = idx;
   // push word addr
-  forth_push(tib + word_start);
+  char *word_head = tib + word_start;
+  forth_push( (fcell_t)word_head );
   // push word count
   forth_push(idx - word_start);
 }
@@ -92,15 +125,16 @@ word:
 const char num_basis[] = "-0123456789ABCDEF";
 
 void parse_number() {
-  uint8_t base = (uint8_t)ctx_vars.base;
+  uint8_t base = (uint8_t)ctx->vars->base;
   uint8_t len = (uint8_t)forth_pop();
   char *addr = (char *)forth_pop();
 
   uint8_t idx = 0;
   bool err = false;
   fcell_t num = 0;
+  char c;
 
-  while ((c = tib[idx]) & (idx < len) & !err) {
+  while ((c = addr[idx]) && ((idx < len) & !err)) {
     err = true;
     for (int i = 0; i < base; i++) {
       if (num_basis[i] == c) {
