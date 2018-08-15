@@ -49,77 +49,72 @@ forth_primitive("emit", 4, f_normal, emit, "( n -- )", {
     jump(next);
 });
 
-forth_primitive("word", 4, f_normal, emit, "( n -- )", {
+forth_primitive("word", 4, f_normal, word, "( -- )", {
     save_state();
-    parse_word();
+    {
+      parse_word();
+    }
     load_state();
     jump(next);
 });
 
-bool is_whitespace(char c) {
-  return c == '\0' | c == ' ' | c == '\t' | c == '\r' | c == '\n';
-}
-
-void parse_word() {
-  fcell_t idx = ctx_vars.tib_idx;
-  char   *tib = ctx_vars.tib_str;
-  uint8_t len = ctx_vars.tib_len;
-
-  uint8_t word_start;
-  char   c;
-
-whitespace:
-  while ((c = tib[idx]) & (idx < len) & is_whitespace(c))
-    idx++;
-
-backcomment:
-  if (c == '\\') {
-    while ((c = tib[idx]) & c != '\n')
-      idx++;
-    goto whitespace;
-  }
-
-parcomment:
-  if (c == '(') {
-    while ((c = tib[idx]) & c != ')')
-      idx++;
-    goto whitespace;
-  }
-
-word:
-  word_start = idx++;
-  while ((c = tib[idx]) & (idx < len) & !is_whitespace(c))
-    idx++;
-
-  // push word addr
-  forth_push(tib + word_start);
-  // push word count
-  forth_push(idx - word_start);
-}
-
-const char num_basis[] = "-0123456789ABCDEF";
-
-void parse_number() {
-  uint8_t base = (uint8_t)ctx_vars.base;
-  uint8_t len = (uint8_t)forth_pop();
-  char *addr = (char *)forth_pop();
-
-  uint8_t idx = 0;
-  bool err = false;
-  fcell_t num = 0;
-
-  while ((c = tib[idx]) & (idx < len) & !err) {
-    err = true;
-    for (int i = 0; i < base; i++) {
-      if (num_basis[i] == c) {
-        num = base * num + i - 1;
-        err = false;
-        break;
-      }
+forth_primitive("number", 6, f_normal, number, "( c n -- n )", {
+    save_state();
+    {
+      parse_number();
     }
-  }
+    load_state();
+    jump(next);
+  });
 
-  forth_push(num);
-  forth_push((uint8_t)err);
+forth_primitive("find", 4, f_normal, find, "( c n -- )", {
+    save_state();
+    {
+      dict_find();
+    }
+    load_state();
+    jump(next);
+  });
+
+forth_primitive(">CFA", 4, f_normal, cfa, "( p -- )", {
+    save_state();
+    {
+      // ...
+    }
+    load_state();
+    jump(next);
+});
+
+forth_primitive(">DFA", 4, f_normal, dfa, "( p -- )", {
+    save_state();
+    {
+      // ...
+    }
+    load_state();
+    jump(next);
+});
+
+forth_primitive("create", 6, f_normal, create, "( p -- )", {
+    // ...
+    jump(next);
+});
+
+/* create new var in user stack */
+#define FORTH_COMMA ",", f_normal // ( n -- )
+fw_call comma(FORTH_REGISTERS)
+{
+  *user_here = (IP_t)tos;
+  user_here += sizeof(fcell_t*);
+  popd(tos);
+  jump(next);
 }
 
+/* create new var in dict */
+#define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
+fw_call char_comma(FORTH_REGISTERS)
+{
+  *user_here = (IP_t)tos;
+  user_here += sizeof(fcell_t*);
+  popd(tos);
+  jump(next);
+}

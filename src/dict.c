@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-fword_t* dict_create(fw_ctx_t* ctx, int8_t len, char *name) {
+fword_t* dict_create(int8_t len, char *name) {
   // 'allocate' new entry in dict head
   fword_t* next_word = ctx->dict_head + sizeof(fword_t) + len;
 
@@ -22,7 +22,7 @@ fword_t* dict_create(fw_ctx_t* ctx, int8_t len, char *name) {
 }
 
 /* FIND (name? – address). */
-fword_t* find(fw_ctx_t *ctx, int8_t len, char *name) {
+fword_t* dict_find(fw_ctx_t *ctx, int8_t len, char *name) {
   // Load dictionary pointer
   fword_t* word_ptr = ctx->dict_head;
 
@@ -46,71 +46,71 @@ fword_t* find(fw_ctx_t *ctx, int8_t len, char *name) {
   return NULL;
 }
 
-/* create new var in user stack */
-#define FORTH_COMMA ",", f_normal // ( n -- )
-fw_call comma(FORTH_REGISTERS)
-{
-  *user_here = (IP_t)tos;
-  user_here += sizeof(fcell_t*);
-  popd(tos);
-  jump(next);
+static bool is_whitespace(char c) {
+  return c == '\0' | c == ' ' | c == '\t' | c == '\r' | c == '\n';
 }
 
-/* create new var in dict */
-#define FORTH_CHAR_COMMA "c,", f_normal // ( c -- )
-fw_call char_comma(FORTH_REGISTERS)
-{
-  *user_here = (IP_t)tos;
-  user_here += sizeof(fcell_t*);
-  popd(tos);
-  jump(next);
+void parse_word() {
+  fcell_t idx = ctx_vars.tib_idx;
+  char   *tib = ctx_vars.tib_str;
+  uint8_t len = ctx_vars.tib_len;
+
+  uint8_t word_start;
+  char   c;
+
+whitespace:
+  while ((c = tib[idx]) & (idx < len) & is_whitespace(c))
+    idx++;
+
+backcomment:
+  if (c == '\\') {
+    while ((c = tib[idx]) & c != '\n')
+      idx++;
+    goto whitespace;
+  }
+
+parcomment:
+  if (c == '(') {
+    while ((c = tib[idx]) & c != ')')
+      idx++;
+    goto whitespace;
+  }
+
+word:
+  word_start = idx++;
+  while ((c = tib[idx]) & (idx < len) & !is_whitespace(c))
+    idx++;
+
+  // save the new tib idx
+  ctx_vars.tib_idx = idx;
+  // push word addr
+  forth_push(tib + word_start);
+  // push word count
+  forth_push(idx - word_start);
 }
 
-/* #define FORTH_LIT "lit", f_normal // ( -- ) */
-/* fw_call lit(FORTH_REGISTERS) */
-/* { */
-/*   pushd(tos); // ?? */
-/*   tos = (fcell_t) *ip; // ?? */
-/*   jump(next); */
-/* } */
+const char num_basis[] = "-0123456789ABCDEF";
 
-#define FORTH_LBRAC "[", f_immed // ( -- )
-fw_call lbrac(FORTH_REGISTERS)
-{
-  ctx->immediate = 1;
-  jump(next);
+void parse_number() {
+  uint8_t base = (uint8_t)ctx_vars.base;
+  uint8_t len = (uint8_t)forth_pop();
+  char *addr = (char *)forth_pop();
+
+  uint8_t idx = 0;
+  bool err = false;
+  fcell_t num = 0;
+
+  while ((c = tib[idx]) & (idx < len) & !err) {
+    err = true;
+    for (int i = 0; i < base; i++) {
+      if (num_basis[i] == c) {
+        num = base * num + i - 1;
+        err = false;
+        break;
+      }
+    }
+  }
+
+  forth_push(num);
+  forth_push((uint8_t)err);
 }
-
-#define FORTH_RBRAC  "]", ~ f_immed // ( -- )
-fw_call rbrac(FORTH_REGISTERS)
-{
-  ctx->immediate = 0;
-  jump(next);
-}
-
-/* primitive 'count',count */
-#define FORTH_COUNT  "count", f_normal // ( -- )
-fw_call count(FORTH_REGISTERS)
-{
-  // ??
-  w = (fcell_xt)tos;
-  tos += 1;
-  pushd(tos);
-  tos = (fcell_t)w;
-  jump(next);
-}
-
-/*
- COLON:
- WORD ( Read the next word into the stack as a string )
-   CREATE ( Create a new dictionary entry named after the string )
-   ’ DOCOL , ( Compile the address of DOCOL )
-   [ ( Enter compilation mode )
-     EXIT
-
-SEMICOLON: IMMEDIATE
-     ’ EXIT , ( Compile the address of EXIT at the end )
-     ] ( Exit compilation mode )
-   EXIT
-*/
-
