@@ -51,7 +51,10 @@ forth_primitive("emit", 4, f_normal, emit, "( n -- )", {
 forth_primitive("word", 4, f_normal, word, "( -- )", {
     save_state();
     {
-      parse_word();
+      uint8_t idx = ctx->vars->tib_idx;
+      uint8_t len = ctx->vars->tib_len;
+      char   *tib = ctx->vars->tib_str;
+      parse_word(idx, len, tib);
     }
     load_state();
     jump(next);
@@ -60,7 +63,10 @@ forth_primitive("word", 4, f_normal, word, "( -- )", {
 forth_primitive("number", 6, f_normal, number, "( c n -- n )", {
     save_state();
     {
-      parse_number();
+      uint8_t base = (uint8_t)ctx->vars->base;
+      uint8_t len = (uint8_t)forth_pop();
+      char *addr = (char *)forth_pop();
+      parse_number(base, len, addr);
     }
     load_state();
     jump(next);

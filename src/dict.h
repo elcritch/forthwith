@@ -9,8 +9,8 @@ fword_t* alloc_dict();
 char* alloc_string(uint8_t len);
 
 // Use data stack
-void parse_word();
-void parse_number();
+void parse_word(uint8_t idx, uint8_t len, char *tib);
+void parse_number(uint8_t base, uint8_t len, char *addr);
 
 // Helpers 
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name);

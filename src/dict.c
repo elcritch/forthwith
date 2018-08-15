@@ -80,10 +80,8 @@ static bool is_whitespace(char c) {
   return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
-void parse_word() {
-  uint8_t idx = ctx->vars->tib_idx;
-  char   *tib = ctx->vars->tib_str;
-  uint8_t len = ctx->vars->tib_len;
+
+void parse_word(uint8_t idx, uint8_t len, char *tib) {
 
   uint8_t word_start;
   char c;
@@ -124,10 +122,8 @@ word:
 
 const char num_basis[] = "-0123456789ABCDEF";
 
-void parse_number() {
-  uint8_t base = (uint8_t)ctx->vars->base;
-  uint8_t len = (uint8_t)forth_pop();
-  char *addr = (char *)forth_pop();
+
+void parse_number(uint8_t base, uint8_t len, char *addr) {
 
   uint8_t idx = 0;
   bool err = false;
