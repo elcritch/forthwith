@@ -73,6 +73,20 @@ void test_basic(void) {
   printf("... stack done\n");
   TEST_CHECK_(x == 9, "Expected %d, got %d", 9, x);
 
+  x = forth_pop();
+  cnt = forth_count();
+  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_ERR_STACKUNDERFLOW);
+
+  forth_clear();
+
+  TEST_CHECK_(forth_errno() == FW_OK,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_OK);
 
 }
 

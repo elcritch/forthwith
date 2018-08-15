@@ -80,6 +80,14 @@ fcell_t forth_count() {
   return ctx->psp->head - ctx->psp->base;
 }
 
+fcell_t forth_errno() {
+  return ctx->vars->error;
+}
+
+void forth_clear() {
+  ctx->vars->error = FW_OK;
+}
+
 __fw_noinline__ 
 int forth_bootstrap(fw_ctx_t* ctx) {
 
