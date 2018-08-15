@@ -51,43 +51,38 @@ typedef struct forth_word fword_t;
 struct forth_word {
   fword_t *prev;
   uint8_t meta;
-  uint8_t len;
   fcell_xt *body;
-  char name
+  uint8_t len;
+  char name;
 };
 
-struct forthwith_context { /**< FORTH environment */
+struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
   fcell_t *psp;
   fcell_t *rsp;
-  fcell_t *u;
   fcell_t ip;
   fcell_t tos;
   fcell_t w;
-
-  /* fcell_t *psp_head; */
-	fcell_t *psp_base;
-  fcell_t  psp_size;
-
-  /* IP_t *rsp_head; */
-	IP_t *rsp_base;
-  fcell_t rsp_size;
-
-	IP_t *user_base;
-  fcell_t user_size;
-
-	fword_t *dict_base;
-  fword_t *dict_head;
-  fcell_t  dict_size;
-  uint8_t immediate;
 };
 
-#ifndef FW_CONTEXT_T
-typedef struct forthwith_context fw_ctx_t;
-#endif
+struct forthwith_vars { /**< FORTH environment */
+  fcell_t base;
+  fcell_t immediate;
+};
+
+struct forthwith_stack { /**< FORTH environment */
+  fcell_t *head;
+  fcell_t *base;
+  fcell_t size;
+};
 
 /// Global Forthwith Context
-extern struct forthwith_context *ctx;
+extern struct forthwith_context *ctx_regs;
+extern struct forthwith_vars *ctx_vars;
+extern struct forthwith_stack *ctx_psp;
+extern struct forthwith_stack *ctx_rsp;
+extern struct forthwith_stack *ctx_user;
+extern struct forthwith_stack *ctx_dict;
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);

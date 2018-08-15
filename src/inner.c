@@ -76,7 +76,7 @@ fw_call exits(FORTH_REGISTERS) {
 /* Quit inner interpreter */
 fw_call quits(FORTH_REGISTERS) {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
-  pushd(tos);
+  /* pushd(tos); */
   popr(ip);
   return;
 }

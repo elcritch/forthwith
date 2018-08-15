@@ -10,11 +10,6 @@
 #include <stdio.h>
 #include <string.h>
 
-fcell_xt xt_docolon = (fcell_xt)&docolon;
-fcell_xt xt_lit = (fcell_xt)&lit;
-fcell_xt xt_add = (fcell_xt)&add;
-fcell_xt xt_quits = (fcell_xt)&quits;
-
 extern fw_ctx_t *ctx;
 
 int main(int argc, char** argv) {
@@ -27,6 +22,9 @@ int main(int argc, char** argv) {
   printf("word: %p\n", dict_create(ctx, 5, "test3"));
 
   printf("find word: '%s' -> %p\n", "test1", find(ctx, 5, "test1"));
+
+  *variable_base0 = (IP_t) &xt_lit;
+  *variable_base1 = (IP_t) &base;
 
   IP_t* var1 = forth_alloc_var(ctx);
   IP_t* var2 = forth_alloc_var(ctx);
@@ -44,13 +42,14 @@ int main(int argc, char** argv) {
   printf("var6: %p\n", var6);
   printf("var7: %p\n", var7);
 
+
   *var1 = (IP_t) &xt_docolon;
   *var2 = (IP_t) &xt_lit;
   *var3 = (IP_t) 3;
   *var4 = (IP_t) &xt_lit;
   *var5 = (IP_t) 5;
   *var6 = (IP_t) &xt_add;
-  *var7 = (IP_t) &xt_quits;
+  *var7 = (IP_t) &xt_exits;
   /* *var2 = (IP_t) &xt_add; */
   /* *var3 = (IP_t) &xt_quits; */
 

@@ -2,7 +2,7 @@
 #include "forthwith.h"
 #include <stdint.h>
 
-forth_primitive("drop", 3, f_normal, "( n -- )",  {
+forth_primitive("drop", 4, f_normal, "( n -- )",  {
   popd(tos);
   jump(next);
 });
@@ -12,12 +12,25 @@ forth_primitive("dup", 3, f_normal, "( n -- n n )",  {
   jump(next);
 });
 
-forth_primitive("swap", 3, f_normal, "( x y -- x y )",  {
+forth_primitive("swap", 4, f_normal, "( x y -- x y )",  {
   /* X_t x; */
   copy_reg(x,tos);
   popd(tos);
   pushd(x);
   jump(next);
+});
+
+forth_primitive("rot", 3, f_normal, "( n1 n2 n3  ---  n2 n3 n1 )",  {
+    /* X_t x; */
+    copy_reg(c,tos);
+    popd(b);
+    popd(a);
+
+    pushd(b);
+    pushd(c);
+    copy_reg(tos,a);
+
+    jump(next);
 });
 
 forth_primitive("add", 3, f_normal, "( n n -- n )",  {
