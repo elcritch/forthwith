@@ -2,13 +2,6 @@
 
 #include "forthwith.h"
 
-/* fw_ctx_regs_t *ctx_regs; */
-/* fw_ctx_vars_t *ctx_vars; */
-/* fw_ctx_stack_t *ctx_psp; */
-/* fw_ctx_stack_t *ctx_rsp; */
-/* fw_ctx_stack_t *ctx_user; */
-/* fw_ctx_dict_stack_t *ctx_dict; */
-/* fw_ctx_str_stack_t *ctx_strings; */
 fw_ctx_t *ctx;
 
 // TODO: add to dict 
