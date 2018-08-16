@@ -6,6 +6,7 @@ fw_ctx_t *ctx = NULL;
 fw_ctx_stack_t *ctx_psp = NULL;
 
 // TODO: add to dict 
+/* fcell_xt xt_dovar = (fcell_xt)&dovar; */
 fcell_xt xt_dosys = (fcell_xt)&dosys;
 fcell_xt xt_docolon = (fcell_xt)&docolon;
 fcell_xt xt_lit = (fcell_xt)&lit;

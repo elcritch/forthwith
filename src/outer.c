@@ -9,7 +9,6 @@ forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
   jump(next);
 });
 
-
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
 forth_variable(STATE, 5, ctx, vars, $vars_offset_state, 0);
 
