@@ -168,7 +168,7 @@ void test_parsing(void)
   TEST_CHECK_(basic_comments + expi == x, "Expected %p, got %p", basic_comments + expi, x);
   TEST_CHECK_(strncmp(basic_comments + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", basic_comments + expi, x);
 
-  printf("\n <<<<<<<<<<<<<< parsing test: leftover stacK: \n");
+  printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
     printf("remaining stack: %ld (%p)\n", x, (void*)x);
