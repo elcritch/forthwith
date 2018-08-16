@@ -191,7 +191,7 @@ void test_parsing(void)
   // test nums -- part two //
   tib_idx = parse_word(tib_idx, strlen(tib), tib);
 
-  x = forth_pop(); expl = 1;
+  x = forth_pop(); expl = 2;
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop(); expi = 2;
@@ -205,7 +205,7 @@ void test_parsing(void)
   x = forth_pop(); expl = 1;
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
-  x = forth_pop(); expi = 4;
+  x = forth_pop(); expi = 5;
   TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
   TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
 
