@@ -56,12 +56,14 @@
 #define reg_b %r12
 #define reg_c %r13
 
-#define reg_rdi %rdi
-#define reg_rsi %rsi
-#define reg_rdx %rdx
-#define reg_rcx %rcx
-#define reg_rax %rax
-#define reg_rip %rip
+#define reg_xrdi %rdi
+#define reg_xrsi %rsi
+#define reg_xrdx %rdx
+#define reg_xrcx %rcx
+#define reg_xrax %rax
+#define reg_xrip %rip
+#define reg_xrbp %rbp
+#define reg_xrsp %rsp
 
 /* %rdi %rsi %rdx %rcx %r8 %r9 %r10 */
 /* gdb> info register rdi rsi rdx rcx r8 r9 r10 */
@@ -151,34 +153,41 @@
 #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
-#define save_psp(reg)                          \
-  load_const(rax, $ctx_psp);              \
-  store_addr_off(rax, reg, $stack_offset_head) 
+#define save_psp(reg) \
+  load_const(xrax, $ctx_psp);                   \
+  store_addr_off(xrax, reg, $stack_offset_head) 
 
-#define load_psp(reg)                \
-  load_const(rax, $ctx_psp); \
-  load_addr_off(reg, rax, $stack_offset_head) // sizeof one word
+#define load_psp(reg) \
+  load_const(xrax, $ctx_psp);                   \
+  load_addr_off(reg, xrax, $stack_offset_head) // sizeof one word
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that... 
 /* #define save_state() */
 /* #define load_state() */
-
-#define save_state()                                \
-  load_const(rax, $ctx_regs);                  \
-  store_addr_off(rax, psp, $ctx_regs_of_psp);     \
-  store_addr_off(rax, rsp, $ctx_regs_of_rsp);     \
-  store_addr_off(rax, ip, $ctx_regs_of_ip);      \
-  store_addr_off(rax, tos, $ctx_regs_of_tos);    \
-  store_addr_off(rax, w, $ctx_regs_of_w)
+#define call(label) \
+  __asm__("pushq", "%ebp");                     \
+  copy_reg(xrpb, xrsp);                         \
+  __asm__("call", label);                       \
+  copy_reg(xrsp, xrpb);                         \
+  __asm__("popq", "%ebp");
 
 
-#define load_state()                                \
-  load_const(rax, $ctx_regs);                       \
-  load_addr_off(psp, rax, $ctx_regs_of_psp);      \
-  load_addr_off(rsp, rax, $ctx_regs_of_rsp);      \
-  load_addr_off(ip, rax, $ctx_regs_of_ip);       \
-  load_addr_off(tos, rax, $ctx_regs_of_tos);     \
-  load_addr_off(w, rax, $ctx_regs_of_w)
+#define save_state() \
+  load_const(xrax, $ctx_regs);                    \
+  store_addr_off(xrax, psp, $ctx_regs_of_psp);    \
+  store_addr_off(xrax, rsp, $ctx_regs_of_rsp);    \
+  store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
+  store_addr_off(xrax, tos, $ctx_regs_of_tos);    \
+  store_addr_off(xrax, w, $ctx_regs_of_w)
+
+
+#define load_state() \
+  load_const(xrax, $ctx_regs);                    \
+  load_addr_off(psp, xrax, $ctx_regs_of_psp);     \
+  load_addr_off(rsp, xrax, $ctx_regs_of_rsp);     \
+  load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
+  load_addr_off(tos, xrax, $ctx_regs_of_tos);     \
+  load_addr_off(w, xrax, $ctx_regs_of_w)
 
 #endif // __HEADER_IMPL_X86__
 
