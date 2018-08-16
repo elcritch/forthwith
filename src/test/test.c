@@ -119,7 +119,7 @@ void test_parsing(void)
 
   uint8_t tib_idx = 0;
   char *tib = basic_words;
-  uint8_t expi = 0, expl = 0; // expected index, expected length, resp.
+  int expi = 0, expl = 0; // expected index, expected length, resp.
 
   // test baisc -- part one //
   tib = basic_words;
@@ -166,7 +166,7 @@ void test_parsing(void)
 
 
   // test nums -- part one // 
-  char *basic_add = "1 -A +";
+  char *basic_add = "1 -F +";
   tib = basic_add;
 
   tib_idx = parse_word(0, strlen(tib), tib);
@@ -178,7 +178,7 @@ void test_parsing(void)
   TEST_CHECK_(tib + expi == y, "Expected %p, got %p", tib + expi, y);
   TEST_CHECK_(strncmp(tib + expi, y, expl) == 0, "Expected %p, got %p", tib + expi, y);
 
-  // test nums -- part two.a //
+  // test nums -- part one.a //
   parse_number(16, x, y);
 
   x = forth_pop(); expl = 0;
@@ -194,9 +194,18 @@ void test_parsing(void)
   x = forth_pop(); expl = 2;
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
-  x = forth_pop(); expi = 2;
-  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
-  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
+  y = forth_pop(); expi = 2;
+  TEST_CHECK_(tib + expi == y, "Expected %p, got %p", tib + expi, y);
+  TEST_CHECK_(strncmp(tib + expi, y, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, y);
+
+  // test nums -- part two.a //
+  parse_number(16, x, y);
+
+  x = forth_pop(); expl = 0;
+  TEST_CHECK_(expl == x, "Expected %d, got %d", expl, x);
+
+  y = forth_pop(); expi = -0xF;
+  TEST_CHECK_(expi == y, "Expected %d, got %d", expi, y);
 
 
   // test nums -- part three //

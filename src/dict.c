@@ -125,12 +125,13 @@ word:
   return idx;
 }
 
-const char num_basis[] = "-0123456789ABCDEF";
+const char num_basis[] = "0123456789ABCDEF";
 
 
 void parse_number(uint8_t base, uint8_t len, char *addr) {
 
   uint8_t idx = 0;
+  fcell_t neg = 1;
   bool err = false;
   fcell_t num = 0;
   char c;
@@ -139,9 +140,14 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
     c = addr[idx++];
     err = true;
 
+    if (c == '-') {
+      neg = -1;
+      continue;
+    }
+
     for (int i = 0; i < base; i++) {
       if (num_basis[i] == c) {
-        num = base * num + i - 1;
+        num = base * num + i;
         err = false;
         break;
       }
@@ -150,6 +156,6 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
     if (err) break;
   }
 
-  forth_push(num);
+  forth_push(neg * num);
   forth_push((uint8_t)err);
 }
