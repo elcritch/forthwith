@@ -97,9 +97,9 @@ void test_parsing(void)
   fcell_t x, y;
 
   // test dictionary 
-  fword_t *a = dict_create(F_NORMAL, 5, "test2");
-  fword_t *b = dict_create(F_NORMAL, 5, "test1");
-  fword_t *c = dict_create(F_NORMAL, 4, "tst3");
+  fword_t *a = dict_create(F_NORMAL, 5, "test2", NULL);
+  fword_t *b = dict_create(F_NORMAL, 5, "test1", NULL);
+  fword_t *c = dict_create(F_NORMAL, 4, "tst3", NULL);
 
   fword_t *item1 = dict_find(5, "test1");
   fword_t *item2 = dict_find(4, "tst3");

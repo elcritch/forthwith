@@ -38,10 +38,11 @@ char* alloc_string(uint8_t len) {
   return curr_string;
 }
 
-fword_t* dict_create(uint8_t mask, uint8_t len, char *name) {
+fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 
   fword_t *entry = alloc_dict();
 
+  entry->body = body;
   entry->meta = mask;
   entry->len = len;
   entry->name = alloc_string(len);

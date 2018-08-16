@@ -11,9 +11,9 @@ int main(int argc, char** argv) {
   forth_init();
   forth_bootstrap(ctx);
 
-  printf("word: %p\n", dict_create(F_NORMAL, 5, "test2"));
-  printf("word: %p\n", dict_create(F_NORMAL, 5, "test1"));
-  printf("word: %p\n", dict_create(F_NORMAL, 5, "test3"));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test2", NULL));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test1", NULL));
+  printf("word: %p\n", dict_create(F_NORMAL, 5, "test3", NULL));
 
   printf("find word: '%s' -> %p\n", "test1", dict_find(5, "test1"));
 
