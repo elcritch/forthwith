@@ -1,7 +1,7 @@
 
 // #include "forthwith.h"
 
-forth_primitive("lit", 3, f_normal, lit, "( -- n)", {
+forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
   load_addr(x, ip); /* x = (fcell_t) *ip; */
   incr_reg(ip);
   pushd(tos);
@@ -34,21 +34,21 @@ forth_variable(BASE, 4, ctx, vars, $vars_offset_base, 10);
 /* /\* first free cell in the dictionary *\/ */
 /* forth_variable("dp", 1, ctx->dict_head, 0); */
 
-forth_primitive("key", 3, f_normal, key, "( -- n)", {
+forth_primitive("key", 3, F_NORMAL, key, "( -- n)", {
     pushd(tos);
     /* load_const(rax, $vars_offset_tib); */
     /* load_addr_off(x, tox, $ctx_offset_ip); */
     jump(next);
 });
 
-forth_primitive("emit", 4, f_normal, emit, "( n -- )", {
+forth_primitive("emit", 4, F_NORMAL, emit, "( n -- )", {
     /* load_const(x, $ctx_vars); */
     /* store_addr_off(x, tox, $ctx_offset_ip); */
     popd(tos);
     jump(next);
 });
 
-forth_primitive("word", 4, f_normal, word, "( -- )", {
+forth_primitive("word", 4, F_NORMAL, word, "( -- )", {
     save_state();
     {
       uint8_t idx = ctx->vars->tib_idx;
@@ -60,7 +60,7 @@ forth_primitive("word", 4, f_normal, word, "( -- )", {
     jump(next);
 });
 
-forth_primitive("number", 6, f_normal, number, "( c n -- n )", {
+forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", {
     save_state();
     {
       uint8_t base = (uint8_t)ctx->vars->base;
@@ -72,7 +72,7 @@ forth_primitive("number", 6, f_normal, number, "( c n -- n )", {
     jump(next);
 });
 
-forth_primitive("find", 4, f_normal, find, "( c n -- )", {
+forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", {
     save_state();
     {
       dict_find((uint8_t)forth_pop(), (char*)forth_pop());
@@ -81,73 +81,73 @@ forth_primitive("find", 4, f_normal, find, "( c n -- )", {
     jump(next);
 });
 
-forth_primitive(">CFA", 4, f_normal, cfa, "( p -- )", {
+forth_primitive(">CFA", 4, F_NORMAL, cfa, "( p -- )", {
     // ...
     jump(next);
 });
 
-forth_primitive(">DFA", 4, f_normal, dfa, "( p -- )", {
+forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", {
     // ...
     jump(next);
 });
 
-forth_primitive("create", 6, f_normal, create, "( p -- )", {
+forth_primitive("create", 6, F_NORMAL, create, "( p -- )", {
     // ...
     jump(next);
 });
 
-forth_primitive(",", 6, f_normal, comma, "( p -- )", {
+forth_primitive(",", 6, F_NORMAL, comma, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive("[", 6, f_normal, lbrac, "( p -- )", {
+forth_primitive("[", 6, F_NORMAL, lbrac, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive("]", 6, f_normal, rbrac, "( p -- )", {
+forth_primitive("]", 6, F_NORMAL, rbrac, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive(":", 6, f_normal, colon, "( p -- )", {
+forth_primitive(":", 6, F_NORMAL, colon, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_primitive(";", 6, f_immed, semicolon, "( p -- )", {
+forth_primitive(";", 6, F_IMMED, semicolon, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_colon("immed", 5, f_immed, immed, "( p -- )", {
+forth_colon("immed", 5, F_IMMED, immed, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_colon("hidden", 5, f_normal, hidden, "( p -- )", {
+forth_colon("hidden", 5, F_NORMAL, hidden, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_colon("hide", 5, f_normal, hide, "( p -- )", {
+forth_colon("hide", 5, F_NORMAL, hide, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_colon("'", 5, f_normal, tick, "( p -- )", {
+forth_colon("'", 5, F_NORMAL, tick, "( p -- )", {
     // ...
     jump(next);
   });
 
-forth_colon("interpret", 5, f_normal, tick, "( p -- )", {
+forth_colon("interpret", 5, F_NORMAL, tick, "( p -- )", {
     // ...
     jump(next);
   });
 
 /* create new var in user stack */
-forth_colon(",", 1, f_normal, comma, "( n -- )", {
+forth_colon(",", 1, F_NORMAL, comma, "( n -- )", {
   /* *user_here = (IP_t)tos; */
   /* user_here += sizeof(fcell_t*); */
   /* popd(tos); */
@@ -155,7 +155,7 @@ forth_colon(",", 1, f_normal, comma, "( n -- )", {
 });
 
 /* create new var in dict (?) */
-forth_colon("c,", 2, f_normal, char_comma, "( n -- )", {
+forth_colon("c,", 2, F_NORMAL, char_comma, "( n -- )", {
   /* *user_here = (IP_t)tos; */
   /* user_here += sizeof(fcell_t*); */
   /* popd(tos); */

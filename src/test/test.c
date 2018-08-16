@@ -64,7 +64,7 @@ void test_basic(void) {
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
 
-  fcell_t x;
+  fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
     printf("remaining stack: %ld\n", x);
@@ -130,19 +130,19 @@ void test_parsing(void)
   x = forth_pop();
   TEST_CHECK_(3 == x, "Expected %p, got %p", 3, x);
   x = forth_pop();
-  TEST_CHECK_(tib + 0 == x, "Expected %p, got %p", tib + 0, x);
-  TEST_CHECK_(strncmp(tib, x, 3) == 0, "Expected %p, got %p", tib + 0, x);
+  TEST_CHECK_(tib + 0 == (char*)x, "Expected %p, got %p", tib + 0, x);
+  TEST_CHECK_(strncmp(tib, (char*)x, 3) == 0, "Expected %p, got %p", tib + 0, x);
 
   tib_idx = parse_word(tib_idx, strlen(tib), tib);
 
   x = forth_pop();
   TEST_CHECK_(4 == x, "Expected %p, got %p", 3, x);
   x = forth_pop();
-  TEST_CHECK_(tib + 4 == x, "Expected %p, got %p", tib + 4, x);
-  TEST_CHECK_(strncmp(tib + 4, x, 4) == 0, "Expected %p, got %p", tib + 4, x);
+  TEST_CHECK_(tib + 4 == (char*)x, "Expected %p, got %p", tib + 4, x);
+  TEST_CHECK_(strncmp(tib + 4, (char*)x, 4) == 0, "Expected %p, got %p", tib + 4, x);
 
   // test comments -- part one // 
-  char *basic_comments = "dup (test) drop \ eol comment";
+  char *basic_comments = "dup (test) drop \\ eol comment";
   tib = basic_comments;
 
   tib_idx = parse_word(0, strlen(tib), tib);
@@ -151,8 +151,8 @@ void test_parsing(void)
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop(); expi = 0;
-  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
-  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(tib + expi == (char*)x, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(strncmp(tib + expi, (char*)x, expl) == 0, "Expected %p, got %p", tib + expi, x);
 
   // test comments -- part two //
   tib_idx = parse_word(tib_idx, strlen(tib), tib);
@@ -161,8 +161,8 @@ void test_parsing(void)
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop(); expi = 11;
-  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
-  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
+  TEST_CHECK_(tib + expi == (char*)x, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(strncmp(tib + expi, (char*)x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
 
 
   // test nums -- part one // 
@@ -175,11 +175,11 @@ void test_parsing(void)
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   y = forth_pop(); expi = 0;
-  TEST_CHECK_(tib + expi == y, "Expected %p, got %p", tib + expi, y);
-  TEST_CHECK_(strncmp(tib + expi, y, expl) == 0, "Expected %p, got %p", tib + expi, y);
+  TEST_CHECK_(tib + expi == (char*)y, "Expected %p, got %p", tib + expi, y);
+  TEST_CHECK_(strncmp(tib + expi, (char*)y, expl) == 0, "Expected %p, got %p", tib + expi, y);
 
   // test nums -- part one.a //
-  parse_number(16, x, y);
+  parse_number(16, x, (char*)y);
 
   x = forth_pop(); expl = 0;
   TEST_CHECK_(expl == x, "Expected %d, got %d", expl, x);
@@ -195,11 +195,11 @@ void test_parsing(void)
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   y = forth_pop(); expi = 2;
-  TEST_CHECK_(tib + expi == y, "Expected %p, got %p", tib + expi, y);
-  TEST_CHECK_(strncmp(tib + expi, y, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, y);
+  TEST_CHECK_(tib + expi == (char*)y, "Expected %p, got %p", tib + expi, y);
+  TEST_CHECK_(strncmp(tib + expi, (char*)y, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, y);
 
   // test nums -- part two.a //
-  parse_number(16, x, y);
+  parse_number(16, x, (char*)y);
 
   x = forth_pop(); expl = 0;
   TEST_CHECK_(expl == x, "Expected %d, got %d", expl, x);
@@ -215,11 +215,11 @@ void test_parsing(void)
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop(); expi = 5;
-  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
-  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
+  TEST_CHECK_(tib + expi == (char*)x, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(strncmp(tib + expi, (char*)x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
 
 
-  char *basic_colon = ": inc 1 + ";
+  /* char *basic_colon = ": inc 1 + "; */
 
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {

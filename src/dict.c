@@ -112,10 +112,6 @@ word:
   while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
-  printf("idx: i: %u ws: %u of %u\n", idx, word_start, len);
-  printf("   ---  %p\n", tib[word_start]);
-  printf("   ---  %s\n", tib + word_start);
-
   // push word addr
   char *word_head = tib + word_start;
   forth_push( (fcell_t)word_head );

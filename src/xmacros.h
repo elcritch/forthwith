@@ -26,10 +26,8 @@
 
 #ifdef FORTH_DEFINE_DICT_ENTRIES
 
-#define forth_primitive(name_str, name_len, mask, func, _comment, BLOCK) 
-  {
-    fword_t *prim = dict_create(mask, name_len, name_str, body);
-  }
+#define forth_primitive(name_str, name_len, mask, func, _comment, _BLOCK) \
+  dict_create(mask, name_len, name_str, (fcell_xt*)&func);
 
 
 #endif // FORTH_DEFINE_DICT_ENTRIES

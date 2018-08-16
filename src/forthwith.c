@@ -6,6 +6,7 @@ fw_ctx_t *ctx = NULL;
 fw_ctx_stack_t *ctx_psp = NULL;
 
 // TODO: add to dict 
+fcell_xt xt_dosys = (fcell_xt)&dosys;
 fcell_xt xt_docolon = (fcell_xt)&docolon;
 fcell_xt xt_lit = (fcell_xt)&lit;
 fcell_xt xt_add = (fcell_xt)&add;
@@ -93,6 +94,13 @@ int forth_bootstrap(fw_ctx_t* ctx) {
 
   ctx->vars->base = 16; // hex default
 
+  #define FORTH_DEFINE_DICT_ENTRIES
+    #include "xmacros.h"
+    #include "inner.c"
+    #include "outer.c"
+    #include "core.c"
+  #undef FORTH_DEFINE_DICT_ENTRIES
+
   return -1;
 }
 
@@ -119,7 +127,7 @@ int forth_eval(fcell_xt *instr) {
 
   forth_pop();
   ctx->vars->error = FW_OK;
-  printf("\nforth_eval: %d\n\n", forth_count());
+  printf("\nforth_eval: %ld \n\n", forth_count());
 
   forth_push(/* w */ (fcell_t)instr);
   /* forth_push(/\* tos *\/ tos); */
@@ -135,7 +143,7 @@ int forth_eval(fcell_xt *instr) {
   printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);
   printf("context: instr: %p \n", instr);
   printf("context: ctx: %p \n", ctx);
-  printf("\nforth_eval: %d\n\n", forth_count());
+  printf("\nforth_eval: %ld \n\n", forth_count());
   forth_exec(0, p, 0, 0, 0, 0);
 
   /* ctx.psp->head = p; */

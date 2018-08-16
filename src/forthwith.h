@@ -191,10 +191,12 @@ extern int forth_init();
 extern int forth_bootstrap(fw_ctx_t* ctx);
 extern fw_call forth_exec(FORTH_REGISTERS);
 extern int forth_eval(fcell_xt *instr);
+extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
 
 
+extern fcell_xt xt_dosys;
 extern fcell_xt xt_docolon;
 extern fcell_xt xt_lit;
 extern fcell_xt xt_add;
