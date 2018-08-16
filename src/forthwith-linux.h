@@ -165,11 +165,11 @@
 /* #define save_state() */
 /* #define load_state() */
 #define call(label) \
-  __asm__("pushq", reg_xrbp);                   \
-  copy_reg(xrpb, xrsp);                         \
-  __asm__("call", label);                       \
-  copy_reg(xrsp, xrpb);                         \
-  __asm__("popq", reg_xrbp);
+  __asm__("pushq %rbp");                        \
+  copy_reg(xrbp, xrsp);                         \
+  __asm__("call " # label);                     \
+  copy_reg(xrsp, xrbp);                         \
+  __asm__("popq %rbp");
 
 
 #define save_state() \

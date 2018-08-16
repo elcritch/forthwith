@@ -55,7 +55,7 @@ fw_call dowords() {
 }
 forth_primitive("word", 4, F_NORMAL, word, "( -- )", {
     save_state();
-    dowords();
+    call(dowords);
     load_state();
     jump(next);
 });
@@ -68,7 +68,7 @@ fw_call donumber() {
 }
 forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", {
     save_state();
-    donumber();
+    call(donumber);
     load_state();
     jump(next);
 });
@@ -78,7 +78,7 @@ fw_call dofind() {
 }
 forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", {
     save_state();
-    dofind();
+    call(dofind);
     load_state();
     jump(next);
 });
