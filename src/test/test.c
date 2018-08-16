@@ -218,7 +218,6 @@ void test_parsing(void)
   TEST_CHECK_(tib + expi == (char*)x, "Expected %p, got %p", tib + expi, x);
   TEST_CHECK_(strncmp(tib + expi, (char*)x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
 
-
   /* char *basic_colon = ": inc 1 + "; */
 
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");

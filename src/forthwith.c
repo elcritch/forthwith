@@ -110,14 +110,16 @@ __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
 
   // ...
-  load_psp(psp);
+  /* load_psp(psp); */
+  load_state();
+
   /* copy_reg(psp, tos); */
 
-  popd(u);
-  popd(rsp);
-  popd(ip);
-  popd(x);
-  popd(w);
+  /* popd(u); */
+  /* popd(rsp); */
+  /* popd(ip); */
+  /* popd(x); */
+  /* popd(w); */
   popd(tos);
 
   /* __jump(next); */
@@ -131,15 +133,21 @@ int forth_eval(fcell_xt *instr) {
   ctx->vars->error = FW_OK;
   printf("\nforth_eval: %lld \n\n", forth_count());
 
-  forth_push(/* w */ (fcell_t)instr);
-  /* forth_push(/\* tos *\/ tos); */
-  forth_push(/* x */ 0);
-  forth_push(/* ip */ (fcell_t)instr+8);
-  forth_push(/* rsp */ (fcell_t)ctx->rsp->head);
-  forth_push(/* u */ (fcell_t)ctx);
-
+  /* forth_push(/\* w *\/ (fcell_t)instr); */
+  /* /\* forth_push(/\\* tos *\\/ tos); *\/ */
+  /* forth_push(/\* x *\/ 0); */
+  /* forth_push(/\* ip *\/ (fcell_t)instr+8); */
+  /* forth_push(/\* rsp *\/ (fcell_t)ctx->rsp->head); */
+  /* forth_push(/\* u *\/ (fcell_t)ctx); */
 
   fcell_t p = (fcell_t)ctx->psp->head;
+
+  ctx->regs->w = /* w */ (fcell_t)instr;
+  ctx->regs->ip = /* ip */ (fcell_t)instr+8;
+  ctx->regs->psp = /* w */ ctx->psp->head;
+  ctx->regs->rsp = /* rsp */ ctx->rsp->head;
+  ctx->regs->u = /* u */ ctx->user->head;
+
 
   printf("context: psp.head: %p (%p)\n", ctx->psp->head, ctx->psp->base);
   printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);

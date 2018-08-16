@@ -33,6 +33,7 @@
 #define $ctx_regs_of_ip  "16"
 #define $ctx_regs_of_tos "24"
 #define $ctx_regs_of_w   "32"
+#define $ctx_regs_of_u   "40"
 
 #define $stack_offset_head  "0"
 #define $stack_offset_base  "8"
@@ -187,6 +188,7 @@
   store_addr_off(xrax, rsp, $ctx_regs_of_rsp);    \
   store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
   store_addr_off(xrax, tos, $ctx_regs_of_tos);    \
+  store_addr_off(xrax, u, $ctx_regs_of_u);        \
   store_addr_off(xrax, w, $ctx_regs_of_w)
 
 
@@ -196,6 +198,7 @@
   load_addr_off(rsp, xrax, $ctx_regs_of_rsp);     \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
   load_addr_off(tos, xrax, $ctx_regs_of_tos);     \
+  load_addr_off(u, xrax, $ctx_regs_of_u);         \
   load_addr_off(w, xrax, $ctx_regs_of_w)
 
 #endif // __HEADER_IMPL_X86__
