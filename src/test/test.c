@@ -166,7 +166,7 @@ void test_parsing(void)
 
 
   // test nums -- part one // 
-  char *basic_add = "1 A +";
+  char *basic_add = "1 -A +";
   tib = basic_add;
 
   tib_idx = parse_word(0, strlen(tib), tib);
