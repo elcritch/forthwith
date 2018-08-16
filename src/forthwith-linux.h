@@ -175,31 +175,34 @@
 /* #define save_state() */
 /* #define load_state() */
 #define call(label) \
-  __asm__("pushq %rbp");                        \
-  copy_reg(xrbp, xrsp);                         \
-  __call(label);                                \
-  copy_reg(xrsp, xrbp);                         \
-  __asm__("popq %rbp");
+  __call(label);
 
+#define call_reg(reg)                            \
+  __call(reg_ ## label);
+
+#define ret(reg)                                 \
+  __asm__("ret");
+
+/* copy_reg(xrbp, xrsp);                         \ */
+/* copy_reg(xrsp, xrbp);                         \ */
 
 #define save_state() \
   load_const(xrax, $ctx_regs);                    \
+  pushd(tos);                                     \
   store_addr_off(xrax, psp, $ctx_regs_of_psp);    \
   store_addr_off(xrax, rsp, $ctx_regs_of_rsp);    \
   store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
-  store_addr_off(xrax, tos, $ctx_regs_of_tos);    \
   store_addr_off(xrax, u, $ctx_regs_of_u);        \
   store_addr_off(xrax, w, $ctx_regs_of_w)
-
 
 #define load_state() \
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(psp, xrax, $ctx_regs_of_psp);     \
   load_addr_off(rsp, xrax, $ctx_regs_of_rsp);     \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
-  load_addr_off(tos, xrax, $ctx_regs_of_tos);     \
   load_addr_off(u, xrax, $ctx_regs_of_u);         \
-  load_addr_off(w, xrax, $ctx_regs_of_w)
+  load_addr_off(w, xrax, $ctx_regs_of_w); \
+  pushd(tos)
 
 #endif // __HEADER_IMPL_X86__
 

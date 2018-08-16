@@ -33,49 +33,22 @@ forth_variable(BASE, 4, ctx, vars, $vars_offset_base, 10);
 /* /\* first free cell in the dictionary *\/ */
 /* forth_variable("dp", 1, ctx->dict_head, 0); */
 
-forth_primitive("key", 3, F_NORMAL, key, "( -- n)", {
-    pushd(tos);
-    /* load_const(rax, $vars_offset_tib); */
-    /* load_addr_off(x, tox, $ctx_offset_ip); */
-    jump(next);
-});
+/* forth_primitive("key", 3, F_NORMAL, key, "( -- n)", { */
+/*     load_const(x, dokey); */
+/*     call(docall00); */
+/*     jump(next); */
+/* }); */
 
-forth_primitive("emit", 4, F_NORMAL, emit, "( n -- )", {
-    /* load_const(x, $ctx_vars); */
-    /* store_addr_off(x, tox, $ctx_offset_ip); */
-    popd(tos);
-    jump(next);
-});
-
-forth_primitive("word", 4, F_NORMAL, word, "( -- )", {
-    save_state();
-    call(dowords);
-    load_state();
-    jump(next);
-}
-  );
-
-forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", {
-    save_state();
-    call(donumber);
-    load_state();
-    jump(next);
-});
-
-forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", {
-    save_state();
-    call(dofind);
-    load_state();
-    jump(next);
-});
-
-forth_primitive(">CFA", 4, F_NORMAL, cfa, "( p -- )", {
-    // ...
-    jump(next);
-});
+forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
+forth_primitive("word", 4, F_NORMAL, word, "( -- )", doword);
+forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
+forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", dofind);
+forth_primitive(">CFA", 4, F_NORMAL, cfa, "( p -- )", docfa);
 
 forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", {
-    // ...
+    save_state();
+    call(dodfa);
+    load_state();
     jump(next);
 });
 

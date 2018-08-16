@@ -81,6 +81,15 @@ fw_call quits(FORTH_REGISTERS) {
   return;
 }
 
+/* perform c calls to 00 calls `void (*func)()` */
+/* saves ForthWith regs to data stack */
+fw_call docall00() {
+  popd(x); // load jump addr
+  save_state();
+  call_reg(x);
+  load_state();
+}
+
 fw_call docall() {
   fcell_t addr = forth_pop();
   fcell_t params = forth_pop();

@@ -44,16 +44,7 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp
 
-/* extern fw_call fcallend(FORTH_REGISTERS); */
-
 typedef struct forth_word fword_t;
-struct forth_word {
-  fword_t *prev;
-  fcell_xt *body;
-  uint8_t meta;
-  uint8_t len;
-  char *name;
-};
 
 typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
@@ -126,11 +117,6 @@ int forth_init();
 #define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
   fw_call cname(FORTH_REGISTERS)
 
-#ifndef FORTHWITH_NO_CHECKS
-#define check(cond, err_code) if (cond) { x = err_code; jump(abort); }
-#else
-#define check(cond, err_code)
-#endif // FORTHWITH_NO_CHECKS
 
 enum forthwith_the_errors {
   FW_OK,
@@ -139,46 +125,6 @@ enum forthwith_the_errors {
 };
 
 typedef enum forthwith_the_errors fw_error_t;
-
-#define pushd(reg)                                       \
-  check(psp < (ctx->psp_base + ctx->psp_size), FW_ERR_STACKOVERFLOW); \
-  _pushd(reg)
-  /* *(psp++) = reg; */
-
-#define popd(reg) \
-  check(psp > ctx->psp_base, FW_ERR_STACKUNDERFLOW);  \
-  _popd(reg)
-  /* reg = *(psp--); */
-
-#define pushr(reg)                                         \
-  check(rsp > (ctx->rsp_base + ctx->rsp_size), FW_ERR_STACKOVERFLOW); \
-  _pushr(reg)
-  /* *(rsp++) = reg; */
-
-#define popr(reg)                                              \
-  check(rsp < ctx->rsp_base, FW_ERR_STACKUNDERFLOW);    \
-  _popr(reg)
-  /* reg = *(rsp--); */
-
-#ifdef FASTR_USERSTACK_IN_REGISTER
-  #define user_here u
-  #define pushu(reg)                                                     \
-    check(u > (ctx->rsp_base + ctx->rsp_size), FW_ERR_STACK_OVERFLOW); \
-    _pushu(reg)
-    /* *(u++) = reg; */
-  #define popu(reg)                                           \
-    check(u < (ctx->user_base), FW_ERR_STACK_UNDERFLOW); \
-    _popu(reg)
-    /* reg = *(u--); */
-#else
-#define user_here  ctx->user_head
-  #define pushu(reg)                                                      \
-    check(ctx->user_head > (ctx->user_base + ctx->user_size), FW_ERR_STACK_OVERFLOW); \
-    *(ctx->user_head++) = reg;
-  #define popu(reg)                                           \
-    check(ctx->user_head < (ctx->user_base), FW_ERR_STACK_UNDERFLOW); \
-    *(ctx->user_head--) = reg;
-#endif // FASTR_NO_USERSTACK_OPS
 
 
 #define F_NORMAL 0x00

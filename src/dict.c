@@ -165,22 +165,9 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
   forth_push((uint8_t)err);
 }
 
-
-fw_call dowords() {
-  uint8_t idx = ctx->vars->tib_idx;
-  uint8_t len = ctx->vars->tib_len;
-  char   *tib = ctx->vars->tib_str;
-  parse_word(idx, len, tib);
-}
-
-fw_call donumber() {
-  uint8_t base = (uint8_t)ctx->vars->base;
-  uint8_t len = (uint8_t)forth_pop();
-  char *addr = (char *)forth_pop();
-  parse_number(base, len, addr);
-}
-
 fw_call dofind() {
-  dict_find((uint8_t)forth_pop(), (char*)forth_pop());
+  fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
+  forth_push(entry);
+  forth_push(entry == NULL ? 0 : 1);
 }
 
