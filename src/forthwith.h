@@ -111,6 +111,8 @@ typedef struct forthwith_context { /**< FORTH environment */
 /* extern fw_ctx_dict_stack_t *ctx_dict; */
 /* extern fw_ctx_str_stack_t *ctx_strings; */
 extern fw_ctx_t *ctx;
+extern fw_ctx_stack_t *ctx_psp;
+extern fw_ctx_regs_t *ctx_regs;
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);

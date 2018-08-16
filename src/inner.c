@@ -81,7 +81,6 @@ fw_call quits(FORTH_REGISTERS) {
   return;
 }
 
-/* void __attribute__ ((noinline)) docall() { */
 fw_call docall() {
   fcell_t addr = forth_pop();
   fcell_t params = forth_pop();
@@ -123,7 +122,7 @@ fw_call docall() {
   /* primitive: `docall` {count} {addr} {ret}  ( -- addr ) : execute varaddr */
   fw_call dosys(FORTH_REGISTERS) {
     pushd(tos);
-    docall();
+    jump(docall);
     popd(tos);
 
     jump(next);

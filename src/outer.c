@@ -47,35 +47,38 @@ forth_primitive("emit", 4, F_NORMAL, emit, "( n -- )", {
     jump(next);
 });
 
+fw_call dowords() {
+  uint8_t idx = ctx->vars->tib_idx;
+  uint8_t len = ctx->vars->tib_len;
+  char   *tib = ctx->vars->tib_str;
+  parse_word(idx, len, tib);
+}
 forth_primitive("word", 4, F_NORMAL, word, "( -- )", {
     save_state();
-    {
-      uint8_t idx = ctx->vars->tib_idx;
-      uint8_t len = ctx->vars->tib_len;
-      char   *tib = ctx->vars->tib_str;
-      parse_word(idx, len, tib);
-    }
+    jump(dowords);
     load_state();
     jump(next);
 });
 
+fw_call donumber() {
+  uint8_t base = (uint8_t)ctx->vars->base;
+  uint8_t len = (uint8_t)forth_pop();
+  char *addr = (char *)forth_pop();
+  parse_number(base, len, addr);
+}
 forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", {
     save_state();
-    {
-      uint8_t base = (uint8_t)ctx->vars->base;
-      uint8_t len = (uint8_t)forth_pop();
-      char *addr = (char *)forth_pop();
-      parse_number(base, len, addr);
-    }
+    jump(donumber);
     load_state();
     jump(next);
 });
 
+fw_call dofind() {
+  dict_find((uint8_t)forth_pop(), (char*)forth_pop());
+}
 forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", {
     save_state();
-    {
-      dict_find((uint8_t)forth_pop(), (char*)forth_pop());
-    }
+    jump(dofind);
     load_state();
     jump(next);
 });

@@ -4,6 +4,7 @@
 
 fw_ctx_t *ctx = NULL;
 fw_ctx_stack_t *ctx_psp = NULL;
+fw_ctx_regs_t *ctx_regs = NULL;
 
 // TODO: add to dict 
 /* fcell_xt xt_dovar = (fcell_xt)&dovar; */
@@ -31,6 +32,7 @@ int forth_init() {
   ctx->strings = calloc(1, sizeof(fw_ctx_str_stack_t));
 
   ctx_psp = ctx->psp;
+  ctx_regs = ctx->regs;
 
   // Configure default stack sizes
   ctx->psp->size =  128 * sizeof(fw_ctx_stack_t);

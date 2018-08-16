@@ -5,15 +5,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+__fw_noinline__ 
 fcell_xt *forth_alloc_var_len(fcell_t len) {
   // this incrs in multipls of IP_t size
   ctx->user->head = ctx->user->head + len;
   return (fcell_xt *)ctx->user->head;
 }
+
+__fw_noinline__ 
 fcell_xt *forth_alloc_var() {
   return (fcell_xt *)forth_alloc_var_len(1);
 }
 
+__fw_noinline__ 
 fword_t* alloc_dict() {
   // 'allocate' new entry in dict head
   fword_t* curr_dict = ctx->dict->head;
@@ -26,6 +30,7 @@ fword_t* alloc_dict() {
   return curr_dict;
 }
 
+__fw_noinline__ 
 char* alloc_string(uint8_t len) {
   // 'allocate' new entry in dict head
   char* curr_string = ctx->strings->head;
@@ -38,6 +43,7 @@ char* alloc_string(uint8_t len) {
   return curr_string;
 }
 
+__fw_noinline__ 
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 
   fword_t *entry = alloc_dict();
@@ -53,6 +59,7 @@ fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 }
 
 /* FIND (name? – address). */
+__fw_noinline__ 
 fword_t* dict_find(int8_t len, char *name) {
   // Load dictionary pointer
   fword_t* word_ptr = ctx->dict->head;
@@ -81,6 +88,7 @@ static bool is_whitespace(char c) {
   return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
+__fw_noinline__ 
 uint8_t parse_word(uint8_t idx, uint8_t len, char *tib) {
 
   uint8_t word_start;
@@ -124,7 +132,7 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-
+__fw_noinline__ 
 void parse_number(uint8_t base, uint8_t len, char *addr) {
 
   uint8_t idx = 0;
