@@ -119,54 +119,54 @@ void test_parsing(void)
   int cnt = forth_count();
   TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
 
-  /* char tib_buff[128] = {0}; */
-
   uint8_t tib_idx = 0;
-  /* uint8_t tib_len = 0; */
-  /* char *tib_str = basic_words; */
+  char *tib = basic_words;
+  uint8_t expi = 0, expl = 0; // expected index, expected length, resp.
 
-  printf("parse test: basic_words: %p -- %s\n", basic_words, basic_words);
+  // test baisc -- part one //
+  tib = basic_words;
+  printf("parse test: tib: %p -- %s\n", tib, tib);
 
-  tib_idx = parse_word(0, strlen(basic_words), basic_words);
+  tib_idx = parse_word(0, strlen(tib), tib);
 
   x = forth_pop();
   TEST_CHECK_(3 == x, "Expected %p, got %p", 3, x);
   x = forth_pop();
-  TEST_CHECK_(basic_words + 0 == x, "Expected %p, got %p", basic_words + 0, x);
-  TEST_CHECK_(strncmp(basic_words, x, 3) == 0, "Expected %p, got %p", basic_words + 0, x);
+  TEST_CHECK_(tib + 0 == x, "Expected %p, got %p", tib + 0, x);
+  TEST_CHECK_(strncmp(tib, x, 3) == 0, "Expected %p, got %p", tib + 0, x);
 
-  tib_idx = parse_word(tib_idx, strlen(basic_words), basic_words);
+  tib_idx = parse_word(tib_idx, strlen(tib), tib);
 
   x = forth_pop();
   TEST_CHECK_(4 == x, "Expected %p, got %p", 3, x);
   x = forth_pop();
-  TEST_CHECK_(basic_words + 4 == x, "Expected %p, got %p", basic_words + 4, x);
-  TEST_CHECK_(strncmp(basic_words + 4, x, 4) == 0, "Expected %p, got %p", basic_words + 4, x);
+  TEST_CHECK_(tib + 4 == x, "Expected %p, got %p", tib + 4, x);
+  TEST_CHECK_(strncmp(tib + 4, x, 4) == 0, "Expected %p, got %p", tib + 4, x);
 
-  // test comments -- part one
+  // test comments -- part one // 
   char *basic_comments = "dup (test) drop \ eol comment";
-  uint8_t expi = 0, expl = 0;
+  tib = basic_comments;
 
-  tib_idx = parse_word(0, strlen(basic_comments), basic_comments);
+  tib_idx = parse_word(0, strlen(tib), tib);
 
   x = forth_pop();
   expl = 3; TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop();
   expi = 0;
-  TEST_CHECK_(basic_comments + expi == x, "Expected %p, got %p", basic_comments + expi, x);
-  TEST_CHECK_(strncmp(basic_comments + expi, x, expl) == 0, "Expected %p, got %p", basic_comments + expi, x);
+  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected %p, got %p", tib + expi, x);
 
-  // test comments -- part two
-  tib_idx = parse_word(tib_idx, strlen(basic_comments), basic_comments);
+  // test comments -- part two //
+  tib_idx = parse_word(tib_idx, strlen(tib), tib);
 
   x = forth_pop();
   expl = 4; TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
   x = forth_pop();
   expi = 11;
-  TEST_CHECK_(basic_comments + expi == x, "Expected %p, got %p", basic_comments + expi, x);
-  TEST_CHECK_(strncmp(basic_comments + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", basic_comments + expi, x);
+  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
+  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, x);
 
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
