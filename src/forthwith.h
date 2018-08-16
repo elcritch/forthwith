@@ -30,8 +30,8 @@ typedef  fcell_t  X_t;  // Scratch Register
 /* typedef  struct forthwith_context*  Ctx_t;  // Scratch Register */
 
 /* Forth "native C" function return type */
-#define __fw_noinline__ __attribute__ ((noinline)) 
-#define fw_call void __attribute__ ((noinline)) 
+#define __fw_noinline__ __attribute__ ((noinline))
+#define fw_call void __attribute__ ((noinline))
 
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS \

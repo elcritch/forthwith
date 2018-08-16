@@ -53,10 +53,10 @@ int main(int argc, char** argv) {
 
   forth_eval(var1);
 
-  printf("Done...\nerror: %ld\n", ctx->vars->error);
+  printf("Done...\nerror: %d\n", (int)ctx->vars->error);
   fcell_t x;
   while ((x = forth_pop(ctx)) && (ctx->vars->error == 0)) {
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
   printf("... stack done\n");
 

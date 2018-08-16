@@ -10,9 +10,15 @@
 #define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $8
 
+#ifdef __MACH__
+#define $ctx _ctx(%rip)
+#define $ctx_psp _ctx_psp(%rip)
+#define $ctx_regs _ctx_regs(%rip)
+#else
 #define $ctx ctx(%rip)
 #define $ctx_psp ctx_psp(%rip)
 #define $ctx_regs ctx_regs(%rip)
+#endif
 
 #define $ctx_of_regs "0"
 #define $ctx_of_vars "8"
@@ -89,10 +95,13 @@
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #ifdef __MACH__
 #define __jump(r) __asm__("jmp " "_" #r)
+#define __call(r) __asm__("call " "_" #r)
 #elif __linux__
 #define __jump(r) __asm__("jmp " #r)
+#define __call(r) __asm__("call " #r)
 #else
 #define __jump(r) __asm__("jmp " #r)
+#define __call(r) __asm__("call " #r)
 #endif
 
 #define _jump(r) __jump( r )
@@ -155,19 +164,19 @@
 
 #define save_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_offset_head) 
+  store_addr_off(xrax, reg, $stack_offset_head)
 
 #define load_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
   load_addr_off(reg, xrax, $stack_offset_head) // sizeof one word
 
-// improvement: load "reg file" from mem, not sure if x86_64 does that... 
+// improvement: load "reg file" from mem, not sure if x86_64 does that...
 /* #define save_state() */
 /* #define load_state() */
 #define call(label) \
   __asm__("pushq %rbp");                        \
   copy_reg(xrbp, xrsp);                         \
-  __asm__("call " # label);                     \
+  __call(label);                                \
   copy_reg(xrsp, xrbp);                         \
   __asm__("popq %rbp");
 

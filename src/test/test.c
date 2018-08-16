@@ -56,7 +56,7 @@ void test_basic(void) {
 
   forth_eval(var1);
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
@@ -67,7 +67,7 @@ void test_basic(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
 
   printf("... stack done\n");
@@ -224,7 +224,7 @@ void test_parsing(void)
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld (%p)\n", x, (void*)x);
+    printf("remaining stack: %lld (%p)\n", x, (void*)x);
   }
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");

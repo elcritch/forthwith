@@ -6,7 +6,7 @@ fw_ctx_t *ctx = NULL;
 fw_ctx_stack_t *ctx_psp = NULL;
 fw_ctx_regs_t *ctx_regs = NULL;
 
-// TODO: add to dict 
+// TODO: add to dict
 /* fcell_xt xt_dovar = (fcell_xt)&dovar; */
 fcell_xt xt_dosys = (fcell_xt)&dosys;
 fcell_xt xt_docolon = (fcell_xt)&docolon;
@@ -18,7 +18,7 @@ fcell_xt xt_exits = (fcell_xt)&exits;
 #include <stdio.h>
 #include <string.h>
 
-__fw_noinline__ 
+__fw_noinline__
 int forth_init() {
   // Initialize contexts
   ctx = calloc(1, sizeof(fw_ctx_t));
@@ -56,7 +56,7 @@ int forth_init() {
   return -1;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 int forth_push(fcell_t val) {
   if (ctx->psp->head <= ctx->psp->base + ctx->psp->size) {
     *ctx->psp->head = val;
@@ -67,7 +67,7 @@ int forth_push(fcell_t val) {
     return -1;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fcell_t forth_pop() {
   if (ctx->psp->head > ctx->psp->base) {
     ctx->psp->head--;
@@ -79,7 +79,7 @@ fcell_t forth_pop() {
   }
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fcell_t forth_count() {
   return ctx->psp->head - ctx->psp->base;
 }
@@ -92,14 +92,13 @@ void forth_clear() {
   ctx->vars->error = FW_OK;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 int forth_bootstrap(fw_ctx_t* ctx) {
 
   ctx->vars->base = 16; // hex default
 
   #define FORTH_DEFINE_DICT_ENTRIES
     #include "xmacros.h"
-    #include "inner.c"
     #include "outer.c"
     #include "core.c"
   #undef FORTH_DEFINE_DICT_ENTRIES
@@ -107,7 +106,7 @@ int forth_bootstrap(fw_ctx_t* ctx) {
   return -1;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
 
   // ...
@@ -125,12 +124,12 @@ fw_call forth_exec(FORTH_REGISTERS) {
   jump(next);
 }
 
-__fw_noinline__ 
+__fw_noinline__
 int forth_eval(fcell_xt *instr) {
 
   forth_pop();
   ctx->vars->error = FW_OK;
-  printf("\nforth_eval: %ld \n\n", forth_count());
+  printf("\nforth_eval: %lld \n\n", forth_count());
 
   forth_push(/* w */ (fcell_t)instr);
   /* forth_push(/\* tos *\/ tos); */
@@ -146,7 +145,7 @@ int forth_eval(fcell_xt *instr) {
   printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);
   printf("context: instr: %p \n", instr);
   printf("context: ctx: %p \n", ctx);
-  printf("\nforth_eval: %ld \n\n", forth_count());
+  printf("\nforth_eval: %lld \n\n", forth_count());
   forth_exec(0, p, 0, 0, 0, 0);
 
   /* ctx.psp->head = p; */

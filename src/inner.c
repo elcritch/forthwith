@@ -2,9 +2,9 @@
 
 #include "forthwith.h"
 
-fw_call fcallend(FORTH_REGISTERS) {
-  _asm_jump();
-}
+/* fw_call fcallend(FORTH_REGISTERS) { */
+/*   _asm_jump(); */
+/* } */
 
 /*
   Example of Direct Threaded vs Indirect Threaded code:

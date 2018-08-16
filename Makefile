@@ -16,7 +16,7 @@ _build/forthwith-linux: _build/forthwith-main.o _build/forthwith-linux.o
 	$(CC) -o $@.S $(CFLAGS) -S $^
 	$(CC) -o $@ $(CFLAGS) $^
 
-_build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o 
+_build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ $^
 
 _build/%.o: src/%.c
