@@ -143,6 +143,7 @@ void test_parsing(void)
   TEST_CHECK_(basic_words + 4 == x, "Expected %p, got %p", basic_words + 4, x);
   TEST_CHECK_(strncmp(basic_words + 4, x, 4) == 0, "Expected %p, got %p", basic_words + 4, x);
 
+  // test comments -- part one
   char *basic_comments = "dup (test) drop \ eol comment";
   uint8_t expi = 0, expl = 0;
 
@@ -155,6 +156,17 @@ void test_parsing(void)
   expi = 0;
   TEST_CHECK_(basic_comments + expi == x, "Expected %p, got %p", basic_comments + expi, x);
   TEST_CHECK_(strncmp(basic_comments + expi, x, expl) == 0, "Expected %p, got %p", basic_comments + expi, x);
+
+  // test comments -- part two
+  tib_idx = parse_word(tib_idx, strlen(basic_comments), basic_comments);
+
+  x = forth_pop();
+  expl = 4; TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
+
+  x = forth_pop();
+  expi = 11;
+  TEST_CHECK_(basic_comments + expi == x, "Expected %p, got %p", basic_comments + expi, x);
+  TEST_CHECK_(strncmp(basic_comments + expi, x, expl) == 0, "Expected `%4s`, got `%4s`", basic_comments + expi, x);
 
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stacK: \n");
   while (forth_count()) {

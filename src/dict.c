@@ -100,6 +100,7 @@ whitespace:
   if (c == '(') {
     while ((c = tib[idx]) && ((idx < len) & (c != ')')))
       idx++;
+    idx++;
     goto whitespace;
   }
 
