@@ -94,7 +94,7 @@ void test_basic(void) {
 void test_parsing(void)
 {
   test_setup();
-  fcell_t x;
+  fcell_t x, y;
 
   // test dictionary 
   fword_t *a = dict_create(F_NORMAL, 5, "test2");
@@ -166,7 +166,7 @@ void test_parsing(void)
 
 
   // test nums -- part one // 
-  char *basic_add = "1 2 +";
+  char *basic_add = "1 A +";
   tib = basic_add;
 
   tib_idx = parse_word(0, strlen(tib), tib);
@@ -174,9 +174,19 @@ void test_parsing(void)
   x = forth_pop(); expl = 1;
   TEST_CHECK_(expl == x, "Expected %p, got %p", expl, x);
 
-  x = forth_pop(); expi = 0;
-  TEST_CHECK_(tib + expi == x, "Expected %p, got %p", tib + expi, x);
-  TEST_CHECK_(strncmp(tib + expi, x, expl) == 0, "Expected %p, got %p", tib + expi, x);
+  y = forth_pop(); expi = 0;
+  TEST_CHECK_(tib + expi == y, "Expected %p, got %p", tib + expi, y);
+  TEST_CHECK_(strncmp(tib + expi, y, expl) == 0, "Expected %p, got %p", tib + expi, y);
+
+  // test nums -- part two.a //
+  parse_number(16, x, y);
+
+  x = forth_pop(); expl = 0;
+  TEST_CHECK_(expl == x, "Expected %d, got %d", expl, x);
+
+  y = forth_pop(); expi = 1;
+  TEST_CHECK_(expi == y, "Expected %d, got %d", expi, y);
+
 
   // test nums -- part two //
   tib_idx = parse_word(tib_idx, strlen(tib), tib);

@@ -135,8 +135,10 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
   fcell_t num = 0;
   char c;
 
-  while ((c = addr[idx]) && ((idx < len) & !err)) {
+  while (idx < len) {
+    c = addr[idx++];
     err = true;
+
     for (int i = 0; i < base; i++) {
       if (num_basis[i] == c) {
         num = base * num + i - 1;
@@ -144,6 +146,8 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
         break;
       }
     }
+
+    if (err) break;
   }
 
   forth_push(num);

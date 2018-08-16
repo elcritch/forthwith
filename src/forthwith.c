@@ -91,6 +91,8 @@ void forth_clear() {
 __fw_noinline__ 
 int forth_bootstrap(fw_ctx_t* ctx) {
 
+  ctx->vars->base = 16; // hex default
+
   return -1;
 }
 
