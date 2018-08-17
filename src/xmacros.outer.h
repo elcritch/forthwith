@@ -86,42 +86,10 @@ forth_core("litstr", 6, F_NORMAL, litstr, "", {
     pushd(ip); // push the address of the start of the string 
     pushd(x); // push length on the stack 
     add_reg(ip, x); // skip past the string 
-    add_const(ip, $3); // skip past the string 
 
-    load_const(x, $3); // load const 
-    not_reg(x); // load const 
+    add_const(ip, $3); // but round up to next 4 byte boundary 
+    load_const(x, $3);
+    not_reg(x);
     and_reg(ip, x);
-
-    /* andl $~3,%esi */
   });
 
-/* defcode "LITSTRING",9,,LITSTRING */
-	/* lodsl			// get the length of the string */
-	/* push %esi		// push the address of the start of the string */
-	/* push %eax		// push it on the stack */
-	/* addl %eax,%esi		// skip past the string */
- 	/* addl $3,%esi		// but round up to next 4 byte boundary */
-	/* andl $~3,%esi */
-	/* NEXT */
-
-
-/* forth_colon("interpret", 5, F_NORMAL, tick, "( p -- )", { */
-/*     // ... */
-/*     jump(next); */
-/*   }); */
-
-/* /\* create new var in user stack *\/ */
-/* forth_colon(",", 1, F_NORMAL, comma, "( n -- )", { */
-/*   /\* *user_here = (IP_t)tos; *\/ */
-/*   /\* user_here += sizeof(fcell_t*); *\/ */
-/*   /\* popd(tos); *\/ */
-/*   jump(next); */
-/* }); */
-
-/* /\* create new var in dict (?) *\/ */
-/* forth_colon("c,", 2, F_NORMAL, char_comma, "( n -- )", { */
-/*   /\* *user_here = (IP_t)tos; *\/ */
-/*   /\* user_here += sizeof(fcell_t*); *\/ */
-/*   /\* popd(tos); *\/ */
-/*   jump(next); */
-/* }); */
