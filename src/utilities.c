@@ -5,11 +5,11 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-void parse_word(uint8_t idx, uint8_t len, char *tib,
-               fcell_t *word_start, fcell_t *word_stop);
+fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
+                   char **word_start, char **word_stop);
 
-void parse_number(uint8_t base, uint8_t len, char *addr,
-                 fcell_t *number, fcell_t *err);
+fcell_t parse_number(uint8_t base, uint8_t len, char *addr,
+                     fcell_t *number, fcell_t *err);
 
 
 __fw_noinline__
@@ -41,7 +41,7 @@ fw_call doword() {
   fcell_t word_start;
   fcell_t word_stop;
 
-  parse_word(idx, len, tib, &word_start, &word_stop);
+  parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
 
 
   forth_push( (fcell_t)word_start);
@@ -69,8 +69,8 @@ static bool is_whitespace(char c) {
   return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
-void parse_word(uint8_t idx, uint8_t len, char *tib,
-                   fcell_t *word_start, fcell_t *word_stop)
+fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
+                   char **word_start, char **word_stop)
 {
   uint8_t start;
   char c;
@@ -104,15 +104,16 @@ word:
   while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
-  *word_start = (fcell_t)(tib + start);
-  *word_stop = (fcell_t)(tib + idx);
-  /* return word_stop - word_start; */
+  printf("PARSE_WORD: %d:%d %d \n", start, idx, len);
+  *word_start = (tib + start);
+  *word_stop = (tib + idx);
+  return idx - start;
 }
 
 const char num_basis[] = "0123456789ABCDEF";
 
-void parse_number(uint8_t base, uint8_t len, char *tib,
-                 fcell_t *number, fcell_t *errcode)
+fcell_t parse_number(uint8_t base, uint8_t len, char *tib,
+                     fcell_t *number, fcell_t *errcode)
 {
   uint8_t idx = 0;
   fcell_t neg = 1;
@@ -142,6 +143,8 @@ void parse_number(uint8_t base, uint8_t len, char *tib,
 
   *number = num * neg;
   *errcode = err;
+
+  return idx;
 }
 
 #endif // #ifndef FORTH_OVERRIDE_PARSERS

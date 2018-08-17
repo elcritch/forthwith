@@ -120,8 +120,8 @@ void test_parsing(void)
   fcell_t tib_idx = 0;
   int expi = 0, expl = 0; // expected index, expected length, resp.
 
-  fcell_t ws;
-  fcell_t we;
+  char *ws;
+  char *we;
   fcell_t wl;
 
   fcell_t number;
@@ -131,20 +131,21 @@ void test_parsing(void)
   tib = basic_words;
   printf("parse test: tib: %p -- %s\n", tib, tib);
 
-  parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  wl = we - ws; tib_idx = tib_idx + wl;
+  wl = parse_word(tib_idx, strlen(tib), tib, &ws, &we);
+   tib_idx = tib_idx + wl;
 
   expl = 3; expi = 0; /* x = forth_pop(); */
   TEST_CHECK_(expl == wl, "Expected %p, got %p", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
-  parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  wl = we - ws; tib_idx = tib_idx + wl;
+  wl = parse_word(tib_idx, strlen(tib), tib, &ws, &we);
+  tib_idx = tib_idx + wl;
 
-  TEST_CHECK_(4 == wl, "Expected %lld, got %lld", 3, wl);
-  TEST_CHECK_(tib + 4 == (char*)ws, "Expected %p, got %p", tib + 4, ws);
-  TEST_CHECK_(strncmp(tib + 4, (char*)ws, 4) == 0, "Expected %p, got %p", tib + 4, ws);
+  expl = 4; expi = 4;
+  TEST_CHECK_(expl == wl, "Expected %ld, got %ld", expl, wl);
+  TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
+  TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
   // test comments -- part one // 
   char *basic_comments = "dup (test) drop \\ eol comment";
@@ -199,7 +200,8 @@ void test_parsing(void)
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, ws);
 
   // test nums -- part two.a //
-  parse_number(16, wl, (char*)ws, &number, &errcode);
+  wl = parse_number(16, wl, (char*)ws, &number, &errcode);
+  tib_idx = tib_idx + wl;
 
   expl = 0; expi = -0xF;
   TEST_CHECK_(expl == errcode, "Expected %d, got %d", expl, errcode);
@@ -207,13 +209,13 @@ void test_parsing(void)
 
 
   // test nums -- part three //
-  parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  wl = we - ws; tib_idx = tib_idx + wl;
+  wl = parse_word(tib_idx, strlen(tib), tib, &ws, &we);
+  tib_idx = tib_idx + wl;
 
   expl = 1; expi = 5;
   TEST_CHECK_(expl == wl, "Expected %p, got %p", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
-  TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, ws);
+  TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%1s`, got `%1s`", tib + expi, ws);
 
   /* char *basic_colon = ": inc 1 + "; */
   fcell_t x;
