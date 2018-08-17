@@ -28,7 +28,7 @@
 #undef forth_docall
 #endif
 
-#define FW(n) (fcell_xt) xt_ ## n
+#define XT(n) (fcell_xt) xt_ ## n
 
 // ================================================================== //
 // FORTH_DEFINE_PRIMITIVES

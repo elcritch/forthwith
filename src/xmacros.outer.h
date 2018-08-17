@@ -17,6 +17,7 @@ forth_docall("create", 4, F_NORMAL, create, "( n -- )", docreate);
 forth_docall(",", 4, F_NORMAL, comma, "( n -- )", docomma);
 forth_docall("[", 4, F_IMMED, lbrac, "( n -- )", dolbrac);
 forth_docall("]", 4, F_NORMAL, rbrac, "( n -- )", dorbrac);
+forth_docall("xmask", 4, F_NORMAL, xmask, "( n -- )", doxmask);
 
 forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
 forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
@@ -25,19 +26,20 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa);
 
-/* forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", dodfa); */
-
-
 forth_word(":", 6, F_NORMAL, colon, "( p -- )",
-      xt_word,
-      FW(create),
-      FW(lit), FW(docolon), FW(comma),
+      XT(word), // Get the name of the new word
+      XT(create), // CREATE the dictionary entry / header
+      XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
+      XT(rbrac), // Go into compile mode.
+      XT(exits), // Return from the function.
       );
 
 forth_word(";", 6, F_NORMAL, semicolon, "( p -- )", 
-      FW(lit), FW(exits), FW(comma)
+      XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
+      XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word 
+      XT(lbrac), // Go back to IMMEDIATE mode.
+      XT(exits), // Return from the function.
       );
-
 
 /* forth_colon("immed", 5, F_IMMED, immed, "( p -- )", { */
 /*     // ... */

@@ -71,7 +71,7 @@ fword_t* dict_find(int8_t len, char *name) {
           break;
       }
       // word found
-      if (i == len)
+      if (i == len && !(word_ptr->meta & F_HIDDEN))
         return word_ptr;
     }
 

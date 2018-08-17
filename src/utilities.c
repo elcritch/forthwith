@@ -20,9 +20,13 @@ void docreate() {
 // ( n -- ) {*user} 
 __fw_noinline__
 void docomma() {
-  fcell_t val = forth_pop();
-  fcell_t* here = ctx->user->head;
-  *here = val;
+  *ctx->user->head = forth_pop();
+}
+
+// ( n -- ) {*user} 
+__fw_noinline__
+void doxmask() {
+  ctx->dict->head->meta ^= forth_pop();
 }
 
 // ( -- ) {*var->state}

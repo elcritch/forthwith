@@ -28,7 +28,6 @@ typedef  fcell_t  X_t;  // Scratch Register
 #define fw_call void __attribute__ ((noinline))
 
 /* Define C params... compilers vary in which registers they use */
-/* X_t   x,              \ */
 #define FORTH_REGISTERS \
   TOS_t tos,            \
   W_t   w,              \
@@ -127,11 +126,10 @@ enum forthwith_the_states {
   COMPILE_MODE,
 };
 
-#define F_NORMAL 0x00
-#define F_IMMED 0x80
-#define F_HIDDEN 0x20
-
-
+#define F_NORMAL 0x0
+#define F_IMMED  0x2
+#define F_HIDDEN 0x4
+#define F_OTHER  0x8
 
 extern fcell_t forth_pop();
 extern int forth_push(fcell_t val);
