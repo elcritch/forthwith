@@ -104,7 +104,6 @@ word:
   while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
-  printf("PARSE_WORD: %d:%d %d \n", start, idx, len);
   *word_start = (tib + start);
   *word_stop = (tib + idx);
   return idx - start;
