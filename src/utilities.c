@@ -12,13 +12,13 @@ void parse_number(uint8_t base, uint8_t len, char *addr,
                  fcell_t *number, fcell_t *err);
 
 
-__fw_noinline__ 
+__fw_noinline__
 fw_call docfa() {
   fword_t *entry = (fword_t*)forth_pop();
   forth_push((fcell_t)entry->body);
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fw_call doemit() {
   char c = (char)forth_pop();
 
@@ -33,7 +33,7 @@ fw_call doemit() {
   }
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fw_call doword() {
   uint8_t idx = ctx->vars->tib_idx;
   uint8_t len = ctx->vars->tib_len;
@@ -49,7 +49,7 @@ fw_call doword() {
   ctx->vars->tib_idx = word_start - (fcell_t)tib;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fw_call donumber() {
   fcell_t err = 0;
   uint8_t base = (uint8_t)ctx->vars->base;

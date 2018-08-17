@@ -34,13 +34,15 @@ typedef  fcell_t  X_t;  // Scratch Register
 #define fw_call void __attribute__ ((noinline))
 
 /* Define C params... compilers vary in which registers they use */
+/* X_t   x,              \ */
 #define FORTH_REGISTERS \
-  X_t   x,              \
   TOS_t tos,            \
   W_t   w,              \
   IP_t  ip,             \
   PSP_t psp,            \
-  RSP_t rsp
+  PSP_t bpsp,           \
+  RSP_t rsp,            \
+  RSP_t brsp
 
 /* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 
@@ -105,6 +107,7 @@ typedef struct forthwith_context { /**< FORTH environment */
 /* extern fw_ctx_str_stack_t *ctx_strings; */
 extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
+extern fw_ctx_stack_t *ctx_rsp;
 extern fw_ctx_regs_t *ctx_regs;
 
 typedef fcell_t (*forthwith_call_0)();

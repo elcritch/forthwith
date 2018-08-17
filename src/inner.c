@@ -84,10 +84,17 @@ fw_call quits(FORTH_REGISTERS) {
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */
 fw_call docall00(FORTH_REGISTERS) {
-  popd(x); // load jump addr
+  /* popd(x); // load jump addr */
   save_state();
-  call_reg(x);
+  call_reg(tos);
   load_state();
+}
+
+/* perform c calls to 00 calls `void (*func)()` */
+/* saves ForthWith regs to data stack */
+fw_call doabortsof(FORTH_REGISTERS) {
+  load_const(tos, $2);
+  exit(2);
 }
 
 fw_call docall() {

@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-#define FORTHWITH_NO_CHECKS
+/* #define FORTHWITH_NO_CHECKS */
 
 #define $word_sz $8
 #define $word_max $0xFFFFFFFFFFFFFFFF
@@ -58,8 +58,8 @@
 #define reg_x   %rdx
 #define reg_ip  %rcx
 #define reg_psp %r8
-#define reg_rsp %r9
-#define reg_bpsp %r10
+#define reg_bpsp %r9
+#define reg_rsp %r10
 #define reg_brsp %r11
 #define reg_a %r12
 #define reg_b %r13
@@ -213,7 +213,7 @@
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
   load_addr_off(w, xrax, $ctx_regs_of_w); \
-  pushd(tos)
+  popd(tos)
 
 #endif // __HEADER_IMPL_X86__
 
