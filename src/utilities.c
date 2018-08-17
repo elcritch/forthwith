@@ -174,7 +174,7 @@ fcell_t parse_number(uint8_t len, char *tib,
   fcell_t num = 0;
 
   // Check for 0x hex prefix, elide if found
-  if (tib[0] == '0' && tib[1] == 'x')
+  if (len >= 2 && tib[0] == '0' && tib[1] == 'x')
     idx += 2;
 
   while (idx < len) {
