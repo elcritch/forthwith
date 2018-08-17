@@ -167,7 +167,7 @@ void parse_number(uint8_t base, uint8_t len, char *addr) {
 
 fw_call dofind() {
   fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
-  forth_push(entry);
+  forth_push((fcell_t)entry);
   forth_push(entry == NULL ? 0 : 1);
 }
 

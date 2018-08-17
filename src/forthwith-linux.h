@@ -11,13 +11,15 @@
 #define $word_ptr_sz $8
 
 #ifdef __MACH__
-#define $ctx _ctx(%rip)
-#define $ctx_psp _ctx_psp(%rip)
-#define $ctx_regs _ctx_regs(%rip)
+#define $ctx _ctx(%rip) 
+#define $ctx_psp _ctx_psp(%rip) 
+#define $ctx_rsp _ctx_rsp(%rip) 
+#define $ctx_regs _ctx_regs(%rip) 
 #else
-#define $ctx ctx(%rip)
-#define $ctx_psp ctx_psp(%rip)
-#define $ctx_regs ctx_regs(%rip)
+#define $ctx ctx(%rip) 
+#define $ctx_psp ctx_psp(%rip) 
+#define $ctx_rsp ctx_rsp(%rip) 
+#define $ctx_regs ctx_regs(%rip) 
 #endif
 
 #define $ctx_of_regs "0"
@@ -28,22 +30,22 @@
 #define $ctx_of_dict "40"
 #define $ctx_of_strs "48"
 
-#define $ctx_regs_of_psp "0"
-#define $ctx_regs_of_rsp "8"
+/* #define $ctx_regs_of_psp "0" */
+/* #define $ctx_regs_of_rsp "8" */
 #define $ctx_regs_of_ip  "16"
 #define $ctx_regs_of_tos "24"
 #define $ctx_regs_of_w   "32"
 #define $ctx_regs_of_u   "40"
 
-#define $stack_offset_head  "0"
-#define $stack_offset_base  "8"
-#define $stack_offset_size  "16"
+#define $stack_of_head  "0"
+#define $stack_of_base  "8"
+#define $stack_of_size  "16"
 
-#define $vars_offset_base       "0"
-#define $vars_offset_state      "8"
-#define $vars_offset_tib_idx    "16"
-#define $vars_offset_tib_len    "24"
-#define $vars_offset_tib_str    "32"
+#define $vars_of_base       "0"
+#define $vars_of_state      "8"
+#define $vars_of_tib_idx    "16"
+#define $vars_of_tib_len    "24"
+#define $vars_of_tib_str    "32"
 
 // ========================================================================== //
 // Platform Registers 
@@ -116,8 +118,8 @@
 #define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
 #define _fw_asm_from_addr(c, x, y) _fw_asm(c, "(", x, ")", "", y, "")
 #define _fw_asm_const(c, x, y) _fw_asm(c, "", x, "", "", y, "")
-#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm(c, "", x, "", o "(", y, ")")
-#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm(c, o "(", x, ")", "", y, "")
+#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm(c, "", x, "", #o "(", y, ")")
+#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm(c, #o "(", x, ")", "", y, "")
 
 // ========================================================================== //
 // Standard "Definitions"
@@ -165,11 +167,11 @@
 
 #define save_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_offset_head)
+  store_addr_off(xrax, reg, $stack_of_head) // size 
 
 #define load_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
-  load_addr_off(reg, xrax, $stack_offset_head) // sizeof one word
+  load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 /* #define save_state() */
@@ -182,23 +184,27 @@
 
 #define ret(reg)                                 \
   __asm__("ret");
-
+ 
 /* copy_reg(xrbp, xrsp);                         \ */
 /* copy_reg(xrsp, xrbp);                         \ */
 
 #define save_state() \
-  load_const(xrax, $ctx_regs);                    \
   pushd(tos);                                     \
-  store_addr_off(xrax, psp, $ctx_regs_of_psp);    \
-  store_addr_off(xrax, rsp, $ctx_regs_of_rsp);    \
+  load_const(xrax, $ctx_psp);                    \
+  store_addr_off(xrax, psp, $stack_of_head);  \
+  load_const(xrax, $ctx_rsp);                    \
+  store_addr_off(xrax, rsp, $stack_of_head);  \
+  load_const(xrax, $ctx_regs);                    \
   store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
   store_addr_off(xrax, u, $ctx_regs_of_u);        \
   store_addr_off(xrax, w, $ctx_regs_of_w)
 
 #define load_state() \
+  load_const(xrax, $ctx_psp);                    \
+  load_addr_off(psp, xrax, $stack_of_head);     \
+  load_const(xrax, $ctx_rsp);                    \
+  load_addr_off(rsp, xrax, $stack_of_head);     \
   load_const(xrax, $ctx_regs);                    \
-  load_addr_off(psp, xrax, $ctx_regs_of_psp);     \
-  load_addr_off(rsp, xrax, $ctx_regs_of_rsp);     \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
   load_addr_off(u, xrax, $ctx_regs_of_u);         \
   load_addr_off(w, xrax, $ctx_regs_of_w); \

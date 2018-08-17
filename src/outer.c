@@ -10,19 +10,19 @@ forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
 });
 
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
-forth_variable(STATE, 5, ctx, vars, $vars_offset_state, 0);
+forth_variable(STATE, 5, ctx, vars, $vars_of_state, 0);
 
 /* 	HERE		Points to the next free byte of memory.  When compiling, compiled words go here. */
-forth_variable(HERE, 5, ctx, user, $stack_offset_head, 0);
+forth_variable(HERE, 5, ctx, user, $stack_of_head, 0);
 
 /* LATEST		Points to the latest (most recently defined) word in the dictionary. */
-forth_variable(LASTEST, 6, ctx, dict, $stack_offset_head, 0);
+forth_variable(LASTEST, 6, ctx, dict, $stack_of_head, 0);
 
 /* Stores the address of the top of the parameter stack. */
-forth_variable(S0, 2, ctx, psp, $stack_offset_base, 0);
+forth_variable(S0, 2, ctx, psp, $stack_of_base, 0);
 
 /* number base */
-forth_variable(BASE, 4, ctx, vars, $vars_offset_base, 10);
+forth_variable(BASE, 4, ctx, vars, $vars_of_base, 10);
 
 /* /\* next character in input buffer *\/ */
 /* forth_variable(">in", 3, to_in, 0); */
@@ -40,10 +40,10 @@ forth_variable(BASE, 4, ctx, vars, $vars_offset_base, 10);
 /* }); */
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
-forth_primitive("word", 4, F_NORMAL, word, "( -- )", doword);
-forth_primitive("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
-forth_primitive("find", 4, F_NORMAL, find, "( c n -- )", dofind);
-forth_primitive(">CFA", 4, F_NORMAL, cfa, "( p -- )", docfa);
+forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
+forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
+forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
+forth_docall(">CFA", 4, F_NORMAL, cfa, "( p -- )", docfa);
 
 forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", {
     save_state();
