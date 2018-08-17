@@ -13,7 +13,7 @@ void docreate() {
   char *cstr = (char*)forth_pop();
   fcell_xt *here = forth_alloc_var();
   /* *here = &xt_docolon; */
-  fword_t *entry = dict_create(F_NORMAL, len, cstr, here);
+  fword_t *entry = dict_create(F_HIDDEN, len, cstr, here);
   forth_push((fcell_t)entry);
 }
 

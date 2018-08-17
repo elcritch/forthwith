@@ -98,13 +98,6 @@ typedef struct forthwith_context { /**< FORTH environment */
 } fw_ctx_t;
 
 /// Global Forthwith Context
-/* extern fw_ctx_regs_t *ctx_regs; */
-/* extern fw_ctx_vars_t *ctx_vars; */
-/* extern fw_ctx_stack_t *ctx_psp; */
-/* extern fw_ctx_stack_t *ctx_rsp; */
-/* extern fw_ctx_stack_t *ctx_user; */
-/* extern fw_ctx_dict_stack_t *ctx_dict; */
-/* extern fw_ctx_str_stack_t *ctx_strings; */
 extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
 extern fw_ctx_stack_t *ctx_rsp;
@@ -114,6 +107,14 @@ typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
 typedef fcell_t (*forthwith_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
+
+struct forth_word {
+  fword_t *prev;
+  fcell_xt *body;
+  uint8_t meta;
+  uint8_t len;
+  char *name;
+};
 
 int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
