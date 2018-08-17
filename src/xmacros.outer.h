@@ -2,10 +2,14 @@
 // #include "forthwith.h"
 
 forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
-  load_addr(x, ip); /* x = (fcell_t) *ip; */
+  // load addr and move IP
+  load_addr(x, ip);
   incr_reg(ip);
+
+  // push on stack
   pushd(tos);
   copy_reg(tos, x);
+
   jump(next);
 });
 
@@ -41,25 +45,20 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
       XT(exits), // Return from the function.
       );
 
-/* forth_colon("immed", 5, F_IMMED, immed, "( p -- )", { */
-/*     // ... */
-/*     jump(next); */
-/*   }); */
+forth_word("immed", 5, F_NORMAL, immed, "( p -- )", 
+      XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word 
+      );
 
-/* forth_colon("hidden", 5, F_NORMAL, hidden, "( p -- )", { */
-/*     // ... */
-/*     jump(next); */
-/*   }); */
+forth_primitive("'", 1, F_NORMAL, tick, "( p -- )", {
+    // load addr and move IP
+    load_addr(x, ip);
+    incr_reg(ip);
 
-/* forth_colon("hide", 5, F_NORMAL, hide, "( p -- )", { */
-/*     // ... */
-/*     jump(next); */
-/*   }); */
-
-/* forth_colon("'", 5, F_NORMAL, tick, "( p -- )", { */
-/*     // ... */
-/*     jump(next); */
-/*   }); */
+    // Push value on stack
+    pushd(tos);
+    copy_reg(tos, x);
+    jump(next);
+  });
 
 /* forth_colon("interpret", 5, F_NORMAL, tick, "( p -- )", { */
 /*     // ... */
