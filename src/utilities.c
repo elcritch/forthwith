@@ -1,6 +1,5 @@
 
 #include "forthwith.h"
-#include "utilities.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -8,6 +7,7 @@
 
 
 // {*tib} {tib_idx++} ( -- cp n )
+__fw_noinline__
 void docreate() {
   fcell_t len = forth_pop();
   char *cstr = (char*)forth_pop();
@@ -18,6 +18,7 @@ void docreate() {
 }
 
 // ( n -- ) {*user} 
+__fw_noinline__
 void docomma() {
   fcell_t val = forth_pop();
   fcell_t* here = ctx->user->head;
@@ -25,16 +26,19 @@ void docomma() {
 }
 
 // ( -- ) {*var->state}
+__fw_noinline__
 void dolbrac() {
   ctx->vars->state = IMMEDIATE_MODE;
 }
 
 // ( -- ) {*var->state}
+__fw_noinline__
 void dorbrac() {
   ctx->vars->state = COMPILE_MODE;
 }
 
 // ( -- cp n ) {tib} {tib_idx++} 
+__fw_noinline__
 void doword() {
   uint8_t idx = ctx->vars->tib_idx;
   uint8_t len = ctx->vars->tib_len;
@@ -51,6 +55,7 @@ void doword() {
 }
 
 // ( cp n -- ep )
+__fw_noinline__
 void dofind() {
   fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
   forth_push((fcell_t)entry);
@@ -77,7 +82,6 @@ fw_call doemit() {
   } else {
   }
 }
-
 
 __fw_noinline__
 fw_call donumber() {
