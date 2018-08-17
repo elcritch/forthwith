@@ -4,6 +4,7 @@
 
 fw_ctx_t *ctx = NULL;
 fw_ctx_stack_t *ctx_psp = NULL;
+fw_ctx_stack_t *ctx_rsp = NULL;
 fw_ctx_regs_t *ctx_regs = NULL;
 
 // TODO: add to dict
@@ -32,6 +33,7 @@ int forth_init() {
   ctx->strings = calloc(1, sizeof(fw_ctx_str_stack_t));
 
   ctx_psp = ctx->psp;
+  ctx_rsp = ctx->rsp;
   ctx_regs = ctx->regs;
 
   // Configure default stack sizes
@@ -123,7 +125,9 @@ fw_call forth_exec(FORTH_REGISTERS) {
   popd(tos);
 
   /* __jump(next); */
-  jump(next);
+  call(next);
+
+  save_state();
 }
 
 __fw_noinline__
@@ -132,6 +136,9 @@ int forth_eval(fcell_xt *instr) {
   forth_pop();
   ctx->vars->error = FW_OK;
   printf("\nforth_eval: %lld \n\n", forth_count());
+
+  if (!forth_count())
+    forth_push(0);
 
   /* forth_push(/\* w *\/ (fcell_t)instr); */
   /* /\* forth_push(/\\* tos *\\/ tos); *\/ */
@@ -146,8 +153,8 @@ int forth_eval(fcell_xt *instr) {
   ctx->regs->ip = /* ip */ (fcell_t)instr+8;
   ctx->regs->psp = /* w */ ctx->psp->head;
   ctx->regs->rsp = /* rsp */ ctx->rsp->head;
-  ctx->regs->u = /* u */ ctx->user->head;
-
+  ctx->regs->usp = /* u */ ctx->user->head;
+  ctx->regs->bpsp = /* u */ ctx->psp->base;
 
   printf("context: psp.head: %p (%p)\n", ctx->psp->head, ctx->psp->base);
   printf("context: rsp.head: %p (%p)\n", ctx->rsp->head, ctx->rsp->base);

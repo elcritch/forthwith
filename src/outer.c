@@ -37,7 +37,7 @@ forth_variable(BASE, 4, ctx, vars, $vars_of_base, 10);
 /*     load_const(x, dokey); */
 /*     call(docall00); */
 /*     jump(next); */
-/* }); */
+/* })n; */
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
@@ -45,12 +45,7 @@ forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall(">CFA", 4, F_NORMAL, cfa, "( p -- )", docfa);
 
-forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", {
-    save_state();
-    call(dodfa);
-    load_state();
-    jump(next);
-});
+/* forth_primitive(">DFA", 4, F_NORMAL, dfa, "( p -- )", dodfa); */
 
 forth_primitive("create", 6, F_NORMAL, create, "( p -- )", {
     // ...

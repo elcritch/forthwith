@@ -23,10 +23,12 @@ fw_call doemit() {
   char c = (char)forth_pop();
 
   uint8_t idx = ctx->vars->tib_idx;
-  char   *tib = ctx->vars->tib_str;
   uint8_t len = ctx->vars->tib_len;
 
   if (idx < len) {
+    idx++;
+    ctx->vars->tib_str[idx] = c;
+    ctx->vars->tib_idx = idx;
   } else {
   }
 }
@@ -36,15 +38,15 @@ fw_call doword() {
   uint8_t idx = ctx->vars->tib_idx;
   uint8_t len = ctx->vars->tib_len;
   char   *tib = ctx->vars->tib_str;
-  char *word_start;
-  char *word_stop;
+  fcell_t word_start;
+  fcell_t word_stop;
 
-  idx = parse_word(idx, len, tib, &word_start, &word_stop);
+  parse_word(idx, len, tib, &word_start, &word_stop);
 
-  ctx->vars->tib_idx = idx;
 
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
+  ctx->vars->tib_idx = word_start - (fcell_t)tib;
 }
 
 __fw_noinline__ 
@@ -67,15 +69,14 @@ static bool is_whitespace(char c) {
   return (c == '\0') | (c == ' ') | (c == '\t') | (c == '\r') | (c == '\n');
 }
 
-int parse_word(uint8_t idx, uint8_t len, char *tib,
+void parse_word(uint8_t idx, uint8_t len, char *tib,
                    fcell_t *word_start, fcell_t *word_stop)
 {
-
-  uint8_t word_start;
+  uint8_t start;
   char c;
 
-  if (idx >= len)
-    return 0;
+  /* if (idx >= len) */
+    /* return 0; */
 
 whitespace:
   while ((c = tib[idx]) && ((idx < len) & is_whitespace(c)))
@@ -99,18 +100,18 @@ whitespace:
   goto word;
 
 word:
-  word_start = idx++;
+  start = idx++;
   while ((c = tib[idx]) && ((idx < len) & !is_whitespace(c)))
     idx++;
 
-  *word_start = (fcell_t)(tib + word_start);
+  *word_start = (fcell_t)(tib + start);
   *word_stop = (fcell_t)(tib + idx);
-  return word_stop - word_start;
+  /* return word_stop - word_start; */
 }
 
 const char num_basis[] = "0123456789ABCDEF";
 
-void parse_number(uint8_t base, uint8_t len, char *addr,
+void parse_number(uint8_t base, uint8_t len, char *tib,
                  fcell_t *number, fcell_t *errcode)
 {
   uint8_t idx = 0;

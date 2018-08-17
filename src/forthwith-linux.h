@@ -11,41 +11,40 @@
 #define $word_ptr_sz $8
 
 #ifdef __MACH__
-#define $ctx _ctx(%rip) 
-#define $ctx_psp _ctx_psp(%rip) 
-#define $ctx_rsp _ctx_rsp(%rip) 
-#define $ctx_regs _ctx_regs(%rip) 
+#define $ctx _ctx(%rip)
+#define $ctx_psp _ctx_psp(%rip)
+#define $ctx_rsp _ctx_rsp(%rip)
+#define $ctx_regs _ctx_regs(%rip)
 #else
-#define $ctx ctx(%rip) 
-#define $ctx_psp ctx_psp(%rip) 
-#define $ctx_rsp ctx_rsp(%rip) 
-#define $ctx_regs ctx_regs(%rip) 
+#define $ctx ctx(%rip)
+#define $ctx_psp ctx_psp(%rip)
+#define $ctx_rsp ctx_rsp(%rip)
+#define $ctx_regs ctx_regs(%rip)
 #endif
 
-#define $ctx_of_regs "0"
-#define $ctx_of_vars "8"
-#define $ctx_of_psp "16"
-#define $ctx_of_rsp "24"
-#define $ctx_of_user "32"
-#define $ctx_of_dict "40"
-#define $ctx_of_strs "48"
+#define $ctx_of_regs 0
+#define $ctx_of_vars 8
+#define $ctx_of_psp 16
+#define $ctx_of_rsp 24
+#define $ctx_of_user 32
+#define $ctx_of_dict 40
+#define $ctx_of_strs 48
 
 /* #define $ctx_regs_of_psp "0" */
 /* #define $ctx_regs_of_rsp "8" */
-#define $ctx_regs_of_ip  "16"
-#define $ctx_regs_of_tos "24"
-#define $ctx_regs_of_w   "32"
-#define $ctx_regs_of_u   "40"
+#define $ctx_regs_of_ip  16
+#define $ctx_regs_of_tos 24
+#define $ctx_regs_of_w   32
 
-#define $stack_of_head  "0"
-#define $stack_of_base  "8"
-#define $stack_of_size  "16"
+#define $stack_of_head  0
+#define $stack_of_base  8
+#define $stack_of_size  16
 
-#define $vars_of_base       "0"
-#define $vars_of_state      "8"
-#define $vars_of_tib_idx    "16"
-#define $vars_of_tib_len    "24"
-#define $vars_of_tib_str    "32"
+#define $vars_of_base       0
+#define $vars_of_state      8
+#define $vars_of_tib_idx    16
+#define $vars_of_tib_len    24
+#define $vars_of_tib_str    32
 
 // ========================================================================== //
 // Platform Registers 
@@ -60,10 +59,12 @@
 #define reg_ip  %rcx
 #define reg_psp %r8
 #define reg_rsp %r9
-#define reg_u %r10
-#define reg_a %r11
-#define reg_b %r12
-#define reg_c %r13
+#define reg_bpsp %r10
+#define reg_brsp %r11
+#define reg_a %r12
+#define reg_b %r13
+
+#define reg_xaddr %rip
 
 #define reg_xrdi %rdi
 #define reg_xrsi %rsi
@@ -95,17 +96,21 @@
   __asm__ ("" :: "r" (rsp));        \
   __asm__ ("" :: "r" (tos))
 
+
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #ifdef __MACH__
 #define __jump(r) __asm__("jmp " "_" #r)
-#define __call(r) __asm__("call " "_" #r)
+#define __label(r) _ ## r
 #elif __linux__
 #define __jump(r) __asm__("jmp " #r)
-#define __call(r) __asm__("call " #r)
+#define __label(r) r
 #else
 #define __jump(r) __asm__("jmp " #r)
-#define __call(r) __asm__("call " #r)
+#define __label(r) r
 #endif
+
+#define __call(r) __asm__("callq " #r)
+#define _call(r) __call(r)
 
 #define _jump(r) __jump( r )
 #define ___jump_reg(r) __asm__(r); 
@@ -176,11 +181,11 @@
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 /* #define save_state() */
 /* #define load_state() */
-#define call(label) \
-  __call(label);
+#define call(lbl) _call( __label(lbl) )
 
-#define call_reg(reg)                            \
-  __call(reg_ ## label);
+#define __call_reg(r) __asm__("callq *" #r )
+#define _call_reg(r) __call_reg( r )
+#define call_reg(r) _call_reg( reg_ ## r )
 
 #define ret(reg)                                 \
   __asm__("ret");
@@ -196,17 +201,17 @@
   store_addr_off(xrax, rsp, $stack_of_head);  \
   load_const(xrax, $ctx_regs);                    \
   store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
-  store_addr_off(xrax, u, $ctx_regs_of_u);        \
   store_addr_off(xrax, w, $ctx_regs_of_w)
 
 #define load_state() \
   load_const(xrax, $ctx_psp);                    \
   load_addr_off(psp, xrax, $stack_of_head);     \
+  load_addr_off(bpsp, xrax, $stack_of_base);      \
   load_const(xrax, $ctx_rsp);                    \
   load_addr_off(rsp, xrax, $stack_of_head);     \
+  load_addr_off(brsp, xrax, $stack_of_base);      \
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
-  load_addr_off(u, xrax, $ctx_regs_of_u);         \
   load_addr_off(w, xrax, $ctx_regs_of_w); \
   pushd(tos)
 

@@ -21,8 +21,12 @@ fword_t* alloc_dict();
 char* alloc_string(uint8_t len);
 
 // Use data stack
-uint8_t parse_word(uint8_t idx, uint8_t len, char *tib);
-void parse_number(uint8_t base, uint8_t len, char *addr);
+void parse_word(uint8_t idx, uint8_t len, char *tib,
+                fcell_t *word_start, fcell_t *word_stop);
+
+void parse_number(uint8_t base, uint8_t len, char *addr,
+                  fcell_t *number, fcell_t *err);
+
 
 // Helpers 
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body);

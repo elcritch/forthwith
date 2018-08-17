@@ -2,7 +2,7 @@ CFLAGS = -Wall -O3 -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wn
 
 # -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -m64
 
-# CC = clang
+CC = clang
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)

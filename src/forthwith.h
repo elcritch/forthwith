@@ -42,7 +42,7 @@ typedef  fcell_t  X_t;  // Scratch Register
   PSP_t psp,            \
   RSP_t rsp
 
-#define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp
+/* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 
 typedef struct forth_word fword_t;
 
@@ -53,7 +53,8 @@ typedef struct forthwith_regs { /**< FORTH environment */
   fcell_t ip;
   fcell_t tos;
   fcell_t w;
-  fcell_t *u;
+  fcell_t *usp;
+  fcell_t *bpsp;
 } fw_ctx_regs_t;
 
 typedef struct forthwith_vars { /**< FORTH environment */

@@ -6,6 +6,7 @@
 // Define Primitives, including function bodies, etc
 #define FORTH_DEFINE_PRIMITIVES
   #include "xmacros.h"
+  #include "utilities.c"
   #include "inner.c"
   #include "outer.c"
   #include "core.c"

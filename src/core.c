@@ -21,12 +21,12 @@ forth_primitive("swap", 4, F_NORMAL, swap, "( x y -- x y )",  {
 
 forth_primitive("rot", 3, F_NORMAL, rot, "( n1 n2 n3  ---  n2 n3 n1 )",  {
     /* X_t x; */
-    copy_reg(c,tos);
+    copy_reg(x,tos);
     popd(b);
     popd(a);
 
     pushd(b);
-    pushd(c);
+    pushd(x);
     copy_reg(tos,a);
 
     jump(next);
