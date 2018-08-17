@@ -14,6 +14,10 @@ void test_setup() {
   forth_bootstrap(ctx);
 }
 
+extern fw_call add(FORTH_REGISTERS);
+
+fcell_xt xt_add = (fcell_xt)&add;
+
 void test_basic(void) {
   test_setup();
 

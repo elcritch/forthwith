@@ -2,18 +2,19 @@
 #include "forthwith-linux.h"
 #include "forthwith.h"
 #include "dict.h"
+#include "utilities.h"
 
 // Define Primitives, including function bodies, etc
 #define FORTH_DEFINE_PRIMITIVES
   #include "xmacros.h"
-  #include "utilities.c"
-  #include "inner.c"
-  #include "outer.c"
-  #include "core.c"
+  #include "xmacros.core.h"
+  #include "xmacros.outer.h"
 #undef FORTH_DEFINE_PRIMITIVES
 
+#include "inner.c"
 #include "dict.c"
 #include "forthwith.c"
+#include "utilities.c"
 
 
 extern fw_ctx_t *ctx;

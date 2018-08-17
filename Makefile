@@ -1,7 +1,8 @@
-CFLAGS = -Wall -Os -g -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function
-# CFLAGS = -Wall -Os -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function
+BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function -Wno-format 
 
-# -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer -m64
+CFLAGS = -Wall -Os -g $(BASE_CFLAGS)
+# CFLAGS = -Wall -Os $(BASE_CFLAGS)
+
 
 CC = clang
 

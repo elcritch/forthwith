@@ -118,17 +118,19 @@ typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
 
-#define FORTH_PRIMITIVE(_fname, _type, _mode, cname) \
-  fw_call cname(FORTH_REGISTERS)
 
-
+typedef enum forthwith_the_errors fw_error_t;
 enum forthwith_the_errors {
   FW_OK,
   FW_ERR_STACKOVERFLOW,
   FW_ERR_STACKUNDERFLOW,
 };
 
-typedef enum forthwith_the_errors fw_error_t;
+typedef enum forthwith_the_states fw_state_t;
+enum forthwith_the_states {
+  IMMEDIATE_MODE = 0,
+  COMPILE_MODE,
+};
 
 
 #define F_NORMAL 0x00
@@ -147,13 +149,21 @@ extern int forth_eval(fcell_xt *instr);
 extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
+extern int forth_eval_string(char *input);
 
-
+// Basic Execution Tokens
 extern fcell_xt xt_dosys;
 extern fcell_xt xt_docolon;
-extern fcell_xt xt_lit;
-extern fcell_xt xt_add;
 extern fcell_xt xt_quits;
 extern fcell_xt xt_exits;
+
+#include "dict.h"
+#include "utilities.h"
+
+#define FORTH_DEFINE_HEADERS
+#include "xmacros.h"
+#include "xmacros.core.h"
+#include "xmacros.outer.h"
+#undef FORTH_DEFINE_HEADERS
 
 #endif // _FORTHWITH_HEADER_

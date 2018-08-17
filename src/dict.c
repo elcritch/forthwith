@@ -5,19 +5,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-__fw_noinline__ 
 fcell_xt *forth_alloc_var_len(fcell_t len) {
   // this incrs in multipls of IP_t size
   ctx->user->head = ctx->user->head + len;
   return (fcell_xt *)ctx->user->head;
 }
 
-__fw_noinline__ 
 fcell_xt *forth_alloc_var() {
   return (fcell_xt *)forth_alloc_var_len(1);
 }
 
-__fw_noinline__ 
 fword_t* alloc_dict() {
   // 'allocate' new entry in dict head
   fword_t* curr_dict = ctx->dict->head;
@@ -82,12 +79,5 @@ fword_t* dict_find(int8_t len, char *name) {
     word_ptr = word.prev;
   }
   return NULL;
-}
-
-
-fw_call dofind() {
-  fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
-  forth_push((fcell_t)entry);
-  forth_push(entry == NULL ? 0 : 1);
 }
 

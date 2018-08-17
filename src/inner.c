@@ -1,6 +1,10 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 #include "forthwith.h"
+
+int a[4] = {1,2,3,4};
+int *arr[1] = {a};
 
 /* fw_call fcallend(FORTH_REGISTERS) { */
 /*   _asm_jump(); */
@@ -65,6 +69,7 @@ fw_call docolon(FORTH_REGISTERS) {
   jump(next);
   /* return FORTH_RET; */
 }
+fcell_xt xt_docolon = (fcell_xt)&docolon;
 
 /* Exit current thread */
 fw_call exits(FORTH_REGISTERS) {
@@ -72,6 +77,7 @@ fw_call exits(FORTH_REGISTERS) {
   popr(ip);
   jump(next);
 }
+fcell_xt xt_exits = (fcell_xt)&exits;
 
 /* Quit inner interpreter */
 fw_call quits(FORTH_REGISTERS) {
@@ -80,6 +86,7 @@ fw_call quits(FORTH_REGISTERS) {
   /* popr(ip); */
   return;
 }
+fcell_xt xt_quits = (fcell_xt)&quits;
 
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */
@@ -89,6 +96,7 @@ fw_call docall00(FORTH_REGISTERS) {
   call_reg(tos);
   load_state();
 }
+fcell_xt xt_docall00 = (fcell_xt)&docall00;
 
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */

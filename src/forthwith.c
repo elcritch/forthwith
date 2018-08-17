@@ -7,14 +7,12 @@ fw_ctx_stack_t *ctx_psp = NULL;
 fw_ctx_stack_t *ctx_rsp = NULL;
 fw_ctx_regs_t *ctx_regs = NULL;
 
-// TODO: add to dict
-/* fcell_xt xt_dovar = (fcell_xt)&dovar; */
-fcell_xt xt_dosys = (fcell_xt)&dosys;
-fcell_xt xt_docolon = (fcell_xt)&docolon;
-fcell_xt xt_lit = (fcell_xt)&lit;
-fcell_xt xt_add = (fcell_xt)&add;
-fcell_xt xt_quits = (fcell_xt)&quits;
-fcell_xt xt_exits = (fcell_xt)&exits;
+// Builtin "Hidden" Execution Tokens
+/* fcell_xt xt_dosys = (fcell_xt)&dosys; */
+/* fcell_xt xt_docolon = (fcell_xt)&docolon; */
+/* fcell_xt xt_lit = (fcell_xt)&lit; */
+/* fcell_xt xt_quits = (fcell_xt)&quits; */
+/* fcell_xt xt_exits = (fcell_xt)&exits; */
 
 #include <stdio.h>
 #include <string.h>
@@ -101,8 +99,8 @@ int forth_bootstrap(fw_ctx_t* ctx) {
 
   #define FORTH_DEFINE_DICT_ENTRIES
     #include "xmacros.h"
-    #include "outer.c"
-    #include "core.c"
+    #include "xmacros.core.h"
+    #include "xmacros.outer.h"
   #undef FORTH_DEFINE_DICT_ENTRIES
 
   return -1;
@@ -170,3 +168,7 @@ int forth_eval(fcell_xt *instr) {
   return 0;
 }
 
+
+int forth_eval_string(char *input) {
+  return -1;
+}

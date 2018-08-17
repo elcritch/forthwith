@@ -1,19 +1,64 @@
 
 #include "forthwith.h"
+#include "utilities.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 
-fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
-                   char **word_start, char **word_stop);
 
-fcell_t parse_number(uint8_t base, uint8_t len, char *addr,
-                     fcell_t *number, fcell_t *err);
+// {*tib} {tib_idx++} ( -- cp n )
+void docreate() {
+  fcell_t len = forth_pop();
+  char *cstr = (char*)forth_pop();
+  fcell_xt *here = forth_alloc_var();
+  /* *here = &xt_docolon; */
+  fword_t *entry = dict_create(F_NORMAL, len, cstr, here);
+  forth_push((fcell_t)entry);
+}
 
+// ( n -- ) {*user} 
+void docomma() {
+  fcell_t val = forth_pop();
+  fcell_t* here = ctx->user->head;
+  *here = val;
+}
+
+// ( -- ) {*var->state}
+void dolbrac() {
+  ctx->vars->state = IMMEDIATE_MODE;
+}
+
+// ( -- ) {*var->state}
+void dorbrac() {
+  ctx->vars->state = COMPILE_MODE;
+}
+
+// ( -- cp n ) {tib} {tib_idx++} 
+void doword() {
+  uint8_t idx = ctx->vars->tib_idx;
+  uint8_t len = ctx->vars->tib_len;
+  char   *tib = ctx->vars->tib_str;
+  fcell_t word_start;
+  fcell_t word_stop;
+
+  parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
+
+  ctx->vars->tib_idx = word_start - (fcell_t)tib;
+
+  forth_push( (fcell_t)word_start);
+  forth_push( (fcell_t)(word_stop - word_start));
+}
+
+// ( cp n -- ep )
+void dofind() {
+  fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
+  forth_push((fcell_t)entry);
+  forth_push(entry == NULL ? 0 : 1);
+}
 
 __fw_noinline__
-fw_call docfa() {
+void docfa() {
   fword_t *entry = (fword_t*)forth_pop();
   forth_push((fcell_t)entry->body);
 }
@@ -33,21 +78,6 @@ fw_call doemit() {
   }
 }
 
-__fw_noinline__
-fw_call doword() {
-  uint8_t idx = ctx->vars->tib_idx;
-  uint8_t len = ctx->vars->tib_len;
-  char   *tib = ctx->vars->tib_str;
-  fcell_t word_start;
-  fcell_t word_stop;
-
-  parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
-
-
-  forth_push( (fcell_t)word_start);
-  forth_push( (fcell_t)(word_stop - word_start));
-  ctx->vars->tib_idx = word_start - (fcell_t)tib;
-}
 
 __fw_noinline__
 fw_call donumber() {
