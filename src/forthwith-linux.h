@@ -152,6 +152,10 @@
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
 
 #define xor_reg(x, y) _fw_asm_const("xorq", reg_##y, reg_##x)
+#define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
+#define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
+#define not_reg(y) _fw_asm_const("notq", reg_##y, "")
+
 /* #define xorl_const(x, y) _fw_asm_const("xorq", y, reg_##x) */
 
 #define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)

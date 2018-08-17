@@ -45,11 +45,12 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
       XT(exits), // Return from the function.
       );
 
-forth_word("immed", 5, F_NORMAL, immed, "( p -- )", 
+forth_word("immed", 5, F_IMMED, immed, "( p -- )", 
       XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word 
       );
 
 forth_primitive("'", 1, F_NORMAL, tick, "( p -- )", {
+    // Get address of next word from codeword list (e.g. same as lit)
     // load addr and move IP
     load_addr(x, ip);
     incr_reg(ip);
@@ -59,6 +60,50 @@ forth_primitive("'", 1, F_NORMAL, tick, "( p -- )", {
     copy_reg(tos, x);
     jump(next);
   });
+
+/* Increments the IP by offset to affect branching */
+forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
+    load_addr(x, ip); 
+    add_reg(ip, x); 
+    jump(next);
+  });
+
+/* Increments the IP by offset to affect branching */
+forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
+    if (tos == 0) {
+      load_addr(x, ip);
+      add_reg(ip, x);
+    }
+    popd(tos);
+    jump(next);
+  });
+
+forth_core("litstr", 6, F_NORMAL, litstr, "", {
+    // Get Length of String from codeword list
+    load_addr(x, ip);
+    incr_reg(ip);
+
+    pushd(ip); // push the address of the start of the string 
+    pushd(x); // push length on the stack 
+    add_reg(ip, x); // skip past the string 
+    add_const(ip, $3); // skip past the string 
+
+    load_const(x, $3); // load const 
+    not_reg(x); // load const 
+    and_reg(ip, x);
+
+    /* andl $~3,%esi */
+  });
+
+/* defcode "LITSTRING",9,,LITSTRING */
+	/* lodsl			// get the length of the string */
+	/* push %esi		// push the address of the start of the string */
+	/* push %eax		// push it on the stack */
+	/* addl %eax,%esi		// skip past the string */
+ 	/* addl $3,%esi		// but round up to next 4 byte boundary */
+	/* andl $~3,%esi */
+	/* NEXT */
+
 
 /* forth_colon("interpret", 5, F_NORMAL, tick, "( p -- )", { */
 /*     // ... */

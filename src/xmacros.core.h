@@ -42,20 +42,3 @@ forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
   jump(next);
 });
 
-/* Increments the IP by offset to affect branching */
-forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
-  load_addr(x, ip); 
-  add_reg(ip, x); 
-  jump(next);
-});
-
-/* Increments the IP by offset to affect branching */
-forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
-  if (tos == 0) {
-    load_addr(x, ip);
-    add_reg(ip, x);
-  }
-  popd(tos);
-  jump(next);
-});
-
