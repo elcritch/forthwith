@@ -5,7 +5,7 @@
 fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
                    char **word_start, char **word_stop);
 
-fcell_t parse_number(uint8_t base, uint8_t len, char *addr,
+fcell_t parse_number(uint8_t len, char *addr,
                      fcell_t *number, fcell_t *err);
 
 // {*tib} {tib_idx++} ( -- cp n )

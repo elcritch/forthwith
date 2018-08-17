@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 /* Standard Forth Cell */
-typedef int64_t fcell_t;
+typedef intptr_t fcell_t;
 
 /* Forth Execution Token (pointer to forth execution type) */
 /* e.g. docolon, dovar, doconst, or machine addr */
@@ -13,12 +13,6 @@ typedef fcell_t* fcell_xt;
 
 
 /* Primary Registers */
-/* typedef fcell_xt  W_t  ;  // Working Register / Pointer */
-/* typedef fcell_xt* IP_t ;  // Instruction Pointer */
-/* typedef fcell_xt* RSP_t;  // Return Stack Pointer */
-/* typedef fcell_t*  PSP_t;  // Parameter Stack Pointer */
-/* typedef fcell_t   TOS_t;  // Top of Stack */
-
 #define W_t fcell_xt  // Working Register / Pointer
 #define IP_t fcell_xt*  // Instruction Pointer
 #define RSP_t fcell_xt**  // Return Stack Pointer
@@ -132,7 +126,6 @@ enum forthwith_the_states {
   IMMEDIATE_MODE = 0,
   COMPILE_MODE,
 };
-
 
 #define F_NORMAL 0x00
 #define F_IMMED 0x80

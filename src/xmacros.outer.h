@@ -12,12 +12,6 @@ forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
 forth_variable(STATE, 5, ctx, vars, $vars_of_state, 0);
 
-/* 	HERE		Points to the next free byte of memory.  When compiling, compiled words go here. */
-// superceded by alloc_var ... 
-
-/* number base */
-forth_variable(BASE, 4, ctx, vars, $vars_of_base, 10);
-
 // Follows Jone's Forth here
 forth_docall("create", 4, F_NORMAL, create, "( n -- )", docreate);
 forth_docall(",", 4, F_NORMAL, comma, "( n -- )", docomma);

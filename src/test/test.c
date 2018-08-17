@@ -187,7 +187,7 @@ void test_parsing(void)
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
   // test nums -- part one.a //
-  parse_number(16, wl, (char*)ws, &number, &errcode);
+  parse_number(wl, (char*)ws, &number, &errcode);
 
   expl = 0; expi = 1;
   TEST_CHECK_(expl == errcode, "Expected %d, got %d", expl, errcode);
@@ -204,7 +204,7 @@ void test_parsing(void)
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, ws);
 
   // test nums -- part two.a //
-  wl = parse_number(16, wl, (char*)ws, &number, &errcode);
+  wl = parse_number(wl, (char*)ws, &number, &errcode);
   tib_idx = tib_idx + wl;
 
   expl = 0; expi = -0xF;

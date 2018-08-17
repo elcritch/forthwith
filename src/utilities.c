@@ -86,12 +86,11 @@ fw_call doemit() {
 __fw_noinline__
 fw_call donumber() {
   fcell_t err = 0;
-  uint8_t base = (uint8_t)ctx->vars->base;
   uint8_t len = (uint8_t)forth_pop();
   char *addr = (char *)forth_pop();
   fcell_t number = 0;
 
-  parse_number(base, len, addr, &number, &err);
+  parse_number(len, addr, &number, &err);
 
   forth_push(number);
   forth_push(err);
@@ -145,14 +144,38 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-fcell_t parse_number(uint8_t base, uint8_t len, char *tib,
+fcell_t emit_number(uint8_t len, char *tib,
+                    fcell_t number)
+{
+  // Print Number
+  int i = 0;
+  if ( len >= 2 ) {
+    tib[i++] = '0';
+    tib[i++] = 'x';
+  }
+
+  do {
+    uint8_t basis_of = (number >> (i<<2)) & 0xF; 
+    tib[i++] = num_basis[basis_of];
+  } while (i < len && number);
+
+  return i;
+}
+
+fcell_t parse_number(uint8_t len, char *tib,
                      fcell_t *number, fcell_t *errcode)
 {
+  uint8_t hex_base = 16; // hardcode hex base
+  bool err = false;
+  char c;
+
   uint8_t idx = 0;
   fcell_t neg = 1;
-  bool err = false;
   fcell_t num = 0;
-  char c;
+
+  // Check for 0x hex prefix, elide if found
+  if (tib[0] == '0' && tib[1] == 'x')
+    idx += 2;
 
   while (idx < len) {
     c = tib[idx++];
@@ -163,9 +186,9 @@ fcell_t parse_number(uint8_t base, uint8_t len, char *tib,
       continue;
     }
 
-    for (int i = 0; i < base; i++) {
+    for (int i = 0; i < hex_base; i++) {
       if (num_basis[i] == c) {
-        num = base * num + i;
+        num = hex_base * num + i;
         err = false;
         break;
       }
