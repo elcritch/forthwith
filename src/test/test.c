@@ -245,31 +245,9 @@ void test_full_interpreter(void) {
   // test basic find usage
   // Vars
   fcell_xt* var1 = forth_alloc_var();
-  fcell_xt* var2 = forth_alloc_var();
-  fcell_xt* var3 = forth_alloc_var();
-  fcell_xt* var4 = forth_alloc_var();
-  fcell_xt* var5 = forth_alloc_var();
-  fcell_xt* var6 = forth_alloc_var();
-  fcell_xt* var7 = forth_alloc_var();
-  fcell_xt* var8 = forth_alloc_var();
-  fcell_xt* var9 = forth_alloc_var();
-  fcell_xt* varA = forth_alloc_var();
 
   // Colons
-  *var1 = (fcell_xt) &xt_docolon;
-  *var2 = (fcell_xt) &xt_lit;
-  *var3 = (fcell_xt) 3;
-  *var4 = (fcell_xt) &xt_lit;
-  *var5 = (fcell_xt) 5;
-  *var6 = (fcell_xt) &xt_add;
-  *var7 = (fcell_xt) &xt_lit;
-  *var8 = (fcell_xt) 1;
-  *var9 = (fcell_xt) &xt_add;
-  *varA = (fcell_xt) &xt_quits;
-
-  printf(" ");
-  for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %p => %p\n", i, *i);
+  *var1 = (fcell_xt) &xt_interpret;
 
   forth_eval(var1);
 
