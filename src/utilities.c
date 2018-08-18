@@ -6,6 +6,21 @@
 #include <stdbool.h>
 
 
+/* perform c calls to 00 calls `void (*func)()` */
+/* saves ForthWith regs to data stack */
+__fw_noinline__
+fw_call doabortsof(FORTH_REGISTERS) {
+  load_const(tos, $2);
+  exit(2);
+}
+
+// ( n -- )
+__fw_noinline__
+void doret() {
+  fcell_t errorno = forth_pop();
+  ctx->vars->error = errorno;
+}
+
 // {*tib} {tib_idx++} ( -- cp n )
 __fw_noinline__
 void docreate() {
@@ -17,19 +32,19 @@ void docreate() {
   forth_push((fcell_t)entry);
 }
 
-// ( n -- ) {*user} 
+// ( n -- ) {*user}
 __fw_noinline__
 void docomma() {
   *ctx->user->head = forth_pop();
 }
 
-// ( n -- ) {*user} 
+// ( n -- ) {*user}
 __fw_noinline__
 void dosavehere() {
   forth_push(*ctx->user->head);
 }
 
-// ( n -- ) {*user} 
+// ( n -- ) {*user}
 __fw_noinline__
 void doxmask() {
   ctx->dict->head->meta ^= forth_pop();
@@ -47,7 +62,7 @@ void dorbrac() {
   ctx->vars->state = COMPILE_MODE;
 }
 
-// ( -- cp n ) {tib} {tib_idx++} 
+// ( -- *c l ) {tib} {tib_idx++}
 __fw_noinline__
 void doword() {
   uint8_t idx = ctx->vars->tib_idx;
@@ -64,7 +79,7 @@ void doword() {
   forth_push( (fcell_t)(word_stop - word_start));
 }
 
-// ( cp n -- ep )
+// ( *c n -- *e n )
 __fw_noinline__
 void dofind() {
   fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
@@ -94,6 +109,7 @@ fw_call doemit() {
 }
 
 __fw_noinline__
+// ( *c l -- n e ) {tib} {tib_idx++}
 fw_call donumber() {
   fcell_t err = 0;
   uint8_t len = (uint8_t)forth_pop();
@@ -104,13 +120,6 @@ fw_call donumber() {
 
   forth_push(number);
   forth_push(err);
-}
-
-// ( cp n -- ep )
-__fw_noinline__
-void doexerr() {
-  fcell_t errorno = forth_pop();
-  ctx->vars->error = errorno;
 }
 
 // ====================================================================== //

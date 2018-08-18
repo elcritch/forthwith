@@ -83,20 +83,13 @@ fcell_xt xt_quits = (fcell_xt)&quits;
 
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */
-fw_call docall00(FORTH_REGISTERS) {
+fw_call call00(FORTH_REGISTERS) {
   /* popd(x); // load jump addr */
   save_state();
   call_reg(tos);
   load_state();
 }
-fcell_xt xt_docall00 = (fcell_xt)&docall00;
-
-/* perform c calls to 00 calls `void (*func)()` */
-/* saves ForthWith regs to data stack */
-fw_call doabortsof(FORTH_REGISTERS) {
-  load_const(tos, $2);
-  exit(2);
-}
+fcell_xt xt_call00 = (fcell_xt)&call00;
 
 fw_call docall() {
   fcell_t addr = forth_pop();

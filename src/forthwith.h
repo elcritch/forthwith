@@ -113,17 +113,15 @@ int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
 
 
-typedef enum forthwith_the_errors fw_error_t;
-enum forthwith_the_errors {
-  FW_OK,
-  FW_ERR_STACKOVERFLOW,
-  FW_ERR_STACKUNDERFLOW,
-};
+#define FW_OK 0
+#define FW_ERR_STACKOVERFLOW 1
+#define FW_ERR_STACKUNDERFLOW 2
+#define FW_ERR_NOWORD 3
 
 typedef enum forthwith_the_states fw_state_t;
 enum forthwith_the_states {
   IMMEDIATE_MODE = 0,
-  COMPILE_MODE,
+  COMPILE_MODE = 1,
 };
 
 #define F_NORMAL 0x0
