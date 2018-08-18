@@ -33,19 +33,19 @@ forth_docall("exerr", 4, F_NORMAL, exerr, "( n -- )", doexerr);
 /* forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa); */
 
 forth_word(":", 6, F_NORMAL, colon, "( p -- )",
-    XT(word), // Get the name of the new word
-    XT(create), // CREATE the dictionary entry / header
-    XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
-    XT(rbrac), // Go into compile mode.
-    XT(exits), // Return from the function.
-  );
+           XT(word), // Get the name of the new word
+           XT(create), // CREATE the dictionary entry / header
+           XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
+           XT(rbrac), // Go into compile mode.
+           XT(exits), // Return from the function.
+           );
 
 forth_word(";", 6, F_NORMAL, semicolon, "( p -- )", 
-    XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
-    XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word 
-    XT(lbrac), // Go back to IMMEDIATE mode.
-    XT(exits), // Return from the function.
-  );
+           XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
+           XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word 
+           XT(lbrac), // Go back to IMMEDIATE mode.
+           XT(exits), // Return from the function.
+           );
 
 forth_word("immed", 5, F_IMMED, immed, "( p -- )", 
     XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word 
