@@ -47,11 +47,11 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
            XT(exits), // Return from the function.
            );
 
-forth_word("immed", 5, F_IMMED, immed, "( p -- )", 
-    XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word 
+forth_word("immed", 5, F_IMMED, immed, "( p -- )",
+    XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word
   );
 
-forth_primitive("'", 1, F_NORMAL, tick, "( p -- )", {
+forth_core("'", 1, F_NORMAL, tick, "( p -- )", {
     // Get address of next word from codeword list (e.g. same as lit)
     load_addr(x, ip);
     incr_reg(ip);
