@@ -17,6 +17,7 @@ void test_setup() {
 void test_basic(void) {
   test_setup();
 
+  // Vars
   fcell_xt* var1 = forth_alloc_var();
   fcell_xt* var2 = forth_alloc_var();
   fcell_xt* var3 = forth_alloc_var();
@@ -28,22 +29,13 @@ void test_basic(void) {
   fcell_xt* var9 = forth_alloc_var();
   fcell_xt* varA = forth_alloc_var();
 
-  /* printf("var1: %p\n", var1); */
-  /* printf("var2: %p\n", var2); */
-  /* printf("var3: %p\n", var3); */
-  /* printf("var4: %p\n", var4); */
-  /* printf("var5: %p\n", var5); */
-  /* printf("var6: %p\n", var6); */
-  /* printf("var7: %p\n", var7); */
-
-
+  // Colons
   *var1 = (fcell_xt) &xt_docolon;
   *var2 = (fcell_xt) &xt_lit;
   *var3 = (fcell_xt) 3;
   *var4 = (fcell_xt) &xt_lit;
   *var5 = (fcell_xt) 5;
   *var6 = (fcell_xt) &xt_add;
-  /* *var7 = (fcell_xt) &xt_quits; */
   *var7 = (fcell_xt) &xt_lit;
   *var8 = (fcell_xt) 1;
   *var9 = (fcell_xt) &xt_add;
@@ -227,7 +219,6 @@ void test_parsing(void)
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
 }
-
 void test_basic_interpreter(void) {
   test_setup();
 
@@ -240,6 +231,69 @@ void test_full_interpreter(void) {
 
   // test basic if / else (and thereby branch/0branch)
   // test basic find usage
+  // Vars
+  fcell_xt* var1 = forth_alloc_var();
+  fcell_xt* var2 = forth_alloc_var();
+  fcell_xt* var3 = forth_alloc_var();
+  fcell_xt* var4 = forth_alloc_var();
+  fcell_xt* var5 = forth_alloc_var();
+  fcell_xt* var6 = forth_alloc_var();
+  fcell_xt* var7 = forth_alloc_var();
+  fcell_xt* var8 = forth_alloc_var();
+  fcell_xt* var9 = forth_alloc_var();
+  fcell_xt* varA = forth_alloc_var();
+
+  // Colons
+  *var1 = (fcell_xt) &xt_docolon;
+  *var2 = (fcell_xt) &xt_lit;
+  *var3 = (fcell_xt) 3;
+  *var4 = (fcell_xt) &xt_lit;
+  *var5 = (fcell_xt) 5;
+  *var6 = (fcell_xt) &xt_add;
+  *var7 = (fcell_xt) &xt_lit;
+  *var8 = (fcell_xt) 1;
+  *var9 = (fcell_xt) &xt_add;
+  *varA = (fcell_xt) &xt_quits;
+
+  printf(" ");
+  for (fcell_xt *i = var1; i <= var5; i += 1)
+    printf("\tinstr: %p => %p\n", i, *i);
+
+  forth_eval(var1);
+
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+
+  int cnt = forth_count();
+  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+
+  fcell_t x = 0;
+  while (forth_count()) {
+    x = forth_pop();
+    printf("remaining stack: %lld\n", x);
+  }
+
+  printf("... stack done\n");
+  TEST_CHECK_(x == 9, "Expected %d, got %d", 9, x);
+
+  x = forth_pop();
+  cnt = forth_count();
+  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_ERR_STACKUNDERFLOW);
+
+  forth_clear();
+
+  TEST_CHECK_(forth_errno() == FW_OK,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_OK);
+
+  printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
 TEST_LIST = {
