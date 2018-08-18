@@ -191,91 +191,91 @@ forth_word("interpret", 9, F_NORMAL, tick, "( p -- )",
            );
 
 
-/*
-  From Jone's Forth:
-	This interpreter is pretty simple, but remember that in FORTH you can always override
-	it later with a more powerful one!
- */
-forth_core("interpret", 9, F_NORMAL, interpret, "( n -- )", {
-    call(doword);		// Returns %ecx = length, %edi = pointer to word.
+/* /\* */
+/*   From Jone's Forth: */
+/* 	This interpreter is pretty simple, but remember that in FORTH you can always override */
+/* 	it later with a more powerful one! */
+/*  *\/ */
+/* forth_core("interpret", 9, F_NORMAL, interpret, "( n -- )", { */
+/*     call(doword);		// Returns %ecx = length, %edi = pointer to word. */
 
-    // Is it in the dictionary?
-    xor_reg(x, x); /* xor %eax,%eax */
+/*     // Is it in the dictionary? */
+/*     xor_reg(x, x); /\* xor %eax,%eax *\/ */
 
-	movl %eax,interpret_is_lit // Not a literal number (not yet anyway ...)
-	call _FIND		// Returns %eax = pointer to header or 0 if not found.
-	test %eax,%eax		// Found?
-	jz 1f
+/* 	movl %eax,interpret_is_lit // Not a literal number (not yet anyway ...) */
+/* 	call _FIND		// Returns %eax = pointer to header or 0 if not found. */
+/* 	test %eax,%eax		// Found? */
+/* 	jz 1f */
 
-	// In the dictionary.  Is it an IMMEDIATE codeword?
-	mov %eax,%edi		// %edi = dictionary entry
-	movb 4(%edi),%al	// Get name+flags.
-	push %ax		// Just save it for now.
-	call _TCFA		// Convert dictionary entry (in %edi) to codeword pointer.
-	pop %ax
-	andb $F_IMMED,%al	// Is IMMED flag set?
-	mov %edi,%eax
-	jnz 4f			// If IMMED, jump straight to executing.
+/* 	// In the dictionary.  Is it an IMMEDIATE codeword? */
+/* 	mov %eax,%edi		// %edi = dictionary entry */
+/* 	movb 4(%edi),%al	// Get name+flags. */
+/* 	push %ax		// Just save it for now. */
+/* 	call _TCFA		// Convert dictionary entry (in %edi) to codeword pointer. */
+/* 	pop %ax */
+/* 	andb $F_IMMED,%al	// Is IMMED flag set? */
+/* 	mov %edi,%eax */
+/* 	jnz 4f			// If IMMED, jump straight to executing. */
 
-	jmp 2f
+/* 	jmp 2f */
 
-1:	// Not in the dictionary (not a word) so assume it's a literal number.
-	incl interpret_is_lit
-	call _NUMBER		// Returns the parsed number in %eax, %ecx > 0 if error
-	test %ecx,%ecx
-	jnz 6f
-	mov %eax,%ebx
-	mov $LIT,%eax		// The word is LIT
+/* 1:	// Not in the dictionary (not a word) so assume it's a literal number. */
+/* 	incl interpret_is_lit */
+/* 	call _NUMBER		// Returns the parsed number in %eax, %ecx > 0 if error */
+/* 	test %ecx,%ecx */
+/* 	jnz 6f */
+/* 	mov %eax,%ebx */
+/* 	mov $LIT,%eax		// The word is LIT */
 
-2:	// Are we compiling or executing?
-	movl var_STATE,%edx
-	test %edx,%edx
-	jz 4f			// Jump if executing.
+/* 2:	// Are we compiling or executing? */
+/* 	movl var_STATE,%edx */
+/* 	test %edx,%edx */
+/* 	jz 4f			// Jump if executing. */
 
-	// Compiling - just append the word to the current dictionary definition.
-	call _COMMA
-	mov interpret_is_lit,%ecx // Was it a literal?
-	test %ecx,%ecx
-	jz 3f
-	mov %ebx,%eax		// Yes, so LIT is followed by a number.
-	call _COMMA
-3:	NEXT
+/* 	// Compiling - just append the word to the current dictionary definition. */
+/* 	call _COMMA */
+/* 	mov interpret_is_lit,%ecx // Was it a literal? */
+/* 	test %ecx,%ecx */
+/* 	jz 3f */
+/* 	mov %ebx,%eax		// Yes, so LIT is followed by a number. */
+/* 	call _COMMA */
+/* 3:	NEXT */
 
-4:	// Executing - run it!
-	mov interpret_is_lit,%ecx // Literal?
-	test %ecx,%ecx		// Literal?
-	jnz 5f
+/* 4:	// Executing - run it! */
+/* 	mov interpret_is_lit,%ecx // Literal? */
+/* 	test %ecx,%ecx		// Literal? */
+/* 	jnz 5f */
 
-	// Not a literal, execute it now.  This never returns, but the codeword will
-	// eventually call NEXT which will reenter the loop in QUIT.
-	jmp *(%eax)
+/* 	// Not a literal, execute it now.  This never returns, but the codeword will */
+/* 	// eventually call NEXT which will reenter the loop in QUIT. */
+/* 	jmp *(%eax) */
 
-5:	// Executing a literal, which means push it on the stack.
-	push %ebx
-	NEXT
+/* 5:	// Executing a literal, which means push it on the stack. */
+/* 	push %ebx */
+/* 	NEXT */
 
-6:	// Parse error (not a known word or a number in the current BASE).
-	// Print an error message followed by up to 40 characters of context.
-	mov $2,%ebx		// 1st param: stderr
-	mov $errmsg,%ecx	// 2nd param: error message
-	mov $errmsgend-errmsg,%edx // 3rd param: length of string
-	mov $__NR_write,%eax	// write syscall
-	int $0x80
+/* 6:	// Parse error (not a known word or a number in the current BASE). */
+/* 	// Print an error message followed by up to 40 characters of context. */
+/* 	mov $2,%ebx		// 1st param: stderr */
+/* 	mov $errmsg,%ecx	// 2nd param: error message */
+/* 	mov $errmsgend-errmsg,%edx // 3rd param: length of string */
+/* 	mov $__NR_write,%eax	// write syscall */
+/* 	int $0x80 */
 
-	mov (currkey),%ecx	// the error occurred just before currkey position
-	mov %ecx,%edx
-	sub $buffer,%edx	// %edx = currkey - buffer (length in buffer before currkey)
-	cmp $40,%edx		// if > 40, then print only 40 characters
-	jle 7f
-	mov $40,%edx
-7:	sub %edx,%ecx		// %ecx = start of area to print, %edx = length
-	mov $__NR_write,%eax	// write syscall
-	int $0x80
+/* 	mov (currkey),%ecx	// the error occurred just before currkey position */
+/* 	mov %ecx,%edx */
+/* 	sub $buffer,%edx	// %edx = currkey - buffer (length in buffer before currkey) */
+/* 	cmp $40,%edx		// if > 40, then print only 40 characters */
+/* 	jle 7f */
+/* 	mov $40,%edx */
+/* 7:	sub %edx,%ecx		// %ecx = start of area to print, %edx = length */
+/* 	mov $__NR_write,%eax	// write syscall */
+/* 	int $0x80 */
 
-	mov $errmsgnl,%ecx	// newline
-	mov $1,%edx
-	mov $__NR_write,%eax	// write syscall
-	int $0x80
+/* 	mov $errmsgnl,%ecx	// newline */
+/* 	mov $1,%edx */
+/* 	mov $__NR_write,%eax	// write syscall */
+/* 	int $0x80 */
 
-	NEXT
-});
+/* 	NEXT */
+/* }); */
