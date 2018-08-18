@@ -1,4 +1,38 @@
 
+// =============== Access Primitives ============== //
+
+/* primitive '@' ~ fetch */
+forth_core("@", 1, F_NORMAL, fetch, "( n -- )",  {
+    copy_reg(x, tos);
+    load_addr(tos, x);
+    jump(next);
+  });
+
+/* /\* primitive 'c@' ~ char_fetch *\/ */
+/* forth_core("c@", 2, F_NORMAL, cfetch, "( n -- )",  { */
+/*     copy_reg(x, tos); */
+/*     load_addr(tos, x); */
+/*     jump(next); */
+/*   }); */
+
+/* primitive '!' ~ store */
+forth_core("!", 1, F_NORMAL, store, "( n addr -- )",  {
+    popd(x);
+    copy_reg(a, tos);
+    store_addr(a, x);
+
+    popd(tos);
+    jump(next);
+  });
+
+/* /\* primitive 'c!' ~ char_fetch *\/ */
+/* forth_core("c!", 2, F_NORMAL, cstore, "( n -- )",  { */
+/*     pushd(tos); */
+/*     load_addr_byte(tos, tos); */
+/*     jump(next); */
+/*   }); */
+
+// =============== Stack Primitives ============== //
 forth_core("drop", 4, F_NORMAL, drop, "( n -- )",  {
   popd(tos);
   jump(next);
@@ -33,6 +67,12 @@ forth_core("add", 3, F_NORMAL, add, "( n n -- n )",  {
   add_reg(tos, x); 
   jump(next);
 });
+
+forth_core("sub", 3, F_NORMAL, sub, "( n n -- n )",  {
+    popd(x);
+    sub_reg(tos, x);
+    jump(next);
+  });
 
 forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
   popd(x);

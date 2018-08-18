@@ -106,6 +106,17 @@ fw_call donumber() {
   forth_push(err);
 }
 
+// ( cp n -- ep )
+__fw_noinline__
+void doexerr() {
+  fcell_t errorno = forth_pop();
+  ctx->vars->error = errorno;
+}
+
+// ====================================================================== //
+// Parsing Funcs
+// ====================================================================== //
+
 #ifndef FORTH_OVERRIDE_PARSERS
 
 static bool is_whitespace(char c) {

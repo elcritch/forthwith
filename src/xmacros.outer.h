@@ -29,7 +29,8 @@ forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
-forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa);
+forth_docall("exerr", 4, F_NORMAL, exerr, "( n -- )", doexerr);
+/* forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa); */
 
 forth_word(":", 6, F_NORMAL, colon, "( p -- )",
     XT(word), // Get the name of the new word
@@ -88,24 +89,26 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
 
 forth_word("ifthen", 5, F_IMMED, ifthen, "( -- )",
            XT(tick), XT(zbranch), XT(comma),
-           XT(HERE), XT(fetch),
-           XT(lit), 0, XT(comma),
+           (fcell_xt)var_HERE,
+           XT(fetch),
+           XT(lit), 0,
+           XT(comma),
            );
 
-forth_word("else", 5, F_IMMED, else_, "( -- )", 
+forth_word("else", 5, F_IMMED, else_, "( -- )",
            XT(tick), XT(branch), XT(comma),
-           XT(HERE), XT(fetch),
+           XTV(HERE), XT(fetch),
            XT(lit), 0, XT(comma),
            XT(swap),
            XT(dup),
-           XT(HERE), XT(fetch), XT(swap), XT(sub),
+           XTV(HERE), XT(fetch), XT(swap), XT(sub),
            XT(swap), XT(store),
            );
 
-forth_word("end", 5, F_IMMED, end, "( -- )", 
-           XT(dup), 
-           XT(HERE), XT(fetch), XT(swap), XT(sub),
-           XT(swap), XT(store), 
+forth_word("end", 5, F_IMMED, end, "( -- )",
+           XT(dup),
+           XTV(HERE), XT(fetch), XT(swap), XT(sub),
+           XT(swap), XT(store),
            );
 
 
@@ -134,29 +137,26 @@ forth_word("end", 5, F_IMMED, end, "( -- )",
    end
 */
 
-// TODO ... 
-forth_word("interpret", 9, F_NORMAL, tick, "( p -- )", 
-           XT(word), XT(find), XT(dup),
-           XT(ifthen),
-            XT(STATE), XT(fetch), XT(equals),
-            XT(ifthen),
-              XT(comma),
-            XT(else_),
-              XT(execute),
-            XT(end),
-           XT(else_),
-            // todo - fix number
-            XT(dup), XT(rot), XT(count), XT(donumber),
-            XT(ifthen),
-              XT(STATE), XT(fetch),
-              XT(ifthen),
-                XT(donoword),
-              XT(end),
-              XT(abort),
-            XT(else_),
-            XT(end),
-           XT(end),
-           );
-
-
+/* // TODO ... */
+/* forth_word("interpret", 9, F_NORMAL, tick, "( p -- )", */
+/*            XT(word), XT(find), XT(dup), */
+/*            XT(ifthen), */
+/*             XT(STATE), XT(fetch), XT(equals), */
+/*             XT(ifthen), */
+/*               XT(comma), */
+/*             XT(else_), */
+/*               XT(execute), */
+/*             XT(end), */
+/*            XT(else_), */
+/*             XT(dup), XT(rot), XT(count), XT(number), */
+/*             XT(ifthen), */
+/*               XT(STATE), XT(fetch), */
+/*               XT(ifthen), */
+/*                 XT(exerr), */
+/*               XT(end), */
+/*               XT(abort), */
+/*             XT(else_), */
+/*             XT(end), */
+/*            XT(end), */
+/*            ); */
 

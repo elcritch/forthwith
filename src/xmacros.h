@@ -4,8 +4,8 @@
 // ================================================================== //
 #ifndef _XMACROS_H_
 #define _XMACROS_H_
-#define _GET_NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, N, ...) N
-#define COUNT_VARARGS(...) _GET_NTH_ARG(__VA_ARGS__, 8, 7, 6, 5, 4, 3, 2, 1)
+#define _GET_NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, N, ...) N
+#define COUNT_VARARGS(...) _GET_NTH_ARG(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 #endif // _XMACROS_H_
 
 #ifdef forth_primitive
@@ -29,6 +29,7 @@
 #endif
 
 #define XT(n) (fcell_xt) xt_ ## n
+#define XTV(n) (fcell_xt) var_ ## n
 
 // ================================================================== //
 // FORTH_DEFINE_PRIMITIVES
@@ -41,7 +42,8 @@
   fcell_xt xt_ ## func = (fcell_xt)&func;
 
 #define forth_core(_name_str, _name_len, mask, func, _comt, BLOCK) \
-  fw_call func(FORTH_REGISTERS) BLOCK
+  fw_call func(FORTH_REGISTERS) BLOCK \
+  fcell_xt xt_ ## func = (fcell_xt)&func;
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)
 
