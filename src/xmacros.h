@@ -45,12 +45,13 @@
   fw_call func(FORTH_REGISTERS) BLOCK \
   fcell_xt xt_ ## func = (fcell_xt)&func;
 
-#define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)
+#define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
+  fcell_xt xt_ ## lbl = NULL; // must be init'ed at bootstrap
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_primitive(name_str, name_len, mask, func, comment, { \
       calc_addr_off(x, xaddr, __label(lbl));               \
-    call(docall00); \
+    call(call00); \
     jump(next); \
   })
 

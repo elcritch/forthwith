@@ -31,7 +31,7 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 /* forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa); */
 
-forth_docall("ret", 4, F_NORMAL, exerr, "( n -- )", doret);
+forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
 
 forth_word(":", 6, F_NORMAL, colon, "( p -- )",
            XT(word), // Get the name of the new word
@@ -90,7 +90,7 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
 
 forth_word("ifthen", 5, F_IMMED, ifthen, "( -- )",
            XT(tick), XT(zbranch), XT(comma),
-           XVT(HERE),
+           XTV(HERE),
            XT(fetch),
            XT(lit), 0,
            XT(comma),
@@ -143,8 +143,8 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(number),
            XT(ifthen),
 
-              XT(lit), XT(FW_ERR_NOWORD),
-              XT(ret),
+           XT(lit), (fcell_xt)FW_ERR_NOWORD,
+              XT(ret_),
 
            XT(else_),
 
@@ -180,13 +180,13 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            );
 
 
-forth_word("interpret", 9, F_NORMAL, tick, "( p -- )",
+forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
            XT(ifthen),
               XT(itpnext),
            XT(else_),
               XT(drop),
-              XT(ret),
+              XT(ret_),
            XT(end),
            );
 
