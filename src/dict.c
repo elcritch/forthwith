@@ -81,3 +81,40 @@ fword_t* dict_find(int8_t len, char *name) {
   return NULL;
 }
 
+/* lookup (name? – address). */
+__fw_noinline__
+fword_t* dict_lookup(fcell_xt addr) {
+  // Load dictionary pointer
+  fword_t* word_ptr = ctx->dict->head;
+
+  // Iterate over words, looking for match
+  while (word_ptr != NULL) {
+    fword_t word = *word_ptr;
+
+    if (word.body == (fcell_xt*)addr) {
+      return word_ptr;
+    }
+
+    // no match
+    word_ptr = word.prev;
+  }
+  return NULL;
+}
+
+
+#include <stdio.h>
+/* FIND (name? – address). */
+__fw_noinline__
+void dict_print() {
+  // Load dictionary pointer
+  fword_t* word_ptr = ctx->dict->head;
+
+  // Iterate over words, looking for match
+  while (word_ptr != NULL) {
+    fword_t word = *word_ptr;
+    printf("dict entry:%p: %s -> %p\n", word_ptr, word_ptr->name, word_ptr->body);
+    word_ptr = word.prev;
+  }
+
+}
+

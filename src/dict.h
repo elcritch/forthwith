@@ -12,9 +12,11 @@ fcell_xt *forth_alloc_var_len(fcell_t len);
 fword_t* alloc_dict();
 char* alloc_string(uint8_t len);
 
-// Helpers 
+// Helpers
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body);
 fword_t* dict_find(int8_t len, char *name);
+fword_t* dict_lookup(fcell_xt addr);
+void dict_print();
 
 #endif // _FW_DICT_H_
 

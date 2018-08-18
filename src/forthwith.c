@@ -99,6 +99,7 @@ int forth_bootstrap(fw_ctx_t* ctx) {
 
   #define FORTH_DEFINE_DICT_ENTRIES
     #include "xmacros.h"
+    #include "xmacros.inner.h"
     #include "xmacros.core.h"
     #include "xmacros.outer.h"
   #undef FORTH_DEFINE_DICT_ENTRIES

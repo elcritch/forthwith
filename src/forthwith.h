@@ -146,7 +146,7 @@ extern fcell_xt xt_dosys;
 extern fcell_xt xt_docolon;
 extern fcell_xt xt_quits;
 extern fcell_xt xt_exits;
-extern fcell_xt xt_interpret;
+/* extern fcell_xt xt_interpret; */
 
 #include "dict.h"
 #include "utilities.h"

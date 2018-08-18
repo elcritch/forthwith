@@ -14,8 +14,20 @@ void test_setup() {
   forth_bootstrap(ctx);
 }
 
+void dict_print();
+
 void test_basic(void) {
   test_setup();
+
+  dict_print();
+
+  printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3);
+  for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) {
+    fword_t *entry = dict_lookup(xt_interpret[i]);
+    char *name = entry == NULL ? NULL : entry->name;
+    printf("xt_interpret[%d]: %p :: %s\n", i, xt_interpret[i], name);
+  }
+  printf("\n\n");
 
   // Vars
   fcell_xt* var1 = forth_alloc_var();

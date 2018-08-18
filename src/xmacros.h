@@ -47,7 +47,8 @@
 
 // must be init'ed at bootstrap
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
-  fcell_xt xt_ ## lbl = NULL
+  fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ];
+  /* fcell_xt xt_ ## lbl = NULL */
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_primitive(name_str, name_len, mask, func, comment, { \
@@ -72,8 +73,8 @@
 // ================================================================== //
 #ifdef FORTH_DEFINE_DICT_ENTRIES
 
-#define forth_primitive(name_str, name_len, mask, func, _comment, _BLOCK) \
-  dict_create(mask, name_len, name_str, (fcell_xt*)&func)
+#define forth_primitive(name_str, name_len, mask, func, _comment, _BLOCK)
+  /* dict_create(mask, name_len, name_str, (fcell_xt*)&func) */
 
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK) \
   dict_create(mask, name_len, name_str, (fcell_xt*)&func)
@@ -84,10 +85,12 @@
 // https://codecraft.co/2014/11/25/variadic-macros-tricks/
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
-  fcell_xt _fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1] = { XT(docolon), WORDS }; \
-  dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&_fw_ ## lbl)
+  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { XT(docolon), WORDS }; \
+  memcpy(xt_ ## lbl, fw_ ## lbl,  sizeof(xt_ ## lbl)); \
+  dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&xt_ ## lbl)
 
-#define forth_docall(name_str, name_len, mask, func, comment, lbl)
+#define forth_docall(name_str, name_len, mask, func, comment, lbl) \
+  dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&func)
 
 #endif // FORTH_DEFINE_DICT_ENTRIES
 
@@ -105,7 +108,8 @@
 
 #define forth_variable(name, name_len, struct_name, member_name, offset)
 
-#define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)
+#define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
+  extern fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ]
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl)
 

@@ -31,10 +31,10 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
 
-
+// Toggle hidden flag -- unhide the word
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
-    XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word
-  );
+           XT(lit), (fcell_xt)F_IMMED, XT(xmask),
+           );
 
 forth_core("'", 1, F_NORMAL, tick, "( p -- )", {
     // Get address of next word from codeword list (e.g. same as lit)
@@ -88,7 +88,7 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
            XT(exits), // Return from the function.
            );
 
-forth_word("ifthen", 5, F_IMMED, ifthen, "( -- )",
+forth_word("ifthen", 6, F_IMMED, ifthen, "( -- )",
            XT(tick), XT(zbranch), XT(comma),
            XTV(HERE),
            XT(fetch),
