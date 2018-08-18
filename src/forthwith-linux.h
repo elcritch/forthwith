@@ -130,10 +130,7 @@
 // Standard "Definitions"
 // ========================================================================== //
 
-/*
-  The forth impl interfaces 
- */
-
+/* The forth impl interfaces */
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(reg) _jump( reg ); _asm_jump()
 
@@ -155,8 +152,6 @@
 #define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
 #define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
-
-/* #define xorl_const(x, y) _fw_asm_const("xorq", y, reg_##x) */
 
 #define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
@@ -182,9 +177,6 @@
   load_const(xrax, $ctx_psp);                   \
   load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
 
-// improvement: load "reg file" from mem, not sure if x86_64 does that...
-/* #define save_state() */
-/* #define load_state() */
 #define call(lbl) _call( __label(lbl) )
 
 #define __call_reg(r) __asm__("callq *" #r )
@@ -194,9 +186,7 @@
 #define ret(reg)                                 \
   __asm__("ret");
  
-/* copy_reg(xrbp, xrsp);                         \ */
-/* copy_reg(xrsp, xrbp);                         \ */
-
+// improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \
   pushd(tos);                                     \
   load_const(xrax, $ctx_psp);                    \

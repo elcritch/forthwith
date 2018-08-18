@@ -53,11 +53,11 @@
   })
 
 // TODO: fix or remove
-#define forth_variable(name, _name_len, struct_name, member_name, offset, default) \
+#define forth_variable(name, _name_len, struct_name, member_name, offset) \
   forth_primitive( #name, name_len, f_normal, var_ ## name, _comment, { \
     pushd(tos);                                                         \
     load_const(x, $ ## struct_name);                                    \
-    load_addr_off(x, x, $ctx_of_ ## member_name);                       \
+    load_addr_off(x, x, $ ## struct_name ## _of_ ## member_name);       \
     calc_addr_off(tos, x, offset);                                      \
   })
 #endif // FORTH_DEFINE_PRIMITIVES
@@ -74,13 +74,13 @@
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK) \
   dict_create(mask, name_len, name_str, (fcell_xt*)&func);
 
-#define forth_variable(name, name_len, struct_name, member_name, offset, default) \
+#define forth_variable(name, name_len, struct_name, member_name, offset) \
   dict_create(F_NORMAL, name_len, #name, (fcell_xt*)&var_ ## name);
 
 // https://codecraft.co/2014/11/25/variadic-macros-tricks/
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
-  fcell_xt _fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1] = { WORDS };              \
+  fcell_xt _fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1] = { XT(docolon), WORDS }; \
   dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&_fw_ ## lbl);
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl)  
@@ -99,7 +99,7 @@
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK)  \
   extern fcell_xt xt_ ## func;
 
-#define forth_variable(name, name_len, struct_name, member_name, offset, default)
+#define forth_variable(name, name_len, struct_name, member_name, offset)
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)
 

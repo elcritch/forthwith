@@ -25,6 +25,12 @@ void docomma() {
 
 // ( n -- ) {*user} 
 __fw_noinline__
+void dosavehere() {
+  forth_push(*ctx->user->head);
+}
+
+// ( n -- ) {*user} 
+__fw_noinline__
 void doxmask() {
   ctx->dict->head->meta ^= forth_pop();
 }

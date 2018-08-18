@@ -3,13 +3,6 @@
 
 #include "forthwith.h"
 
-int a[4] = {1,2,3,4};
-int *arr[1] = {a};
-
-/* fw_call fcallend(FORTH_REGISTERS) { */
-/*   _asm_jump(); */
-/* } */
-
 /*
   Example of Direct Threaded vs Indirect Threaded code:
 

@@ -42,3 +42,18 @@ forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
   jump(next);
 });
 
+/* forth_core("litstr", 6, F_NORMAL, litstr, "", { */
+/*     // Get Length of String from codeword list */
+/*     load_addr(x, ip); */
+/*     incr_reg(ip); */
+
+/*     pushd(ip); // push the address of the start of the string  */
+/*     pushd(x); // push length on the stack  */
+/*     add_reg(ip, x); // skip past the string  */
+
+/*     add_const(ip, $3); // but round up to next 4 byte boundary  */
+/*     load_const(x, $3); */
+/*     not_reg(x); */
+/*     and_reg(ip, x); */
+/*   }); */
+
