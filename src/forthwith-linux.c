@@ -9,9 +9,9 @@
   #include "xmacros.h"
   #include "xmacros.core.h"
   #include "xmacros.outer.h"
+  #include "xmacros.inner.h"
 #undef FORTH_DEFINE_PRIMITIVES
 
-#include "inner.c"
 #include "dict.c"
 #include "forthwith.c"
 #include "utilities.c"

@@ -152,9 +152,10 @@ extern fcell_xt xt_interpret;
 #include "utilities.h"
 
 #define FORTH_DEFINE_HEADERS
-#include "xmacros.h"
-#include "xmacros.core.h"
-#include "xmacros.outer.h"
+  #include "xmacros.h"
+  #include "xmacros.inner.h"
+  #include "xmacros.core.h"
+  #include "xmacros.outer.h"
 #undef FORTH_DEFINE_HEADERS
 
 #endif // _FORTHWITH_HEADER_
