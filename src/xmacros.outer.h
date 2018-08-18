@@ -29,24 +29,8 @@ forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
-/* forth_docall(">cfa", 4, F_NORMAL, cfa, "( p -- )", docfa); */
-
 forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
 
-forth_word(":", 6, F_NORMAL, colon, "( p -- )",
-           XT(word), // Get the name of the new word
-           XT(create), // CREATE the dictionary entry / header
-           XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
-           XT(rbrac), // Go into compile mode.
-           XT(exits), // Return from the function.
-           );
-
-forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
-           XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
-           XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word
-           XT(lbrac), // Go back to IMMEDIATE mode.
-           XT(exits), // Return from the function.
-           );
 
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
     XT(lit), (fcell_xt)F_IMMED, XT(xmask), // Toggle hidden flag -- unhide the word
@@ -87,6 +71,22 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
     }
     jump(next);
   });
+
+// Forth Words in Forth (pihsnoipmahc FWW!)
+forth_word(":", 6, F_NORMAL, colon, "( p -- )",
+           XT(word), // Get the name of the new word
+           XT(create), // CREATE the dictionary entry / header
+           XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
+           XT(rbrac), // Go into compile mode.
+           XT(exits), // Return from the function.
+           );
+
+forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
+           XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
+           XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word
+           XT(lbrac), // Go back to IMMEDIATE mode.
+           XT(exits), // Return from the function.
+           );
 
 forth_word("ifthen", 5, F_IMMED, ifthen, "( -- )",
            XT(tick), XT(zbranch), XT(comma),
@@ -190,92 +190,3 @@ forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(end),
            );
 
-
-/* /\* */
-/*   From Jone's Forth: */
-/* 	This interpreter is pretty simple, but remember that in FORTH you can always override */
-/* 	it later with a more powerful one! */
-/*  *\/ */
-/* forth_core("interpret", 9, F_NORMAL, interpret, "( n -- )", { */
-/*     call(doword);		// Returns %ecx = length, %edi = pointer to word. */
-
-/*     // Is it in the dictionary? */
-/*     xor_reg(x, x); /\* xor %eax,%eax *\/ */
-
-/* 	movl %eax,interpret_is_lit // Not a literal number (not yet anyway ...) */
-/* 	call _FIND		// Returns %eax = pointer to header or 0 if not found. */
-/* 	test %eax,%eax		// Found? */
-/* 	jz 1f */
-
-/* 	// In the dictionary.  Is it an IMMEDIATE codeword? */
-/* 	mov %eax,%edi		// %edi = dictionary entry */
-/* 	movb 4(%edi),%al	// Get name+flags. */
-/* 	push %ax		// Just save it for now. */
-/* 	call _TCFA		// Convert dictionary entry (in %edi) to codeword pointer. */
-/* 	pop %ax */
-/* 	andb $F_IMMED,%al	// Is IMMED flag set? */
-/* 	mov %edi,%eax */
-/* 	jnz 4f			// If IMMED, jump straight to executing. */
-
-/* 	jmp 2f */
-
-/* 1:	// Not in the dictionary (not a word) so assume it's a literal number. */
-/* 	incl interpret_is_lit */
-/* 	call _NUMBER		// Returns the parsed number in %eax, %ecx > 0 if error */
-/* 	test %ecx,%ecx */
-/* 	jnz 6f */
-/* 	mov %eax,%ebx */
-/* 	mov $LIT,%eax		// The word is LIT */
-
-/* 2:	// Are we compiling or executing? */
-/* 	movl var_STATE,%edx */
-/* 	test %edx,%edx */
-/* 	jz 4f			// Jump if executing. */
-
-/* 	// Compiling - just append the word to the current dictionary definition. */
-/* 	call _COMMA */
-/* 	mov interpret_is_lit,%ecx // Was it a literal? */
-/* 	test %ecx,%ecx */
-/* 	jz 3f */
-/* 	mov %ebx,%eax		// Yes, so LIT is followed by a number. */
-/* 	call _COMMA */
-/* 3:	NEXT */
-
-/* 4:	// Executing - run it! */
-/* 	mov interpret_is_lit,%ecx // Literal? */
-/* 	test %ecx,%ecx		// Literal? */
-/* 	jnz 5f */
-
-/* 	// Not a literal, execute it now.  This never returns, but the codeword will */
-/* 	// eventually call NEXT which will reenter the loop in QUIT. */
-/* 	jmp *(%eax) */
-
-/* 5:	// Executing a literal, which means push it on the stack. */
-/* 	push %ebx */
-/* 	NEXT */
-
-/* 6:	// Parse error (not a known word or a number in the current BASE). */
-/* 	// Print an error message followed by up to 40 characters of context. */
-/* 	mov $2,%ebx		// 1st param: stderr */
-/* 	mov $errmsg,%ecx	// 2nd param: error message */
-/* 	mov $errmsgend-errmsg,%edx // 3rd param: length of string */
-/* 	mov $__NR_write,%eax	// write syscall */
-/* 	int $0x80 */
-
-/* 	mov (currkey),%ecx	// the error occurred just before currkey position */
-/* 	mov %ecx,%edx */
-/* 	sub $buffer,%edx	// %edx = currkey - buffer (length in buffer before currkey) */
-/* 	cmp $40,%edx		// if > 40, then print only 40 characters */
-/* 	jle 7f */
-/* 	mov $40,%edx */
-/* 7:	sub %edx,%ecx		// %ecx = start of area to print, %edx = length */
-/* 	mov $__NR_write,%eax	// write syscall */
-/* 	int $0x80 */
-
-/* 	mov $errmsgnl,%ecx	// newline */
-/* 	mov $1,%edx */
-/* 	mov $__NR_write,%eax	// write syscall */
-/* 	int $0x80 */
-
-/* 	NEXT */
-/* }); */

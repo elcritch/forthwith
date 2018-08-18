@@ -228,10 +228,26 @@ void test_parsing(void)
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
 }
 
+void test_basic_interpreter(void) {
+  test_setup();
+
+  // test basic if / else (and thereby branch/0branch)
+  // test basic find usage
+}
+
+void test_full_interpreter(void) {
+  test_setup();
+
+  // test basic if / else (and thereby branch/0branch)
+  // test basic find usage
+}
 
 TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
+  { "basic_intp", test_basic_interpreter },
+  { "test_full_interpreter", test_full_interpreter },
   { 0 }
 };
+
 
