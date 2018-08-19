@@ -122,11 +122,10 @@ int forth_eval(fcell_xt *instr) {
 
   ctx->regs->w = /* w */ (fcell_t)instr;
   ctx->regs->ip = /* ip */ (fcell_t)instr+8;
-  ctx->regs->psp = /* w */ ctx->psp->head;
-  ctx->regs->rsp = /* rsp */ ctx->rsp->head;
-  ctx->regs->usp = /* u */ ctx->user->head;
-  ctx->regs->bpsp = /* u */ ctx->psp->base;
-  forth_exec(0, 0, 0, 0, 0, 0, 0);
+  ctx->regs->x = 0;
+  ctx->regs->tos = 0;
+
+  forth_exec(0, 0, 0, 0, 0, 0);
   save_psp(psp);
 
   return 0;

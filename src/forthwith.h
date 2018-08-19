@@ -29,13 +29,12 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS \
-  TOS_t tos,            \
-  W_t   w,              \
-  IP_t  ip,             \
   PSP_t psp,            \
   PSP_t bpsp,           \
   RSP_t rsp,            \
-  RSP_t brsp
+  RSP_t brsp,           \
+  TOS_t tos,            \
+  IP_t  ip
 
 /* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 
@@ -43,13 +42,14 @@ typedef struct forth_word fword_t;
 
 typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
-  fcell_t *psp;
-  fcell_t *rsp;
+  /* fcell_t *psp; */
+  /* fcell_t *rsp; */
+  fcell_t w;
+  fcell_t x;
   fcell_t ip;
   fcell_t tos;
-  fcell_t w;
-  fcell_t *usp;
-  fcell_t *bpsp;
+  /* fcell_t *usp; */
+  /* fcell_t *bpsp; */
 } fw_ctx_regs_t;
 
 typedef struct forthwith_vars { /**< FORTH environment */
@@ -117,6 +117,8 @@ int forth_init();
 #define FW_ERR_STACKOVERFLOW 1
 #define FW_ERR_STACKUNDERFLOW 2
 #define FW_ERR_NOWORD 3
+#define FW_ERR_RSTACKOVERFLOW 4
+#define FW_ERR_RSTACKUNDERFLOW 5
 
 typedef enum forthwith_the_states fw_state_t;
 enum forthwith_the_states {

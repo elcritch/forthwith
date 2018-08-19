@@ -52,7 +52,7 @@
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_primitive(name_str, name_len, mask, func, comment, { \
-      calc_addr_off(x, xaddr, __label(lbl));               \
+    calc_addr_off(x, xaddr, __label(lbl)); \
     call(call00); \
     jump(next); \
   })
@@ -122,23 +122,24 @@
 #define FORTH_STACK_PRIMS
 
 #ifndef FORTHWITH_NO_CHECKS
-#define check(cond, err_code) if (cond) { jump(doabortsof); }
+  #define check(cond, errfunc) if (cond) \
+      {calc_addr_off(x, xaddr, __label(errfunc)); call(call00);}
 #else
-#define check(cond, err_code)
+  #define check(cond, errfunc)
 #endif // FORTHWITH_NO_CHECKS
 
-#define pushd(reg)                                       \
+#define pushd(reg) \
   _pushd(reg)
 
 #define popd(reg) \
-  check(psp == bpsp, FW_ERR_STACKUNDERFLOW);  \
+  check(psp == bpsp, dosuf);  \
   _popd(reg)
 
-#define pushr(reg)                                         \
+#define pushr(reg) \
   _pushr(reg)
 
-#define popr(reg)                                              \
-  check(rsp > brsp, FW_ERR_STACKUNDERFLOW);             \
+#define popr(reg) \
+  check(rsp == brsp, doruf); \
   _popr(reg)
 
 

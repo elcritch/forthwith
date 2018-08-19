@@ -92,7 +92,7 @@ forth_core("call00", 6, F_NORMAL, call00, "{ctx->regs} ( -- )", {
 /* fw_call call00(FORTH_REGISTERS) { */
   /* popd(x); // load jump addr */
   save_state();
-  call_reg(tos);
+  call_reg(x);
   load_state();
 });
 /* fcell_xt xt_call00 = (fcell_xt)&call00; */

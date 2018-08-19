@@ -6,12 +6,18 @@
 #include <stdbool.h>
 
 
-/* perform c calls to 00 calls `void (*func)()` */
-/* saves ForthWith regs to data stack */
+// handle data stack underflow
 __fw_noinline__
-fw_call doabortsof(FORTH_REGISTERS) {
-  load_const(tos, $2);
-  exit(2);
+fw_call dosuf(FORTH_REGISTERS) {
+  ctx->vars->error = FW_ERR_STACKUNDERFLOW;
+  exit(ctx->vars->error);
+}
+
+// handle return stack underflow
+__fw_noinline__
+fw_call doruf(FORTH_REGISTERS) {
+  ctx->vars->error = FW_ERR_RSTACKUNDERFLOW;
+  exit(ctx->vars->error);
 }
 
 // ( n -- )

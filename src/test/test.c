@@ -290,7 +290,7 @@ TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
   { "basic_intp", test_basic_interpreter },
-  { "test_full_interpreter", test_full_interpreter },
+  /* { "test_full_interpreter", test_full_interpreter }, */
   { 0 }
 };
 

@@ -53,17 +53,23 @@
 /* The C macros below expand registers from 'w' to 'reg_ ## w' which then
  get substituted with whats here. This helps with string concat of the various
  registers. */
-#define reg_w   %rdi
-#define reg_tos %rsi
-#define reg_x   %rdx
-#define reg_ip  %rcx
-#define reg_psp %r8
-#define reg_bpsp %r9
-#define reg_rsp %r10
-#define reg_brsp %r11
-#define reg_a %r12
-#define reg_b %r13
 
+#define reg_bpsp    %rdi
+#define reg_brsp    %rsi
+#define reg_psp     %rdx
+#define reg_rsp     %rcx
+
+#define reg_tos     %r8
+#define reg_ip      %r9
+#define reg_w       %r10
+#define reg_x       %r11
+
+#define reg_a       %r12
+#define reg_b       %r13
+#define reg_c       %r14
+#define reg_d       %r15
+
+// Relative offset register
 #define reg_xaddr %rip
 
 #define reg_xrdi %rdi
@@ -89,12 +95,12 @@
 */
 
 /* #define fw_label(l) _fw_label(l) */
-#define _asm_jump() \
-  __asm__ ("" :: "r" (w));          \
-  __asm__ ("" :: "r" (ip));         \
-  __asm__ ("" :: "r" (psp));        \
-  __asm__ ("" :: "r" (rsp));        \
-  __asm__ ("" :: "r" (tos))
+#define _asm_jump()
+  /* __asm__ ("" :: "r" (w));          \ */
+  /* __asm__ ("" :: "r" (ip));         \ */
+  /* __asm__ ("" :: "r" (psp));        \ */
+  /* __asm__ ("" :: "r" (rsp));        \ */
+  /* __asm__ ("" :: "r" (tos)) */
 
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
@@ -171,7 +177,7 @@
 
 #define save_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_of_head) // size 
+  store_addr_off(xrax, reg, $stack_of_head) // size
 
 #define load_psp(reg) \
   load_const(xrax, $ctx_psp);                   \
