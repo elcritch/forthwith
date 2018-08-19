@@ -132,7 +132,7 @@
 
 #define ret(reg)                                 \
   __asm__("ret");
- 
+
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \
   load_const(xrax, $ctx_psp);                    \
