@@ -57,11 +57,18 @@
  get substituted with whats here. This helps with string concat of the various
  registers. */
 
+#define FORTH_REGISTERS                         \
+    PSP_t bpsp,                                 \
+    PSP_t psp,                                  \
+    RSP_t brsp,                                 \
+    RSP_t rsp,                                  \
+    IP_t  ip, \
+    X_t   x
+
 #define reg_bpsp    %rdi
 #define reg_psp    %rsi
 #define reg_brsp     %rdx
 #define reg_rsp     %rcx
-
 #define reg_ip      %r8
 #define reg_x       %r9
 
@@ -74,13 +81,6 @@
 #define reg_s4       %r15
 
 /* Define C params... compilers vary in which registers they use */
-#define FORTH_REGISTERS                         \
-  PSP_t bpsp,                                   \
-  PSP_t psp,                                  \
-  RSP_t brsp,                                 \
-  RSP_t rsp,                                  \
-  X_t   x,                                  \
-  IP_t  ip
 
 // Relative offset register
 #define reg_xaddr %rip
