@@ -41,8 +41,12 @@ int forth_init() {
   ctx->dict->size = 512 * sizeof(fw_ctx_dict_stack_t);
   ctx->strings->size = 512 * sizeof(fw_ctx_str_stack_t);
 
-  // Allocate default stacks
-  ctx->psp->base = ctx->psp->head = calloc(1, ctx->psp->size);
+  // ===== Allocate default stacks ===== //
+
+  /* offset by one to store a zero value before the base */
+  ctx->psp->head = calloc(1, ctx->psp->size + 1);
+  ctx->psp->base = ++ctx->psp->head;
+
   ctx->rsp->base = ctx->rsp->head = calloc(1, ctx->rsp->size);
   ctx->user->base = ctx->user->head = calloc(1, ctx->user->size);
   ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
