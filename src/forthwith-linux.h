@@ -2,89 +2,9 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
+#include "forthwith-linux-consts.h"
+
 #include <stddef.h>
-
-/* #define FORTHWITH_NO_CHECKS */
-
-#define $word_sz $8
-#define $word_max $0xFFFFFFFFFFFFFFFF
-#define $word_ptr_sz $8
-
-#ifdef __MACH__
-#define $ctx _ctx(%rip)
-#define $ctx_psp _ctx_psp(%rip)
-#define $ctx_rsp _ctx_rsp(%rip)
-#define $ctx_regs _ctx_regs(%rip)
-#else
-#define $ctx ctx(%rip)
-#define $ctx_psp ctx_psp(%rip)
-#define $ctx_rsp ctx_rsp(%rip)
-#define $ctx_regs ctx_regs(%rip)
-#endif
-
-#define $ctx_of_regs 0
-#define $ctx_of_vars 8
-#define $ctx_of_psp 16
-#define $ctx_of_rsp 24
-#define $ctx_of_user 32
-#define $ctx_of_dict 40
-#define $ctx_of_strs 48
-
-/* #define $ctx_regs_of_psp "0" */
-/* #define $ctx_regs_of_rsp "8" */
-#define $ctx_regs_of_ip  16
-#define $ctx_regs_of_tos 24
-#define $ctx_regs_of_w   32
-
-#define $stack_of_head  0
-#define $stack_of_base  8
-#define $stack_of_size  16
-
-#define $vars_of_base       0
-#define $vars_of_state      8
-#define $vars_of_tib_idx    16
-#define $vars_of_tib_len    24
-#define $vars_of_tib_str    32
-
-// ========================================================================== //
-// Platform Registers 
-// ========================================================================== //
-
-/* The C macros below expand registers from 'w' to 'reg_ ## w' which then
- get substituted with whats here. This helps with string concat of the various
- registers. */
-
-#define reg_bpsp    %rdi
-#define reg_brsp    %rsi
-#define reg_psp     %rdx
-#define reg_rsp     %rcx
-
-#define reg_tos     %r8
-#define reg_ip      %r9
-#define reg_w       %r10
-#define reg_x       %r11
-
-#define reg_a       %r12
-#define reg_b       %r13
-#define reg_c       %r14
-#define reg_d       %r15
-
-// Relative offset register
-#define reg_xaddr %rip
-
-#define reg_xrdi %rdi
-#define reg_xrsi %rsi
-#define reg_xrdx %rdx
-#define reg_xrcx %rcx
-#define reg_xrax %rax
-#define reg_xrip %rip
-#define reg_xrbp %rbp
-#define reg_xrsp %rsp
-
-/* %rdi %rsi %rdx %rcx %r8 %r9 %r10 */
-/* gdb> info register rdi rsi rdx rcx r8 r9 r10 */
-/* lldb> register read rdi rsi rdx rcx r8 r9 r10 */
-
 
 // ========================================================================== //
 // Platform "Helpers"
@@ -151,14 +71,21 @@
 #define store_addr_off(x, y, o) _fw_asm_to_addr_off("movq", reg_##y, reg_##x, o)
 #define calc_addr_off(x, y, o) _fw_asm_from_addr_off("leaq", reg_##y, reg_##x, o)
 
+// Incr & Decr
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
 
+// Bitwise
 #define xor_reg(x, y) _fw_asm_const("xorq", reg_##y, reg_##x)
 #define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
 #define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
 
+// Jumps
+// ... unique labels? hmmm...
+// -- gcc/clang seem to handle read-only if/else branches fine
+
+// Signed Arithmetic
 #define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
 #define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
@@ -195,6 +122,7 @@
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \
   pushd(tos);                                     \
+  if (psp > bpsp) { pushd(tos); } \
   load_const(xrax, $ctx_psp);                    \
   store_addr_off(xrax, psp, $stack_of_head);  \
   load_const(xrax, $ctx_rsp);                    \
@@ -213,7 +141,8 @@
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
   load_addr_off(w, xrax, $ctx_regs_of_w); \
-  popd(tos)
+  load_const(a, $word_sz); \
+  if (psp > bpsp) { popd(tos); }
 
 #endif // __HEADER_IMPL_X86__
 

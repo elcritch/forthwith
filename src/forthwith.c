@@ -45,9 +45,11 @@ int forth_init() {
 
   /* offset by one to store a zero value before the base */
   ctx->psp->head = calloc(1, ctx->psp->size + 1);
-  ctx->psp->base = ++ctx->psp->head;
+  ctx->psp->head++;
+  ctx->psp->base = ctx->psp->head;
 
   ctx->rsp->base = ctx->rsp->head = calloc(1, ctx->rsp->size);
+
   ctx->user->base = ctx->user->head = calloc(1, ctx->user->size);
   ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
   ctx->strings->base = ctx->strings->head = calloc(1, ctx->strings->size);

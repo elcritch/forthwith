@@ -29,10 +29,10 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 /* Define C params... compilers vary in which registers they use */
 #define FORTH_REGISTERS \
-  PSP_t psp,            \
   PSP_t bpsp,           \
+  PSP_t psp,            \
+  RSP_t brsp,         \
   RSP_t rsp,            \
-  RSP_t brsp,           \
   TOS_t tos,            \
   IP_t  ip
 

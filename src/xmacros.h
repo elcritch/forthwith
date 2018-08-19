@@ -121,6 +121,8 @@
 #ifndef FORTH_STACK_PRIMS
 #define FORTH_STACK_PRIMS
 
+#define FORTHWITH_NO_CHECKS
+
 #ifndef FORTHWITH_NO_CHECKS
   #define check(cond, errfunc) if (cond) \
       {calc_addr_off(x, xaddr, __label(errfunc)); call(call00);}
