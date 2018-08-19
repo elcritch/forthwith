@@ -1,8 +1,3 @@
-/* #include <stdint.h> */
-/* #include <stdlib.h> */
-
-/* #include "forthwith.h" */
-
 /*
   Example of Direct Threaded vs Indirect Threaded code:
 
@@ -22,11 +17,9 @@
   RSP = &IP
 
  */
-
 /* Execute Indirect Thread's XT (mnemonic handle 'next XT')*/
 
-forth_primitive("next", 4, F_NORMAL, next, "( -- n)", {
-  /* fw_call next(FORTH_REGISTERS) { */
+forth_primitive("next", 4, F_NORMAL, next, "{ip++}( -- )", {
   /* `load(IP)` -> `W`  -- fetch memory pointed to by IP into "W" register
       ...W now holds address of the thread's execution-token */
   load_addr(w, ip); /* w = *ip; */
@@ -35,8 +28,6 @@ forth_primitive("next", 4, F_NORMAL, next, "( -- n)", {
   /* decr_reg(ip); /\* ip = ip + sizeof(IP_t); *\\/ *\/ */
 
   load_addr(x, w); /* x = *w; */
-
-  /* sub_const(ip, $word_ptr_sz); /\* ip = ip + sizeof(IP_t); *\/ */
 
   /* `load(W)` -> `X`  -- dereference indirect thread's execution-token
       e.g. fetch memory pointed by W into "X" register
@@ -50,87 +41,33 @@ forth_primitive("next", 4, F_NORMAL, next, "( -- n)", {
 /* Core Execution Token Implementations */
 
 /* execute indirect thread */
-forth_core("docolon", 7, F_NORMAL, docolon, "{ip++} ( -- n)", {
-  /* fw_call docolon(FORTH_REGISTERS) { */
+forth_core("docolon", 7, F_NORMAL, docolon, "{ip++} ( -- )", {
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
       so `W++` is the address of the thread body (list of IDC addrs)!  */
-  /* ip = (fcell_xt*)(w+sizeof(IP_t)); */
   incr_reg(w); // W++
-  /* decr_reg(w); // W++  */
   copy_reg(ip, w);
-
-  /* __asm__ __volatile__("" :: "m" (ip)); */
   jump(next);
-  /* return FORTH_RET; */
 });
-/* fcell_xt xt_docolon = (fcell_xt)&docolon; */
 
 /* Exit current thread */
-forth_core("exits", 5, F_NORMAL, exits, "( n -- )", {
-  /* fw_call exits(FORTH_REGISTERS) { */
+forth_core("exits", 5, F_NORMAL, exits, "[ r -- ] ( -- )", {
   /* `pop IP` <- `RSP` -- load previous thread's last IP position */
   popr(ip);
   jump(next);
 });
-/* fcell_xt xt_exits = (fcell_xt)&exits; */
 
 /* Quit inner interpreter */
 forth_core("quits", 5, F_NORMAL, quits, "( -- )", {
-  /* fw_call quits(FORTH_REGISTERS) { */
-  /* `pop IP` <- `RSP` -- load previous thread's last IP position */
-  pushd(tos);
-  /* popr(ip); */
   return;
 });
-/* fcell_xt xt_quits = (fcell_xt)&quits; */
 
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */
 forth_core("call00", 6, F_NORMAL, call00, "{ctx->regs} ( -- )", {
-/* fw_call call00(FORTH_REGISTERS) { */
-  /* popd(x); // load jump addr */
   save_state();
   call_reg(x);
   load_state();
 });
-/* fcell_xt xt_call00 = (fcell_xt)&call00; */
-
-/* fw_call docall() { */
-/*   fcell_t addr = forth_pop(); */
-/*   fcell_t params = forth_pop(); */
-/*   fcell_t ret = forth_pop(); */
-
-/*   fcell_t a, b, c; */
-
-/*   switch (params) { */
-/*   case 0: { */
-/*     ret = ((forthwith_call_0) addr)(); */
-/*     break; */
-/*     } */
-/*   case 1: { */
-/*     a = forth_pop(); */
-/*     ret = ((forthwith_call_1) addr)(a); */
-/*     break; */
-/*     } */
-/*   case 2: { */
-/*     a = forth_pop(); */
-/*     b = forth_pop(); */
-/*     ret = ((forthwith_call_2) addr)(a, b); */
-/*     break; */
-/*     } */
-/*   case 3: { */
-/*     a = forth_pop(); */
-/*     b = forth_pop(); */
-/*     c = forth_pop(); */
-/*     ret = ((forthwith_call_3) addr)(a, b, c); */
-/*     break; */
-/*     } */
-/*   } */
-
-/*   if (ret) { */
-/*     pushd(tos); */
-/*   } */
-/* } */
 

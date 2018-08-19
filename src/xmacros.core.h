@@ -2,9 +2,11 @@
 // =============== Access Primitives ============== //
 
 /* primitive '@' ~ fetch */
-forth_core("@", 1, F_NORMAL, fetch, "( n -- )",  {
-    copy_reg(x, tos);
-    load_addr(tos, x);
+forth_core("@", 1, F_NORMAL, fetch, "( n -- n )",  {
+    popd(1);
+    copy_reg(x, s1);
+    load_addr(s1, x);
+    pushd(1);
     jump(next);
   });
 
@@ -17,11 +19,9 @@ forth_core("@", 1, F_NORMAL, fetch, "( n -- )",  {
 
 /* primitive '!' ~ store */
 forth_core("!", 1, F_NORMAL, store, "( n addr -- )",  {
-    popd(x);
-    copy_reg(a, tos);
-    store_addr(a, x);
-
-    popd(tos);
+    popd(2);
+    store_addr(s2, s1);
+    pushd(0);
     jump(next);
   });
 
@@ -34,51 +34,59 @@ forth_core("!", 1, F_NORMAL, store, "( n addr -- )",  {
 
 // =============== Stack Primitives ============== //
 forth_core("drop", 4, F_NORMAL, drop, "( n -- )",  {
-  popd(tos);
+  popd(1);
+  pushd(0);
   jump(next);
 });
 
 forth_core("dup", 3, F_NORMAL, dup, "( n -- n n )",  {
-  pushd(tos);
+  popd(1);
+  copy_reg(s2, s1);
+  pushd(2);
   jump(next);
 });
 
 forth_core("swap", 4, F_NORMAL, swap, "( x y -- x y )",  {
-  copy_reg(x,tos);
-  popd(tos);
-  pushd(x);
+  popd(2);
+  copy_reg(x,s2);
+  copy_reg(s2,s1);
+  copy_reg(s1,x);
+  pushd(2);
   jump(next);
 });
 
-forth_core("rot", 3, F_NORMAL, rot, "( n1 n2 n3  ---  n2 n3 n1 )",  {
-    copy_reg(x,tos);
-    popd(b);
-    popd(a);
-
-    pushd(b);
-    pushd(x);
-    copy_reg(tos,a);
-
-    jump(next);
+forth_core("rot", 3, F_NORMAL, rot, "( n3 n2 n1  ---  n2 n1 n3 )",  {
+  popd(3);
+  copy_reg(x,s3);
+  copy_reg(s3, s2);
+  copy_reg(s2, s1);
+  copy_reg(s1, x);
+  pushd(3);
+  jump(next);
 });
 
 forth_core("add", 3, F_NORMAL, add, "( n n -- n )",  {
-  popd(x);
-  add_reg(tos, x); 
+  popd(2);
+  add_reg(s1, s2);
+  pushd(1);
   jump(next);
 });
 
-forth_core("sub", 3, F_NORMAL, sub, "( n n -- n )",  {
-    popd(x);
-    sub_reg(tos, x);
+forth_core("sub", 3, F_NORMAL, sub, "( n2 n1 -- n )",  {
+    popd(2);
+    sub_reg(s1, s2);
+    pushd(1);
     jump(next);
   });
 
 forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
-  popd(x);
-  xor_reg(tos, x);
-  load_const(a, $word_max);
-  xor_reg(tos, a);
+  popd(2);
+  copy_reg(x, s1);
+  xor_reg(x, s2);
+  if (x) {
+    load_const(s1, $1);
+  }
+  pushd(1);
   jump(next);
 });
 

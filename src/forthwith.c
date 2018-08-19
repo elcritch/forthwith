@@ -118,7 +118,6 @@ fw_call forth_exec(FORTH_REGISTERS) {
   load_state();
   call(next);
   save_state();
-  popd(x);
 }
 
 __fw_noinline__

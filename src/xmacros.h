@@ -4,9 +4,12 @@
 // ================================================================== //
 #ifndef _XMACROS_H_
 #define _XMACROS_H_
+
 #define _GET_NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, N, ...) N
 #define COUNT_VARARGS(...) _GET_NTH_ARG(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+
 #endif // _XMACROS_H_
+
 
 #ifdef forth_primitive
 #undef forth_primitive
@@ -60,10 +63,10 @@
 // TODO: fix or remove
 #define forth_variable(name, _name_len, struct_name, member_name, offset) \
   forth_primitive( #name, name_len, f_normal, var_ ## name, _comment, { \
-    pushd(tos);                                                         \
     load_const(x, $ ## struct_name);                                    \
     load_addr_off(x, x, $ ## struct_name ## _of_ ## member_name);       \
-    calc_addr_off(tos, x, offset);                                      \
+    calc_addr_off(s1, x, offset);                                      \
+    pushd(1);                                                         \
   })
 #endif // FORTH_DEFINE_PRIMITIVES
 
@@ -124,26 +127,25 @@
 #define FORTHWITH_NO_CHECKS
 
 #ifndef FORTHWITH_NO_CHECKS
-  #define check(cond, errfunc) if (cond) \
-      {calc_addr_off(x, xaddr, __label(errfunc)); call(call00);}
+  #define check(cond, errfunc)                                             \
+    if ( cond ) {calc_addr_off(x, xaddr, __label(errfunc)); call(call00);}
 #else
   #define check(cond, errfunc)
 #endif // FORTHWITH_NO_CHECKS
 
-#define pushd(reg) \
-  _pushd(reg)
+#define pushd(n) \
+  _pushd(n)
 
-#define popd(reg) \
-  check(psp == bpsp, dosuf);  \
-  _popd(reg)
+#define popd(n) \
+  check(_checkd, dosuf);                         \
+  _popd(n)
 
 #define pushr(reg) \
   _pushr(reg)
 
 #define popr(reg) \
-  check(rsp == brsp, doruf); \
+  check(_checkr, doruf); \
   _popr(reg)
-
 
 #endif // FORTH_STACK_PRIMS
 

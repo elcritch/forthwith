@@ -93,8 +93,22 @@
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 
-#define _pushd(reg) store_addr(psp, reg); add_const(psp, $word_sz)
-#define _popd(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
+#define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz)
+#define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
+
+#define _pushd_0
+#define _pushd_1           _pushd_cell(s1)
+#define _pushd_2 _pushd_1; _pushd_cell(s2)
+#define _pushd_3 _pushd_2; _pushd_cell(s3)
+#define _pushd_4 _pushd_3; _pushd_cell(s4)
+#define _pushd(n) _pushd_ ## n
+
+#define _popd_0
+#define _popd_1          _popd_cell(s1)
+#define _popd_2 _popd_1; _popd_cell(s2)
+#define _popd_3 _popd_2; _popd_cell(s3)
+#define _popd_4 _popd_3; _popd_cell(s4)
+#define _popd(n) _popd_ ## n
 
 #define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
 #define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
@@ -121,8 +135,6 @@
  
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \
-  pushd(tos);                                     \
-  if (psp > bpsp) { pushd(tos); } \
   load_const(xrax, $ctx_psp);                    \
   store_addr_off(xrax, psp, $stack_of_head);  \
   load_const(xrax, $ctx_rsp);                    \
@@ -140,9 +152,7 @@
   load_addr_off(brsp, xrax, $stack_of_base);      \
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
-  load_addr_off(w, xrax, $ctx_regs_of_w); \
-  load_const(a, $word_sz); \
-  if (psp > bpsp) { popd(tos); }
+  load_addr_off(w, xrax, $ctx_regs_of_w)
 
 #endif // __HEADER_IMPL_X86__
 

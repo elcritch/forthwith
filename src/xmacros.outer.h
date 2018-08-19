@@ -2,16 +2,15 @@
 // #include "forthwith.h"
 
 forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
-    // load addr and move IP
-    load_addr(x, ip);
-    incr_reg(ip);
-
-    // push on stack
-    pushd(tos);
-    copy_reg(tos, x);
-
-    jump(next);
-  });
+  popd(0);
+  // load addr and move IP
+  load_addr(x, ip);
+  incr_reg(ip);
+  // push on stack
+  copy_reg(s1, x);
+  pushd(1);
+  jump(next);
+});
 
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
 forth_variable(STATE, 5, ctx, vars, $vars_of_state);
@@ -36,41 +35,48 @@ forth_word("immed", 5, F_IMMED, immed, "( p -- )",
            XT(lit), (fcell_xt)F_IMMED, XT(xmask),
            );
 
-forth_core("'", 1, F_NORMAL, tick, "( p -- )", {
-    // Get address of next word from codeword list (e.g. same as lit)
-    load_addr(x, ip);
-    incr_reg(ip);
-
-    // Push value on stack
-    pushd(tos);
-    copy_reg(tos, x);
-    jump(next);
-  });
+forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
+  popd(0);
+  // Get address of next word from codeword list (e.g. same as lit)
+  load_addr(x, ip);
+  incr_reg(ip);
+  // push on stack
+  copy_reg(s1, x);
+  pushd(1);
+  jump(next);
+});
 
 /* Executes word on tos */
 forth_core("exec", 6, F_NORMAL, exec, "( n -- )", {
-    copy_reg(x, tos);
-    popd(tos);
-    jump_reg(x);
-  });
+  popd(1);
+  copy_reg(x, s1);
+  pushd(0);
+  jump_reg(x);
+});
 
 /* Increments the IP by offset to affect branching */
 forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
     load_addr(x, ip);
     add_reg(ip, x);
     jump(next);
-  });
+});
 
 /* Increments the IP by offset to affect branching */
-forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( -- )", {
-    if (tos == 0) {
+forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
+    // load stack
+    popd(1);
+    copy_reg(x, s1);
+
+    if (x) {
+      add_const(ip, $word_ptr_sz);
+    } else {
       load_addr(x, ip);
       add_reg(ip, x);
-    } else {
-      add_const(ip, $word_ptr_sz);
     }
+
+    pushd(0);
     jump(next);
-  });
+});
 
 // Forth Words in Forth (pihsnoipmahc FWW!)
 forth_word(":", 6, F_NORMAL, colon, "( p -- )",

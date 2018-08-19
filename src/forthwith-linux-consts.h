@@ -6,6 +6,9 @@
 
 /* #define FORTHWITH_NO_CHECKS */
 
+#define $1 $1
+#define $0 $0
+
 #define $word_sz $8
 #define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $8
@@ -59,15 +62,25 @@
 #define reg_brsp     %rdx
 #define reg_rsp     %rcx
 
-#define reg_tos     %r8
-#define reg_ip      %r9
-#define reg_w       %r10
-#define reg_x       %r11
+#define reg_ip      %r8
+#define reg_x       %r9
 
-#define reg_a       %r12
-#define reg_b       %r13
-#define reg_c       %r14
-#define reg_d       %r15
+#define reg_w       %r10
+#define reg_tl      %r11
+
+#define reg_s1       %r12
+#define reg_s2       %r13
+#define reg_s3       %r14
+#define reg_s4       %r15
+
+/* Define C params... compilers vary in which registers they use */
+#define FORTH_REGISTERS                         \
+  PSP_t bpsp,                                   \
+  PSP_t psp,                                  \
+  RSP_t brsp,                                 \
+  RSP_t rsp,                                  \
+  X_t   x,                                  \
+  IP_t  ip
 
 // Relative offset register
 #define reg_xaddr %rip

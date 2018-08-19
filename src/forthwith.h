@@ -27,15 +27,6 @@ typedef  fcell_t  X_t;  // Scratch Register
 #define __fw_noinline__ __attribute__ ((noinline))
 #define fw_call void __attribute__ ((noinline))
 
-/* Define C params... compilers vary in which registers they use */
-#define FORTH_REGISTERS \
-  PSP_t bpsp,           \
-  PSP_t psp,            \
-  RSP_t brsp,         \
-  RSP_t rsp,            \
-  TOS_t tos,            \
-  IP_t  ip
-
 /* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 
 typedef struct forth_word fword_t;
