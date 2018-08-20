@@ -164,36 +164,36 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
                   XT(lit),
                     XT(comma),
                 XT(comma),
+           XT(semi),
            );
 
 // try finding word and run if compiling, or execute if immediate
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
-           XT(ifthen),
+           XT(zbranch), 7 * sizeof(fcell_xt),
 
               XTV(STATE),
               XT(fetch),
 
-              XT(ifthen),
+              XT(zbranch), 2 * sizeof(fcell_xt),
                 XT(comma),
-              XT(else_),
+              XT(branch), 2 * sizeof(fcell_xt),
                 XT(execs),
-              XT(end),
 
-           XT(else_),
+           XT(branch), 2 * sizeof(fcell_xt),
               XT(itpnum),
-           XT(end),
+           XT(semi),
            );
 
 
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
-           XT(ifthen),
+           XT(zbranch), 3 * sizeof(fcell_xt),
               XT(itpnext),
               XT(interpret),
-           XT(else_),
+           XT(branch), 3 * sizeof(fcell_xt),
               XT(drop),
               XT(ret_),
-           XT(end),
+           XT(semi),
            );
 
