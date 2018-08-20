@@ -12,6 +12,17 @@ forth_core("lit", 3, F_NORMAL, lit, "( -- n)", {
   jump(next);
 });
 
+forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
+    popd(0);
+    // Get address of next word from codeword list (e.g. same as lit)
+    load_addr(x, ip);
+    incr_reg(ip);
+    // push on stack
+    copy_reg(s1, x);
+    pushd(1);
+    jump(next);
+  });
+
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
 forth_variable(STATE, 5, ctx, vars, $vars_of_state);
 forth_variable(HERE, 5, ctx, user, $stack_of_head); // get pointer to current user word location
@@ -34,17 +45,6 @@ forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
            XT(lit), (fcell_xt)F_IMMED, XT(xmask),
            );
-
-forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
-  popd(0);
-  // Get address of next word from codeword list (e.g. same as lit)
-  load_addr(x, ip);
-  incr_reg(ip);
-  // push on stack
-  copy_reg(s1, x);
-  pushd(1);
-  jump(next);
-});
 
 /* /\* Executes word on tos *\/ */
 /* forth_core("exec", 6, F_NORMAL, exec, "( n -- )", { */

@@ -246,6 +246,74 @@ void test_basic_interpreter(void) {
 void test_create(void) {
   test_setup();
 
+  // Vars
+  fcell_xt* var1 = forth_alloc_var();
+  fcell_xt* var2 = forth_alloc_var();
+  fcell_xt* var3 = forth_alloc_var();
+  fcell_xt* var4 = forth_alloc_var();
+  fcell_xt* var5 = forth_alloc_var();
+  fcell_xt* var6 = forth_alloc_var();
+  fcell_xt* var7 = forth_alloc_var();
+  /* fcell_xt* var8 = forth_alloc_var(); */
+  /* fcell_xt* var9 = forth_alloc_var(); */
+  /* fcell_xt* varA = forth_alloc_var(); */
+
+  // Colons
+  *var1 = *dict_cfa(dict_find(7, "docolon"));
+  *var2 = dict_cfa(dict_find(1, "'"));
+  *var3 = 3;
+  *var4 = dict_cfa(dict_find(1, "'"));
+  *var5 = 5;
+  *var6 = dict_cfa(dict_find(3, "add"));
+  *var7 = dict_cfa(dict_find(4, "semi"));
+
+  // Dict
+  fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var1);
+
+  printf(" ");
+  for (fcell_xt *i = var1; i <= var5; i += 1)
+    printf("\tinstr: %16p => %16p\n", i, *i);
+  printf(" ");
+
+  forth_eval(*dict_cfa(dict_find(4, "tadd")));
+
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+
+  int cnt = forth_count();
+  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+
+  fcell_t x = 0;
+  while (forth_count()) {
+    x = forth_pop();
+    printf("remaining stack: %lld\n", x);
+  }
+
+  printf("... stack done\n");
+  TEST_CHECK_(x == 8, "Expected %d, got %d", 8, x);
+
+  x = forth_pop();
+  cnt = forth_count();
+  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_ERR_STACKUNDERFLOW);
+
+  forth_clear();
+
+  TEST_CHECK_(forth_errno() == FW_OK,
+              "Expected %d, got %d",
+              forth_errno(),
+              FW_OK);
+
+  printf(" >>>>>>>>>>>>>> basic test \n\n\n");
+}
+
+void test_branch(void) {
+  test_setup();
 
   // Vars
   fcell_xt* var1 = forth_alloc_var();
