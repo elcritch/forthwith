@@ -42,16 +42,16 @@ void test_basic(void) {
   fcell_xt* varA = forth_alloc_var();
 
   // Colons
-  *var1 = (fcell_xt) &xt_docolon;
-  *var2 = (fcell_xt) &xt_lit;
+  *var1 = (fcell_xt) xt_docolon;
+  *var2 = (fcell_xt) xt_lit;
   *var3 = (fcell_xt) 3;
-  *var4 = (fcell_xt) &xt_lit;
+  *var4 = (fcell_xt) xt_lit;
   *var5 = (fcell_xt) 5;
-  *var6 = (fcell_xt) &xt_add;
-  *var7 = (fcell_xt) &xt_lit;
+  *var6 = (fcell_xt) xt_add;
+  *var7 = (fcell_xt) xt_lit;
   *var8 = (fcell_xt) 1;
-  *var9 = (fcell_xt) &xt_add;
-  *varA = (fcell_xt) &xt_quits;
+  *var9 = (fcell_xt) xt_add;
+  *varA = (fcell_xt) xt_quits;
 
   printf(" ");
   for (fcell_xt *i = var1; i <= var5; i += 1)

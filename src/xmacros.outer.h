@@ -46,13 +46,13 @@ forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
   jump(next);
 });
 
-/* Executes word on tos */
-forth_core("exec", 6, F_NORMAL, exec, "( n -- )", {
-  popd(1);
-  copy_reg(x, s1);
-  pushd(0);
-  jump_reg(x);
-});
+/* /\* Executes word on tos *\/ */
+/* forth_core("exec", 6, F_NORMAL, exec, "( n -- )", { */
+/*   popd(1); */
+/*   copy_reg(x, s1); */
+/*   pushd(0); */
+/*   jump_reg(x); */
+/* }); */
 
 /* Increments the IP by offset to affect branching */
 forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
@@ -175,7 +175,7 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
               XT(ifthen),
                 XT(comma),
               XT(else_),
-                XT(exec),
+                XT(execs),
               XT(end),
 
            XT(else_),

@@ -116,7 +116,7 @@ int forth_bootstrap(fw_ctx_t* ctx) {
 __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
   load_state();
-  call(next);
+  call(execs);
   save_state();
 }
 
@@ -125,10 +125,11 @@ int forth_eval(fcell_xt *instr) {
   forth_pop();
   ctx->vars->error = FW_OK;
 
-  ctx->regs->w = /* w */ (fcell_t)instr;
-  ctx->regs->ip = /* ip */ (fcell_t)instr+8;
+  ctx->regs->w = 0;
+  ctx->regs->ip = 0;
   ctx->regs->x = 0;
-  ctx->regs->tos = 0;
+
+  forth_push((fcell_t)instr);
 
   forth_exec(0, 0, 0, 0, 0, 0);
   save_psp(psp);
