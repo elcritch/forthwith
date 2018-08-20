@@ -264,13 +264,13 @@ void test_create(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
-  fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var[0]);
+  fword_t *entry = dict_create(F_NORMAL | F_WORD, 4, "tadd", var[0]);
 
   printf(" ");
   /* for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]); */
   printf("entry: %p\n\n", entry);
 
-  forth_eval((fcell_xt*)*dict_cfa(dict_find(4, "tadd")));
+  forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
 
   printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
