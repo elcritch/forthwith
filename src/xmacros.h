@@ -32,7 +32,7 @@
 #endif
 
 /* #define XT(n) (fcell_xt) xt_ ## n */
-#define XT(n) (fcell_xt) xt_ ## n
+#define XT(n) (fcell_xt) & xt_ ## n
 #define XTV(n) (fcell_xt) var_ ## n
 
 // ================================================================== //
@@ -89,7 +89,7 @@
 // https://codecraft.co/2014/11/25/variadic-macros-tricks/
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
-  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { XT(docolon), WORDS }; \
+  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { (fcell_xt)xt_docolon, WORDS }; \
   memcpy(xt_ ## lbl, fw_ ## lbl,  sizeof(xt_ ## lbl)); \
   dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&xt_ ## lbl)
 
