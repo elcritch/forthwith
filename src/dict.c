@@ -101,6 +101,12 @@ fword_t* dict_lookup(fcell_xt addr) {
   return NULL;
 }
 
+/* lookup (name? – address). */
+__fw_noinline__
+fcell_xt dict_cfa(fword_t *entry) {
+  return entry == NULL ? NULL : (fcell_xt) &entry->body;
+}
+
 
 #include <stdio.h>
 /* FIND (name? – address). */

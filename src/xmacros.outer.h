@@ -148,18 +148,18 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
 // try parsing number and compiling or running
 forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(number),
-           XT(zbranch), 4 * sizeof(fcell_xt),
+           XT(zbranch), XCELLS(4),
 
               XT(lit),
               (fcell_xt)FW_ERR_NOWORD,
               XT(ret_),
 
-           XT(branch), 8 * sizeof(fcell_xt),
+           XT(branch), XCELLS(8),
 
               XTV(STATE),
                 XT(fetch),
 
-              XT(zbranch), 5 * sizeof(fcell_xt),
+              XT(zbranch), XCELLS(5),
                 XT(tick),
                   XT(lit),
                     XT(comma),
