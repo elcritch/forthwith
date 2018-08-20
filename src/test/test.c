@@ -330,12 +330,12 @@ void test_branches(void) {
   *var[i++] = (fcell_xt)1;
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
-    *var[i++] = XCELLS(2); // index
+    *var[i++] = XCELLS(3); // index
     *var[i++] = dict_cfa(dict_find(1, "'"));
     *var[i++] = (fcell_xt)7;
     // else
   *var[i++] = dict_cfa(dict_find(6, "branch"));
-    *var[i++] = XCELLS(2); // index
+    *var[i++] = XCELLS(3); // index
     *var[i++] = dict_cfa(dict_find(1, "'"));
     *var[i++] = (fcell_xt)33;
   // fi
