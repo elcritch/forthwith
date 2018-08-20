@@ -32,7 +32,7 @@ forth_core("docolon", 7, F_NORMAL, docolon, "{ip++} ( -- )", {
 });
 
 /* Exit current thread */
-forth_core("semi", 4, F_NORMAL, exits, "[ r -- ] ( -- )", {
+forth_core("semi", 4, F_NORMAL, semi, "[ r -- ] ( -- )", {
     /* `pop IP` <- `RSP` -- load previous thread's last IP position */
     popr(ip);
     jump(next);

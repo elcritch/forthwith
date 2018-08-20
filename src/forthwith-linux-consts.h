@@ -65,6 +65,7 @@
     IP_t  ip, \
     X_t   x
 
+// reg r %rdi %rsi
 #define reg_bpsp    %rdi
 #define reg_psp    %rsi
 #define reg_brsp     %rdx
@@ -72,6 +73,7 @@
 #define reg_ip      %r8
 #define reg_x       %r9
 
+// ip_x_w_tl_s1_s2_s3_s4
 #define reg_w       %r10
 #define reg_tl      %r11
 

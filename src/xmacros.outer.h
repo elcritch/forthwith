@@ -1,7 +1,7 @@
 
 // #include "forthwith.h"
 
-forth_primitive("lit", 3, F_NORMAL, lit, "( -- n)", {
+forth_core("lit", 3, F_NORMAL, lit, "( -- n)", {
   popd(0);
   // load addr and move IP
   load_addr(x, ip);
@@ -84,14 +84,14 @@ forth_word(":", 6, F_NORMAL, colon, "( p -- )",
            XT(create), // CREATE the dictionary entry / header
            XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
            XT(rbrac), // Go into compile mode.
-           XT(exits), // Return from the function.
+           XT(semi), // Return from the function.
            );
 
 forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
-           XT(lit), XT(exits), XT(comma), // Append EXIT (so the word will return).
+           XT(lit), XT(semi), XT(comma), // Append EXIT (so the word will return).
            XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word
            XT(lbrac), // Go back to IMMEDIATE mode.
-           XT(exits), // Return from the function.
+           XT(semi), // Return from the function.
            );
 
 forth_word("ifthen", 6, F_IMMED, ifthen, "( -- )",

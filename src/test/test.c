@@ -1,6 +1,6 @@
 
 
-#include "acutest.h"
+/* #include "acutest.h" */
 
 #include "forthwith-linux.h"
 #include "forthwith.h"
@@ -14,20 +14,23 @@ void test_setup() {
   forth_bootstrap(ctx);
 }
 
+#define TEST_CHECK_(args...)
+
 void dict_print();
+void docolon(FORTH_REGISTERS);
 
 void test_basic(void) {
   test_setup();
 
   dict_print();
 
-  printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3);
-  for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) {
-    fword_t *entry = dict_lookup(xt_interpret[i]);
-    char *name = entry == NULL ? NULL : entry->name;
-    printf("xt_interpret[%d]: %p :: %s\n", i, xt_interpret[i], name);
-  }
-  printf("\n\n");
+  /* printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3); */
+  /* for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) { */
+  /*   fword_t *entry = dict_lookup(xt_interpret[i]); */
+  /*   char *name = entry == NULL ? NULL : entry->name; */
+  /*   printf("xt_interpret[%d]: %p :: %s\n", i, xt_interpret[i], name); */
+  /* } */
+  /* printf("\n\n"); */
 
   // Vars
   fcell_xt* var1 = forth_alloc_var();
@@ -43,19 +46,21 @@ void test_basic(void) {
 
   // Colons
   *var1 = (fcell_xt) xt_docolon;
-  *var2 = (fcell_xt) xt_lit;
+  *var2 = (fcell_xt) &xt_lit;
   *var3 = (fcell_xt) 3;
-  *var4 = (fcell_xt) xt_lit;
+  *var4 = (fcell_xt) &xt_lit;
   *var5 = (fcell_xt) 5;
-  *var6 = (fcell_xt) xt_add;
-  *var7 = (fcell_xt) xt_lit;
+  *var6 = (fcell_xt) &xt_add;
+  *var7 = (fcell_xt) &xt_lit;
   *var8 = (fcell_xt) 1;
-  *var9 = (fcell_xt) xt_add;
-  *varA = (fcell_xt) xt_quits;
+  *var9 = (fcell_xt) &xt_add;
+  *varA = (fcell_xt) &xt_semi;
 
   printf(" ");
   for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %p => %p\n", i, *i);
+    printf("\tinstr: %16p => %16p\n", i, *i);
+
+  printf("xt_docolon: %16p <- docolon: %16p \n\n", xt_docolon, docolon);
 
   forth_eval(var1);
 
@@ -286,12 +291,15 @@ void test_full_interpreter(void) {
   printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
-TEST_LIST = {
-  { "basic", test_basic },
-  { "parsing", test_parsing },
-  { "basic_intp", test_basic_interpreter },
-  /* { "test_full_interpreter", test_full_interpreter }, */
-  { 0 }
-};
+/* TEST_LIST = { */
+/*   { "basic", test_basic }, */
+/*   { "parsing", test_parsing }, */
+/*   /\* { "test_full_interpreter", test_full_interpreter }, *\/ */
+/*   { 0 } */
+/* }; */
 
+int main() {
+  test_basic();
 
+  return forth_count();
+}

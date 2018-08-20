@@ -116,17 +116,23 @@ int forth_bootstrap(fw_ctx_t* ctx) {
 __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
   load_state();
-  call(execs);
+  call(next);
   save_state();
 }
 
 __fw_noinline__
 int forth_eval(fcell_xt *instr) {
-  forth_pop();
-  ctx->vars->error = FW_OK;
+
+  fcell_xt innerloop[2] = {
+    (fcell_xt) &xt_execs,
+    (fcell_xt) &xt_quits,
+  };
+
+  printf("\ninnerloop[0]: %p\n", innerloop + 0);
+  printf("innerloop[1]: %p\n\n", innerloop + 1);
 
   ctx->regs->w = 0;
-  ctx->regs->ip = 0;
+  ctx->regs->ip = innerloop;
   ctx->regs->x = 0;
 
   forth_push((fcell_t)instr);
