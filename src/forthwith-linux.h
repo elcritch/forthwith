@@ -15,12 +15,13 @@
 */
 
 /* #define fw_label(l) _fw_label(l) */
-#define _asm_jump()
-  /* __asm__ ("" :: "r" (w));          \ */
-  /* __asm__ ("" :: "r" (ip));         \ */
-  /* __asm__ ("" :: "r" (psp));        \ */
-  /* __asm__ ("" :: "r" (rsp));        \ */
-  /* __asm__ ("" :: "r" (tos)) */
+#define _asm_jump() \
+  __asm__ ("" :: "r" (ip));         \
+  __asm__ ("" :: "r" (psp));        \
+  __asm__ ("" :: "r" (rsp));        \
+  __asm__ ("" :: "r" (bpsp));        \
+  __asm__ ("" :: "r" (brsp));        \
+  __asm__ ("" :: "r" (x))
 
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes

@@ -31,6 +31,7 @@
 #undef forth_docall
 #endif
 
+/* #define XT(n) (fcell_xt) xt_ ## n */
 #define XT(n) (fcell_xt) xt_ ## n
 #define XTV(n) (fcell_xt) var_ ## n
 

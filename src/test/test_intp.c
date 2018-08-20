@@ -23,13 +23,14 @@ void test_interpreter(void) {
 
   dict_print();
 
-  printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3);
-  for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) {
-    fword_t *entry = dict_lookup(xt_interpret[i]);
-    char *name = entry == NULL ? NULL : entry->name;
-    printf("xt_interpret[%d]: %p :: %s\n", i, xt_interpret[i], name);
-  }
-  printf("\n\n");
+  /* printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3); */
+  /* for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) { */
+  /*   fword_t *entry = dict_lookup(&(xt_interpret[i])); */
+  /*   char *name = entry == NULL ? NULL : entry->name; */
+  /*   fcell_xt *ipptr = &entry->body; */
+  /*   printf("xt_interpret[%d]: %p -> %p -> *%p -> (%p) :: %s\n", i, entry, ipptr, *ipptr, xt_interpret[i], name); */
+  /* } */
+  /* printf("\n\n"); */
 
   // test basic if / else (and thereby branch/0branch)
   // test basic find usage
@@ -38,7 +39,7 @@ void test_interpreter(void) {
   fcell_xt* var2 = forth_alloc_var();
 
   // Colons
-  *var1 = (fcell_xt) &xt_interpret;
+  *var1 = (fcell_xt) &xt_docolon;
   *var2 = (fcell_xt) &xt_interpret;
 
   forth_eval(var1);
