@@ -58,9 +58,9 @@ void test_basic(void) {
 
   printf(" ");
   for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %16p => %16p\n", i, *i);
+    printf("\tinstr: %016p => %016p\n", i, *i);
 
-  printf("xt_docolon: %16p <- docolon: %16p \n\n", xt_docolon, docolon);
+  printf("xt_docolon: %016p <- docolon: %016p \n\n", xt_docolon, docolon);
 
   forth_eval(var1);
 
@@ -270,7 +270,7 @@ void test_create(void) {
 
   printf(" ");
   for (int j = 0; j < i; j++)
-    printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
+    printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)*dict_cfa(dict_find(4, "tadd")));
@@ -326,6 +326,64 @@ void test_branches(void) {
   // Colons
   i = 0;
   *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)100;
+  // jmp
+  *var[i++] = dict_cfa(dict_find(6, "branch"));
+    *var[i++] = XCELLS(3); // index
+    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = (fcell_xt)2;
+  // end
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)5;
+  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  // Dict
+  fword_t *tif = dict_create(F_NORMAL | F_WORD, 4, "tjmp", var[0]);
+  
+  printf(" ");
+  for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
+  printf("entry: %p\n\n", tif);
+
+  fcell_t cnt, x;
+
+
+  // test true
+  int idx_t = i;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(4, "tjmp"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  fword_t *tst = dict_create(F_NORMAL | F_WORD, 7, "ts_true", var[idx_t]);
+
+  // Rust test true
+  printf("<<< Run Test True\n");
+  forth_eval((fcell_xt*)dict_cfa(dict_find(7, "ts_true")));
+
+  cnt = forth_count();
+  x = forth_pop();
+  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+  TEST_CHECK_(x == 105, "Expected %d, got %d", 105, x);
+
+}
+
+void test_ifelse(void) {
+  test_setup();
+
+  dict_print();
+
+  // Vars
+  int i, n;
+  fcell_xt* var[100] = {0};
+
+  i = 0; n = 24;
+  for (int j = 0; j < n; j++)
+    var[i++] = forth_alloc_var();
+
+  // Colons
+  i = 0;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
     *var[i++] = XCELLS(3); // index
@@ -335,7 +393,7 @@ void test_branches(void) {
   *var[i++] = dict_cfa(dict_find(6, "branch"));
     *var[i++] = XCELLS(3); // index
     *var[i++] = dict_cfa(dict_find(1, "'"));
-    *var[i++] = (fcell_xt)33;
+    *var[i++] = (fcell_xt)2;
   // fi
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
@@ -346,7 +404,7 @@ void test_branches(void) {
   fword_t *tif = dict_create(F_NORMAL | F_WORD, 3, "tif", var[0]);
   
   printf(" ");
-  for (int j = 0; j < i; j++) printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
+  for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
   printf("entry: %p\n\n", tif);
 
   fcell_t cnt, x;
@@ -371,24 +429,24 @@ void test_branches(void) {
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
   TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x);
 
-  /* // test false */
-  /* printf("<<< Run Test False\n"); */
-  /* int idx_f = i; */
-  /* *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon")); */
-  /* *var[i++] = dict_cfa(dict_find(1, "'")); */
-  /* *var[i++] = (fcell_xt) 0; */
-  /* *var[i++] = *dict_cfa(dict_find(3, "tif")); */
-  /* *var[i++] = dict_cfa(dict_find(4, "semi")); */
+  // test false
+  printf("<<< Run Test False\n");
+  int idx_f = i;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt) 0;
+  *var[i++] = dict_cfa(dict_find(3, "tif"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  /* fword_t *tsf = dict_create(F_NORMAL, 8, "ts_false", var[idx_f]); */
+  fword_t *tsf = dict_create(F_NORMAL | F_WORD, 8, "ts_false", var[idx_f]);
 
-  /* // Rust test true */
-  /* forth_eval((fcell_xt*)*dict_cfa(dict_find(8, "ts_false"))); */
+  // Rust test true
+  forth_eval((fcell_xt*)dict_cfa(dict_find(8, "ts_false")));
 
-  /* cnt = forth_count(); */
-  /* x = forth_pop(); */
-  /* TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt); */
-  /* TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x); */
+  cnt = forth_count();
+  x = forth_pop();
+  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+  TEST_CHECK_(x == 38, "Expected %d, got %d", 38, x);
 
 }
 

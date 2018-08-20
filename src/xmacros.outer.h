@@ -56,8 +56,10 @@ forth_word("immed", 5, F_IMMED, immed, "( p -- )",
 
 /* Increments the IP by offset to affect branching */
 forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
+    popd(0);
     load_addr(x, ip);
     add_reg(ip, x);
+    pushd(0);
     jump(next);
 });
 
@@ -67,11 +69,12 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
     popd(1);
     copy_reg(x, s1);
 
-    if (x) {
-      add_const(ip, $word_ptr_sz);
+    if (x == 0) {
+      load_addr(s1, ip);
+      add_reg(ip, s1);
     } else {
-      load_addr(x, ip);
-      add_reg(ip, x);
+      /* add_const(ip, $word_ptr_sz); */
+      incr_reg(ip);
     }
 
     pushd(0);
