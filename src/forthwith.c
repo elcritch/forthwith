@@ -132,7 +132,7 @@ int forth_eval(fcell_xt *instr) {
   printf("innerloop[1]: %p\n\n", innerloop + 1);
 
   ctx->regs->w = 0;
-  ctx->regs->ip = innerloop;
+  ctx->regs->ip = (fcell_t) innerloop;
   ctx->regs->x = 0;
 
   forth_push((fcell_t)instr);

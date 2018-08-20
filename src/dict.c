@@ -1,6 +1,7 @@
 
 #include "forthwith.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -104,6 +105,10 @@ fword_t* dict_lookup(fcell_xt addr) {
 /* lookup (name? – address). */
 __fw_noinline__
 fcell_xt dict_cfa(fword_t *entry) {
+  if (entry == NULL) {
+    printf("error finding cfa from empty dict entry");
+    exit(33);
+  }
   return entry == NULL ? NULL : (fcell_xt) &entry->body;
 }
 

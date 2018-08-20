@@ -246,36 +246,34 @@ void test_basic_interpreter(void) {
 void test_create(void) {
   test_setup();
 
+  int i, n;
+
   // Vars
-  fcell_xt* var1 = forth_alloc_var();
-  fcell_xt* var2 = forth_alloc_var();
-  fcell_xt* var3 = forth_alloc_var();
-  fcell_xt* var4 = forth_alloc_var();
-  fcell_xt* var5 = forth_alloc_var();
-  fcell_xt* var6 = forth_alloc_var();
-  fcell_xt* var7 = forth_alloc_var();
-  /* fcell_xt* var8 = forth_alloc_var(); */
-  /* fcell_xt* var9 = forth_alloc_var(); */
-  /* fcell_xt* varA = forth_alloc_var(); */
+  i = 0; n = 7;
+
+  fcell_xt* var[100];
+  for (int j = 0; j < n; j++)
+    var[i++] = forth_alloc_var();
 
   // Colons
-  *var1 = *dict_cfa(dict_find(7, "docolon"));
-  *var2 = dict_cfa(dict_find(1, "'"));
-  *var3 = 3;
-  *var4 = dict_cfa(dict_find(1, "'"));
-  *var5 = 5;
-  *var6 = dict_cfa(dict_find(3, "add"));
-  *var7 = dict_cfa(dict_find(4, "semi"));
+  i = 0;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)3;
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)5;
+  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
-  fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var1);
+  fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var[0]);
 
   printf(" ");
-  for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %16p => %16p\n", i, *i);
-  printf(" ");
+  for (int j = 0; j < i; j++)
+    printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
+  printf("entry: %p\n\n", entry);
 
-  forth_eval(*dict_cfa(dict_find(4, "tadd")));
+  forth_eval((fcell_xt*)*dict_cfa(dict_find(4, "tadd")));
 
   printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
@@ -312,39 +310,47 @@ void test_create(void) {
   printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
-void test_branch(void) {
+void test_branches(void) {
   test_setup();
 
   // Vars
-  fcell_xt* var1 = forth_alloc_var();
-  fcell_xt* var2 = forth_alloc_var();
-  fcell_xt* var3 = forth_alloc_var();
-  fcell_xt* var4 = forth_alloc_var();
-  fcell_xt* var5 = forth_alloc_var();
-  fcell_xt* var6 = forth_alloc_var();
-  fcell_xt* var7 = forth_alloc_var();
-  /* fcell_xt* var8 = forth_alloc_var(); */
-  /* fcell_xt* var9 = forth_alloc_var(); */
-  /* fcell_xt* varA = forth_alloc_var(); */
+  int i, n;
+  fcell_xt* var[100] = {0};
+
+  i = 0; n = 16;
+  for (int j = 0; j < n; j++)
+    var[i++] = forth_alloc_var();
 
   // Colons
-  *var1 = *dict_cfa(dict_find(7, "docolon"));
-  *var2 = dict_cfa(dict_find(3, "lit"));
-  *var3 = 3;
-  *var4 = dict_cfa(dict_find(3, "lit"));
-  *var5 = 5;
-  *var6 = dict_cfa(dict_find(3, "add"));
-  *var7 = dict_cfa(dict_find(4, "semi"));
+  i = 0;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)5;
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)1;
+  // if !x 
+  *var[i++] = dict_cfa(dict_find(7, "0branch"));
+    *var[i++] = XCELLS(2); // index
+    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = (fcell_xt)7;
+    // else
+  *var[i++] = dict_cfa(dict_find(6, "branch"));
+    *var[i++] = XCELLS(2); // index
+    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = (fcell_xt)33;
+  // fi
+  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
-  fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var1);
+  fword_t *entry = dict_create(F_NORMAL, 3, "tif", var[0]);
 
   printf(" ");
-  for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %16p => %16p\n", i, *i);
-  printf(" ");
+  for (int j = 0; j < i; j++)
+    printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
+  printf("entry: %p\n\n", entry);
 
-  forth_eval(*dict_cfa(dict_find(4, "tadd")));
+  forth_eval((fcell_xt*)*dict_cfa(dict_find(3, "tif")));
 
   printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
@@ -361,7 +367,7 @@ void test_branch(void) {
   }
 
   printf("... stack done\n");
-  TEST_CHECK_(x == 8, "Expected %d, got %d", 8, x);
+  TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x);
 
   x = forth_pop();
   cnt = forth_count();
@@ -385,6 +391,7 @@ TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
   { "create", test_create },
+  { "branches", test_branches },
   { 0 }
 };
 
