@@ -255,7 +255,7 @@ void test_create(void) {
 
   // Colons
   i = 0;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)3;
   *var[i++] = dict_cfa(dict_find(1, "'"));
@@ -327,7 +327,7 @@ void test_branches(void) {
   // test branch
   int idx_b0 = i;
   printf("<<< Run branch \n");
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)100;
   // jmp
@@ -355,7 +355,7 @@ void test_branches(void) {
   printf("<<< Run 0branch \n");
   // test 0branch
   int idx_tifz = i;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(3, "dup"));
   // jmp
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
@@ -378,7 +378,7 @@ void test_branches(void) {
 
   // test `5 0branch` 
   int idx_tifz5 = i;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(4, "tifz"));
@@ -398,7 +398,7 @@ void test_branches(void) {
 
   // test `0 0branch` 
   int idx_tifz0 = i;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)0;
   *var[i++] = dict_cfa(dict_find(4, "tifz"));
@@ -433,7 +433,7 @@ void test_ifelse(void) {
 
   // Colons
   i = 0;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
     *var[i++] = XCELLS(5); // index
@@ -462,7 +462,7 @@ void test_ifelse(void) {
 
   // test true
   int idx_t = i;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt) 1;
   *var[i++] = dict_cfa(dict_find(3, "tif"));
@@ -482,7 +482,7 @@ void test_ifelse(void) {
   // test false
   printf("<<< Run Test False\n");
   int idx_f = i;
-  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt) 0;
   *var[i++] = dict_cfa(dict_find(3, "tif"));

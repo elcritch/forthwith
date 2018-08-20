@@ -22,7 +22,7 @@
 /* Core Execution Token Implementations */
 
 /* execute indirect thread */
-forth_core("docolon", 7, F_NORMAL, docolon, "{ip++} ( -- )", {
+forth_core("docolon", 7, F_NORMAL | F_WORD, docolon, "{ip++} ( -- )", {
   /* PUSH IP -> RSP  -- onto the "return address stack" */
   pushr(ip);
   /* `W++` -> `IP` -- `W` still points to the thread's token-code,
