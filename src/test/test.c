@@ -393,9 +393,9 @@ void test_branches(void) {
 }
 
 TEST_LIST = {
-  /* { "basic", test_basic }, */
-  /* { "parsing", test_parsing }, */
-  /* { "create", test_create }, */
+  { "basic", test_basic },
+  { "parsing", test_parsing },
+  { "create", test_create },
   { "branches", test_branches },
   { 0 }
 };
