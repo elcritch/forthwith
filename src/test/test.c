@@ -1,6 +1,6 @@
 
 
-/* #include "acutest.h" */
+#include "acutest.h"
 
 #include "forthwith-linux.h"
 #include "forthwith.h"
@@ -14,7 +14,7 @@ void test_setup() {
   forth_bootstrap(ctx);
 }
 
-#define TEST_CHECK_(args...)
+/* #define TEST_CHECK_(args...) */
 
 void dict_print();
 void docolon(FORTH_REGISTERS);
@@ -291,15 +291,15 @@ void test_full_interpreter(void) {
   printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
-/* TEST_LIST = { */
-/*   { "basic", test_basic }, */
-/*   { "parsing", test_parsing }, */
-/*   /\* { "test_full_interpreter", test_full_interpreter }, *\/ */
-/*   { 0 } */
-/* }; */
+TEST_LIST = {
+  { "basic", test_basic },
+  { "parsing", test_parsing },
+  /* { "test_full_interpreter", test_full_interpreter }, */
+  { 0 }
+};
 
-int main() {
-  test_basic();
+/* int main() { */
+/*   test_basic(); */
 
-  return forth_count();
-}
+/*   return forth_count(); */
+/* } */
