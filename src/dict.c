@@ -41,7 +41,7 @@ char* alloc_string(uint8_t len) {
   return curr_string;
 }
 
-__fw_noinline__ 
+__fw_noinline__
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 
   fword_t *entry = alloc_dict();
@@ -71,8 +71,12 @@ fword_t* dict_find(int8_t len, char *name) {
         if (name[i] != word.name[i])
           break;
       }
+
+      if (word_ptr->meta & F_HIDDEN)
+        return NULL;
+
       // word found
-      if (i == len && !(word_ptr->meta & F_HIDDEN))
+      if (i == len)
         return word_ptr;
     }
 
@@ -108,8 +112,17 @@ fcell_xt dict_cfa(fword_t *entry) {
   if (entry == NULL) {
     printf("error finding cfa from empty dict entry");
     exit(33);
+  } else {
+    if (entry->meta & F_WORD) {
+        
+      printf("F_WORD type: %s\n", entry->name);
+      return (fcell_xt) entry->body;
+    }
+    else {
+      printf("F_NORM type: %s\n", entry->name);
+      return (fcell_xt) &entry->body;
+    }
   }
-  return entry == NULL ? NULL : (fcell_xt) &entry->body;
 }
 
 

@@ -92,7 +92,7 @@
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
   fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { (fcell_xt)xt_docolon, WORDS }; \
   memcpy(xt_ ## lbl, fw_ ## lbl,  sizeof(xt_ ## lbl)); \
-  dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&xt_ ## lbl)
+  dict_create(F_WORD | mask, name_len, name_str, (fcell_xt*)xt_ ## lbl)
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&func)

@@ -313,21 +313,19 @@ void test_create(void) {
 void test_branches(void) {
   test_setup();
 
+  dict_print();
+
   // Vars
   int i, n;
   fcell_xt* var[100] = {0};
 
-  i = 0; n = 16;
+  i = 0; n = 24;
   for (int j = 0; j < n; j++)
     var[i++] = forth_alloc_var();
 
   // Colons
   i = 0;
   *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
-  *var[i++] = (fcell_xt)5;
-  *var[i++] = dict_cfa(dict_find(1, "'"));
-  *var[i++] = (fcell_xt)1;
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
     *var[i++] = XCELLS(3); // index
@@ -339,58 +337,65 @@ void test_branches(void) {
     *var[i++] = dict_cfa(dict_find(1, "'"));
     *var[i++] = (fcell_xt)33;
   // fi
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(3, "add"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
-  fword_t *entry = dict_create(F_NORMAL, 3, "tif", var[0]);
-
+  fword_t *tif = dict_create(F_NORMAL | F_WORD, 3, "tif", var[0]);
+  
   printf(" ");
-  for (int j = 0; j < i; j++)
-    printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
-  printf("entry: %p\n\n", entry);
+  for (int j = 0; j < i; j++) printf("\tinstr: %16p => %16p\n", var[j], *var[j]);
+  printf("entry: %p\n\n", tif);
 
-  forth_eval((fcell_xt*)*dict_cfa(dict_find(3, "tif")));
+  fcell_t cnt, x;
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
 
-  int cnt = forth_count();
+  // test true
+  int idx_t = i;
+  *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt) 1;
+  *var[i++] = dict_cfa(dict_find(3, "tif"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  fword_t *tst = dict_create(F_NORMAL | F_WORD, 7, "ts_true", var[idx_t]);
+
+  // Rust test true
+  printf("<<< Run Test True\n");
+  forth_eval((fcell_xt*)dict_cfa(dict_find(7, "ts_true")));
+
+  cnt = forth_count();
+  x = forth_pop();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
-
-  fcell_t x = 0;
-  while (forth_count()) {
-    x = forth_pop();
-    printf("remaining stack: %lld\n", x);
-  }
-
-  printf("... stack done\n");
   TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x);
 
-  x = forth_pop();
-  cnt = forth_count();
-  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
-  TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
-              "Expected %d, got %d",
-              forth_errno(),
-              FW_ERR_STACKUNDERFLOW);
+  /* // test false */
+  /* printf("<<< Run Test False\n"); */
+  /* int idx_f = i; */
+  /* *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon")); */
+  /* *var[i++] = dict_cfa(dict_find(1, "'")); */
+  /* *var[i++] = (fcell_xt) 0; */
+  /* *var[i++] = *dict_cfa(dict_find(3, "tif")); */
+  /* *var[i++] = dict_cfa(dict_find(4, "semi")); */
 
-  forth_clear();
+  /* fword_t *tsf = dict_create(F_NORMAL, 8, "ts_false", var[idx_f]); */
 
-  TEST_CHECK_(forth_errno() == FW_OK,
-              "Expected %d, got %d",
-              forth_errno(),
-              FW_OK);
+  /* // Rust test true */
+  /* forth_eval((fcell_xt*)*dict_cfa(dict_find(8, "ts_false"))); */
 
-  printf(" >>>>>>>>>>>>>> basic test \n\n\n");
+  /* cnt = forth_count(); */
+  /* x = forth_pop(); */
+  /* TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt); */
+  /* TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x); */
+
 }
 
 TEST_LIST = {
-  { "basic", test_basic },
-  { "parsing", test_parsing },
-  { "create", test_create },
+  /* { "basic", test_basic }, */
+  /* { "parsing", test_parsing }, */
+  /* { "create", test_create }, */
   { "branches", test_branches },
   { 0 }
 };

@@ -117,10 +117,10 @@ enum forthwith_the_states {
   COMPILE_MODE = 1,
 };
 
-#define F_NORMAL 0x0
-#define F_IMMED  0x2
-#define F_HIDDEN 0x4
-#define F_OTHER  0x8
+#define F_NORMAL  1
+#define F_IMMED   2
+#define F_HIDDEN  4
+#define F_WORD    8
 
 extern fcell_t forth_pop();
 extern int forth_push(fcell_t val);
