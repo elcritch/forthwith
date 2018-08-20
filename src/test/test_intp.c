@@ -37,10 +37,18 @@ void test_interpreter(void) {
   // Vars
   fcell_xt* var1 = forth_alloc_var();
   fcell_xt* var2 = forth_alloc_var();
+  fcell_xt* var3 = forth_alloc_var();
+  fcell_xt* var4 = forth_alloc_var();
 
   // Colons
-  *var1 = (fcell_xt) &xt_docolon;
+  *var1 = (fcell_xt) xt_docolon;
   *var2 = (fcell_xt) &xt_interpret;
+  *var3 = (fcell_xt) &xt_branch;
+  *var4 = (fcell_xt) -8;
+
+  ctx->vars->tib_str = "7 2 +";
+  ctx->vars->tib_len = 5;
+  ctx->vars->tib_idx = 0;
 
   forth_eval(var1);
 

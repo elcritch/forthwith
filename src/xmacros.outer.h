@@ -94,29 +94,29 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
            XT(semi), // Return from the function.
            );
 
-forth_word("ifthen", 6, F_IMMED, ifthen, "( -- )",
-           XT(tick), XT(zbranch), XT(comma),
-           XTV(HERE),
-           XT(fetch),
-           XT(lit), 0,
-           XT(comma),
-           );
+/* forth_word("ifthen", 6, F_IMMED, ifthen, "( -- )", */
+/*            XT(tick), XT(zbranch), XT(comma), */
+/*            XTV(HERE), */
+/*            XT(fetch), */
+/*            XT(lit), 0, */
+/*            XT(comma), */
+/*            ); */
 
-forth_word("else", 5, F_IMMED, else_, "( -- )",
-           XT(tick), XT(branch), XT(comma),
-           XTV(HERE), XT(fetch),
-           XT(lit), 0, XT(comma),
-           XT(swap),
-           XT(dup),
-           XTV(HERE), XT(fetch), XT(swap), XT(sub),
-           XT(swap), XT(store),
-           );
+/* forth_word("else", 5, F_IMMED, else_, "( -- )", */
+/*            XT(tick), XT(branch), XT(comma), */
+/*            XTV(HERE), XT(fetch), */
+/*            XT(lit), 0, XT(comma), */
+/*            XT(swap), */
+/*            XT(dup), */
+/*            XTV(HERE), XT(fetch), XT(swap), XT(sub), */
+/*            XT(swap), XT(store), */
+/*            ); */
 
-forth_word("end", 5, F_IMMED, end, "( -- )",
-           XT(dup),
-           XTV(HERE), XT(fetch), XT(swap), XT(sub),
-           XT(swap), XT(store),
-           );
+/* forth_word("end", 5, F_IMMED, end, "( -- )", */
+/*            XT(dup), */
+/*            XTV(HERE), XT(fetch), XT(swap), XT(sub), */
+/*            XT(swap), XT(store), */
+/*            ); */
 
 
 /*
@@ -144,24 +144,26 @@ forth_word("end", 5, F_IMMED, end, "( -- )",
    end
 */
 
+// TODO: check indexes of branches ...
 // try parsing number and compiling or running
 forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(number),
-           XT(ifthen),
+           XT(zbranch), 4 * sizeof(fcell_xt),
 
-              XT(lit), (fcell_xt)FW_ERR_NOWORD,
+              XT(lit),
+              (fcell_xt)FW_ERR_NOWORD,
               XT(ret_),
 
-           XT(else_),
+           XT(branch), 8 * sizeof(fcell_xt),
 
-              XTV(STATE), XT(fetch),
+              XTV(STATE),
+                XT(fetch),
 
-              XT(ifthen),
-                XT(tick), XT(lit), XT(comma),
+              XT(zbranch), 5 * sizeof(fcell_xt),
+                XT(tick),
+                  XT(lit),
+                    XT(comma),
                 XT(comma),
-              XT(end),
-
-           XT(end),
            );
 
 // try finding word and run if compiling, or execute if immediate
