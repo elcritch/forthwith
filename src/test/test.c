@@ -57,9 +57,7 @@ void test_basic(void) {
   *varA = (fcell_xt) &xt_semi;
 
   printf(" ");
-  for (fcell_xt *i = var1; i <= var5; i += 1)
-    printf("\tinstr: %016p => %016p\n", i, *i);
-
+  /* for (fcell_xt *i = var1; i <= var5; i += 1) printf("\tinstr: %016p => %016p\n", i, *i); */
   printf("xt_docolon: %016p <- docolon: %016p \n\n", xt_docolon, docolon);
 
   forth_eval(var1);
@@ -269,8 +267,7 @@ void test_create(void) {
   fword_t *entry = dict_create(F_NORMAL, 4, "tadd", var[0]);
 
   printf(" ");
-  for (int j = 0; j < i; j++)
-    printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
+  /* for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]); */
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)*dict_cfa(dict_find(4, "tadd")));
@@ -313,7 +310,7 @@ void test_create(void) {
 void test_branches(void) {
   test_setup();
 
-  dict_print();
+  /* dict_print(); */
 
   // Vars
   int i, n;
@@ -375,7 +372,7 @@ void test_branches(void) {
   fword_t *tifz = dict_create(F_NORMAL | F_WORD, 4, "tifz", var[idx_tifz]);
   
   printf(" ");
-  for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
+  /* for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]); */
   printf("entry: %p\n\n", tifz);
 
 
@@ -424,7 +421,7 @@ void test_branches(void) {
 void test_ifelse(void) {
   test_setup();
 
-  dict_print();
+  /* dict_print(); */
 
   // Vars
   int i, n;
@@ -457,7 +454,7 @@ void test_ifelse(void) {
   fword_t *tif = dict_create(F_NORMAL | F_WORD, 3, "tif", var[0]);
   
   printf(" ");
-  for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]);
+  /* for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]); */
   printf("entry: %p\n\n", tif);
 
   fcell_t cnt, x;

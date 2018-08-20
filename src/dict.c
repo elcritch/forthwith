@@ -114,12 +114,9 @@ fcell_xt dict_cfa(fword_t *entry) {
     exit(33);
   } else {
     if (entry->meta & F_WORD) {
-        
-      printf("F_WORD type: %s\n", entry->name);
       return (fcell_xt) entry->body;
     }
     else {
-      printf("F_NORM type: %s\n", entry->name);
       return (fcell_xt) &entry->body;
     }
   }
