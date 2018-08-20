@@ -439,7 +439,7 @@ void test_ifelse(void) {
   *var[i++] = (fcell_xt) *dict_cfa(dict_find(7, "docolon"));
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
-    *var[i++] = XCELLS(3); // index
+    *var[i++] = XCELLS(5); // index
     *var[i++] = dict_cfa(dict_find(1, "'"));
     *var[i++] = (fcell_xt)7;
     // else
@@ -499,7 +499,7 @@ void test_ifelse(void) {
   cnt = forth_count();
   x = forth_pop();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
-  TEST_CHECK_(x == 38, "Expected %d, got %d", 38, x);
+  TEST_CHECK_(x == 7, "Expected %d, got %d", 7, x);
 
 }
 
@@ -508,6 +508,7 @@ TEST_LIST = {
   { "parsing", test_parsing },
   { "create", test_create },
   { "branches", test_branches },
+  { "ifesle", test_ifelse },
   { 0 }
 };
 
