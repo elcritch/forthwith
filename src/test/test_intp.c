@@ -97,7 +97,7 @@ void test_colon(void) {
   int i, n;
   fcell_xt* var[50] = {0};
 
-  i = 0; n = 4;
+  i = 0; n = 15;
   for (int j = 0; j < n; j++)
     var[j] = forth_alloc_var();
 
@@ -123,15 +123,19 @@ void test_colon(void) {
 
   fword_t *entry_a = dict_find(2, "aa");
   TEST_CHECK_(entry_a != NULL, "Expected non-null `:` word, got %p for %s", entry_a, "entry_a");
+  printf("entry_a: %016p\n", entry_a);
+
   fcell_xt cfa_a = (fcell_xt) dict_cfa(entry_a);
   TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got %d for %s", cfa_a, "cfa_a");
 
+  printf("cfa_aa: %016p\n", cfa_a);
+
   int idx_ra = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt) 103;
-  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(2, "aa"));
+  *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   forth_eval(var[idx_ra]);
