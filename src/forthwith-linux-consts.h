@@ -43,11 +43,10 @@
 #define $stack_of_base  8
 #define $stack_of_size  16
 
-#define $vars_of_base       0
-#define $vars_of_state      8
-#define $vars_of_tib_idx    16
-#define $vars_of_tib_len    24
-#define $vars_of_tib_str    32
+#define $vars_of_state      0
+#define $vars_of_tib_idx    8
+#define $vars_of_tib_len    16
+#define $vars_of_tib_str    24
 
 // ========================================================================== //
 // Platform Registers 

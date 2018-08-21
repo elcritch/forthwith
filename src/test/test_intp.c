@@ -104,26 +104,43 @@ void test_colon(void) {
   fword_t *entry_colon = dict_find(1, ":");
   printf("colon: `:` %016p \n", entry_colon);
   TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got %d", entry_colon);
-  if (entry_colon)
-    printf("colon cfa: `:` %016p\n", dict_cfa(entry_colon));
-
+  printf("colon cfa: `:` %016p\n", dict_cfa(entry_colon));
   printf("xt_colon: `:` %016p -> %016p \n", xt_colon, *xt_colon);
 
-  // Colons
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  ctx->vars->tib_str = ": a 99";
-  ctx->vars->tib_len = 6;
+  ctx->vars->tib_str = ": aa 99 ;";
+  ctx->vars->tib_len = 9;
   ctx->vars->tib_idx = 0;
 
   forth_eval(var[0]);
+
+  dict_print();
+  // Try running new word!
+
+
+  fword_t *entry_a = dict_find(2, "aa");
+  TEST_CHECK_(entry_a != NULL, "Expected non-null `:` word, got %p for %s", entry_a, "entry_a");
+  fcell_xt cfa_a = (fcell_xt) dict_cfa(entry_a);
+  TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got %d for %s", cfa_a, "cfa_a");
+
+  int idx_ra = i;
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt) 103;
+  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  forth_eval(var[idx_ra]);
 
   printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+
 
   int expi = 99;
   int expl = 1;
@@ -134,7 +151,6 @@ void test_colon(void) {
   fcell_t x = forth_pop();
   TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
 
-  dict_print();
 }
 
 /* TEST_LIST = { */

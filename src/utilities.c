@@ -57,12 +57,14 @@ void doret() {
 // {*tib} {tib_idx++} ( -- cp n )
 __fw_noinline__
 void docreate() {
+  printf("<<< docreate\n");
   fcell_t len = forth_pop();
   char *cstr = (char*)forth_pop();
   fcell_xt *here = forth_alloc_var();
-  /* *here = &xt_docolon; */
+  *here = &xt_docolon;
   fword_t *entry = dict_create(F_HIDDEN, len, cstr, here);
   forth_push((fcell_t)entry);
+  printf(">>> docreate\n");
 }
 
 // ( n -- ) {*user}
@@ -80,7 +82,8 @@ void dosavehere() {
 // ( n -- ) {*user}
 __fw_noinline__
 void doxmask() {
-  ctx->dict->head->meta ^= forth_pop();
+  fword_t *last_word = ctx->dict->head - 1;
+  last_word->meta ^= forth_pop();
 }
 
 // ( -- ) {*var->state}
@@ -98,28 +101,30 @@ void dorbrac() {
 // ( -- *c l ) {tib} {tib_idx++}
 __fw_noinline__
 void doword() {
-  uint8_t idx = ctx->vars->tib_idx;
+  fcell_t idx = ctx->vars->tib_idx;
   uint8_t len = ctx->vars->tib_len;
   char   *tib = ctx->vars->tib_str;
-  fcell_t word_start;
-  fcell_t word_stop;
+  char* word_start;
+  char* word_stop;
 
   uint8_t adv_idx;
-  adv_idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
+  adv_idx = parse_word(idx, len, tib, &word_start, &word_stop);
 
 #ifdef FW_TRACE
-  printf("\tdoword::: ");
-  printf(" idx: %d ", idx);
-  printf(" wstart: ");
-  for (int i = 0; i < adv_idx; i++) printf(":%c", ((char*)word_start)[i]);
-  printf("\n");
+  printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop);
+  for (int i = 0; i < (word_stop - word_start); i++) {
+    printf("%c", word_start[i]);
+    /* puts(word_start[i]); */
+  }
+  printf("`\n");
 #endif // FW_TRACE
 
   // Set results
-  ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx);
+  ctx->vars->tib_idx = word_stop - tib;
+  /* ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx); */
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
-  forth_push( (fcell_t)(ctx->vars->tib_idx <= len));
+  forth_push( (fcell_t)(ctx->vars->tib_idx <= len ));
 }
 
 // ( *c n -- *e n )
@@ -134,6 +139,7 @@ void dofind() {
     forth_push(len);
   } else {
     forth_push((fcell_t)entry);
+    forth_push((fcell_t) !!(entry->meta & F_IMMED));
   }
   forth_push(entry == NULL ? 0 : 1);
 }

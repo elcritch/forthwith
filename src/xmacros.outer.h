@@ -85,15 +85,29 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
 // Forth Words in Forth (pihsnoipmahc FWW!)
 forth_word(":", 1, F_NORMAL, colon, "( p -- )",
            XT(word), // Get the name of the new word
-           XT(create), // CREATE the dictionary entry / header
-           XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
-           XT(rbrac), // Go into compile mode.
+           XT(zbranch),
+              XCELLS(7),
+              XT(create), // CREATE the dictionary entry / header
+              XT(lit),
+                XT(docolon),
+                XT(comma), // Append DOCOLON (the codeword).
+              XT(rbrac), // Go into compile mode.
            XT(semi), // Return from the function.
            );
 
-forth_word(";", 1, F_NORMAL, semicolon, "( p -- )",
-           XT(lit), XT(semi), XT(comma), // Append EXIT (so the word will return).
-           XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word
+forth_word(";", 1, F_NORMAL | F_IMMED, semicolon, "( p -- )",
+           XT(lit),
+              XT(semi),
+                XT(comma), // Append EXIT (so the word will return).
+
+           XT(lit),
+              (fcell_xt)F_HIDDEN,
+              XT(xmask), // Toggle hidden flag -- unhide the word
+
+           XT(lit),
+              (fcell_xt)F_WORD,
+              XT(xmask), // Toggle hidden flag -- unhide the word
+
            XT(lbrac), // Go back to IMMEDIATE mode.
            XT(semi), // Return from the function.
            );
@@ -161,17 +175,18 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
               XT(drop),
 
            XT(branch),
-              XCELLS(9),
+              XCELLS(10),
 
               XTV(STATE),
                 XT(fetch),
 
               XT(zbranch),
-                XCELLS(5),
+                XCELLS(6),
                 XT(tick),
                 XT(lit),
                 XT(comma),
                 XT(comma),
+                XT(drop),
 
            XT(semi),
            );
@@ -180,10 +195,11 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
            XT(zbranch),
-              XCELLS(12),
+              XCELLS(13),
 
               XTV(STATE),
               XT(fetch),
+              XT(xor),
 
               XT(zbranch),
                 XCELLS(4),

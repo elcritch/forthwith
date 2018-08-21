@@ -90,6 +90,13 @@ forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
   jump(next);
 });
 
+forth_core("^", 1, F_NORMAL, xor, "( n n -- n )",  {
+    popd(2);
+    xor_reg(s1, s2);
+    pushd(1);
+    jump(next);
+});
+
 /* forth_core("litstr", 6, F_NORMAL, litstr, "", { */
 /*     // Get Length of String from codeword list */
 /*     load_addr(x, ip); */
