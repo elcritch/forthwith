@@ -25,7 +25,7 @@ int doeval() {
 }
 
 void print_stack() {
-  printf("(");
+  printf(" (");
   for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}
   printf(") ");
 }
@@ -35,29 +35,33 @@ void print_eol() {
 }
 
 int doprompt(char *rx_buff, int rx_len, char *tx_buff, int tx_len) {
-  int errno = forth_errno();
-  int cnt = forth_count();
 
   print_stack();
   printf("> ");
 
   int bytes_read = getline(&rx_buff, &rx_len, stdin);
 
+  rx_buff[bytes_read - 1] = '\0'; // replace newline
   ctx->vars->tib_str = rx_buff;
-  ctx->vars->tib_len = bytes_read;
+  ctx->vars->tib_len = bytes_read - 1;
   ctx->vars->tib_idx = 0;
+  ctx->vars->error = 0;
 
   doeval();
 
+  int errno = forth_errno();
+  int cnt = forth_count();
+
+  /* printf(" (errno: %d) ", errno); */
   if (errno == FW_OK) {
-    printf("OK\0x6");
     print_eol();
+    printf("OK.");
   } else if (errno == FW_ERR_STACKUNDERFLOW) {
-    printf("\0x3\n");
     print_eol();
+    printf("<D?");
   } else if (errno == FW_ERR_NOWORD) {
-    printf("\0x3\n");
     print_eol();
+    printf("W??");
   }
 
 
@@ -73,6 +77,8 @@ int main(int argc, char** argv) {
   char *tx_buff[128];
 
   int status = 0;
+
+  printf("OK.");
 
   for (;;) {
     status = doprompt(rx_buff, 128, tx_buff, 128);

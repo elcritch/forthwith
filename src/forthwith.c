@@ -54,10 +54,12 @@ int forth_init() {
   ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
   ctx->strings->base = ctx->strings->head = calloc(1, ctx->strings->size);
 
+#ifdef FW_TRACE
   printf("psp base: %p\n", ctx->psp->base);
   printf("rsp base: %p\n", ctx->rsp->base);
   printf("user base: %p\n", ctx->user->base);
   printf("dict base: %p\n", ctx->dict->base);
+#endif // FW_TRACE
 
   return -1;
 }
@@ -127,9 +129,6 @@ int forth_eval(fcell_xt *instr) {
     (fcell_xt) &xt_execs,
     (fcell_xt) &xt_quits,
   };
-
-  printf("\ninnerloop[0]: %p\n", innerloop + 0);
-  printf("innerloop[1]: %p\n\n", innerloop + 1);
 
   ctx->regs->w = 0;
   ctx->regs->ip = (fcell_t) innerloop;

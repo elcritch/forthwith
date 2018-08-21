@@ -46,11 +46,13 @@ forth_primitive("run", 3, F_NORMAL, run, "{ip++}( -- )", {
     load_addr(x, w); /* */
     incr_reg(w); // W++
 
+#ifdef FW_TRACE
     // <<< debugging
     save_state();
     call(doprintstate);
     load_state();
     // >>> debugging
+#endif // FW_TRACE
 
     jump_reg(x);
 });

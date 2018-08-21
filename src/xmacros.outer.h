@@ -153,14 +153,15 @@ forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
 forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(number),
            XT(zbranch),
-              XCELLS(6),
+              XCELLS(7),
 
               XT(lit),
               (fcell_xt)FW_ERR_NOWORD,
               XT(ret_),
+              XT(drop),
 
            XT(branch),
-              XCELLS(11),
+              XCELLS(9),
 
               XTV(STATE),
                 XT(fetch),

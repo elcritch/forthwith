@@ -104,14 +104,8 @@ void doword() {
   uint8_t adv_idx;
   adv_idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
 
-  printf("\tdoword::: ");
-  printf(" idx: %d ", idx);
-  printf(" wstart: ");
-  for (int i = 0; i < adv_idx; i++) printf(":%c", ((char*)word_start)[i]);
-  printf("\n");
-
+  // Set results
   ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx);
-
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
   forth_push( (fcell_t)(ctx->vars->tib_idx <= len));
