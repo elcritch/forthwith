@@ -67,9 +67,9 @@ fw_call doprintstate();
 // TODO: fix or remove
 #define forth_variable(name, _name_len, struct_name, member_name, offset) \
   forth_primitive( #name, name_len, f_normal, var_ ## name, _comment, { \
-    load_const(xrax, $ctx);                                    \
-    load_addr_off(x, xrax, $ ## struct_name ## _of_ ## member_name);       \
-    calc_addr_off(s1, x, offset);                                      \
+    load_const(x, $ctx);                                    \
+    load_addr_off(s2, x, $ ## struct_name ## _of_ ## member_name);       \
+    calc_addr_off(s1, s2, offset);                                      \
     pushd(1);                                                         \
     jump(next);                                                       \
   })

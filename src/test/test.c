@@ -260,7 +260,7 @@ void test_create(void) {
   *var[i++] = (fcell_xt)3;
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
-  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
@@ -338,7 +338,7 @@ void test_branches(void) {
   // end
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
-  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 5, "tjmp", var[idx_b0]);
@@ -365,7 +365,7 @@ void test_branches(void) {
   // end
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
-  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
@@ -447,7 +447,7 @@ void test_ifelse(void) {
   // fi
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt)5;
-  *var[i++] = dict_cfa(dict_find(3, "add"));
+  *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   // Dict
