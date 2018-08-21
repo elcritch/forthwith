@@ -10,7 +10,7 @@ CC = gcc
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)
 
-all: _build/forthwith-linux _build/test-forthwith-linux _build/test-intp-forthwith-linux
+all: _build/forthwith-linux _build/test-forthwith-linux 
 
 _build/forthwith-linux.a: _build/forthwith-linux.o
 	ar rcs $@ $<

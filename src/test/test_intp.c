@@ -9,12 +9,12 @@
 #include <stdio.h>
 #include <string.h>
 
-void test_setup() {
-  forth_init();
-  forth_bootstrap(ctx);
-}
+/* void test_setup() { */
+/*   forth_init(); */
+/*   forth_bootstrap(ctx); */
+/* } */
 
-#define TEST_CHECK_(args...)
+/* #define TEST_CHECK_(args...) */
 
 void dict_print();
 
@@ -89,6 +89,6 @@ void test_interpreter(void) {
 /* }; */
 
 
-int main() {
-  test_interpreter();
-}
+/* int main() { */
+/*   test_interpreter(); */
+/* } */

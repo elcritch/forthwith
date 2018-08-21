@@ -157,5 +157,8 @@
   load_addr_off(x, s1, $ctx_regs_of_x);       \
   load_addr_off(w, s1, $ctx_regs_of_w)
 
+#define _checkd psp < bpsp
+#define _checkr rsp < brsp
+
 #endif // __HEADER_IMPL_X86__
 

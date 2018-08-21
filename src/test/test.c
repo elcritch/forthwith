@@ -569,6 +569,8 @@ void test_other(void) {
   printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
+#include "test_intp.c"
+
 TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
@@ -576,6 +578,7 @@ TEST_LIST = {
   { "branches", test_branches },
   { "ifesle", test_ifelse },
   { "other", test_other },
+  { "interpreter", test_interpreter },
   { 0 }
 };
 

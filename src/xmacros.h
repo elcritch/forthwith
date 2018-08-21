@@ -130,7 +130,7 @@ fw_call doprintstate();
 #ifndef FORTH_STACK_PRIMS
 #define FORTH_STACK_PRIMS
 
-#define FORTHWITH_NO_CHECKS
+/* #define FORTHWITH_NO_CHECKS */
 
 #ifndef FORTHWITH_NO_CHECKS
   #define check(cond, errfunc)                                             \
