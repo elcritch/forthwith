@@ -16,7 +16,7 @@ fw_call doprintstate() {
   /* printf(" stacks: "); */
   /* printf("psp: %p, ", ctx->psp->head); */
   /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %d - %016p (%10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
+  printf("tib: %d - %016p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
 
   printf(" --\t");
 
@@ -101,9 +101,16 @@ void doword() {
   fcell_t word_start;
   fcell_t word_stop;
 
-  idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
+  uint8_t adv_idx;
+  adv_idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
 
-  ctx->vars->tib_idx += idx;
+  printf("\tdoword::: ");
+  printf(" idx: %d ", idx);
+  printf(" wstart: ");
+  for (int i = 0; i < adv_idx; i++) printf(":%c", ((char*)word_start)[i]);
+  printf("\n");
+
+  ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx);
 
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
