@@ -7,9 +7,6 @@
 #include <stdbool.h>
 
 fw_call doprintstate() {
-  int i = 0;
-  fcell_t vals[128];
-
 
   printf("-> regs: ");
   fword_t *entry = dict_lookup(ctx->regs->x);
@@ -22,7 +19,12 @@ fw_call doprintstate() {
   printf("tib: %d - %016p (%10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ctx->vars->tib_idx);
 
   printf(" --\t");
+
   printf("(");
+
+  int i = 0;
+  fcell_t vals[128];
+
   while (forth_count() > 1) {
     fcell_t v = forth_pop();
     vals[i++] = v;
@@ -33,6 +35,7 @@ fw_call doprintstate() {
     printf("%ld, ", vals[j]);
     forth_push(vals[j++]);
   }
+
   printf(")");
 
   printf("\n");

@@ -98,10 +98,10 @@
 #define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
 
 #define _pushd_0
-#define _pushd_1           _pushd_cell(s1)
-#define _pushd_2 _pushd_1; _pushd_cell(s2)
-#define _pushd_3 _pushd_2; _pushd_cell(s3)
-#define _pushd_4 _pushd_3; _pushd_cell(s4)
+#define _pushd_1 _pushd_cell(s1);
+#define _pushd_2 _pushd_cell(s2); _pushd_1;
+#define _pushd_3 _pushd_cell(s3); _pushd_2;
+#define _pushd_4 _pushd_cell(s4); _pushd_3;
 #define _pushd(n) _pushd_ ## n
 
 #define _popd_0
