@@ -176,7 +176,6 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
 // try finding word and run if compiling, or execute if immediate
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
-           XT(dup),
            XT(zbranch),
               XCELLS(11),
 

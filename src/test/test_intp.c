@@ -51,7 +51,7 @@ void test_interpreter(void) {
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
 
   fcell_t x = 0;
-  while (forth_count()) {
+  while (forth_count() > 0) {
     x = forth_pop();
     printf("remaining stack: %lld\n", x);
   }
