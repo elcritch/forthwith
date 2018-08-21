@@ -22,19 +22,7 @@ fw_call doprintstate() {
 
   printf("(");
 
-  int i = 0;
-  fcell_t vals[128];
-
-  while (forth_count() > 1) {
-    fcell_t v = forth_pop();
-    vals[i++] = v;
-  }
-
-  int j = 0;
-  while (j < i) {
-    printf("%ld, ", vals[j]);
-    forth_push(vals[j++]);
-  }
+  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}
 
   printf(")");
 

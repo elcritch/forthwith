@@ -500,12 +500,82 @@ void test_ifelse(void) {
 
 }
 
+void test_other(void) {
+  test_setup();
+
+  int i, n;
+
+  // Vars
+  i = 0; n = 9;
+
+  fcell_xt* var[100];
+  for (int j = 0; j < n; j++)
+    var[i++] = forth_alloc_var();
+
+  // Colons
+  i = 0;
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)1;
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)2;
+  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = (fcell_xt)3;
+  *var[i++] = dict_cfa(dict_find(3, "rot"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  // Dict
+  fword_t *entry = dict_create(F_NORMAL | F_WORD, 4, "tadd", var[0]);
+
+  printf(" ");
+  /* for (int j = 0; j < i; j++) printf("\tinstr: %016p => %016p\n", var[j], *var[j]); */
+  printf("entry: %p\n\n", entry);
+
+  forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
+
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+
+  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}; printf("\n");
+
+  int cnt = forth_count();
+  TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);
+
+  fcell_t expi;
+
+  expi = 1; fcell_t x = forth_pop();
+  TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
+
+  expi = 3; fcell_t y = forth_pop();
+  TEST_CHECK_(y == expi, "Expected %d, got %d", expi, y);
+
+  expi = 2; fcell_t z = forth_pop();
+  TEST_CHECK_(z == expi, "Expected %d, got %d", expi, z);
+
+  TEST_CHECK_(forth_errno() == 0,
+              "stackunderflow: Expected %d, got %d",
+              forth_errno(),
+              0);
+
+  forth_clear();
+
+  TEST_CHECK_(forth_errno() == FW_OK,
+              "errno: Expected %d, got %d",
+              forth_errno(),
+              FW_OK);
+
+  printf(" >>>>>>>>>>>>>> basic test \n\n\n");
+}
+
 TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
   { "create", test_create },
   { "branches", test_branches },
   { "ifesle", test_ifelse },
+  { "other", test_other },
   { 0 }
 };
 

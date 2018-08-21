@@ -57,10 +57,10 @@ forth_core("swap", 4, F_NORMAL, swap, "( x y -- x y )",  {
 
 forth_core("rot", 3, F_NORMAL, rot, "( n3 n2 n1  ---  n2 n1 n3 )",  {
   popd(3);
-  copy_reg(x,s3);
-  copy_reg(s3, s2);
-  copy_reg(s2, s1);
-  copy_reg(s1, x);
+  copy_reg(x,s3); // x <- a
+  copy_reg(s3, s2); // a <- b
+  copy_reg(s2, s1); // b <- c
+  copy_reg(s1, x); // c <- a
   pushd(3);
   jump(next);
 });
