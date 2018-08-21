@@ -1,14 +1,47 @@
 
+
 #include "forthwith.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 
+fw_call doprintstate() {
+  int i = 0;
+  fcell_t vals[128];
+
+
+  printf("-> regs: ");
+  fword_t *entry = dict_lookup(ctx->regs->x);
+  printf("x: %016p (%10s), ", ctx->regs->x, entry? entry->name : NULL);
+  printf("ip: %016p, ", ctx->regs->ip);
+  printf("w: %016p, ", ctx->regs->w);
+  /* printf(" stacks: "); */
+  /* printf("psp: %p, ", ctx->psp->head); */
+  /* printf("rsp: %p, ", ctx->rsp->head); */
+  printf("tib: %d - %016p (%10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ctx->vars->tib_idx);
+
+  printf(" --\t");
+  printf("(");
+  while (forth_count() > 1) {
+    fcell_t v = forth_pop();
+    vals[i++] = v;
+  }
+
+  int j = 0;
+  while (j < i) {
+    printf("%ld, ", vals[j]);
+    forth_push(vals[j++]);
+  }
+  printf(")");
+
+  printf("\n");
+  return;
+}
 
 // handle data stack underflow
 __fw_noinline__
-fw_call dosuf(FORTH_REGISTERS) {
+fw_call dosuf() {
   ctx->vars->error = FW_ERR_STACKUNDERFLOW;
   exit(ctx->vars->error);
 }
@@ -77,9 +110,9 @@ void doword() {
   fcell_t word_start;
   fcell_t word_stop;
 
-  parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
+  idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
 
-  ctx->vars->tib_idx = word_start - (fcell_t)tib;
+  ctx->vars->tib_idx += idx;
 
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
@@ -88,7 +121,12 @@ void doword() {
 // ( *c n -- *e n )
 __fw_noinline__
 void dofind() {
-  fword_t *entry = dict_find((uint8_t)forth_pop(), (char*)forth_pop());
+  uint8_t len = forth_pop();
+  char *str = forth_pop();
+
+  fword_t *entry = dict_find(len, str);
+  forth_push(str);
+  forth_push(len);
   forth_push((fcell_t)entry);
   forth_push(entry == NULL ? 0 : 1);
 }
@@ -118,8 +156,11 @@ __fw_noinline__
 // ( *c l -- n e ) {tib} {tib_idx++}
 fw_call donumber() {
   fcell_t err = 0;
-  uint8_t len = (uint8_t)forth_pop();
-  char *addr = (char *)forth_pop();
+  /* uint8_t len = (uint8_t)forth_pop(); */
+  /* char *addr = (char *)forth_pop(); */
+  uint8_t len = ctx->vars->tib_len;
+  char   *addr = ctx->vars->tib_str + ctx->vars->tib_idx;
+
   fcell_t number = 0;
 
   parse_number(len, addr, &number, &err);

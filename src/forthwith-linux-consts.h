@@ -35,9 +35,9 @@
 
 /* #define $ctx_regs_of_psp "0" */
 /* #define $ctx_regs_of_rsp "8" */
-#define $ctx_regs_of_ip  16
-#define $ctx_regs_of_tos 24
-#define $ctx_regs_of_w   32
+#define $ctx_regs_of_w   0
+#define $ctx_regs_of_x   8
+#define $ctx_regs_of_ip 16
 
 #define $stack_of_head  0
 #define $stack_of_base  8

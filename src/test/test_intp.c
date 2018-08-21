@@ -23,34 +23,24 @@ void test_interpreter(void) {
 
   dict_print();
 
-  /* printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3); */
-  /* for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) { */
-  /*   fword_t *entry = dict_lookup(&(xt_interpret[i])); */
-  /*   char *name = entry == NULL ? NULL : entry->name; */
-  /*   fcell_xt *ipptr = &entry->body; */
-  /*   printf("xt_interpret[%d]: %p -> %p -> *%p -> (%p) :: %s\n", i, entry, ipptr, *ipptr, xt_interpret[i], name); */
-  /* } */
-  /* printf("\n\n"); */
-
-  // test basic if / else (and thereby branch/0branch)
-  // test basic find usage
   // Vars
-  fcell_xt* var1 = forth_alloc_var();
-  fcell_xt* var2 = forth_alloc_var();
-  fcell_xt* var3 = forth_alloc_var();
-  fcell_xt* var4 = forth_alloc_var();
+  int i, n;
+  fcell_xt* var[50] = {0};
+
+  i = 0; n = 4;
+  for (int j = 0; j < n; j++)
+    var[j] = forth_alloc_var();
 
   // Colons
-  *var1 = (fcell_xt) xt_docolon;
-  *var2 = (fcell_xt) &xt_interpret;
-  *var3 = (fcell_xt) &xt_branch;
-  *var4 = (fcell_xt) -8;
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   ctx->vars->tib_str = "7 2 +";
   ctx->vars->tib_len = 5;
   ctx->vars->tib_idx = 0;
 
-  forth_eval(var1);
+  forth_eval(var[0]);
 
   printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);

@@ -142,6 +142,7 @@
   store_addr_off(xrax, rsp, $stack_of_head);  \
   load_const(xrax, $ctx_regs);                    \
   store_addr_off(xrax, ip, $ctx_regs_of_ip);      \
+  store_addr_off(xrax, x, $ctx_regs_of_x);      \
   store_addr_off(xrax, w, $ctx_regs_of_w)
 
 #define load_state() \
@@ -153,6 +154,7 @@
   load_addr_off(brsp, xrax, $stack_of_base);      \
   load_const(xrax, $ctx_regs);                    \
   load_addr_off(ip, xrax, $ctx_regs_of_ip);       \
+  load_addr_off(x, xrax, $ctx_regs_of_x);       \
   load_addr_off(w, xrax, $ctx_regs_of_w)
 
 #endif // __HEADER_IMPL_X86__

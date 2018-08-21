@@ -42,9 +42,18 @@ forth_primitive("next", 4, F_NORMAL, next, "{ip++}( -- )", {
     incr_reg(ip); /* IP++ advance IP to next instr */
     jump(run);
 });
+
 forth_primitive("run", 3, F_NORMAL, run, "{ip++}( -- )", {
     load_addr(x, w); /* */
     incr_reg(w); // W++
+
+    // <<< debugging
+    save_state();
+    call(doprintstate());
+    /* call(doprintstate); */
+    load_state();
+    // >>> debugging
+
     jump_reg(x);
 });
 

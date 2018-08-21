@@ -314,7 +314,7 @@ void test_branches(void) {
 
   // Vars
   int i, n;
-  fcell_xt* var[100] = {0};
+  fcell_xt* var[50] = {0};
   fcell_t cnt, x;
 
   i = 0; n = 45;

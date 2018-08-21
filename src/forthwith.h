@@ -39,6 +39,7 @@ typedef struct forthwith_regs { /**< FORTH environment */
   fcell_t x;
   fcell_t ip;
   fcell_t tos;
+  /* fcell_t tos; */
   /* fcell_t *usp; */
   /* fcell_t *bpsp; */
 } fw_ctx_regs_t;
