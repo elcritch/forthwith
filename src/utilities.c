@@ -8,7 +8,10 @@
 
 fw_call doprintstate() {
 
-  printf("-> regs: ");
+  for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
+    printf("-");
+
+  printf("-> \t\t regs: ");
   fword_t *entry = dict_lookup(ctx->regs->x);
   printf("x: %016p (%10s), ", ctx->regs->x, entry? entry->name : NULL);
   printf("ip: %016p, ", ctx->regs->ip);
@@ -103,6 +106,14 @@ void doword() {
 
   uint8_t adv_idx;
   adv_idx = parse_word(idx, len, tib, (char**)&word_start, (char**)&word_stop);
+
+#ifdef FW_TRACE
+  printf("\tdoword::: ");
+  printf(" idx: %d ", idx);
+  printf(" wstart: ");
+  for (int i = 0; i < adv_idx; i++) printf(":%c", ((char*)word_start)[i]);
+  printf("\n");
+#endif // FW_TRACE
 
   // Set results
   ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx);

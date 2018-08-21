@@ -28,11 +28,11 @@ forth_variable(STATE, 5, ctx, vars, $vars_of_state);
 forth_variable(HERE, 5, ctx, user, $stack_of_head); // get pointer to current user word location
 
 // Follows Jone's Forth here
-forth_docall("create", 4, F_NORMAL, create, "( n -- )", docreate);
-forth_docall(",", 4, F_NORMAL, comma, "( n -- )", docomma);
-forth_docall("[", 4, F_IMMED, lbrac, "( n -- )", dolbrac);
-forth_docall("]", 4, F_NORMAL, rbrac, "( n -- )", dorbrac);
-forth_docall("xmask", 4, F_NORMAL, xmask, "( n -- )", doxmask);
+forth_docall("create", 6, F_NORMAL, create, "( n -- )", docreate);
+forth_docall(",", 1, F_NORMAL, comma, "( n -- )", docomma);
+forth_docall("[", 1, F_IMMED, lbrac, "( n -- )", dolbrac);
+forth_docall("]", 1, F_NORMAL, rbrac, "( n -- )", dorbrac);
+forth_docall("xmask", 5, F_NORMAL, xmask, "( n -- )", doxmask);
 
 forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
 forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
@@ -40,7 +40,7 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("cfa", 3, F_NORMAL, cfa, "( n -- )", docfa);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
-forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
+forth_docall("ret", 3, F_NORMAL, ret_, "( n -- )", doret);
 
 // Toggle hidden flag -- unhide the word
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
@@ -83,7 +83,7 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
 });
 
 // Forth Words in Forth (pihsnoipmahc FWW!)
-forth_word(":", 6, F_NORMAL, colon, "( p -- )",
+forth_word(":", 1, F_NORMAL, colon, "( p -- )",
            XT(word), // Get the name of the new word
            XT(create), // CREATE the dictionary entry / header
            XT(lit), XT(docolon), XT(comma), // Append DOCOLON (the codeword).
@@ -91,7 +91,7 @@ forth_word(":", 6, F_NORMAL, colon, "( p -- )",
            XT(semi), // Return from the function.
            );
 
-forth_word(";", 6, F_NORMAL, semicolon, "( p -- )",
+forth_word(";", 1, F_NORMAL, semicolon, "( p -- )",
            XT(lit), XT(semi), XT(comma), // Append EXIT (so the word will return).
            XT(lit), (fcell_xt)F_HIDDEN, XT(xmask), // Toggle hidden flag -- unhide the word
            XT(lbrac), // Go back to IMMEDIATE mode.

@@ -85,7 +85,8 @@ void test_interpreter(void) {
 void test_colon(void) {
   test_setup();
 
-  dict_print();
+
+  printf("\n<<<<<<<<<<<< TEST ':' <<<<<<<<<<<< \n\n");
 
   printf("ctx->rsp: %p\n", ctx->rsp);
   printf("ctx->psp: %p\n", ctx->psp);
@@ -99,6 +100,14 @@ void test_colon(void) {
   i = 0; n = 4;
   for (int j = 0; j < n; j++)
     var[j] = forth_alloc_var();
+
+  fword_t *entry_colon = dict_find(1, ":");
+  printf("colon: `:` %016p \n", entry_colon);
+  TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got %d", entry_colon);
+  if (entry_colon)
+    printf("colon cfa: `:` %016p\n", dict_cfa(entry_colon));
+
+  printf("xt_colon: `:` %016p -> %016p \n", xt_colon, *xt_colon);
 
   // Colons
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
@@ -124,6 +133,8 @@ void test_colon(void) {
 
   fcell_t x = forth_pop();
   TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
+
+  dict_print();
 }
 
 /* TEST_LIST = { */
