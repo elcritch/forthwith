@@ -107,6 +107,7 @@ void doword() {
 
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
+  forth_push( (fcell_t)(ctx->vars->tib_idx < len));
 }
 
 // ( *c n -- *e n )
@@ -128,7 +129,7 @@ void dofind() {
 __fw_noinline__
 void docfa() {
   fword_t *entry = (fword_t*)forth_pop();
-  forth_push((fcell_t)entry->body);
+  forth_push((fcell_t)dict_cfa(entry));
 }
 
 __fw_noinline__

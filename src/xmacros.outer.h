@@ -37,6 +37,7 @@ forth_docall("xmask", 4, F_NORMAL, xmask, "( n -- )", doxmask);
 forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
 forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
+forth_docall("cfa", 3, F_NORMAL, cfa, "( n -- )", docfa);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 forth_docall("ret", 4, F_NORMAL, ret_, "( n -- )", doret);
@@ -178,7 +179,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
            XT(zbranch),
-              XCELLS(11),
+              XCELLS(12),
 
               XTV(STATE),
               XT(fetch),
@@ -188,7 +189,8 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
                 XT(comma),
               XT(branch),
                 XCELLS(2),
-                XT(execs),
+                XT(cfa),
+                XT(runs),
 
            XT(branch),
               XCELLS(2),
@@ -199,7 +201,6 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
 
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
-           XT(dup),
            XT(zbranch),
               XCELLS(5),
               XT(itpnext),

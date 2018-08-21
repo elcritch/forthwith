@@ -57,11 +57,20 @@ forth_primitive("run", 3, F_NORMAL, run, "{ip++}( -- )", {
 
 
 /* Quit inner interpreter */
-forth_core("execs", 5, F_NORMAL, execs, "( -- )", {
+forth_core("execs", 5, F_NORMAL, execs, "( n -- )", {
     popd(1);
     copy_reg(w, s1);
+    pushd(0);
     jump(run);
 });
+
+/* Quit inner interpreter */
+forth_core("runs", 4, F_NORMAL, runs, "( n -- )", {
+    popd(1);
+    copy_reg(w, s1);
+    pushd(0);
+    jump(run);
+  });
 
 /* Quit inner interpreter */
 forth_core("quits", 5, F_NORMAL, quits, "( -- )", {
