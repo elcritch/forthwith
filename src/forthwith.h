@@ -45,13 +45,16 @@ typedef struct forthwith_regs { /**< FORTH environment */
 } fw_ctx_regs_t;
 
 typedef struct forthwith_vars { /**< FORTH environment */
-  fcell_t base;
   fcell_t state;
   fcell_t error;
 
   fcell_t tib_idx;
   fcell_t tib_len;
   char   *tib_str;
+
+  fcell_t tob_idx;
+  fcell_t tob_len;
+  char   *tob_str;
 } fw_ctx_vars_t;
 
 typedef struct forthwith_stack { /**< FORTH environment */

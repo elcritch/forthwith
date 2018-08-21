@@ -137,13 +137,12 @@ __fw_noinline__
 fw_call doemit() {
   char c = (char)forth_pop();
 
-  uint8_t idx = ctx->vars->tib_idx;
-  uint8_t len = ctx->vars->tib_len;
+  uint8_t idx = ctx->vars->tob_idx;
+  uint8_t len = ctx->vars->tob_len;
 
   if (idx < len) {
-    idx++;
-    ctx->vars->tib_str[idx] = c;
-    ctx->vars->tib_idx = idx;
+    ctx->vars->tob_str[idx++] = c;
+    ctx->vars->tob_idx = idx;
   } else {
   }
 }

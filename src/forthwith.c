@@ -103,8 +103,6 @@ void forth_clear() {
 __fw_noinline__
 int forth_bootstrap(fw_ctx_t* ctx) {
 
-  ctx->vars->base = 16; // hex default
-
   #define FORTH_DEFINE_DICT_ENTRIES
     #include "xmacros.h"
     #include "xmacros.inner.h"
@@ -112,7 +110,6 @@ int forth_bootstrap(fw_ctx_t* ctx) {
     #include "xmacros.outer.h"
   #undef FORTH_DEFINE_DICT_ENTRIES
 
-  return -1;
 }
 
 __fw_noinline__
