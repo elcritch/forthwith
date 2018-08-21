@@ -82,6 +82,50 @@ void test_interpreter(void) {
   printf(" >>>>>>>>>>>>>> basic test \n\n\n");
 }
 
+void test_colon(void) {
+  test_setup();
+
+  dict_print();
+
+  printf("ctx->rsp: %p\n", ctx->rsp);
+  printf("ctx->psp: %p\n", ctx->psp);
+  printf("ctx->vars: %p\n", ctx->vars);
+  printf("ctx->regs: %p\n", ctx->regs);
+
+  // Vars
+  int i, n;
+  fcell_xt* var[50] = {0};
+
+  i = 0; n = 4;
+  for (int j = 0; j < n; j++)
+    var[j] = forth_alloc_var();
+
+  // Colons
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
+  *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  ctx->vars->tib_str = ": a 99";
+  ctx->vars->tib_len = 6;
+  ctx->vars->tib_idx = 0;
+
+  forth_eval(var[0]);
+
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+
+  int expi = 99;
+  int expl = 1;
+
+  int cnt = forth_count();
+  TEST_CHECK_(cnt == expl, "Expected %d, got %d", expl, cnt);
+
+  fcell_t x = forth_pop();
+  TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
+}
+
 /* TEST_LIST = { */
 /*   /\* { "basic_intp", test_basic_interpreter }, *\/ */
 /*   { "test_full_interpreter", test_full_interpreter }, */
