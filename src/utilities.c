@@ -114,7 +114,7 @@ void doword() {
 
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
-  forth_push( (fcell_t)(ctx->vars->tib_idx < len));
+  forth_push( (fcell_t)(ctx->vars->tib_idx <= len));
 }
 
 // ( *c n -- *e n )

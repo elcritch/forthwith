@@ -188,7 +188,7 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
                 XCELLS(4),
                 XT(comma),
               XT(branch),
-                XCELLS(2),
+                XCELLS(3),
                 XT(cfa),
                 XT(runs),
 
