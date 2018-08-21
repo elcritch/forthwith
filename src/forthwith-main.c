@@ -59,6 +59,11 @@ int doprompt(char *rx_buff, int rx_len, char *tx_buff, int tx_len) {
   int errno = forth_errno();
   int cnt = forth_count();
 
+  if (ctx->vars->tob_idx > 0) {
+    for (int i = 0; i < ctx->vars->tob_idx; i++)
+      printf("%c", ctx->vars->tob_str[i]);
+    printf("\n");
+  }
   /* printf(" (errno: %d) ", errno); */
   if (errno == FW_OK) {
     print_eol();
