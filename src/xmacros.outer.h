@@ -170,6 +170,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
                 XT(lit),
                 XT(comma),
                 XT(comma),
+
            XT(semi),
            );
 

@@ -13,7 +13,7 @@ fw_call doprintstate();
 /* #define XT(n) (fcell_xt) xt_ ## n */
 #define XT(n) (fcell_xt) & xt_ ## n
 #define XCELLS(n) (fcell_xt)(n * 8)
-#define XTV(n) (fcell_xt) var_ ## n
+#define XTV(n) (fcell_xt) &xt_ ## var_ ## n
 
 #endif // _XMACROS_H_
 
@@ -67,11 +67,13 @@ fw_call doprintstate();
 // TODO: fix or remove
 #define forth_variable(name, _name_len, struct_name, member_name, offset) \
   forth_primitive( #name, name_len, f_normal, var_ ## name, _comment, { \
-    load_const(x, $ ## struct_name);                                    \
-    load_addr_off(x, x, $ ## struct_name ## _of_ ## member_name);       \
+    load_const(xrax, $ctx);                                    \
+    load_addr_off(x, xrax, $ ## struct_name ## _of_ ## member_name);       \
     calc_addr_off(s1, x, offset);                                      \
     pushd(1);                                                         \
+    jump(next);                                                       \
   })
+
 #endif // FORTH_DEFINE_PRIMITIVES
 
 

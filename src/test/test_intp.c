@@ -23,6 +23,11 @@ void test_interpreter(void) {
 
   dict_print();
 
+  printf("ctx->rsp: %p\n", ctx->rsp);
+  printf("ctx->psp: %p\n", ctx->psp);
+  printf("ctx->vars: %p\n", ctx->vars);
+  printf("ctx->regs: %p\n", ctx->regs);
+
   // Vars
   int i, n;
   fcell_xt* var[50] = {0};

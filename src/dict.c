@@ -134,6 +134,7 @@ void dict_print() {
   while (word_ptr != NULL) {
     fword_t word = *word_ptr;
     printf("dict entry:%p: %s -> %p\n", word_ptr, word_ptr->name, word_ptr->body);
+    printf("dict entry:%lld: %s -> %lld\n", word_ptr, word_ptr->name, word_ptr->body);
     word_ptr = word.prev;
   }
 

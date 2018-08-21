@@ -65,14 +65,14 @@ forth_core("rot", 3, F_NORMAL, rot, "( n3 n2 n1  ---  n2 n1 n3 )",  {
   jump(next);
 });
 
-forth_core("add", 3, F_NORMAL, add, "( n n -- n )",  {
+forth_core("+", 1, F_NORMAL, add, "( n n -- n )",  {
   popd(2);
   add_reg(s1, s2);
   pushd(1);
   jump(next);
 });
 
-forth_core("sub", 3, F_NORMAL, sub, "( n2 n1 -- n )",  {
+forth_core("-", 1, F_NORMAL, sub, "( n2 n1 -- n )",  {
     popd(2);
     sub_reg(s1, s2);
     pushd(1);

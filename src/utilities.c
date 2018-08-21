@@ -16,7 +16,7 @@ fw_call doprintstate() {
   /* printf(" stacks: "); */
   /* printf("psp: %p, ", ctx->psp->head); */
   /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %d - %016p (%10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ctx->vars->tib_idx);
+  printf("tib: %d - %016p (%10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
 
   printf(" --\t");
 
@@ -116,9 +116,12 @@ void dofind() {
   char *str = forth_pop();
 
   fword_t *entry = dict_find(len, str);
-  forth_push(str);
-  forth_push(len);
-  forth_push((fcell_t)entry);
+  if (!entry) {
+    forth_push(str);
+    forth_push(len);
+  } else {
+    forth_push((fcell_t)entry);
+  }
   forth_push(entry == NULL ? 0 : 1);
 }
 
@@ -147,10 +150,10 @@ __fw_noinline__
 // ( *c l -- n e ) {tib} {tib_idx++}
 fw_call donumber() {
   fcell_t err = 0;
-  /* uint8_t len = (uint8_t)forth_pop(); */
-  /* char *addr = (char *)forth_pop(); */
-  uint8_t len = ctx->vars->tib_len;
-  char   *addr = ctx->vars->tib_str + ctx->vars->tib_idx;
+  uint8_t len = (uint8_t)forth_pop();
+  char *addr = (char *)forth_pop();
+  /* uint8_t len = ctx->vars->tib_len; */
+  /* char   *addr = ctx->vars->tib_str + ctx->vars->tib_idx; */
 
   fcell_t number = 0;
 
