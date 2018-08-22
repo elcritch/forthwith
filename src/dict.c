@@ -134,11 +134,11 @@ void dict_print() {
 
     write_str(6, "dict: ");
     write_number((fcell_t)word_ptr->body);
-    /* write_str(1, " "); */
-    /* write_str(word_ptr->len, word_ptr->name); */
-    /* write_str(1, " "); */
-    /* write_number(word_ptr->meta); */
-    /* write_str(1, "\n"); */
+    write_str(1, " ");
+    write_str(word_ptr->len, word_ptr->name);
+    write_str(1, " ");
+    write_number(word_ptr->meta);
+    write_str(1, "\n");
 
     word_ptr = word.prev;
   }

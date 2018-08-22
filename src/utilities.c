@@ -233,9 +233,7 @@ void write_char(char c) {
   uint8_t len = ctx->vars->tob_len;
 
   if (idx < len) {
-    ctx->vars->tob_str[idx++] = c;
-    ctx->vars->tob_idx = idx;
-  } else {
+    ctx->vars->tob_str[ctx->vars->tob_idx++] = c;
   }
 }
 
