@@ -53,6 +53,9 @@
 #define _fw_asm_to_addr_off(c, x, y, o) _fw_asm(c, "", x, "", #o "(", y, ")")
 #define _fw_asm_from_addr_off(c, x, y, o) _fw_asm(c, #o "(", x, ")", "", y, "")
 
+#define __fw_asm_single(c, x) __asm__( c " " #x)
+#define _fw_asm_single(c, x) __fw_asm_single( c, x)
+
 // ========================================================================== //
 // Standard "Definitions"
 // ========================================================================== //
@@ -81,6 +84,7 @@
 #define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
 #define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
+#define not_reg(y) _fw_asm_const("notq", reg_##y, "")
 
 // Jumps
 // ... unique labels? hmmm...
@@ -89,8 +93,11 @@
 // Signed Arithmetic
 #define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
 #define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
-#define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 
+#define mul_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y)
+#define div_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y)
+
+#define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 

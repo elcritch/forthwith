@@ -50,10 +50,10 @@ void test_basic(void) {
   *var3 = (fcell_xt) 3;
   *var4 = (fcell_xt) &xt_lit;
   *var5 = (fcell_xt) 5;
-  *var6 = (fcell_xt) &xt_add;
+  *var6 = (fcell_xt) &xt_sadd;
   *var7 = (fcell_xt) &xt_lit;
   *var8 = (fcell_xt) 1;
-  *var9 = (fcell_xt) &xt_add;
+  *var9 = (fcell_xt) &xt_sadd;
   *varA = (fcell_xt) &xt_semi;
 
   printf(" ");
