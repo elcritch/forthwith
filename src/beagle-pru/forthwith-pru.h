@@ -2,7 +2,7 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
-#include "forthwith-linux-consts.h"
+#include "forthwith-pru-consts.h"
 
 #include <stddef.h>
 
@@ -15,14 +15,6 @@
 */
 
 /* #define fw_label(l) _fw_label(l) */
-#define _asm_jump() \
-  __asm__ ("" :: "r" (ip));         \
-  __asm__ ("" :: "r" (psp));        \
-  __asm__ ("" :: "r" (rsp));        \
-  __asm__ ("" :: "r" (bpsp));        \
-  __asm__ ("" :: "r" (brsp));        \
-  __asm__ ("" :: "r" (x))
-
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #define __label(r) r
@@ -41,12 +33,12 @@
 #define _fw_asm1(r, a, x, b, y) __asm__(r " " a #x)
 #define _fw_asm2(r, a, x, b, y) __asm__(r " " a #x ", " b #y )
 #define _fw_asm3(r, a, x, b, y, c, z) __asm__(r " " a #x ", " b #y ", " c #z)
-#define _fw_asm3(r, a, x, b, y, c, z, d, w) __asm__(r " " a #x ", " b #y ", " c #z ", " d #w)
+#define _fw_asm4(r, a, x, b, y, c, z, d, w) __asm__(r " " a #x ", " b #y ", " c #z ", " d #w)
 
 #define _fw_asm_op(c, x, y, z) _fw_asm3(c, "", x, "", y, "", z)
 
-#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm4(c, "&", x, "", y)
-#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm4(c, "", x, "&", y) 
+#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm2(c, "&", x, "", y)
+#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm2(c, "", x, "&", y) 
 
 #define _fw_asm_to_addr(c, x, y) _fw_asm_to_addr_off(c, x, y, $word_sz)
 #define _fw_asm_from_addr(c, x, y) _fw_asm_from_addr_off(c, x, y, $word_sz)
@@ -59,14 +51,14 @@
 
 /* The forth impl interfaces */
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
-#define jump(reg) _jump( reg ); _asm_jump()
+#define jump(reg) _jump( reg )
 
-#define load_const(y, x) _fw_asm_op("ldi", y, reg_##x, $0)
+#define load_const(y, x) _fw_asm2("ldi", "", reg_##y, "", x)
 #define load_addr(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x)
 #define store_addr(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x)
 
-#define load_addr_byte(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x)
-#define store_addr_byte(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x)
+/* #define load_addr_byte(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x, $0) */
+/* #define store_addr_byte(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x, $0) */
 
 #define load_addr_off(y, x, o) _fw_asm_from_addr_off("lbbo", reg_##y, reg_##x, o)
 #define store_addr_off(y, x, o) _fw_asm_to_addr_off("sbbo", reg_##y, reg_##x, o)
@@ -80,7 +72,7 @@
 #define xor_reg(y, x) _fw_asm_op("xor", reg_##y, reg_##y, reg_##x)
 #define and_reg(y, x) _fw_asm_op("and", reg_##y, reg_##y, reg_##x)
 #define or_reg(y, x) _fw_asm_op("or", reg_##y, reg_##y, reg_##x)
-#define not_reg(y) _fw_asm2("not", reg_##y, reg_##y)
+#define not_reg(y) _fw_asm2("not", "", reg_##y, "", reg_##y)
 
 // Jumps
 // ... unique labels? hmmm...
@@ -95,7 +87,7 @@
 
 /* #define muls_reg(y, x) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y); copy_reg(x, xrax) */
 
-#define copy_reg(y, x) _fw_asm_op("mov", reg_##y, reg_##x)
+#define copy_reg(y, x) _fw_asm_op("mov", reg_##y, reg_##x, $0)
 
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)

@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 /* Standard Forth Cell */
-typedef intptr_t fcell_t;
+/* typedef intptr_t fcell_t; */
 
 /* Forth Execution Token (pointer to forth execution type) */
 /* e.g. docolon, dovar, doconst, or machine addr */
@@ -29,7 +29,10 @@ typedef  fcell_t  X_t;  // Scratch Register
 
 /* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 
+#ifndef _fword_t
+#define _fword_t
 typedef struct forth_word fword_t;
+#endif // _fword_t
 
 typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State

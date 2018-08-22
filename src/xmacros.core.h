@@ -1,6 +1,6 @@
 
 // =============== Access Primitives ============== //
-forth_core("@", 1, F_NORMAL, fetch, "( n -- n )",  {
+forth_core("@", 1, F_NORMAL, fetch, "( n -- n )", {
     popd(1);
     copy_reg(x, s1);
     load_addr(s1, x);

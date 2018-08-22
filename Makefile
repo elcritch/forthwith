@@ -7,18 +7,13 @@ CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
 CC = clang
 # CC = gcc
 
-# SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
-# OBJS = $(SRCS:src/%.c=_build/%.o)
-PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
-# $PRU_LIB/pru/
-LIBS=--library=$(PRU_LIB)/pru/rpmsg.lib --library=$(PRU_LIB)/pru/softspic.lib
-# $PRU_LIB/pru/include/
-INCLUDE=--include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
-STACK_SIZE=0x100
-HEAP_SIZE=0x100
+# PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
+PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
+PSTACK_SIZE=0x100
+PHEAP_SIZE=0x100
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa
+PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
@@ -50,7 +45,7 @@ _build/%.o: src/test/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/%.o: src/linux-x86-64/%.c
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $<
+	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 
 
 _build/%.o: src/beagle-pru/%.c

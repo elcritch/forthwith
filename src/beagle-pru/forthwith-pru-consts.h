@@ -3,6 +3,10 @@
 #define __HEADER_IMPL_CONST_X86__
 
 #include <stddef.h>
+#include <stdint.h>
+
+typedef intptr_t fcell_t;
+
 
 /* #define FORTHWITH_NO_CHECKS */
 

@@ -224,7 +224,7 @@ void write_number(fcell_t number)
   write_char('0');
   write_char('x');
 
-  for (uint8_t i = 0; i < sizeof(fcell_t) >> 3; i++) {
+  for (uint8_t i = 0; i < (sizeof(fcell_t) >> 2); i++) {
     number = number >> (i++ << 2);
     uint8_t basis_of = number & 0xF; 
     write_char(num_basis[basis_of]);

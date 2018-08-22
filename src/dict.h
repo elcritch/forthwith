@@ -2,7 +2,8 @@
 #ifndef _FW_DICT_H_
 #define _FW_DICT_H_
 
-#ifndef fword_t
+#ifndef _fword_t
+#define _fword_t
 typedef struct forth_word fword_t;
 #endif // fword_t
 

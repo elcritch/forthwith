@@ -1,5 +1,5 @@
 
-#include "forthwith-linux.h"
+#include "forthwith-pru.h"
 #include "forthwith.h"
 #include "dict.h"
 #include "utilities.h"
@@ -15,7 +15,7 @@
 #include "dict.c"
 #include "forthwith.c"
 #include "utilities.c"
-#include "prompt.c"
+/* #include "prompt.c" */
 
 
 extern fw_ctx_t *ctx;

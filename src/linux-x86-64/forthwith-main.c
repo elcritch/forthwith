@@ -18,5 +18,4 @@ int main(int argc, char** argv) {
     doprompt((char*)rx_buff + 0, 128, (char*)tx_buff, 128);
   } 
 
-  return 0;
 }
