@@ -91,11 +91,14 @@
 // -- gcc/clang seem to handle read-only if/else branches fine
 
 // Signed Arithmetic
-#define add_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
-#define sub_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
+#define adds_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
+#define addu_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
 
-#define mul_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y)
-#define div_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y)
+#define subu_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
+#define subs_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
+
+#define muls_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y)
+#define divs_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y)
 
 #define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 #define incr_reg(reg) add_const(reg, $word_sz)

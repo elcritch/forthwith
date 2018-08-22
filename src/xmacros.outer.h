@@ -59,7 +59,7 @@ forth_word("immed", 5, F_IMMED, immed, "( p -- )",
 forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
     popd(0);
     load_addr(x, ip);
-    add_reg(ip, x);
+    addu_reg(ip, x);
     pushd(0);
     jump(next);
 });
@@ -72,7 +72,7 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
 
     if (x == 0) {
       load_addr(s1, ip);
-      add_reg(ip, s1);
+      adds_reg(ip, s1);
     } else {
       /* add_const(ip, $word_ptr_sz); */
       incr_reg(ip);

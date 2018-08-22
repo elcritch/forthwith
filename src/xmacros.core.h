@@ -51,33 +51,33 @@ forth_core("rot", 3, F_NORMAL, rot, "( n3 n2 n1  ---  n2 n1 n3 )",  {
 // =============== Math Primitives ============== //
 forth_core("+", 1, F_NORMAL, sadd, "( n n -- n )",  {
   popd(2);
-  add_reg(s1, s2);
+  addu_reg(s1, s2);
   pushd(1);
   jump(next);
 });
 
 forth_core("-", 1, F_NORMAL, ssub, "( n2 n1 -- n )",  {
-    popd(2);
-    sub_reg(s1, s2);
-    pushd(1);
-    jump(next);
+  popd(2);
+  subu_reg(s1, s2);
+  pushd(1);
+  jump(next);
 });
 
 #ifndef FW_NO_CORE_MULTIPLY
 forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
-    popd(2);
-    mul_reg(s1, s2);
-    pushd(1);
-    jump(next);
+  popd(2);
+  muls_reg(s1, s2);
+  pushd(1);
+  jump(next);
 });
 #endif // FW_CORE_MULTIPLY
 
 #ifndef FW_NO_CORE_DIVIDE
 forth_core("/", 1, F_NORMAL, sdiv, "( n2 n1 -- n )",  {
-    popd(2);
-    div_reg(s1, s2);
-    pushd(1);
-    jump(next);
+  popd(2);
+  divs_reg(s1, s2);
+  pushd(1);
+  jump(next);
 });
 #endif // FW_CORE_DIVIDE
 
