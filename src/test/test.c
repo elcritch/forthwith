@@ -342,6 +342,7 @@ void test_branches(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 5, "tjmp", var[idx_b0]);
+  (void)tjmp;
 
   // Rust test true
   forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tjmp")));
@@ -386,6 +387,7 @@ void test_branches(void) {
 
   printf("<<< test 0branch \n");
   fword_t *tifz5 = dict_create(F_NORMAL | F_WORD, 5, "tifz5", var[idx_tifz5 ]);
+  (void)tifz5;
 
   // Rust test true
   printf("<<< Run Test True\n");
@@ -406,6 +408,7 @@ void test_branches(void) {
 
   printf("<<< test 0branch \n");
   fword_t *tifz0 = dict_create(F_NORMAL | F_WORD, 5, "tifz0", var[idx_tifz0]);
+  (void)tifz0;
 
   // Rust test true
   printf("<<< Run Test True\n");
@@ -469,6 +472,7 @@ void test_ifelse(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   fword_t *tst = dict_create(F_NORMAL | F_WORD, 7, "ts_true", var[idx_t]);
+  (void)tst;
 
   // Rust test true
   printf("<<< Run Test True\n");
@@ -489,6 +493,7 @@ void test_ifelse(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   fword_t *tsf = dict_create(F_NORMAL | F_WORD, 8, "ts_false", var[idx_f]);
+  (void)tsf;
 
   // Rust test true
   forth_eval((fcell_xt*)dict_cfa(dict_find(8, "ts_false")));

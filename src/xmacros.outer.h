@@ -89,7 +89,7 @@ forth_word(":", 1, F_NORMAL, colon, "( p -- )",
               XCELLS(6),
               XT(create), // CREATE the dictionary entry / header
               XT(lit),
-                *XT(docolon),
+              *(fcell_xt*)XT(docolon),
                 XT(comma), // Append DOCOLON (the codeword).
               XT(rbrac), // Go into compile mode.
            XT(semi), // Return from the function.

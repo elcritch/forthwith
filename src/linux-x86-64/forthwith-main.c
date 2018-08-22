@@ -15,12 +15,10 @@ int main(int argc, char** argv) {
   char *rx_buff[128];
   char *tx_buff[128];
 
-  int status = 0;
-
   printf("OK.");
 
   for (;;) {
-    status = doprompt(rx_buff, 128, tx_buff, 128);
+    doprompt((char*)rx_buff + 0, 128, (char*)tx_buff, 128);
   } 
 
   return 0;

@@ -12,7 +12,7 @@ fw_call doprintstate() {
     printf("-");
 
   printf("-> \t\t regs: ");
-  fword_t *entry = dict_lookup(ctx->regs->x);
+  fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
   printf("x: %016p (%10s), ", ctx->regs->x, entry? entry->name : NULL);
   printf("ip: %016p, ", ctx->regs->ip);
   printf("w: %016p, ", ctx->regs->w);
@@ -109,8 +109,7 @@ void doword() {
   char* word_start;
   char* word_stop;
 
-  uint8_t adv_idx;
-  adv_idx = parse_word(idx, len, tib, &word_start, &word_stop);
+  parse_word(idx, len, tib, &word_start, &word_stop);
 
 #ifdef FW_TRACE
   printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop);
@@ -133,11 +132,11 @@ void doword() {
 __fw_noinline__
 void dofind() {
   uint8_t len = forth_pop();
-  char *str = forth_pop();
+  char *str = (char*) forth_pop();
 
   fword_t *entry = dict_find(len, str);
   if (!entry) {
-    forth_push(str);
+    forth_push( (fcell_t)str);
     forth_push(len);
   } else {
     forth_push((fcell_t)entry);

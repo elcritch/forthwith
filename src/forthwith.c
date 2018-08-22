@@ -110,6 +110,7 @@ int forth_bootstrap(fw_ctx_t* ctx) {
     #include "xmacros.outer.h"
   #undef FORTH_DEFINE_DICT_ENTRIES
 
+  return FW_OK;
 }
 
 __fw_noinline__

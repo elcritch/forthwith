@@ -21,6 +21,8 @@ int doeval() {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   forth_eval(var[0]);
+
+  return forth_errno();
 }
 
 void print_stack() {
@@ -33,7 +35,7 @@ void print_eol() {
   printf("\n\0x3");
 }
 
-int doprompt(char *rx_buff, int rx_len, char *tx_buff, int tx_len) {
+int doprompt(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
 
   print_stack();
   printf("> ");
@@ -56,7 +58,6 @@ int doprompt(char *rx_buff, int rx_len, char *tx_buff, int tx_len) {
   doeval();
 
   int errno = forth_errno();
-  int cnt = forth_count();
 
   if (ctx->vars->tob_idx > 0) {
     for (int i = 0; i < ctx->vars->tob_idx; i++)

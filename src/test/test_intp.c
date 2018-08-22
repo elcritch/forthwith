@@ -131,14 +131,14 @@ void test_colon(void) {
   printf("cfa_aa: %016p\n", cfa_a);
 
   fword_t *entry_prior = ctx->dict->head - 2;
-  fcell_xt * cfa_prior = *(fcell_xt *) dict_cfa(entry_prior);
+  fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
 
   /* cfa_a = *cfa_a; */
   for (int j = 0; j < 6; j++) {
-    fcell_xt *aj = cfa_a[j];
-    fword_t *e = aj > 1000 ? dict_lookup(*aj) : aj;
-    printf("cfa_aa[%d]: %016p -> %s\n", j, cfa_a[j], e > 1000 ? e->name : NULL);
-    if (cfa_a[j] == cfa_prior)
+    fcell_xt *aj = (fcell_xt *)cfa_a[j];
+    fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
+    printf("cfa_aa[%d]: %016p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
+    if (aj == cfa_prior)
       printf("prior entry: %s\n", entry_prior->name);
   }
 
