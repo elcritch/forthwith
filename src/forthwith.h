@@ -107,13 +107,13 @@ struct forth_word {
 int forth_bootstrap(fw_ctx_t* ctx);
 int forth_init();
 
-
 #define FW_OK 0
 #define FW_ERR_STACKOVERFLOW 1
 #define FW_ERR_STACKUNDERFLOW 2
 #define FW_ERR_NOWORD 3
 #define FW_ERR_RSTACKOVERFLOW 4
 #define FW_ERR_RSTACKUNDERFLOW 5
+#define FW_ERR_CFA 6
 
 typedef enum forthwith_the_states fw_state_t;
 enum forthwith_the_states {
