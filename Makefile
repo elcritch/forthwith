@@ -9,7 +9,20 @@ CC = clang
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)
+PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
+# $PRU_LIB/pru/
+LIBS=--library=$(PRU_LIB)/pru/rpmsg.lib --library=$(PRU_LIB)/pru/softspic.lib
+# $PRU_LIB/pru/include/
+INCLUDE=--include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
+STACK_SIZE=0x100
+HEAP_SIZE=0x100
 
+#Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
+PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa
+#Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
+PLFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
+
+pru: _build/forthwith-pru 
 linux: _build/forthwith-linux _build/test-forthwith-linux 
 
 _build/forthwith-linux.a: _build/forthwith-linux.o
@@ -22,6 +35,12 @@ _build/forthwith-linux: _build/forthwith-main.o _build/forthwith-linux.o
 _build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
+
+# $(PRU_CGT)/bin/clpru --section_sizes=on $(PCFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(PLFLAGS) -o $@ $^ -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(PRU_LIBS)
+_build/forthwith-pru: _build/forthwith-main.o _build/forthwith-pru.o
+	$(PRU_CGT)/bin/arpru r $(TARGET) $(OBJECTS)
+	$(PRU_CGT)/bin/dispru --all $@ > $@.S
+
 _build/%.o: src/%.c
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	${CC} ${CFLAGS} $< -S -o $@.S
@@ -31,7 +50,11 @@ _build/%.o: src/test/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/%.o: src/linux-x86-64/%.c
-	${CC} ${CFLAGS} $< -c -o $@
+	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(INCLUDE) $(CFLAGS) -fe $@ $<
+
+
+_build/%.o: src/beagle-pru/%.c
+		$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 
 
 test: forthwith
