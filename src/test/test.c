@@ -64,11 +64,11 @@ void test_basic(void) {
 
   printf(" ");
   /* for (fcell_xt *i = var1; i <= var5; i += 1) printf("\tinstr: %016p => %016p\n", i, *i); */
-  printf("xt_docolon: %016p <- docolon: %016p \n\n", xt_docolon, docolon);
+  printf("xt_docolon: %16p <- docolon: %16p \n\n", (fcell_xt*)xt_docolon, (fcell_xt*)docolon);
 
   forth_eval(var1);
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
@@ -79,7 +79,7 @@ void test_basic(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld\n", x);
+    printf("remaining stack: %ld\n", x);
   }
 
   printf("... stack done\n");
@@ -235,7 +235,7 @@ void test_parsing(void)
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld (%p)\n", x, (void*)x);
+    printf("remaining stack: %ld (%p)\n", x, (void*)x);
   }
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
@@ -278,7 +278,7 @@ void test_create(void) {
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
@@ -289,7 +289,7 @@ void test_create(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld\n", x);
+    printf("remaining stack: %ld\n", x);
   }
 
   printf("... stack done\n");
@@ -544,7 +544,7 @@ void test_other(void) {
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);

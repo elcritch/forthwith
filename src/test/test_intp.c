@@ -53,7 +53,7 @@ void test_interpreter(void) {
 
   forth_eval(var[0]);
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
@@ -64,7 +64,7 @@ void test_interpreter(void) {
   fcell_t x = 0;
   while (forth_count() > 0) {
     x = forth_pop();
-    printf("remaining stack: %lld\n", x);
+    printf("remaining stack: %ld\n", x);
   }
 
   printf("... stack done\n");
@@ -114,10 +114,10 @@ void test_colon(void) {
     var[j] = forth_alloc_var();
 
   fword_t *entry_colon = dict_find(1, ":");
-  printf("colon: `:` %016p \n", entry_colon);
+  printf("colon: `:` %16p \n", entry_colon);
   TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got %d", entry_colon);
-  printf("colon cfa: `:` %016p\n", dict_cfa(entry_colon));
-  printf("xt_colon: `:` %016p -> %016p \n", xt_colon, *xt_colon);
+  printf("colon cfa: `:` %16p\n", dict_cfa(entry_colon));
+  printf("xt_colon: `:` %16p -> %16p \n", xt_colon, *xt_colon);
 
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
@@ -135,12 +135,12 @@ void test_colon(void) {
 
   fword_t *entry_a = dict_find(2, "aa");
   TEST_CHECK_(entry_a != NULL, "Expected non-null `:` word, got %p for %s", entry_a, "entry_a");
-  printf("entry_a: %016p\n", entry_a);
+  printf("entry_a: %16p\n", entry_a);
 
   fcell_xt * cfa_a = (fcell_xt *) dict_cfa(entry_a);
   TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got %d for %s", cfa_a, "cfa_a");
 
-  printf("cfa_aa: %016p\n", cfa_a);
+  printf("cfa_aa: %16p\n", cfa_a);
 
   fword_t *entry_prior = ctx->dict->head - 2;
   fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
@@ -149,7 +149,7 @@ void test_colon(void) {
   for (int j = 0; j < 6; j++) {
     fcell_xt *aj = (fcell_xt *)cfa_a[j];
     fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
-    printf("cfa_aa[%d]: %016p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
+    printf("cfa_aa[%d]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
     if (aj == cfa_prior)
       printf("prior entry: %s\n", entry_prior->name);
   }
@@ -165,7 +165,7 @@ void test_colon(void) {
 
   forth_eval(var[idx_ra]);
 
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
   printf("psp->head: %p\n", ctx->psp->head);
   printf("psp->base: %p\n", ctx->psp->base);
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);

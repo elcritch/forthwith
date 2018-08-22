@@ -1,4 +1,4 @@
-BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function -Wno-format -Isrc/
+BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function -Isrc/
 
 CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
 # CFLAGS = -Wall -O3 $(BASE_CFLAGS)

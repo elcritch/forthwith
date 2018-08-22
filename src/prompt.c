@@ -12,13 +12,13 @@ fw_call doprintstate() {
 
   printf("-> \t\t regs: ");
   fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
-  printf("x: %016p (%10s), ", ctx->regs->x, entry? entry->name : NULL);
-  printf("ip: %016p, ", ctx->regs->ip);
-  printf("w: %016p, ", ctx->regs->w);
+  printf("x: %16p (%10s), ", (void*)ctx->regs->x, entry? entry->name : NULL);
+  printf("ip: %16p, ", (void*)ctx->regs->ip);
+  printf("w: %16p, ", (void*)ctx->regs->w);
   /* printf(" stacks: "); */
   /* printf("psp: %p, ", ctx->psp->head); */
   /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %d - %016p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
+  printf("tib: %ld - %16p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
 
   printf(" --\t");
 
@@ -59,7 +59,7 @@ void print_stack() {
 }
 
 void print_eol() {
-  printf("\n\0x3");
+  printf("\n\3");
 }
 
 int doprompt(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
