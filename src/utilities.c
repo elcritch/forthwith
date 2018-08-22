@@ -44,7 +44,7 @@ void docreate() {
 __fw_noinline__
 void docomma() {
   *ctx->user->head = forth_pop();
-  /* printf("\tcomma: %016p -> %016p (%lld)\n", ctx->user->head, *ctx->user->head, *ctx->user->head); */
+  /* debugf("\tcomma: %016p -> %016p (%lld)\n", ctx->user->head, *ctx->user->head, *ctx->user->head); */
   forth_alloc_var();
 }
 
@@ -85,11 +85,11 @@ void doword() {
   parse_word(idx, len, tib, &word_start, &word_stop);
 
 /* #ifdef FW_TRACE */
-/*   printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop); */
+/*   debugf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop); */
 /*   for (int i = 0; i < (word_stop - word_start); i++) { */
-/*     printf("%c", word_start[i]); */
+/*     debugf("%c", word_start[i]); */
 /*   } */
-/*   printf("`\n"); */
+/*   debugf("`\n"); */
 /* #endif // FW_TRACE */
 
   // Set results
@@ -195,9 +195,9 @@ void write_str(uint8_t l, char *c) {
   fcell_t idx = ctx->vars->tob_idx;
   fcell_t len = ctx->vars->tob_len;
 
-  /* printf("WRITE_STRING: idx: %d, len: %d\n", idx, len); */
+  /* debugf("WRITE_STRING: idx: %d, len: %d\n", idx, len); */
   for (fcell_t i = 0; (i < l) && ((idx + i) < len); i++) {
-    /* printf("WRITE_STRING: i: %d, l: %d, idx: %d, len: %d \n", i, l, idx, len); */
+    /* debugf("WRITE_STRING: i: %d, l: %d, idx: %d, len: %d \n", i, l, idx, len); */
     write_char(c[i]);
   }
 }
@@ -211,9 +211,9 @@ void write_char(char c) {
   if (*idx < *len) {
     str[*idx] = c;
     *idx += 1;
-    /* printf("LEN: %c %d ", c, ctx->vars->tob_idx ); */
+    /* debugf("LEN: %c %d ", c, ctx->vars->tob_idx ); */
   } else {
-    /* printf("XLEN: "); */
+    /* debugf("XLEN: "); */
   }
 }
 
