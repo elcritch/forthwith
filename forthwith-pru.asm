@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;* PRU C/C++ Codegen                                              Unix v2.2.1 *
-;* Date/Time created: Wed Aug 22 17:46:51 2018                                *
+;* Date/Time created: Wed Aug 22 17:59:33 2018                                *
 ;******************************************************************************
 	.compiler_opts --abi=eabi --endian=little --hll_source=on --object_format=elf --silicon_version=3 --symdebug:dwarf --symdebug:dwarf_version=3 
 
@@ -814,7 +814,7 @@ $C$DW$53	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$53, DW_AT_type(*$C$DW$T$144)
 	.dwattr $C$DW$53, DW_AT_external
 	.dwattr $C$DW$53, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$53, DW_AT_decl_line(0xc1)
+	.dwattr $C$DW$53, DW_AT_decl_line(0xc0)
 	.dwattr $C$DW$53, DW_AT_decl_column(0x0c)
 
 	.sect	".rodata:$P$T0$1"
@@ -983,8 +983,8 @@ $C$DW$59	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$59, DW_AT_decl_line(0xdc)
 	.dwattr $C$DW$59, DW_AT_decl_column(0x01)
 
-;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/optpru /tmp/TI3EVYJXStr /tmp/TI3EVG3EE7I 
-;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/acpiapru -@/tmp/TI3EVib3QGR 
+;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/optpru /tmp/TI3VCZhCSBG /tmp/TI3VCRdyMNQ 
+;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/acpiapru -@/tmp/TI3VCvKmDzv 
 	.sect	".text:zbranch"
 	.clink
 	.global	||zbranch||
@@ -1244,7 +1244,7 @@ $C$DW$83	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||doxmask||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$84	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$84, DW_AT_low_pc(0x00)
@@ -1268,13 +1268,13 @@ $C$DW$85	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$85, DW_AT_TI_symbol_name("write_char")
 	.dwattr $C$DW$85, DW_AT_external
 	.dwattr $C$DW$85, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$85, DW_AT_TI_begin_line(0xcf)
+	.dwattr $C$DW$85, DW_AT_TI_begin_line(0xce)
 	.dwattr $C$DW$85, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$85, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$85, DW_AT_decl_line(0xcf)
+	.dwattr $C$DW$85, DW_AT_decl_line(0xce)
 	.dwattr $C$DW$85, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$85, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 207,column 25,is_stmt,address ||write_char||,isa 0
+	.dwpsn	file "src/utilities.c",line 206,column 25,is_stmt,address ||write_char||,isa 0
 
 	.dwfde $C$DW$CIE, ||write_char||
 $C$DW$86	.dwtag  DW_TAG_formal_parameter
@@ -1312,26 +1312,26 @@ $C$DW$88	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$88, DW_AT_location[DW_OP_regx 0x40]
 
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 208,column 16,is_stmt,isa 0
-        LDI       r0, ||ctx||           ; [ALU_PRU] |208| ctx
-        LBBO      &r0, r0, 0, 4         ; [ALU_PRU] |208| 
-        LBBO      &r17, r0, 4, 4        ; [ALU_PRU] |208| $O$C2
-        ADD       r16, r17, 0x14        ; [ALU_PRU] |208| idx,$O$C2
-	.dwpsn	file "src/utilities.c",line 212,column 3,is_stmt,isa 0
-        LBBO      &r1, r16, 0, 4        ; [ALU_PRU] |212| $O$C1,idx
-        LBBO      &r0, r17, 24, 4       ; [ALU_PRU] |212| $O$C2
-        MOV       r15, r1               ; [ALU_PRU] |212| $O$C1
-        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |212| 
-        XOR       r15.b3, r15.b3, 0x80  ; [ALU_PRU] |212| 
-        QBGE      ||$C$L3||, r0, r15    ; [ALU_PRU] |212| 
+	.dwpsn	file "src/utilities.c",line 207,column 16,is_stmt,isa 0
+        LDI       r0, ||ctx||           ; [ALU_PRU] |207| ctx
+        LBBO      &r0, r0, 0, 4         ; [ALU_PRU] |207| 
+        LBBO      &r17, r0, 4, 4        ; [ALU_PRU] |207| $O$C2
+        ADD       r16, r17, 0x14        ; [ALU_PRU] |207| idx,$O$C2
+	.dwpsn	file "src/utilities.c",line 211,column 3,is_stmt,isa 0
+        LBBO      &r1, r16, 0, 4        ; [ALU_PRU] |211| $O$C1,idx
+        LBBO      &r0, r17, 24, 4       ; [ALU_PRU] |211| $O$C2
+        MOV       r15, r1               ; [ALU_PRU] |211| $O$C1
+        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |211| 
+        XOR       r15.b3, r15.b3, 0x80  ; [ALU_PRU] |211| 
+        QBGE      ||$C$L3||, r0, r15    ; [ALU_PRU] |211| 
 ;* --------------------------------------------------------------------------*
+	.dwpsn	file "src/utilities.c",line 212,column 5,is_stmt,isa 0
+        LBBO      &r0, r17, 28, 4       ; [ALU_PRU] |212| $O$C2
+        SBBO      &r14.b0, r1, r0, 1    ; [ALU_PRU] |212| $O$C1,c
 	.dwpsn	file "src/utilities.c",line 213,column 5,is_stmt,isa 0
-        LBBO      &r0, r17, 28, 4       ; [ALU_PRU] |213| $O$C2
-        SBBO      &r14.b0, r1, r0, 1    ; [ALU_PRU] |213| $O$C1,c
-	.dwpsn	file "src/utilities.c",line 214,column 5,is_stmt,isa 0
-        LBBO      &r0, r16, 0, 4        ; [ALU_PRU] |214| idx
-        ADD       r0, r0, 0x01          ; [ALU_PRU] |214| 
-        SBBO      &r0, r16, 0, 4        ; [ALU_PRU] |214| idx
+        LBBO      &r0, r16, 0, 4        ; [ALU_PRU] |213| idx
+        ADD       r0, r0, 0x01          ; [ALU_PRU] |213| 
+        SBBO      &r0, r16, 0, 4        ; [ALU_PRU] |213| idx
 ;* --------------------------------------------------------------------------*
 ||$C$L3||:    
 $C$DW$89	.dwtag  DW_TAG_TI_branch
@@ -1340,7 +1340,7 @@ $C$DW$89	.dwtag  DW_TAG_TI_branch
 
         JMP       r3.w2                 ; [ALU_PRU] 
 	.dwattr $C$DW$85, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$85, DW_AT_TI_end_line(0xdb)
+	.dwattr $C$DW$85, DW_AT_TI_end_line(0xda)
 	.dwattr $C$DW$85, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$85
@@ -1356,13 +1356,13 @@ $C$DW$90	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$90, DW_AT_TI_symbol_name("write_str")
 	.dwattr $C$DW$90, DW_AT_external
 	.dwattr $C$DW$90, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$90, DW_AT_TI_begin_line(0xc3)
+	.dwattr $C$DW$90, DW_AT_TI_begin_line(0xc2)
 	.dwattr $C$DW$90, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$90, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$90, DW_AT_decl_line(0xc3)
+	.dwattr $C$DW$90, DW_AT_decl_line(0xc2)
 	.dwattr $C$DW$90, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$90, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 195,column 36,is_stmt,address ||write_str||,isa 0
+	.dwpsn	file "src/utilities.c",line 194,column 36,is_stmt,address ||write_str||,isa 0
 
 	.dwfde $C$DW$CIE, ||write_str||
 $C$DW$91	.dwtag  DW_TAG_formal_parameter
@@ -1427,54 +1427,54 @@ $C$DW$97	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$97, DW_AT_location[DW_OP_regx 0x54]
 
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 196,column 15,is_stmt,isa 0
-        LDI       r0, ||ctx||           ; [ALU_PRU] |196| ctx
+	.dwpsn	file "src/utilities.c",line 195,column 15,is_stmt,isa 0
+        LDI       r0, ||ctx||           ; [ALU_PRU] |195| ctx
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-	.dwpsn	file "src/utilities.c",line 195,column 36,is_stmt,isa 0
-        MOV       r18, r15              ; [ALU_PRU] |195| c
+	.dwpsn	file "src/utilities.c",line 194,column 36,is_stmt,isa 0
+        MOV       r18, r15              ; [ALU_PRU] |194| c
+	.dwpsn	file "src/utilities.c",line 195,column 15,is_stmt,isa 0
+        LBBO      &r0, r0, 0, 4         ; [ALU_PRU] |195| 
+        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |195| $O$C1
+        LBBO      &r20, r0, 20, 4       ; [ALU_PRU] |195| idx,$O$C1
 	.dwpsn	file "src/utilities.c",line 196,column 15,is_stmt,isa 0
-        LBBO      &r0, r0, 0, 4         ; [ALU_PRU] |196| 
-        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |196| $O$C1
-        LBBO      &r20, r0, 20, 4       ; [ALU_PRU] |196| idx,$O$C1
-	.dwpsn	file "src/utilities.c",line 197,column 15,is_stmt,isa 0
-        LBBO      &r19, r0, 24, 4       ; [ALU_PRU] |197| len,$O$C1
-	.dwpsn	file "src/utilities.c",line 200,column 23,is_stmt,isa 0
-        QBEQ      ||$C$L5||, r14.b0, 0x00 ; [ALU_PRU] |200| l
+        LBBO      &r19, r0, 24, 4       ; [ALU_PRU] |196| len,$O$C1
+	.dwpsn	file "src/utilities.c",line 199,column 23,is_stmt,isa 0
+        QBEQ      ||$C$L5||, r14.b0, 0x00 ; [ALU_PRU] |199| l
 ;* --------------------------------------------------------------------------*
-        MOV       r14.b1, r14.b0        ; [ALU_PRU] |200| $O$L1,l
-	.dwpsn	file "src/utilities.c",line 200,column 18,is_stmt,isa 0
-        ZERO      &r21, 4               ; [ALU_PRU] |200| i
+        MOV       r14.b1, r14.b0        ; [ALU_PRU] |199| $O$L1,l
+	.dwpsn	file "src/utilities.c",line 199,column 18,is_stmt,isa 0
+        ZERO      &r21, 4               ; [ALU_PRU] |199| i
 ;* --------------------------------------------------------------------------*
 ;*   BEGIN LOOP ||$C$L4||
 ;*
-;*   Loop source line                : 200
-;*   Loop closing brace source line  : 203
+;*   Loop source line                : 199
+;*   Loop closing brace source line  : 202
 ;*   Known Minimum Trip Count        : 1
 ;*   Known Maximum Trip Count        : 255
 ;*   Known Max Trip Count Factor     : 1
 ;* --------------------------------------------------------------------------*
 ||$C$L4||:    
-	.dwpsn	file "src/utilities.c",line 200,column 23,is_stmt,isa 0
-        MOV       r1, r19               ; [ALU_PRU] |200| len
-        ADD       r0, r20, r21          ; [ALU_PRU] |200| idx,i
-        XOR       r1.b3, r1.b3, 0x80    ; [ALU_PRU] |200| 
-        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |200| 
-        QBGE      ||$C$L5||, r1, r0     ; [ALU_PRU] |200| 
+	.dwpsn	file "src/utilities.c",line 199,column 23,is_stmt,isa 0
+        MOV       r1, r19               ; [ALU_PRU] |199| len
+        ADD       r0, r20, r21          ; [ALU_PRU] |199| idx,i
+        XOR       r1.b3, r1.b3, 0x80    ; [ALU_PRU] |199| 
+        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |199| 
+        QBGE      ||$C$L5||, r1, r0     ; [ALU_PRU] |199| 
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 202,column 5,is_stmt,isa 0
-        LBBO      &r14.b0, r18, r21, 1  ; [ALU_PRU] |202| c,i
+	.dwpsn	file "src/utilities.c",line 201,column 5,is_stmt,isa 0
+        LBBO      &r14.b0, r18, r21, 1  ; [ALU_PRU] |201| c,i
 $C$DW$98	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$98, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$98, DW_AT_name("write_char")
 	.dwattr $C$DW$98, DW_AT_TI_call
 
-        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |202| write_char
-	.dwpsn	file "src/utilities.c",line 200,column 53,is_stmt,isa 0
-        SUB       r14.b1, r14.b1, 0x01  ; [ALU_PRU] |200| $O$L1,$O$L1
-        ADD       r21, r21, 0x01        ; [ALU_PRU] |200| i,i
-        QBNE      ||$C$L4||, r14.b1, 0x00 ; [ALU_PRU] |200| $O$L1
+        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |201| write_char
+	.dwpsn	file "src/utilities.c",line 199,column 53,is_stmt,isa 0
+        SUB       r14.b1, r14.b1, 0x01  ; [ALU_PRU] |199| $O$L1,$O$L1
+        ADD       r21, r21, 0x01        ; [ALU_PRU] |199| i,i
+        QBNE      ||$C$L4||, r14.b1, 0x00 ; [ALU_PRU] |199| $O$L1
 ;* --------------------------------------------------------------------------*
 ||$C$L5||:    
 $C$DW$99	.dwtag  DW_TAG_TI_branch
@@ -1483,7 +1483,7 @@ $C$DW$99	.dwtag  DW_TAG_TI_branch
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$90, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$90, DW_AT_TI_end_line(0xcc)
+	.dwattr $C$DW$90, DW_AT_TI_end_line(0xcb)
 	.dwattr $C$DW$90, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$90
@@ -1499,13 +1499,13 @@ $C$DW$100	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$100, DW_AT_TI_symbol_name("write_number")
 	.dwattr $C$DW$100, DW_AT_external
 	.dwattr $C$DW$100, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$100, DW_AT_TI_begin_line(0xde)
+	.dwattr $C$DW$100, DW_AT_TI_begin_line(0xdd)
 	.dwattr $C$DW$100, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$100, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$100, DW_AT_decl_line(0xde)
+	.dwattr $C$DW$100, DW_AT_decl_line(0xdd)
 	.dwattr $C$DW$100, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$100, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 223,column 1,is_stmt,address ||write_number||,isa 0
+	.dwpsn	file "src/utilities.c",line 222,column 1,is_stmt,address ||write_number||,isa 0
 
 	.dwfde $C$DW$CIE, ||write_number||
 $C$DW$101	.dwtag  DW_TAG_formal_parameter
@@ -1534,43 +1534,43 @@ $C$DW$102	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$102, DW_AT_location[DW_OP_regx 0x48]
 
 	.dwcfi	cfa_offset, 0
-        MOV       r18, r14              ; [ALU_PRU] |223| number
+        MOV       r18, r14              ; [ALU_PRU] |222| number
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-	.dwpsn	file "src/utilities.c",line 225,column 3,is_stmt,isa 0
-        LDI       r14.b0, 0x30          ; [ALU_PRU] |225| 
+	.dwpsn	file "src/utilities.c",line 224,column 3,is_stmt,isa 0
+        LDI       r14.b0, 0x30          ; [ALU_PRU] |224| 
 $C$DW$103	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$103, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$103, DW_AT_name("write_char")
 	.dwattr $C$DW$103, DW_AT_TI_call
 
-        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |225| write_char
-	.dwpsn	file "src/utilities.c",line 226,column 3,is_stmt,isa 0
-        LDI       r14.b0, 0x78          ; [ALU_PRU] |226| 
+        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |224| write_char
+	.dwpsn	file "src/utilities.c",line 225,column 3,is_stmt,isa 0
+        LDI       r14.b0, 0x78          ; [ALU_PRU] |225| 
 $C$DW$104	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$104, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$104, DW_AT_name("write_char")
 	.dwattr $C$DW$104, DW_AT_TI_call
 
-        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |226| write_char
-	.dwpsn	file "src/utilities.c",line 231,column 5,is_stmt,isa 0
-        LDI       r1, ||num_basis||     ; [ALU_PRU] |231| num_basis
-        AND       r0, r18, 0x0f         ; [ALU_PRU] |231| number
-        LBBO      &r14.b0, r1, r0, 1    ; [ALU_PRU] |231| 
+        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |225| write_char
+	.dwpsn	file "src/utilities.c",line 230,column 5,is_stmt,isa 0
+        LDI       r1, ||num_basis||     ; [ALU_PRU] |230| num_basis
+        AND       r0, r18, 0x0f         ; [ALU_PRU] |230| number
+        LBBO      &r14.b0, r1, r0, 1    ; [ALU_PRU] |230| 
 $C$DW$105	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$105, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$105, DW_AT_name("write_char")
 	.dwattr $C$DW$105, DW_AT_TI_call
 
-        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |231| write_char
+        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |230| write_char
 $C$DW$106	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$106, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$106, DW_AT_TI_return
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$100, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$100, DW_AT_TI_end_line(0xeb)
+	.dwattr $C$DW$100, DW_AT_TI_end_line(0xea)
 	.dwattr $C$DW$100, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$100
@@ -1645,7 +1645,7 @@ $C$DW$113	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||doword||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$114	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$114, DW_AT_low_pc(0x00)
@@ -1727,7 +1727,7 @@ $C$DW$121	.dwtag  DW_TAG_formal_parameter
 ||var_STATE||:
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
-        LDI       r20, ctx(xaddr)
+        LDI       r20, ||ctx||
         LBBO      &r24, r20, 4, 4
         LDI       r23, 0
         SBBO      &r16, r23, 0, 4
@@ -1813,7 +1813,7 @@ $C$DW$129	.dwtag  DW_TAG_formal_parameter
 ||var_HERE||:
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
-        LDI       r20, ctx(xaddr)
+        LDI       r20, ||ctx||
         LBBO      &r24, r20, 16, 4
         LDI       r23, 0
         SBBO      &r16, r23, 0, 4
@@ -2508,7 +2508,7 @@ $C$DW$193	.dwtag  DW_TAG_formal_parameter
 	.dwcfi	cfa_offset, 0
         LBBO      &r20, r21, 0, 4
         ADD r21, r21, 4
-JMP       r20.w0
+        JMP       r20.w0
 $C$DW$194	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$194, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$194, DW_AT_TI_return
@@ -2687,7 +2687,7 @@ $C$DW$209	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||doret||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$210	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$210, DW_AT_low_pc(0x00)
@@ -2770,7 +2770,7 @@ $C$DW$217	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||dorbrac||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$218	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$218, DW_AT_low_pc(0x00)
@@ -2873,13 +2873,13 @@ $C$DW$227	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$227, DW_AT_TI_symbol_name("is_whitespace")
 	.dwattr $C$DW$227, DW_AT_type(*$C$DW$T$145)
 	.dwattr $C$DW$227, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$227, DW_AT_TI_begin_line(0x98)
+	.dwattr $C$DW$227, DW_AT_TI_begin_line(0x97)
 	.dwattr $C$DW$227, DW_AT_TI_begin_column(0x0d)
 	.dwattr $C$DW$227, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$227, DW_AT_decl_line(0x98)
+	.dwattr $C$DW$227, DW_AT_decl_line(0x97)
 	.dwattr $C$DW$227, DW_AT_decl_column(0x0d)
 	.dwattr $C$DW$227, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 152,column 35,is_stmt,address ||is_whitespace||,isa 0
+	.dwpsn	file "src/utilities.c",line 151,column 35,is_stmt,address ||is_whitespace||,isa 0
 
 	.dwfde $C$DW$CIE, ||is_whitespace||
 $C$DW$228	.dwtag  DW_TAG_formal_parameter
@@ -2908,48 +2908,48 @@ $C$DW$229	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$229, DW_AT_location[DW_OP_regx 0x38]
 
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 153,column 3,is_stmt,isa 0
-        LDI       r0.b0, 0x00           ; [ALU_PRU] |153| 
-        QBNE      ||$C$L6||, r14.b0, 0x20 ; [ALU_PRU] |153| c
+	.dwpsn	file "src/utilities.c",line 152,column 3,is_stmt,isa 0
+        LDI       r0.b0, 0x00           ; [ALU_PRU] |152| 
+        QBNE      ||$C$L6||, r14.b0, 0x20 ; [ALU_PRU] |152| c
 ;* --------------------------------------------------------------------------*
-        LDI       r0.b0, 0x01           ; [ALU_PRU] |153| 
+        LDI       r0.b0, 0x01           ; [ALU_PRU] |152| 
 ;* --------------------------------------------------------------------------*
 ||$C$L6||:    
-        LDI       r0.b1, 0x00           ; [ALU_PRU] |153| 
-        QBNE      ||$C$L7||, r14.b0, 0x00 ; [ALU_PRU] |153| c
+        LDI       r0.b1, 0x00           ; [ALU_PRU] |152| 
+        QBNE      ||$C$L7||, r14.b0, 0x00 ; [ALU_PRU] |152| c
 ;* --------------------------------------------------------------------------*
-        LDI       r0.b1, 0x01           ; [ALU_PRU] |153| 
+        LDI       r0.b1, 0x01           ; [ALU_PRU] |152| 
 ;* --------------------------------------------------------------------------*
 ||$C$L7||:    
-        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |153| 
-        LDI       r0.b0, 0x00           ; [ALU_PRU] |153| 
-        QBNE      ||$C$L8||, r14.b0, 0x09 ; [ALU_PRU] |153| c
+        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |152| 
+        LDI       r0.b0, 0x00           ; [ALU_PRU] |152| 
+        QBNE      ||$C$L8||, r14.b0, 0x09 ; [ALU_PRU] |152| c
 ;* --------------------------------------------------------------------------*
-        LDI       r0.b0, 0x01           ; [ALU_PRU] |153| 
+        LDI       r0.b0, 0x01           ; [ALU_PRU] |152| 
 ;* --------------------------------------------------------------------------*
 ||$C$L8||:    
-        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |153| 
-        LDI       r0.b0, 0x00           ; [ALU_PRU] |153| 
-        QBNE      ||$C$L9||, r14.b0, 0x0d ; [ALU_PRU] |153| c
+        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |152| 
+        LDI       r0.b0, 0x00           ; [ALU_PRU] |152| 
+        QBNE      ||$C$L9||, r14.b0, 0x0d ; [ALU_PRU] |152| c
 ;* --------------------------------------------------------------------------*
-        LDI       r0.b0, 0x01           ; [ALU_PRU] |153| 
+        LDI       r0.b0, 0x01           ; [ALU_PRU] |152| 
 ;* --------------------------------------------------------------------------*
 ||$C$L9||:    
-        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |153| 
-        LDI       r0.b0, 0x00           ; [ALU_PRU] |153| 
-        QBNE      ||$C$L10||, r14.b0, 0x0a ; [ALU_PRU] |153| c
+        OR        r0.b1, r0.b1, r0.b0   ; [ALU_PRU] |152| 
+        LDI       r0.b0, 0x00           ; [ALU_PRU] |152| 
+        QBNE      ||$C$L10||, r14.b0, 0x0a ; [ALU_PRU] |152| c
 ;* --------------------------------------------------------------------------*
-        LDI       r0.b0, 0x01           ; [ALU_PRU] |153| 
+        LDI       r0.b0, 0x01           ; [ALU_PRU] |152| 
 ;* --------------------------------------------------------------------------*
 ||$C$L10||:    
-        OR        r14.b0, r0.b1, r0.b0  ; [ALU_PRU] |153| 
+        OR        r14.b0, r0.b1, r0.b0  ; [ALU_PRU] |152| 
 $C$DW$230	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$230, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$230, DW_AT_TI_return
 
         JMP       r3.w2                 ; [ALU_PRU] 
 	.dwattr $C$DW$227, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$227, DW_AT_TI_end_line(0x9a)
+	.dwattr $C$DW$227, DW_AT_TI_end_line(0x99)
 	.dwattr $C$DW$227, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$227
@@ -2966,13 +2966,13 @@ $C$DW$231	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$231, DW_AT_external
 	.dwattr $C$DW$231, DW_AT_type(*$C$DW$T$22)
 	.dwattr $C$DW$231, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$231, DW_AT_TI_begin_line(0x9c)
+	.dwattr $C$DW$231, DW_AT_TI_begin_line(0x9b)
 	.dwattr $C$DW$231, DW_AT_TI_begin_column(0x09)
 	.dwattr $C$DW$231, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$231, DW_AT_decl_line(0x9c)
+	.dwattr $C$DW$231, DW_AT_decl_line(0x9b)
 	.dwattr $C$DW$231, DW_AT_decl_column(0x09)
 	.dwattr $C$DW$231, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 158,column 1,is_stmt,address ||parse_word||,isa 0
+	.dwpsn	file "src/utilities.c",line 157,column 1,is_stmt,address ||parse_word||,isa 0
 
 	.dwfde $C$DW$CIE, ||parse_word||
 $C$DW$232	.dwtag  DW_TAG_formal_parameter
@@ -3070,12 +3070,12 @@ $C$DW$243	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$243, DW_AT_location[DW_OP_regx 0x3b]
 
 	.dwcfi	cfa_offset, 0
-        MOV       r14.b2, r14.b0        ; [ALU_PRU] |158| idx
+        MOV       r14.b2, r14.b0        ; [ALU_PRU] |157| idx
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
         LBBO      &r0.b2, r15, r14.b2, 1 ; [ALU_PRU] $O$U6,tib,idx
-        JMP       ||$C$L19||            ; [ALU_PRU] |158| 
+        JMP       ||$C$L19||            ; [ALU_PRU] |157| 
 ;* --------------------------------------------------------------------------*
 ||$C$L11||:    
         ADD       r14.b2, r14.b2, 0x01  ; [ALU_PRU] idx,idx
@@ -3084,62 +3084,62 @@ $C$DW$243	.dwtag  DW_TAG_variable
 ;*   BEGIN LOOP ||$C$L12||
 ;* --------------------------------------------------------------------------*
 ||$C$L12||:    
-	.dwpsn	file "src/utilities.c",line 175,column 12,is_stmt,isa 0
-        QBEQ      ||$C$L18||, r0.b2, 0x00 ; [ALU_PRU] |175| $O$U6
+	.dwpsn	file "src/utilities.c",line 174,column 12,is_stmt,isa 0
+        QBEQ      ||$C$L18||, r0.b2, 0x00 ; [ALU_PRU] |174| $O$U6
 ;* --------------------------------------------------------------------------*
-        XOR       r19, r14.b1, r1       ; [ALU_PRU] |175| len
-        XOR       r20, r14.b2, r1       ; [ALU_PRU] |175| idx
-        ZERO      &r18, 4               ; [ALU_PRU] |175| 
-        QBLT      ||$C$L13||, r19, r20  ; [ALU_PRU] |175| 
+        XOR       r19, r14.b1, r1       ; [ALU_PRU] |174| len
+        XOR       r20, r14.b2, r1       ; [ALU_PRU] |174| idx
+        ZERO      &r18, 4               ; [ALU_PRU] |174| 
+        QBLT      ||$C$L13||, r19, r20  ; [ALU_PRU] |174| 
 ;* --------------------------------------------------------------------------*
-        LDI       r18, 0x0001           ; [ALU_PRU] |175| 
+        LDI       r18, 0x0001           ; [ALU_PRU] |174| 
 ;* --------------------------------------------------------------------------*
 ||$C$L13||:    
-        ZERO      &r19, 4               ; [ALU_PRU] |175| 
-        QBNE      ||$C$L14||, r0.b2, 0x29 ; [ALU_PRU] |175| $O$U6
+        ZERO      &r19, 4               ; [ALU_PRU] |174| 
+        QBNE      ||$C$L14||, r0.b2, 0x29 ; [ALU_PRU] |174| $O$U6
 ;* --------------------------------------------------------------------------*
-        LDI       r19, 0x0001           ; [ALU_PRU] |175| 
+        LDI       r19, 0x0001           ; [ALU_PRU] |174| 
 ;* --------------------------------------------------------------------------*
 ||$C$L14||:    
-        OR        r0, r18, r19          ; [ALU_PRU] |175| 
-        QBEQ      ||$C$L11||, r0, 0x00  ; [ALU_PRU] |175| 
+        OR        r0, r18, r19          ; [ALU_PRU] |174| 
+        QBEQ      ||$C$L11||, r0, 0x00  ; [ALU_PRU] |174| 
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 163,column 3,is_stmt,isa 0
-        JMP       ||$C$L18||            ; [ALU_PRU] |163| 
+	.dwpsn	file "src/utilities.c",line 162,column 3,is_stmt,isa 0
+        JMP       ||$C$L18||            ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
 ;*   BEGIN LOOP ||$C$L15||
 ;*
-;*   Loop source line                : 168
-;*   Loop closing brace source line  : 169
+;*   Loop source line                : 167
+;*   Loop closing brace source line  : 168
 ;*   Known Minimum Trip Count        : 1
 ;*   Known Maximum Trip Count        : 4294967295
 ;*   Known Max Trip Count Factor     : 1
 ;* --------------------------------------------------------------------------*
 ||$C$L15||:    
-	.dwpsn	file "src/utilities.c",line 170,column 5,is_stmt,isa 0
-        QBEQ      ||$C$L19||, r0.b2, 0x00 ; [ALU_PRU] |170| c
+	.dwpsn	file "src/utilities.c",line 169,column 5,is_stmt,isa 0
+        QBEQ      ||$C$L19||, r0.b2, 0x00 ; [ALU_PRU] |169| c
 ;* --------------------------------------------------------------------------*
-        XOR       r19, r14.b1, r1       ; [ALU_PRU] |170| len
-        XOR       r20, r14.b2, r1       ; [ALU_PRU] |170| idx
-        ZERO      &r18, 4               ; [ALU_PRU] |170| 
-        QBGE      ||$C$L16||, r19, r20  ; [ALU_PRU] |170| 
+        XOR       r19, r14.b1, r1       ; [ALU_PRU] |169| len
+        XOR       r20, r14.b2, r1       ; [ALU_PRU] |169| idx
+        ZERO      &r18, 4               ; [ALU_PRU] |169| 
+        QBGE      ||$C$L16||, r19, r20  ; [ALU_PRU] |169| 
 ;* --------------------------------------------------------------------------*
-        LDI       r18, 0x0001           ; [ALU_PRU] |170| 
+        LDI       r18, 0x0001           ; [ALU_PRU] |169| 
 ;* --------------------------------------------------------------------------*
 ||$C$L16||:    
-        ZERO      &r19, 4               ; [ALU_PRU] |170| 
-        QBEQ      ||$C$L17||, r0.b2, 0x0a ; [ALU_PRU] |170| c
+        ZERO      &r19, 4               ; [ALU_PRU] |169| 
+        QBEQ      ||$C$L17||, r0.b2, 0x0a ; [ALU_PRU] |169| c
 ;* --------------------------------------------------------------------------*
-        LDI       r19, 0x0001           ; [ALU_PRU] |170| 
+        LDI       r19, 0x0001           ; [ALU_PRU] |169| 
 ;* --------------------------------------------------------------------------*
 ||$C$L17||:    
-        AND       r18, r18, r19         ; [ALU_PRU] |170| 
-        QBEQ      ||$C$L19||, r18, 0x00 ; [ALU_PRU] |170| 
+        AND       r18, r18, r19         ; [ALU_PRU] |169| 
+        QBEQ      ||$C$L19||, r18, 0x00 ; [ALU_PRU] |169| 
 ;* --------------------------------------------------------------------------*
         ADD       r14.b2, r14.b2, 0x01  ; [ALU_PRU] idx,idx
         LBBO      &r0.b2, r15, r14.b2, 1 ; [ALU_PRU] $O$U6,tib,idx
-	.dwpsn	file "src/utilities.c",line 169,column 7,is_stmt,isa 0
-        JMP       ||$C$L15||            ; [ALU_PRU] |169| 
+	.dwpsn	file "src/utilities.c",line 168,column 7,is_stmt,isa 0
+        JMP       ||$C$L15||            ; [ALU_PRU] |168| 
 ;* --------------------------------------------------------------------------*
 ||$C$L18||:    
         ADD       r14.b2, r14.b2, 0x01  ; [ALU_PRU] idx,idx
@@ -3148,93 +3148,93 @@ $C$DW$243	.dwtag  DW_TAG_variable
 ;*   BEGIN LOOP ||$C$L19||
 ;* --------------------------------------------------------------------------*
 ||$C$L19||:    
-	.dwpsn	file "src/utilities.c",line 163,column 10,is_stmt,isa 0
-        QBEQ      ||$C$L22||, r0.b2, 0x00 ; [ALU_PRU] |163| $O$U6
+	.dwpsn	file "src/utilities.c",line 162,column 10,is_stmt,isa 0
+        QBEQ      ||$C$L22||, r0.b2, 0x00 ; [ALU_PRU] |162| $O$U6
 ;* --------------------------------------------------------------------------*
-        MOV       r14.b0, r0.b2         ; [ALU_PRU] |163| $O$U6
+        MOV       r14.b0, r0.b2         ; [ALU_PRU] |162| $O$U6
 $C$DW$244	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$244, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$244, DW_AT_name("is_whitespace")
 	.dwattr $C$DW$244, DW_AT_TI_call
 
-        JAL       r3.w2, ||is_whitespace|| ; [ALU_PRU] |163| is_whitespace
-        ZERO      &r18, 4               ; [ALU_PRU] |163| 
-        QBBS      ||$C$L20||, r14.b0, 0x00 ; [ALU_PRU] |163| 
+        JAL       r3.w2, ||is_whitespace|| ; [ALU_PRU] |162| is_whitespace
+        ZERO      &r18, 4               ; [ALU_PRU] |162| 
+        QBBS      ||$C$L20||, r14.b0, 0x00 ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
-        LDI       r18, 0x0001           ; [ALU_PRU] |163| 
+        LDI       r18, 0x0001           ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
 ||$C$L20||:    
-        LDI32     r1, 0x80000000        ; [ALU_PRU] |163| 
-        ZERO      &r19, 4               ; [ALU_PRU] |163| 
-        XOR       r20, r14.b1, r1       ; [ALU_PRU] |163| len
-        XOR       r21, r14.b2, r1       ; [ALU_PRU] |163| idx
-        QBLT      ||$C$L21||, r20, r21  ; [ALU_PRU] |163| 
+        LDI32     r1, 0x80000000        ; [ALU_PRU] |162| 
+        ZERO      &r19, 4               ; [ALU_PRU] |162| 
+        XOR       r20, r14.b1, r1       ; [ALU_PRU] |162| len
+        XOR       r21, r14.b2, r1       ; [ALU_PRU] |162| idx
+        QBLT      ||$C$L21||, r20, r21  ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
-        LDI       r19, 0x0001           ; [ALU_PRU] |163| 
+        LDI       r19, 0x0001           ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
 ||$C$L21||:    
-        OR        r18, r19, r18         ; [ALU_PRU] |163| 
-        QBEQ      ||$C$L18||, r18, 0x00 ; [ALU_PRU] |163| 
+        OR        r18, r19, r18         ; [ALU_PRU] |162| 
+        QBEQ      ||$C$L18||, r18, 0x00 ; [ALU_PRU] |162| 
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 167,column 3,is_stmt,isa 0
-        QBEQ      ||$C$L15||, r0.b2, 0x5c ; [ALU_PRU] |167| $O$U6
+	.dwpsn	file "src/utilities.c",line 166,column 3,is_stmt,isa 0
+        QBEQ      ||$C$L15||, r0.b2, 0x5c ; [ALU_PRU] |166| $O$U6
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 174,column 3,is_stmt,isa 0
-        QBEQ      ||$C$L12||, r0.b2, 0x28 ; [ALU_PRU] |174| $O$U6
+	.dwpsn	file "src/utilities.c",line 173,column 3,is_stmt,isa 0
+        QBEQ      ||$C$L12||, r0.b2, 0x28 ; [ALU_PRU] |173| $O$U6
 ;* --------------------------------------------------------------------------*
 ||$C$L22||:    
+	.dwpsn	file "src/utilities.c",line 183,column 3,is_stmt,isa 0
+        MOV       r14.b3, r14.b2        ; [ALU_PRU] |183| start,idx
+        ADD       r14.b2, r14.b3, 0x01  ; [ALU_PRU] |183| idx,start
 	.dwpsn	file "src/utilities.c",line 184,column 3,is_stmt,isa 0
-        MOV       r14.b3, r14.b2        ; [ALU_PRU] |184| start,idx
-        ADD       r14.b2, r14.b3, 0x01  ; [ALU_PRU] |184| idx,start
-	.dwpsn	file "src/utilities.c",line 185,column 3,is_stmt,isa 0
-        JMP       ||$C$L24||            ; [ALU_PRU] |185| 
+        JMP       ||$C$L24||            ; [ALU_PRU] |184| 
 ;* --------------------------------------------------------------------------*
 ||$C$L23||:    
-	.dwpsn	file "src/utilities.c",line 186,column 5,is_stmt,isa 0
-        ADD       r14.b2, r14.b2, 0x01  ; [ALU_PRU] |186| idx,idx
+	.dwpsn	file "src/utilities.c",line 185,column 5,is_stmt,isa 0
+        ADD       r14.b2, r14.b2, 0x01  ; [ALU_PRU] |185| idx,idx
 ;* --------------------------------------------------------------------------*
 ;*   BEGIN LOOP ||$C$L24||
 ;* --------------------------------------------------------------------------*
 ||$C$L24||:    
-	.dwpsn	file "src/utilities.c",line 185,column 10,is_stmt,isa 0
-        ADD       r1, r14.b2, r15       ; [ALU_PRU] |185| $O$U5,idx,tib
-        LBBO      &r14.b0, r1, 0, 1     ; [ALU_PRU] |185| $O$C1,$O$U5
-        QBEQ      ||$C$L26||, r14.b0, 0x00 ; [ALU_PRU] |185| $O$C1
+	.dwpsn	file "src/utilities.c",line 184,column 10,is_stmt,isa 0
+        ADD       r1, r14.b2, r15       ; [ALU_PRU] |184| $O$U5,idx,tib
+        LBBO      &r14.b0, r1, 0, 1     ; [ALU_PRU] |184| $O$C1,$O$U5
+        QBEQ      ||$C$L26||, r14.b0, 0x00 ; [ALU_PRU] |184| $O$C1
 ;* --------------------------------------------------------------------------*
 $C$DW$245	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$245, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$245, DW_AT_name("is_whitespace")
 	.dwattr $C$DW$245, DW_AT_TI_call
 
-        JAL       r3.w2, ||is_whitespace|| ; [ALU_PRU] |185| is_whitespace
-        ZERO      &r18, 4               ; [ALU_PRU] |185| 
-        LDI32     r0, 0x80000000        ; [ALU_PRU] |185| 
-        XOR       r19, r14.b1, r0       ; [ALU_PRU] |185| len
-        XOR       r0, r14.b2, r0        ; [ALU_PRU] |185| idx
-        QBLT      ||$C$L25||, r19, r0   ; [ALU_PRU] |185| 
+        JAL       r3.w2, ||is_whitespace|| ; [ALU_PRU] |184| is_whitespace
+        ZERO      &r18, 4               ; [ALU_PRU] |184| 
+        LDI32     r0, 0x80000000        ; [ALU_PRU] |184| 
+        XOR       r19, r14.b1, r0       ; [ALU_PRU] |184| len
+        XOR       r0, r14.b2, r0        ; [ALU_PRU] |184| idx
+        QBLT      ||$C$L25||, r19, r0   ; [ALU_PRU] |184| 
 ;* --------------------------------------------------------------------------*
-        LDI       r18, 0x0001           ; [ALU_PRU] |185| 
+        LDI       r18, 0x0001           ; [ALU_PRU] |184| 
 ;* --------------------------------------------------------------------------*
 ||$C$L25||:    
-        OR        r0, r18, r14.b0       ; [ALU_PRU] |185| 
-        QBEQ      ||$C$L23||, r0, 0x00  ; [ALU_PRU] |185| 
+        OR        r0, r18, r14.b0       ; [ALU_PRU] |184| 
+        QBEQ      ||$C$L23||, r0, 0x00  ; [ALU_PRU] |184| 
 ;* --------------------------------------------------------------------------*
 ||$C$L26||:    
-	.dwpsn	file "src/utilities.c",line 188,column 3,is_stmt,isa 0
-        ADD       r0, r15, r14.b3       ; [ALU_PRU] |188| tib,start
-	.dwpsn	file "src/utilities.c",line 190,column 3,is_stmt,isa 0
-        RSB       r14, r14.b3, r14.b2   ; [ALU_PRU] |190| start,idx
-	.dwpsn	file "src/utilities.c",line 188,column 3,is_stmt,isa 0
-        SBBO      &r0, r16, 0, 4        ; [ALU_PRU] |188| word_start
+	.dwpsn	file "src/utilities.c",line 187,column 3,is_stmt,isa 0
+        ADD       r0, r15, r14.b3       ; [ALU_PRU] |187| tib,start
 	.dwpsn	file "src/utilities.c",line 189,column 3,is_stmt,isa 0
-        SBBO      &r1, r17, 0, 4        ; [ALU_PRU] |189| word_stop,$O$U5
+        RSB       r14, r14.b3, r14.b2   ; [ALU_PRU] |189| start,idx
+	.dwpsn	file "src/utilities.c",line 187,column 3,is_stmt,isa 0
+        SBBO      &r0, r16, 0, 4        ; [ALU_PRU] |187| word_start
+	.dwpsn	file "src/utilities.c",line 188,column 3,is_stmt,isa 0
+        SBBO      &r1, r17, 0, 4        ; [ALU_PRU] |188| word_stop,$O$U5
 $C$DW$246	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$246, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$246, DW_AT_TI_return
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$231, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$231, DW_AT_TI_end_line(0xbf)
+	.dwattr $C$DW$231, DW_AT_TI_end_line(0xbe)
 	.dwattr $C$DW$231, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$231
@@ -3251,13 +3251,13 @@ $C$DW$247	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$247, DW_AT_external
 	.dwattr $C$DW$247, DW_AT_type(*$C$DW$T$22)
 	.dwattr $C$DW$247, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$247, DW_AT_TI_begin_line(0xed)
+	.dwattr $C$DW$247, DW_AT_TI_begin_line(0xec)
 	.dwattr $C$DW$247, DW_AT_TI_begin_column(0x09)
 	.dwattr $C$DW$247, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$247, DW_AT_decl_line(0xed)
+	.dwattr $C$DW$247, DW_AT_decl_line(0xec)
 	.dwattr $C$DW$247, DW_AT_decl_column(0x09)
 	.dwattr $C$DW$247, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 239,column 1,is_stmt,address ||parse_number||,isa 0
+	.dwpsn	file "src/utilities.c",line 238,column 1,is_stmt,address ||parse_number||,isa 0
 
 	.dwfde $C$DW$CIE, ||parse_number||
 $C$DW$248	.dwtag  DW_TAG_formal_parameter
@@ -3369,107 +3369,107 @@ $C$DW$261	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$261, DW_AT_location[DW_OP_reg4]
 
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 241,column 12,is_stmt,isa 0
-        LDI       r14.b2, 0x00          ; [ALU_PRU] |241| err
-	.dwpsn	file "src/utilities.c",line 249,column 3,is_stmt,isa 0
-        LDI32     r0, 0x80000000        ; [ALU_PRU] |249| 
-        LDI32     r1, 0x80000002        ; [ALU_PRU] |249| 
+	.dwpsn	file "src/utilities.c",line 240,column 12,is_stmt,isa 0
+        LDI       r14.b2, 0x00          ; [ALU_PRU] |240| err
+	.dwpsn	file "src/utilities.c",line 248,column 3,is_stmt,isa 0
+        LDI32     r0, 0x80000000        ; [ALU_PRU] |248| 
+        LDI32     r1, 0x80000002        ; [ALU_PRU] |248| 
+	.dwpsn	file "src/utilities.c",line 244,column 15,is_stmt,isa 0
+        LDI       r28, 0x0001           ; [ALU_PRU] |244| neg
 	.dwpsn	file "src/utilities.c",line 245,column 15,is_stmt,isa 0
-        LDI       r28, 0x0001           ; [ALU_PRU] |245| neg
-	.dwpsn	file "src/utilities.c",line 246,column 15,is_stmt,isa 0
-        ZERO      &r29, 4               ; [ALU_PRU] |246| num
-	.dwpsn	file "src/utilities.c",line 241,column 12,is_stmt,isa 0
-        MOV       r14.b1, r14.b2        ; [ALU_PRU] |241| idx,err
-	.dwpsn	file "src/utilities.c",line 249,column 3,is_stmt,isa 0
-        XOR       r18, r14.b0, r0       ; [ALU_PRU] |249| len
-        QBLT      ||$C$L29||, r1, r18   ; [ALU_PRU] |249| 
+        ZERO      &r29, 4               ; [ALU_PRU] |245| num
+	.dwpsn	file "src/utilities.c",line 240,column 12,is_stmt,isa 0
+        MOV       r14.b1, r14.b2        ; [ALU_PRU] |240| idx,err
+	.dwpsn	file "src/utilities.c",line 248,column 3,is_stmt,isa 0
+        XOR       r18, r14.b0, r0       ; [ALU_PRU] |248| len
+        QBLT      ||$C$L29||, r1, r18   ; [ALU_PRU] |248| 
 ;* --------------------------------------------------------------------------*
-        LBBO      &r1.b0, r15, 0, 1     ; [ALU_PRU] |249| tib
-        QBNE      ||$C$L29||, r1.b0, 0x30 ; [ALU_PRU] |249| 
+        LBBO      &r1.b0, r15, 0, 1     ; [ALU_PRU] |248| tib
+        QBNE      ||$C$L29||, r1.b0, 0x30 ; [ALU_PRU] |248| 
 ;* --------------------------------------------------------------------------*
-        LBBO      &r1.b0, r15, 1, 1     ; [ALU_PRU] |249| tib
-        QBNE      ||$C$L29||, r1.b0, 0x78 ; [ALU_PRU] |249| 
+        LBBO      &r1.b0, r15, 1, 1     ; [ALU_PRU] |248| tib
+        QBNE      ||$C$L29||, r1.b0, 0x78 ; [ALU_PRU] |248| 
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 250,column 5,is_stmt,isa 0
-        LDI       r14.b1, 0x02          ; [ALU_PRU] |250| idx
-	.dwpsn	file "src/utilities.c",line 252,column 3,is_stmt,isa 0
-        JMP       ||$C$L29||            ; [ALU_PRU] |252| 
+	.dwpsn	file "src/utilities.c",line 249,column 5,is_stmt,isa 0
+        LDI       r14.b1, 0x02          ; [ALU_PRU] |249| idx
+	.dwpsn	file "src/utilities.c",line 251,column 3,is_stmt,isa 0
+        JMP       ||$C$L29||            ; [ALU_PRU] |251| 
 ;* --------------------------------------------------------------------------*
 ||$C$L27||:    
+	.dwpsn	file "src/utilities.c",line 262,column 9,is_stmt,isa 0
+        LSL       r18, r29, 0x04        ; [ALU_PRU] |262| num
 	.dwpsn	file "src/utilities.c",line 263,column 9,is_stmt,isa 0
-        LSL       r18, r29, 0x04        ; [ALU_PRU] |263| num
+        LDI       r14.b2, 0x00          ; [ALU_PRU] |263| err
+	.dwpsn	file "src/utilities.c",line 262,column 9,is_stmt,isa 0
+        ADD       r29, r18, r1          ; [ALU_PRU] |262| num,i
 	.dwpsn	file "src/utilities.c",line 264,column 9,is_stmt,isa 0
-        LDI       r14.b2, 0x00          ; [ALU_PRU] |264| err
-	.dwpsn	file "src/utilities.c",line 263,column 9,is_stmt,isa 0
-        ADD       r29, r18, r1          ; [ALU_PRU] |263| num,i
-	.dwpsn	file "src/utilities.c",line 265,column 9,is_stmt,isa 0
-        JMP       ||$C$L29||            ; [ALU_PRU] |265| 
+        JMP       ||$C$L29||            ; [ALU_PRU] |264| 
 ;* --------------------------------------------------------------------------*
 ||$C$L28||:    
-	.dwpsn	file "src/utilities.c",line 257,column 7,is_stmt,isa 0
-        FILL      &r28, 4               ; [ALU_PRU] |257| neg
+	.dwpsn	file "src/utilities.c",line 256,column 7,is_stmt,isa 0
+        FILL      &r28, 4               ; [ALU_PRU] |256| neg
 ;* --------------------------------------------------------------------------*
 ;*   BEGIN LOOP ||$C$L29||
 ;* --------------------------------------------------------------------------*
 ||$C$L29||:    
-	.dwpsn	file "src/utilities.c",line 252,column 10,is_stmt,isa 0
-        MOV       r1, r0                ; [ALU_PRU] |252| 
-        XOR       r18, r14.b0, r0       ; [ALU_PRU] |252| len
-        XOR       r1, r14.b1, r1        ; [ALU_PRU] |252| idx
-        QBGE      ||$C$L31||, r18, r1   ; [ALU_PRU] |252| 
+	.dwpsn	file "src/utilities.c",line 251,column 10,is_stmt,isa 0
+        MOV       r1, r0                ; [ALU_PRU] |251| 
+        XOR       r18, r14.b0, r0       ; [ALU_PRU] |251| len
+        XOR       r1, r14.b1, r1        ; [ALU_PRU] |251| idx
+        QBGE      ||$C$L31||, r18, r1   ; [ALU_PRU] |251| 
 ;* --------------------------------------------------------------------------*
+	.dwpsn	file "src/utilities.c",line 252,column 5,is_stmt,isa 0
+        LBBO      &r19.b0, r15, r14.b1, 1 ; [ALU_PRU] |252| c,tib,idx
 	.dwpsn	file "src/utilities.c",line 253,column 5,is_stmt,isa 0
-        LBBO      &r19.b0, r15, r14.b1, 1 ; [ALU_PRU] |253| c,tib,idx
-	.dwpsn	file "src/utilities.c",line 254,column 5,is_stmt,isa 0
-        LDI       r14.b2, 0x01          ; [ALU_PRU] |254| err
-	.dwpsn	file "src/utilities.c",line 253,column 5,is_stmt,isa 0
-        ADD       r14.b1, r14.b1, 0x01  ; [ALU_PRU] |253| idx,idx
-	.dwpsn	file "src/utilities.c",line 256,column 5,is_stmt,isa 0
-        QBEQ      ||$C$L28||, r19.b0, 0x2d ; [ALU_PRU] |256| c
+        LDI       r14.b2, 0x01          ; [ALU_PRU] |253| err
+	.dwpsn	file "src/utilities.c",line 252,column 5,is_stmt,isa 0
+        ADD       r14.b1, r14.b1, 0x01  ; [ALU_PRU] |252| idx,idx
+	.dwpsn	file "src/utilities.c",line 255,column 5,is_stmt,isa 0
+        QBEQ      ||$C$L28||, r19.b0, 0x2d ; [ALU_PRU] |255| c
 ;* --------------------------------------------------------------------------*
         LDI       r18, ||num_basis||    ; [ALU_PRU] $O$U34,num_basis
-	.dwpsn	file "src/utilities.c",line 261,column 16,is_stmt,isa 0
-        ZERO      &r1, 4                ; [ALU_PRU] |261| i
-	.dwpsn	file "src/utilities.c",line 261,column 21,is_stmt,isa 0
-        LDI       r14.b3, 0x10          ; [ALU_PRU] |261| $O$L1
+	.dwpsn	file "src/utilities.c",line 260,column 16,is_stmt,isa 0
+        ZERO      &r1, 4                ; [ALU_PRU] |260| i
+	.dwpsn	file "src/utilities.c",line 260,column 21,is_stmt,isa 0
+        LDI       r14.b3, 0x10          ; [ALU_PRU] |260| $O$L1
 ;* --------------------------------------------------------------------------*
 ;*   BEGIN LOOP ||$C$L30||
 ;*
-;*   Loop source line                : 261
-;*   Loop closing brace source line  : 267
+;*   Loop source line                : 260
+;*   Loop closing brace source line  : 266
 ;*   Known Minimum Trip Count        : 1
 ;*   Known Maximum Trip Count        : 16
 ;*   Known Max Trip Count Factor     : 1
 ;* --------------------------------------------------------------------------*
 ||$C$L30||:    
-	.dwpsn	file "src/utilities.c",line 262,column 7,is_stmt,isa 0
-        LBBO      &r19.b1, r18, 0, 1    ; [ALU_PRU] |262| $O$U34
-        QBEQ      ||$C$L27||, r19.b0, r19.b1 ; [ALU_PRU] |262| c
+	.dwpsn	file "src/utilities.c",line 261,column 7,is_stmt,isa 0
+        LBBO      &r19.b1, r18, 0, 1    ; [ALU_PRU] |261| $O$U34
+        QBEQ      ||$C$L27||, r19.b0, r19.b1 ; [ALU_PRU] |261| c
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 261,column 21,is_stmt,isa 0
-        ADD       r18, r18, 0x01        ; [ALU_PRU] |261| $O$U34,$O$U34
-        SUB       r14.b3, r14.b3, 0x01  ; [ALU_PRU] |261| $O$L1,$O$L1
-        ADD       r1, r1, 0x01          ; [ALU_PRU] |261| i,i
-        QBNE      ||$C$L30||, r14.b3, 0x00 ; [ALU_PRU] |261| $O$L1
+	.dwpsn	file "src/utilities.c",line 260,column 21,is_stmt,isa 0
+        ADD       r18, r18, 0x01        ; [ALU_PRU] |260| $O$U34,$O$U34
+        SUB       r14.b3, r14.b3, 0x01  ; [ALU_PRU] |260| $O$L1,$O$L1
+        ADD       r1, r1, 0x01          ; [ALU_PRU] |260| i,i
+        QBNE      ||$C$L30||, r14.b3, 0x00 ; [ALU_PRU] |260| $O$L1
 ;* --------------------------------------------------------------------------*
 ||$C$L31||:    
-	.dwpsn	file "src/utilities.c",line 273,column 3,is_stmt,isa 0
-        MOV       r0, r14.b2            ; [ALU_PRU] |273| err
 	.dwpsn	file "src/utilities.c",line 272,column 3,is_stmt,isa 0
-        XIN       0, &r26, 4            ; [ALU_PRU] |272| 
-	.dwpsn	file "src/utilities.c",line 275,column 3,is_stmt,isa 0
-        MOV       r14, r14.b1           ; [ALU_PRU] |275| idx
+        MOV       r0, r14.b2            ; [ALU_PRU] |272| err
+	.dwpsn	file "src/utilities.c",line 271,column 3,is_stmt,isa 0
+        XIN       0, &r26, 4            ; [ALU_PRU] |271| 
+	.dwpsn	file "src/utilities.c",line 274,column 3,is_stmt,isa 0
+        MOV       r14, r14.b1           ; [ALU_PRU] |274| idx
+	.dwpsn	file "src/utilities.c",line 271,column 3,is_stmt,isa 0
+        SBBO      &r26, r16, 0, 4       ; [ALU_PRU] |271| number
 	.dwpsn	file "src/utilities.c",line 272,column 3,is_stmt,isa 0
-        SBBO      &r26, r16, 0, 4       ; [ALU_PRU] |272| number
-	.dwpsn	file "src/utilities.c",line 273,column 3,is_stmt,isa 0
-        SBBO      &r0, r17, 0, 4        ; [ALU_PRU] |273| errcode
+        SBBO      &r0, r17, 0, 4        ; [ALU_PRU] |272| errcode
 $C$DW$262	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$262, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$262, DW_AT_TI_return
 
         JMP       r3.w2                 ; [ALU_PRU] 
 	.dwattr $C$DW$247, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$247, DW_AT_TI_end_line(0x114)
+	.dwattr $C$DW$247, DW_AT_TI_end_line(0x113)
 	.dwattr $C$DW$247, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$247
@@ -3544,7 +3544,7 @@ $C$DW$269	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||donumber||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$270	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$270, DW_AT_low_pc(0x00)
@@ -3796,7 +3796,7 @@ $C$DW$293	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||dolbrac||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$294	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$294, DW_AT_low_pc(0x00)
@@ -4356,22 +4356,22 @@ $C$DW$324	.dwtag  DW_TAG_formal_parameter
 ||forth_exec||:
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
-        LDI       r23, ctx_psp(xaddr)
+        LDI       r23, ||ctx_psp||
         LBBO      &r16, r23, 0, 4
         LBBO      &r15, r23, 4, 4
-        LDI       r23, ctx_rsp(xaddr)
+        LDI       r23, ||ctx_rsp||
         LBBO      &r18, r23, 0, 4
         LBBO      &r17, r23, 4, 4
-        LDI       r23, ctx_regs(xaddr)
+        LDI       r23, ||ctx_regs||
         LBBO      &r19, r23, 8, 4
         LBBO      &r20, r23, 4, 4
         LBBO      &r21, r23, 0, 4
-        JAL      r30.w0, ||next||
-        LDI       r23, ctx_psp(xaddr)
+        JAL      r3.w2, ||next||
+        LDI       r23, ||ctx_psp||
         SBBO      &r23, r16, 0, 4
-        LDI       r23, ctx_rsp(xaddr)
+        LDI       r23, ||ctx_rsp||
         SBBO      &r23, r18, 0, 4
-        LDI       r23, ctx_regs(xaddr)
+        LDI       r23, ||ctx_regs||
         SBBO      &r23, r19, 8, 4
         SBBO      &r23, r20, 4, 4
         SBBO      &r23, r21, 0, 4
@@ -4527,8 +4527,8 @@ $C$DW$333	.dwtag  DW_TAG_TI_branch
 
         JAL       r3.w2, ||forth_exec|| ; [ALU_PRU] |130| forth_exec
         NOP                             ; [ALU_PRU] 
-        LDI       reg_xrax, ctx_psp(xaddr)
-        SBBO      &reg_xrax, r16, 0, 4
+        LDI       r0.w0, ||ctx_psp||
+        SBBO      &r0.w0, r16, 0, 4
         MOV       r14, r17              ; [ALU_PRU] $O$C1
         ADD       r2, r2, 0x08          ; [ALU_PRU] 
 	.dwcfi	cfa_offset, 0
@@ -6034,7 +6034,7 @@ $C$DW$424	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||dofind||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$425	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$425, DW_AT_low_pc(0x00)
@@ -6389,7 +6389,7 @@ $C$DW$457	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||doemit||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$458	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$458, DW_AT_low_pc(0x00)
@@ -6654,13 +6654,13 @@ $C$DW$479	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$479, DW_AT_TI_symbol_name("doword")
 	.dwattr $C$DW$479, DW_AT_external
 	.dwattr $C$DW$479, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$479, DW_AT_TI_begin_line(0x4f)
+	.dwattr $C$DW$479, DW_AT_TI_begin_line(0x4e)
 	.dwattr $C$DW$479, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$479, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$479, DW_AT_decl_line(0x4f)
+	.dwattr $C$DW$479, DW_AT_decl_line(0x4e)
 	.dwattr $C$DW$479, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$479, DW_AT_TI_max_frame_size(0x08)
-	.dwpsn	file "src/utilities.c",line 79,column 15,is_stmt,address ||doword||,isa 0
+	.dwpsn	file "src/utilities.c",line 78,column 15,is_stmt,address ||doword||,isa 0
 
 	.dwfde $C$DW$CIE, ||doword||
 
@@ -6706,70 +6706,70 @@ $C$DW$483	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$483, DW_AT_location[DW_OP_regx 0x58]
 
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 81,column 15,is_stmt,isa 0
-        LDI       r24, ||ctx||          ; [ALU_PRU] |81| $O$C1,ctx
+	.dwpsn	file "src/utilities.c",line 80,column 15,is_stmt,isa 0
+        LDI       r24, ||ctx||          ; [ALU_PRU] |80| $O$C1,ctx
         SUB       r2, r2, 0x08          ; [ALU_PRU] 
 	.dwcfi	cfa_offset, 8
         MOV       r23.w1, r3.w2         ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 93
 	.dwcfi	save_reg_to_reg, 15, 94
-        LBBO      &r0, r24, 0, 4        ; [ALU_PRU] |81| $O$C1
-	.dwpsn	file "src/utilities.c",line 86,column 3,is_stmt,isa 0
-        ADD       r16, r2, 0            ; [ALU_PRU] |86| word_start,word_start
-        ADD       r17, r2, 4            ; [ALU_PRU] |86| word_stop,word_stop
+        LBBO      &r0, r24, 0, 4        ; [ALU_PRU] |80| $O$C1
+	.dwpsn	file "src/utilities.c",line 85,column 3,is_stmt,isa 0
+        ADD       r16, r2, 0            ; [ALU_PRU] |85| word_start,word_start
+        ADD       r17, r2, 4            ; [ALU_PRU] |85| word_stop,word_stop
+	.dwpsn	file "src/utilities.c",line 80,column 15,is_stmt,isa 0
+        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |80| $O$C2
+        LBBO      &r14.b1, r0, 12, 1    ; [ALU_PRU] |80| $O$C3,$O$C2
 	.dwpsn	file "src/utilities.c",line 81,column 15,is_stmt,isa 0
-        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |81| $O$C2
-        LBBO      &r14.b1, r0, 12, 1    ; [ALU_PRU] |81| $O$C3,$O$C2
-	.dwpsn	file "src/utilities.c",line 82,column 15,is_stmt,isa 0
-        LBBO      &r15, r0, 16, 4       ; [ALU_PRU] |82| $O$C4,$O$C2
-	.dwpsn	file "src/utilities.c",line 86,column 3,is_stmt,isa 0
-        LBBO      &r14.b0, r0, 8, 1     ; [ALU_PRU] |86| $O$C2
-	.dwpsn	file "src/utilities.c",line 81,column 15,is_stmt,isa 0
-        MOV       r23.b0, r14.b1        ; [ALU_PRU] |81| len,$O$C3
-	.dwpsn	file "src/utilities.c",line 86,column 3,is_stmt,isa 0
+        LBBO      &r15, r0, 16, 4       ; [ALU_PRU] |81| $O$C4,$O$C2
+	.dwpsn	file "src/utilities.c",line 85,column 3,is_stmt,isa 0
+        LBBO      &r14.b0, r0, 8, 1     ; [ALU_PRU] |85| $O$C2
+	.dwpsn	file "src/utilities.c",line 80,column 15,is_stmt,isa 0
+        MOV       r23.b0, r14.b1        ; [ALU_PRU] |80| len,$O$C3
+	.dwpsn	file "src/utilities.c",line 85,column 3,is_stmt,isa 0
 $C$DW$484	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$484, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$484, DW_AT_name("parse_word")
 	.dwattr $C$DW$484, DW_AT_TI_call
 
-        JAL       r3.w2, ||parse_word|| ; [ALU_PRU] |86| parse_word
-	.dwpsn	file "src/utilities.c",line 82,column 15,is_stmt,isa 0
-        MOV       r22, r15              ; [ALU_PRU] |82| tib,$O$C4
+        JAL       r3.w2, ||parse_word|| ; [ALU_PRU] |85| parse_word
+	.dwpsn	file "src/utilities.c",line 81,column 15,is_stmt,isa 0
+        MOV       r22, r15              ; [ALU_PRU] |81| tib,$O$C4
+	.dwpsn	file "src/utilities.c",line 96,column 3,is_stmt,isa 0
+        LBBO      &r1, r24, 0, 4        ; [ALU_PRU] |96| $O$C1
+        LBBO      &r0, r2, 4, 4         ; [ALU_PRU] |96| word_stop
+        LBBO      &r1, r1, 4, 4         ; [ALU_PRU] |96| 
+        SUB       r0, r0, r22           ; [ALU_PRU] |96| tib
+        SBBO      &r0, r1, 8, 4         ; [ALU_PRU] |96| 
 	.dwpsn	file "src/utilities.c",line 97,column 3,is_stmt,isa 0
-        LBBO      &r1, r24, 0, 4        ; [ALU_PRU] |97| $O$C1
-        LBBO      &r0, r2, 4, 4         ; [ALU_PRU] |97| word_stop
-        LBBO      &r1, r1, 4, 4         ; [ALU_PRU] |97| 
-        SUB       r0, r0, r22           ; [ALU_PRU] |97| tib
-        SBBO      &r0, r1, 8, 4         ; [ALU_PRU] |97| 
-	.dwpsn	file "src/utilities.c",line 98,column 3,is_stmt,isa 0
-        LBBO      &r14, r2, 0, 4        ; [ALU_PRU] |98| word_start
+        LBBO      &r14, r2, 0, 4        ; [ALU_PRU] |97| word_start
 $C$DW$485	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$485, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$485, DW_AT_name("forth_push")
 	.dwattr $C$DW$485, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |98| forth_push
-	.dwpsn	file "src/utilities.c",line 99,column 3,is_stmt,isa 0
-        LBBO      &r0, r2, 0, 4         ; [ALU_PRU] |99| word_start
-        LBBO      &r1, r2, 4, 4         ; [ALU_PRU] |99| word_stop
-        RSB       r14, r0, r1           ; [ALU_PRU] |99| 
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |97| forth_push
+	.dwpsn	file "src/utilities.c",line 98,column 3,is_stmt,isa 0
+        LBBO      &r0, r2, 0, 4         ; [ALU_PRU] |98| word_start
+        LBBO      &r1, r2, 4, 4         ; [ALU_PRU] |98| word_stop
+        RSB       r14, r0, r1           ; [ALU_PRU] |98| 
 $C$DW$486	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$486, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$486, DW_AT_name("forth_push")
 	.dwattr $C$DW$486, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |99| forth_push
-	.dwpsn	file "src/utilities.c",line 100,column 3,is_stmt,isa 0
-        LDI32     r1, 0x80000000        ; [ALU_PRU] |100| 
-        ZERO      &r14, 4               ; [ALU_PRU] |100| 
-        LBBO      &r0, r24, 0, 4        ; [ALU_PRU] |100| $O$C1
-        XOR       r1, r23.b0, r1        ; [ALU_PRU] |100| len
-        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |100| 
-        LBBO      &r0, r0, 8, 4         ; [ALU_PRU] |100| 
-        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |100| 
-        QBGT      ||$C$L36||, r1, r0    ; [ALU_PRU] |100| 
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |98| forth_push
+	.dwpsn	file "src/utilities.c",line 99,column 3,is_stmt,isa 0
+        LDI32     r1, 0x80000000        ; [ALU_PRU] |99| 
+        ZERO      &r14, 4               ; [ALU_PRU] |99| 
+        LBBO      &r0, r24, 0, 4        ; [ALU_PRU] |99| $O$C1
+        XOR       r1, r23.b0, r1        ; [ALU_PRU] |99| len
+        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |99| 
+        LBBO      &r0, r0, 8, 4         ; [ALU_PRU] |99| 
+        XOR       r0.b3, r0.b3, 0x80    ; [ALU_PRU] |99| 
+        QBGT      ||$C$L36||, r1, r0    ; [ALU_PRU] |99| 
 ;* --------------------------------------------------------------------------*
-        LDI       r14, 0x0001           ; [ALU_PRU] |100| 
+        LDI       r14, 0x0001           ; [ALU_PRU] |99| 
 ;* --------------------------------------------------------------------------*
 ||$C$L36||:    
 $C$DW$487	.dwtag  DW_TAG_TI_branch
@@ -6777,7 +6777,7 @@ $C$DW$487	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$487, DW_AT_name("forth_push")
 	.dwattr $C$DW$487, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |100| forth_push
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |99| forth_push
         ADD       r2, r2, 0x08          ; [ALU_PRU] 
 	.dwcfi	cfa_offset, 0
 $C$DW$488	.dwtag  DW_TAG_TI_branch
@@ -6786,7 +6786,7 @@ $C$DW$488	.dwtag  DW_TAG_TI_branch
 
         JMP       r23.w1                ; [ALU_PRU] 
 	.dwattr $C$DW$479, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$479, DW_AT_TI_end_line(0x65)
+	.dwattr $C$DW$479, DW_AT_TI_end_line(0x64)
 	.dwattr $C$DW$479, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$479
@@ -7075,13 +7075,13 @@ $C$DW$506	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$506, DW_AT_TI_symbol_name("dorbrac")
 	.dwattr $C$DW$506, DW_AT_external
 	.dwattr $C$DW$506, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$506, DW_AT_TI_begin_line(0x49)
+	.dwattr $C$DW$506, DW_AT_TI_begin_line(0x48)
 	.dwattr $C$DW$506, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$506, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$506, DW_AT_decl_line(0x49)
+	.dwattr $C$DW$506, DW_AT_decl_line(0x48)
 	.dwattr $C$DW$506, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$506, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 73,column 16,is_stmt,address ||dorbrac||,isa 0
+	.dwpsn	file "src/utilities.c",line 72,column 16,is_stmt,address ||dorbrac||,isa 0
 
 	.dwfde $C$DW$CIE, ||dorbrac||
 
@@ -7097,19 +7097,19 @@ $C$DW$506	.dwtag  DW_TAG_subprogram
 ||dorbrac||:
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
-	.dwpsn	file "src/utilities.c",line 74,column 3,is_stmt,isa 0
-        LDI       r1, ||ctx||           ; [ALU_PRU] |74| ctx
-        LDI       r0, 0x0001            ; [ALU_PRU] |74| 
-        LBBO      &r1, r1, 0, 4         ; [ALU_PRU] |74| 
-        LBBO      &r1, r1, 4, 4         ; [ALU_PRU] |74| 
-        SBBO      &r0, r1, 0, 4         ; [ALU_PRU] |74| 
+	.dwpsn	file "src/utilities.c",line 73,column 3,is_stmt,isa 0
+        LDI       r1, ||ctx||           ; [ALU_PRU] |73| ctx
+        LDI       r0, 0x0001            ; [ALU_PRU] |73| 
+        LBBO      &r1, r1, 0, 4         ; [ALU_PRU] |73| 
+        LBBO      &r1, r1, 4, 4         ; [ALU_PRU] |73| 
+        SBBO      &r0, r1, 0, 4         ; [ALU_PRU] |73| 
 $C$DW$507	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$507, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$507, DW_AT_TI_return
 
         JMP       r3.w2                 ; [ALU_PRU] 
 	.dwattr $C$DW$506, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$506, DW_AT_TI_end_line(0x4b)
+	.dwattr $C$DW$506, DW_AT_TI_end_line(0x4a)
 	.dwattr $C$DW$506, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$506
@@ -7125,13 +7125,13 @@ $C$DW$508	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$508, DW_AT_TI_symbol_name("donumber")
 	.dwattr $C$DW$508, DW_AT_external
 	.dwattr $C$DW$508, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$508, DW_AT_TI_begin_line(0x86)
+	.dwattr $C$DW$508, DW_AT_TI_begin_line(0x85)
 	.dwattr $C$DW$508, DW_AT_TI_begin_column(0x09)
 	.dwattr $C$DW$508, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$508, DW_AT_decl_line(0x86)
+	.dwattr $C$DW$508, DW_AT_decl_line(0x85)
 	.dwattr $C$DW$508, DW_AT_decl_column(0x09)
 	.dwattr $C$DW$508, DW_AT_TI_max_frame_size(0x08)
-	.dwpsn	file "src/utilities.c",line 134,column 20,is_stmt,address ||donumber||,isa 0
+	.dwpsn	file "src/utilities.c",line 133,column 20,is_stmt,address ||donumber||,isa 0
 
 	.dwfde $C$DW$CIE, ||donumber||
 
@@ -7168,56 +7168,56 @@ $C$DW$511	.dwtag  DW_TAG_variable
 	.dwcfi	cfa_offset, 0
         SUB       r2, r2, 0x08          ; [ALU_PRU] 
 	.dwcfi	cfa_offset, 8
-	.dwpsn	file "src/utilities.c",line 135,column 15,is_stmt,isa 0
-        LDI       r16, 0x0000           ; [ALU_PRU] |135| 
+	.dwpsn	file "src/utilities.c",line 134,column 15,is_stmt,isa 0
+        LDI       r16, 0x0000           ; [ALU_PRU] |134| 
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-        SBBO      &r16, r2, 0, 4        ; [ALU_PRU] |135| err
-	.dwpsn	file "src/utilities.c",line 136,column 15,is_stmt,isa 0
+        SBBO      &r16, r2, 0, 4        ; [ALU_PRU] |134| err
+	.dwpsn	file "src/utilities.c",line 135,column 15,is_stmt,isa 0
 $C$DW$512	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$512, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$512, DW_AT_name("forth_pop")
 	.dwattr $C$DW$512, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |136| forth_pop
-        MOV       r17.b0, r14.b0        ; [ALU_PRU] |136| len
-	.dwpsn	file "src/utilities.c",line 137,column 14,is_stmt,isa 0
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |135| forth_pop
+        MOV       r17.b0, r14.b0        ; [ALU_PRU] |135| len
+	.dwpsn	file "src/utilities.c",line 136,column 14,is_stmt,isa 0
 $C$DW$513	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$513, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$513, DW_AT_name("forth_pop")
 	.dwattr $C$DW$513, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |137| forth_pop
-        MOV       r15, r14              ; [ALU_PRU] |137| 
-	.dwpsn	file "src/utilities.c",line 139,column 18,is_stmt,isa 0
-        SBBO      &r16, r2, 4, 4        ; [ALU_PRU] |139| number
-	.dwpsn	file "src/utilities.c",line 140,column 3,is_stmt,isa 0
-        MOV       r14.b0, r17.b0        ; [ALU_PRU] |140| len
-        ADD       r17, r2, 0            ; [ALU_PRU] |140| err,err
-        ADD       r16, r2, 4            ; [ALU_PRU] |140| number,number
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |136| forth_pop
+        MOV       r15, r14              ; [ALU_PRU] |136| 
+	.dwpsn	file "src/utilities.c",line 138,column 18,is_stmt,isa 0
+        SBBO      &r16, r2, 4, 4        ; [ALU_PRU] |138| number
+	.dwpsn	file "src/utilities.c",line 139,column 3,is_stmt,isa 0
+        MOV       r14.b0, r17.b0        ; [ALU_PRU] |139| len
+        ADD       r17, r2, 0            ; [ALU_PRU] |139| err,err
+        ADD       r16, r2, 4            ; [ALU_PRU] |139| number,number
 $C$DW$514	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$514, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$514, DW_AT_name("parse_number")
 	.dwattr $C$DW$514, DW_AT_TI_call
 
-        JAL       r3.w2, ||parse_number|| ; [ALU_PRU] |140| parse_number
-	.dwpsn	file "src/utilities.c",line 142,column 3,is_stmt,isa 0
-        LBBO      &r14, r2, 4, 4        ; [ALU_PRU] |142| number
+        JAL       r3.w2, ||parse_number|| ; [ALU_PRU] |139| parse_number
+	.dwpsn	file "src/utilities.c",line 141,column 3,is_stmt,isa 0
+        LBBO      &r14, r2, 4, 4        ; [ALU_PRU] |141| number
 $C$DW$515	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$515, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$515, DW_AT_name("forth_push")
 	.dwattr $C$DW$515, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |142| forth_push
-	.dwpsn	file "src/utilities.c",line 143,column 3,is_stmt,isa 0
-        LBBO      &r14, r2, 0, 4        ; [ALU_PRU] |143| err
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |141| forth_push
+	.dwpsn	file "src/utilities.c",line 142,column 3,is_stmt,isa 0
+        LBBO      &r14, r2, 0, 4        ; [ALU_PRU] |142| err
 $C$DW$516	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$516, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$516, DW_AT_name("forth_push")
 	.dwattr $C$DW$516, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |143| forth_push
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |142| forth_push
         ADD       r2, r2, 0x08          ; [ALU_PRU] 
 	.dwcfi	cfa_offset, 0
 $C$DW$517	.dwtag  DW_TAG_TI_branch
@@ -7226,7 +7226,7 @@ $C$DW$517	.dwtag  DW_TAG_TI_branch
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$508, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$508, DW_AT_TI_end_line(0x90)
+	.dwattr $C$DW$508, DW_AT_TI_end_line(0x8f)
 	.dwattr $C$DW$508, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$508
@@ -7263,26 +7263,20 @@ $C$DW$518	.dwtag  DW_TAG_subprogram
 
 ||dolbrac||:
 ;* --------------------------------------------------------------------------*
-;* r0_0  assigned to $O$v1
 	.dwcfi	cfa_offset, 0
 	.dwpsn	file "src/utilities.c",line 67,column 3,is_stmt,isa 0
-        LDI       r0, ||ctx||           ; [ALU_PRU] |67| ctx
-        LDI       r1, 0x0000            ; [ALU_PRU] |67| 
-        LBBO      &r0, r0, 0, 4         ; [ALU_PRU] |67| $O$v1
-        LBBO      &r14, r0, 4, 4        ; [ALU_PRU] |67| $O$v1
-        SBBO      &r1, r14, 0, 4        ; [ALU_PRU] |67| 
-	.dwpsn	file "src/utilities.c",line 68,column 3,is_stmt,isa 0
-        LDI       r1.w0, $CODE(||docolon||) ; [ALU_PRU] |68| docolon
-        MOV       r1, r1.w0             ; [ALU_PRU] |68| 
-        LBBO      &r0, r0, 4, 4         ; [ALU_PRU] |68| $O$v1
-        SBBO      &r1, r0, 0, 4         ; [ALU_PRU] |68| 
+        LDI       r1, ||ctx||           ; [ALU_PRU] |67| ctx
+        LDI       r0, 0x0000            ; [ALU_PRU] |67| 
+        LBBO      &r1, r1, 0, 4         ; [ALU_PRU] |67| 
+        LBBO      &r1, r1, 4, 4         ; [ALU_PRU] |67| 
+        SBBO      &r0, r1, 0, 4         ; [ALU_PRU] |67| 
 $C$DW$519	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$519, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$519, DW_AT_TI_return
 
         JMP       r3.w2                 ; [ALU_PRU] 
 	.dwattr $C$DW$518, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$518, DW_AT_TI_end_line(0x45)
+	.dwattr $C$DW$518, DW_AT_TI_end_line(0x44)
 	.dwattr $C$DW$518, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$518
@@ -7482,13 +7476,13 @@ $C$DW$529	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$529, DW_AT_TI_symbol_name("dofind")
 	.dwattr $C$DW$529, DW_AT_external
 	.dwattr $C$DW$529, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$529, DW_AT_TI_begin_line(0x69)
+	.dwattr $C$DW$529, DW_AT_TI_begin_line(0x68)
 	.dwattr $C$DW$529, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$529, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$529, DW_AT_decl_line(0x69)
+	.dwattr $C$DW$529, DW_AT_decl_line(0x68)
 	.dwattr $C$DW$529, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$529, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 105,column 15,is_stmt,address ||dofind||,isa 0
+	.dwpsn	file "src/utilities.c",line 104,column 15,is_stmt,address ||dofind||,isa 0
 
 	.dwfde $C$DW$CIE, ||dofind||
 
@@ -7522,68 +7516,68 @@ $C$DW$531	.dwtag  DW_TAG_variable
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-	.dwpsn	file "src/utilities.c",line 106,column 15,is_stmt,isa 0
+	.dwpsn	file "src/utilities.c",line 105,column 15,is_stmt,isa 0
 $C$DW$532	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$532, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$532, DW_AT_name("forth_pop")
 	.dwattr $C$DW$532, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |106| forth_pop
-        MOV       r19.b2, r14.b0        ; [ALU_PRU] |106| len
-	.dwpsn	file "src/utilities.c",line 107,column 13,is_stmt,isa 0
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |105| forth_pop
+        MOV       r19.b2, r14.b0        ; [ALU_PRU] |105| len
+	.dwpsn	file "src/utilities.c",line 106,column 13,is_stmt,isa 0
 $C$DW$533	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$533, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$533, DW_AT_name("forth_pop")
 	.dwattr $C$DW$533, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |107| forth_pop
-        MOV       r15, r14              ; [ALU_PRU] |107| 
-	.dwpsn	file "src/utilities.c",line 109,column 18,is_stmt,isa 0
-        MOV       r14.b0, r19.b2        ; [ALU_PRU] |109| len
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |106| forth_pop
+        MOV       r15, r14              ; [ALU_PRU] |106| 
+	.dwpsn	file "src/utilities.c",line 108,column 18,is_stmt,isa 0
+        MOV       r14.b0, r19.b2        ; [ALU_PRU] |108| len
 $C$DW$534	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$534, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$534, DW_AT_name("dict_find")
 	.dwattr $C$DW$534, DW_AT_TI_call
 
-        JAL       r3.w2, ||dict_find||  ; [ALU_PRU] |109| dict_find
-	.dwpsn	file "src/utilities.c",line 110,column 3,is_stmt,isa 0
-        ZERO      &r18, 4               ; [ALU_PRU] |110| 
-	.dwpsn	file "src/utilities.c",line 109,column 18,is_stmt,isa 0
-        MOV       r17, r14              ; [ALU_PRU] |109| entry
-	.dwpsn	file "src/utilities.c",line 110,column 3,is_stmt,isa 0
-        QBEQ      ||$C$L46||, r17, 0x00 ; [ALU_PRU] |110| entry
+        JAL       r3.w2, ||dict_find||  ; [ALU_PRU] |108| dict_find
+	.dwpsn	file "src/utilities.c",line 109,column 3,is_stmt,isa 0
+        ZERO      &r18, 4               ; [ALU_PRU] |109| 
+	.dwpsn	file "src/utilities.c",line 108,column 18,is_stmt,isa 0
+        MOV       r17, r14              ; [ALU_PRU] |108| entry
+	.dwpsn	file "src/utilities.c",line 109,column 3,is_stmt,isa 0
+        QBEQ      ||$C$L46||, r17, 0x00 ; [ALU_PRU] |109| entry
 ;* --------------------------------------------------------------------------*
-        LDI       r18, 0x0001           ; [ALU_PRU] |110| 
+        LDI       r18, 0x0001           ; [ALU_PRU] |109| 
 ;* --------------------------------------------------------------------------*
 ||$C$L46||:    
-        QBNE      ||$C$L47||, r18, 0x00 ; [ALU_PRU] |110| $O$U6
+        QBNE      ||$C$L47||, r18, 0x00 ; [ALU_PRU] |109| $O$U6
 ;* --------------------------------------------------------------------------*
-	.dwpsn	file "src/utilities.c",line 111,column 5,is_stmt,isa 0
-        MOV       r14, r15              ; [ALU_PRU] |111| 
+	.dwpsn	file "src/utilities.c",line 110,column 5,is_stmt,isa 0
+        MOV       r14, r15              ; [ALU_PRU] |110| 
 $C$DW$535	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$535, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$535, DW_AT_name("forth_push")
 	.dwattr $C$DW$535, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |111| forth_push
-	.dwpsn	file "src/utilities.c",line 112,column 5,is_stmt,isa 0
-        MOV       r14, r19.b2           ; [ALU_PRU] |112| len
-	.dwpsn	file "src/utilities.c",line 113,column 3,is_stmt,isa 0
-        JMP       ||$C$L48||            ; [ALU_PRU] |113| 
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |110| forth_push
+	.dwpsn	file "src/utilities.c",line 111,column 5,is_stmt,isa 0
+        MOV       r14, r19.b2           ; [ALU_PRU] |111| len
+	.dwpsn	file "src/utilities.c",line 112,column 3,is_stmt,isa 0
+        JMP       ||$C$L48||            ; [ALU_PRU] |112| 
 ;* --------------------------------------------------------------------------*
 ||$C$L47||:    
-	.dwpsn	file "src/utilities.c",line 114,column 5,is_stmt,isa 0
+	.dwpsn	file "src/utilities.c",line 113,column 5,is_stmt,isa 0
 $C$DW$536	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$536, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$536, DW_AT_name("forth_push")
 	.dwattr $C$DW$536, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |114| forth_push
-	.dwpsn	file "src/utilities.c",line 115,column 5,is_stmt,isa 0
-        LBBO      &r0.b0, r17, 8, 1     ; [ALU_PRU] |115| entry
-        MOV       r0, r0.b0             ; [ALU_PRU] |115| 
-        LSR       r0, r0, 0x01          ; [ALU_PRU] |115| 
-        AND       r14, r0, 0x01         ; [ALU_PRU] |115| 
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |113| forth_push
+	.dwpsn	file "src/utilities.c",line 114,column 5,is_stmt,isa 0
+        LBBO      &r0.b0, r17, 8, 1     ; [ALU_PRU] |114| entry
+        MOV       r0, r0.b0             ; [ALU_PRU] |114| 
+        LSR       r0, r0, 0x01          ; [ALU_PRU] |114| 
+        AND       r14, r0, 0x01         ; [ALU_PRU] |114| 
 ;* --------------------------------------------------------------------------*
 ||$C$L48||:    
 $C$DW$537	.dwtag  DW_TAG_TI_branch
@@ -7591,22 +7585,22 @@ $C$DW$537	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$537, DW_AT_name("forth_push")
 	.dwattr $C$DW$537, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |115| forth_push
-	.dwpsn	file "src/utilities.c",line 117,column 3,is_stmt,isa 0
-        MOV       r14, r18              ; [ALU_PRU] |117| $O$U6
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |114| forth_push
+	.dwpsn	file "src/utilities.c",line 116,column 3,is_stmt,isa 0
+        MOV       r14, r18              ; [ALU_PRU] |116| $O$U6
 $C$DW$538	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$538, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$538, DW_AT_name("forth_push")
 	.dwattr $C$DW$538, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |117| forth_push
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |116| forth_push
 $C$DW$539	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$539, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$539, DW_AT_TI_return
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$529, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$529, DW_AT_TI_end_line(0x76)
+	.dwattr $C$DW$529, DW_AT_TI_end_line(0x75)
 	.dwattr $C$DW$529, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$529
@@ -7622,13 +7616,13 @@ $C$DW$540	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$540, DW_AT_TI_symbol_name("doemit")
 	.dwattr $C$DW$540, DW_AT_external
 	.dwattr $C$DW$540, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$540, DW_AT_TI_begin_line(0x7f)
+	.dwattr $C$DW$540, DW_AT_TI_begin_line(0x7e)
 	.dwattr $C$DW$540, DW_AT_TI_begin_column(0x09)
 	.dwattr $C$DW$540, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$540, DW_AT_decl_line(0x7f)
+	.dwattr $C$DW$540, DW_AT_decl_line(0x7e)
 	.dwattr $C$DW$540, DW_AT_decl_column(0x09)
 	.dwattr $C$DW$540, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 127,column 18,is_stmt,address ||doemit||,isa 0
+	.dwpsn	file "src/utilities.c",line 126,column 18,is_stmt,address ||doemit||,isa 0
 
 	.dwfde $C$DW$CIE, ||doemit||
 
@@ -7647,26 +7641,26 @@ $C$DW$540	.dwtag  DW_TAG_subprogram
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-	.dwpsn	file "src/utilities.c",line 128,column 3,is_stmt,isa 0
+	.dwpsn	file "src/utilities.c",line 127,column 3,is_stmt,isa 0
 $C$DW$541	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$541, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$541, DW_AT_name("forth_pop")
 	.dwattr $C$DW$541, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |128| forth_pop
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |127| forth_pop
 $C$DW$542	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$542, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$542, DW_AT_name("write_char")
 	.dwattr $C$DW$542, DW_AT_TI_call
 
-        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |128| write_char
+        JAL       r3.w2, ||write_char|| ; [ALU_PRU] |127| write_char
 $C$DW$543	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$543, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$543, DW_AT_TI_return
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$540, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$540, DW_AT_TI_end_line(0x81)
+	.dwattr $C$DW$540, DW_AT_TI_end_line(0x80)
 	.dwattr $C$DW$540, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$540
@@ -8035,13 +8029,13 @@ $C$DW$571	.dwtag  DW_TAG_subprogram
 	.dwattr $C$DW$571, DW_AT_TI_symbol_name("docfa")
 	.dwattr $C$DW$571, DW_AT_external
 	.dwattr $C$DW$571, DW_AT_TI_begin_file("src/utilities.c")
-	.dwattr $C$DW$571, DW_AT_TI_begin_line(0x79)
+	.dwattr $C$DW$571, DW_AT_TI_begin_line(0x78)
 	.dwattr $C$DW$571, DW_AT_TI_begin_column(0x06)
 	.dwattr $C$DW$571, DW_AT_decl_file("src/utilities.c")
-	.dwattr $C$DW$571, DW_AT_decl_line(0x79)
+	.dwattr $C$DW$571, DW_AT_decl_line(0x78)
 	.dwattr $C$DW$571, DW_AT_decl_column(0x06)
 	.dwattr $C$DW$571, DW_AT_TI_max_frame_size(0x00)
-	.dwpsn	file "src/utilities.c",line 121,column 14,is_stmt,address ||docfa||,isa 0
+	.dwpsn	file "src/utilities.c",line 120,column 14,is_stmt,address ||docfa||,isa 0
 
 	.dwfde $C$DW$CIE, ||docfa||
 
@@ -8060,33 +8054,33 @@ $C$DW$571	.dwtag  DW_TAG_subprogram
         MOV       r3.w0, r3.w2          ; [ALU_PRU] 
 	.dwcfi	save_reg_to_reg, 14, 12
 	.dwcfi	save_reg_to_reg, 15, 13
-	.dwpsn	file "src/utilities.c",line 122,column 18,is_stmt,isa 0
+	.dwpsn	file "src/utilities.c",line 121,column 18,is_stmt,isa 0
 $C$DW$572	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$572, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$572, DW_AT_name("forth_pop")
 	.dwattr $C$DW$572, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |122| forth_pop
-	.dwpsn	file "src/utilities.c",line 123,column 3,is_stmt,isa 0
+        JAL       r3.w2, ||forth_pop||  ; [ALU_PRU] |121| forth_pop
+	.dwpsn	file "src/utilities.c",line 122,column 3,is_stmt,isa 0
 $C$DW$573	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$573, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$573, DW_AT_name("dict_cfa")
 	.dwattr $C$DW$573, DW_AT_TI_call
 
-        JAL       r3.w2, ||dict_cfa||   ; [ALU_PRU] |123| dict_cfa
+        JAL       r3.w2, ||dict_cfa||   ; [ALU_PRU] |122| dict_cfa
 $C$DW$574	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$574, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$574, DW_AT_name("forth_push")
 	.dwattr $C$DW$574, DW_AT_TI_call
 
-        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |123| forth_push
+        JAL       r3.w2, ||forth_push|| ; [ALU_PRU] |122| forth_push
 $C$DW$575	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$575, DW_AT_low_pc(0x00)
 	.dwattr $C$DW$575, DW_AT_TI_return
 
         JMP       r3.w0                 ; [ALU_PRU] 
 	.dwattr $C$DW$571, DW_AT_TI_end_file("src/utilities.c")
-	.dwattr $C$DW$571, DW_AT_TI_end_line(0x7c)
+	.dwattr $C$DW$571, DW_AT_TI_end_line(0x7b)
 	.dwattr $C$DW$571, DW_AT_TI_end_column(0x01)
 	.dwendentry
 	.dwendtag $C$DW$571
@@ -8401,7 +8395,7 @@ $C$DW$599	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||docreate||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$600	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$600, DW_AT_low_pc(0x00)
@@ -8484,7 +8478,7 @@ $C$DW$607	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||docomma||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$608	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$608, DW_AT_low_pc(0x00)
@@ -8567,7 +8561,7 @@ $C$DW$615	.dwtag  DW_TAG_formal_parameter
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
         LDI       r20, ||docfa||
-        JAL      r30.w0, ||call00||
+        JAL      r3.w2, ||call00||
         JMP       ||next||
 $C$DW$616	.dwtag  DW_TAG_TI_branch
 	.dwattr $C$DW$616, DW_AT_low_pc(0x00)
@@ -8649,22 +8643,22 @@ $C$DW$623	.dwtag  DW_TAG_formal_parameter
 ||call00||:
 ;* --------------------------------------------------------------------------*
 	.dwcfi	cfa_offset, 0
-        LDI       r23, ctx_psp(xaddr)
+        LDI       r23, ||ctx_psp||
         SBBO      &r23, r16, 0, 4
-        LDI       r23, ctx_rsp(xaddr)
+        LDI       r23, ||ctx_rsp||
         SBBO      &r23, r18, 0, 4
-        LDI       r23, ctx_regs(xaddr)
+        LDI       r23, ||ctx_regs||
         SBBO      &r23, r19, 8, 4
         SBBO      &r23, r20, 4, 4
         SBBO      &r23, r21, 0, 4
-        JAL      r30.w0, r20
-        LDI       r23, ctx_psp(xaddr)
+        JAL      r3.w2, r20
+        LDI       r23, ||ctx_psp||
         LBBO      &r16, r23, 0, 4
         LBBO      &r15, r23, 4, 4
-        LDI       r23, ctx_rsp(xaddr)
+        LDI       r23, ||ctx_rsp||
         LBBO      &r18, r23, 0, 4
         LBBO      &r17, r23, 4, 4
-        LDI       r23, ctx_regs(xaddr)
+        LDI       r23, ||ctx_regs||
         LBBO      &r19, r23, 8, 4
         LBBO      &r20, r23, 4, 4
         LBBO      &r21, r23, 0, 4

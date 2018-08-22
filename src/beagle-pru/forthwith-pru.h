@@ -26,12 +26,12 @@
 #define _jump(r) __jump( _label( r ) )
 
 #define ___jump_reg(r) __asm__(r); 
-#define __jump_reg(r) ___jump_reg( "JMP       " #r ".w0" )
+#define __jump_reg(r) ___jump_reg(S_ "JMP       " #r ".w0" )
 #define _jump_reg(r, x) __jump_reg( r )
 
-#define ___call(r) __asm__(S_ "JAL      " "r30.w0, " r)
-#define __call(r) ___call( #r)
-#define _call(r) __call(r)
+#define ___call(x, r) __asm__(S_ "JAL      " #x ", " r)
+#define __call(x, r) ___call( x, #r)
+#define _call(r) __call( reg_xret, r)
 
 #define __fw_asm(x) __asm__(x)
 #define _fw_asm1(r, a, x, b, y) __asm__(S_ r " " a #x)
@@ -124,17 +124,17 @@
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
 #define save_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_of_head) // size
+  load_const(xaddr, $ctx_psp);                   \
+  store_addr_off(xaddr, reg, $stack_of_head) // size
 
 #define load_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
+  load_const(xaddr, $ctx_psp);                   \
+  load_addr_off(reg, xaddr, $stack_of_head) // sizeof one word
 
 #define call(lbl) _call( _label(lbl) )
 #define call_reg(r) _call( reg_ ## r )
 
-#define ret(reg) _jump_reg( xcall )
+#define ret(reg) _jump_reg( xret )
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \

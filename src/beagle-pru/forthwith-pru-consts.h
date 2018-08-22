@@ -17,17 +17,10 @@ typedef intptr_t fcell_t;
 #define $word_max 0xFFFFFFFF
 #define $word_ptr_sz 4
 
-#ifdef __MACH__
-#define $ctx _ctx(xaddr)
-#define $ctx_psp _ctx_psp(xaddr)
-#define $ctx_rsp _ctx_rsp(xaddr)
-#define $ctx_regs _ctx_regs(xaddr)
-#else
-#define $ctx ctx(xaddr)
-#define $ctx_psp ctx_psp(xaddr)
-#define $ctx_rsp ctx_rsp(xaddr)
-#define $ctx_regs ctx_regs(xaddr)
-#endif
+#define $ctx      ||ctx||
+#define $ctx_psp  ||ctx_psp||
+#define $ctx_rsp  ||ctx_rsp||
+#define $ctx_regs ||ctx_regs||
 
 #define $ctx_of_regs 0
 #define $ctx_of_vars 4
@@ -86,8 +79,8 @@ typedef intptr_t fcell_t;
 /* Define C params... compilers vary in which registers they use */
 
 // Relative offset register
-#define reg_xaddr r0
-#define reg_xcall r30.w0
+#define reg_xaddr r0.w0
+#define reg_xret r3.w2
 
 #endif // __HEADER_IMPL_CONST_X86__
 
