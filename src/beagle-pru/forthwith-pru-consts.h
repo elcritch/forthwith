@@ -9,9 +9,9 @@
 #define $1 $1
 #define $0 $0
 
-#define $word_sz 4
+#define $word_sz #4
 #define $word_max 0xFFFFFFFF
-#define $word_ptr_sz 4
+#define $word_ptr_sz #4
 
 #ifdef __MACH__
 #define $ctx _ctx(xaddr)
@@ -83,6 +83,7 @@
 
 // Relative offset register
 #define reg_xaddr r0
+#define reg_xcall r30.w0
 
 #endif // __HEADER_IMPL_CONST_X86__
 

@@ -25,36 +25,33 @@
 
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
-#ifdef __MACH__
 #define __jump(r) __asm__("jmp " "_" #r)
-#define __label(r) _ ## r
-#elif __linux__
-#define __jump(r) __asm__("jmp " #r)
-#define __label(r) r
-#else
-#define __jump(r) __asm__("jmp " #r)
-#define __label(r) r
-#endif
+#define __label(r) "||" r "||"
+#define _label(r) __label( #r )
 
-#define __call(r) __asm__("callq " #r)
+#define __call(r) __asm__("call " #r)
 #define _call(r) __call(r)
 
 #define _jump(r) __jump( r )
 #define ___jump_reg(r) __asm__(r); 
 
-#define __jump_reg(r) ___jump_reg( "jmpq *" #r )
+#define __jump_reg(r) ___jump_reg( "jmp " #r )
 #define _jump_reg(r, x) __jump_reg( r )
 
-#define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
+#define _fw_asm1(r, a, x, b, y) __asm__(r " " a #x)
+#define _fw_asm2(r, a, x, b, y) __asm__(r " " a #x ", " b #y )
+#define _fw_asm3(r, a, x, b, y, c, z) __asm__(r " " a #x ", " b #y ", " c #z)
+#define _fw_asm3(r, a, x, b, y, c, z, d, w) __asm__(r " " a #x ", " b #y ", " c #z ", " d #w)
 
-#define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
-#define _fw_asm_from_addr(c, x, y) _fw_asm(c, "(", x, ")", "", y, "")
-#define _fw_asm_const(c, x, y) _fw_asm(c, "", x, "", "", y, "")
-#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm(c, "", x, "", #o "(", y, ")")
-#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm(c, #o "(", x, ")", "", y, "")
+#define _fw_asm_op(c, x, y, z) _fw_asm3(c, "", x, "", y, "", z)
 
-#define __fw_asm_single(c, x) __asm__( c " " #x)
-#define _fw_asm_single(c, x) __fw_asm_single( c, x)
+#define _fw_asm_to_addr_off(c, x, y, o) _fw_asm4(c, "&", x, "", y)
+#define _fw_asm_from_addr_off(c, x, y, o) _fw_asm4(c, "", x, "&", y) 
+
+#define _fw_asm_to_addr(c, x, y) _fw_asm_to_addr_off(c, x, y, $word_sz)
+#define _fw_asm_from_addr(c, x, y) _fw_asm_from_addr_off(c, x, y, $word_sz)
+
+#define _fw_asm_single(c, x) _fw_asm1(c, " ", x)
 
 // ========================================================================== //
 // Standard "Definitions"
@@ -64,43 +61,42 @@
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(reg) _jump( reg ); _asm_jump()
 
-#define load_const(x, y) _fw_asm_const("movq", y, reg_##x)
-#define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
-#define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
+#define load_const(y, x) _fw_asm_op("ldi", y, reg_##x, $0)
+#define load_addr(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x)
+#define store_addr(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x)
 
-#define load_addr_byte(x, y) _fw_asm_from_addr("movb", reg_##y, reg_##x)
-#define store_addr_byte(x, y) _fw_asm_to_addr("movb", reg_##y, reg_##x)
+#define load_addr_byte(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x)
+#define store_addr_byte(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x)
 
-#define load_addr_off(x, y, o) _fw_asm_from_addr_off("movq", reg_##y, reg_##x, o)
-#define store_addr_off(x, y, o) _fw_asm_to_addr_off("movq", reg_##y, reg_##x, o)
-#define calc_addr_off(x, y, o) _fw_asm_from_addr_off("leaq", reg_##y, reg_##x, o)
+#define load_addr_off(y, x, o) _fw_asm_from_addr_off("lbbo", reg_##y, reg_##x, o)
+#define store_addr_off(y, x, o) _fw_asm_to_addr_off("sbbo", reg_##y, reg_##x, o)
+#define calc_addr_off(y, x, o) _fw_asm_from_addr_off("", reg_##y, reg_##x, o)
 
 // Incr & Decr
-#define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
-#define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
+#define add_const(y, x) _fw_asm_op("sub", y, reg_##x, $0)
+#define sub_const(y, x) _fw_asm_op("sub", y, reg_##x, $0)
 
 // Bitwise
-#define xor_reg(x, y) _fw_asm_const("xorq", reg_##y, reg_##x)
-#define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
-#define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
-#define not_reg(y) _fw_asm_const("notq", reg_##y, "")
-#define not_reg(y) _fw_asm_const("notq", reg_##y, "")
+#define xor_reg(y, x) _fw_asm_op("xor", reg_##y, reg_##y, reg_##x)
+#define and_reg(y, x) _fw_asm_op("and", reg_##y, reg_##y, reg_##x)
+#define or_reg(y, x) _fw_asm_op("or", reg_##y, reg_##y, reg_##x)
+#define not_reg(y) _fw_asm2("not", reg_##y, reg_##y)
 
 // Jumps
 // ... unique labels? hmmm...
 // -- gcc/clang seem to handle read-only if/else branches fine
 
 // Signed Arithmetic
-#define adds_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
-#define addu_reg(x, y) _fw_asm_const("addq", reg_##y, reg_##x)
+#define adds_reg(y, x) _fw_asm_op("add", reg_##y, reg_##y, reg_##x)
+#define addu_reg(y, x) _fw_asm_op("add", reg_##y, reg_##y, reg_##x)
 
-#define subu_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
-#define subs_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
+#define subu_reg(y, x) _fw_asm_op("sub", reg_##y, reg_##y, reg_##x)
+#define subs_reg(y, x) _fw_asm_op("sub", reg_##y, reg_##y, reg_##x)
 
-#define muls_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y); copy_reg(x, xrax)
-#define divs_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y); copy_reg(x, xrax)
+/* #define muls_reg(y, x) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y); copy_reg(x, xrax) */
 
-#define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
+#define copy_reg(y, x) _fw_asm_op("mov", reg_##y, reg_##x)
+
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 
@@ -135,14 +131,10 @@
   load_const(xrax, $ctx_psp);                   \
   load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
 
-#define call(lbl) _call( __label(lbl) )
+#define call(lbl) _call( _label(lbl) )
+#define call_reg(r) _call( reg_ ## r )
 
-#define __call_reg(r) __asm__("callq *" #r )
-#define _call_reg(r) __call_reg( r )
-#define call_reg(r) _call_reg( reg_ ## r )
-
-#define ret(reg)                                 \
-  __asm__("ret");
+#define ret(reg) _jump_reg( xcall )
 
 // improvement: load "reg file" from mem, not sure if x86_64 does that...
 #define save_state() \
