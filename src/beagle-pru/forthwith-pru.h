@@ -25,9 +25,9 @@
 
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
-#define __jump(r) __asm__("jmp " "_" #r)
-#define __label(r) "||" r "||"
+#define __label(r) r
 #define _label(r) __label( #r )
+#define __jump(r) __asm__("jmp " _label(r) )
 
 #define __call(r) __asm__("call " #r)
 #define _call(r) __call(r)
