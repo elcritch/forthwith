@@ -218,6 +218,15 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
+void write_str(uint8_t l, char *c) {
+  uint8_t idx = ctx->vars->tob_idx;
+  uint8_t len = ctx->vars->tob_len;
+
+  for (uint8_t i = 0; i < l && (idx + i < len); i++) {
+    write_char(c[i]);
+  }
+}
+
 __fw_noinline__
 void write_char(char c) {
   uint8_t idx = ctx->vars->tob_idx;
@@ -233,20 +242,16 @@ void write_char(char c) {
 __fw_noinline__
 void write_number(fcell_t number)
 {
-  uint8_t idx = ctx->vars->tob_idx;
-  uint8_t len = ctx->vars->tob_len;
-  char *tob = ctx->vars->tob_str;
-
   // Print Number
-  if ( len >= 2 ) {
-    tob[idx++] = '0';
-    tob[idx++] = 'x';
-  }
+  write_char('0');
+  write_char('x');
 
+  uint8_t idx = 0;
   do {
-    uint8_t basis_of = (number >> (idx<<2)) & 0xF; 
-    tob[idx++] = num_basis[basis_of];
-  } while (idx < len && number);
+    uint8_t basis_of = number & 0xF; 
+    number = number >> (idx++ << 2);
+    write_char(num_basis[basis_of]);
+  } while (number);
 }
 
 fcell_t parse_number(uint8_t len, char *tib,

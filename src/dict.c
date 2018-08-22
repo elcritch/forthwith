@@ -122,7 +122,6 @@ fcell_xt dict_cfa(fword_t *entry) {
 }
 
 
-#include <stdio.h>
 /* FIND (name? – address). */
 __fw_noinline__
 void dict_print() {
@@ -132,8 +131,15 @@ void dict_print() {
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
     fword_t word = *word_ptr;
-    printf("dict entry:%016p: %010s -> %016p (%d:%x)\t", word_ptr, word_ptr->name, word_ptr->body, word_ptr->len, word_ptr->meta);
-    printf("dict entry:%lld: %s -> %lld\n", word_ptr, word_ptr->name, word_ptr->body);
+
+    write_str(6, "dict: ");
+    write_number((fcell_t)word_ptr->body);
+    /* write_str(1, " "); */
+    /* write_str(word_ptr->len, word_ptr->name); */
+    /* write_str(1, " "); */
+    /* write_number(word_ptr->meta); */
+    /* write_str(1, "\n"); */
+
     word_ptr = word.prev;
   }
 

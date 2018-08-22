@@ -8,6 +8,7 @@ fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
 fcell_t parse_number(uint8_t len, char *addr,
                      fcell_t *number, fcell_t *err);
 
+void write_str(uint8_t len, char *n);
 void write_number(fcell_t n);
 void write_char(char c);
 
