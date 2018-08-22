@@ -1,5 +1,4 @@
 
-#include "forthwith-linux.h"
 #include "forthwith.h"
 #include "dict.h"
 
@@ -80,21 +79,3 @@ int doprompt(char *rx_buff, int rx_len, char *tx_buff, int tx_len) {
   return errno;
 }
 
-int main(int argc, char** argv) {
-
-  forth_init();
-  forth_bootstrap(ctx);
-
-  char *rx_buff[128];
-  char *tx_buff[128];
-
-  int status = 0;
-
-  printf("OK.");
-
-  for (;;) {
-    status = doprompt(rx_buff, 128, tx_buff, 128);
-  } 
-
-  return 0;
-}

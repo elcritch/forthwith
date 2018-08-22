@@ -15,6 +15,7 @@
 #include "dict.c"
 #include "forthwith.c"
 #include "utilities.c"
+#include "prompt.c"
 
 
 extern fw_ctx_t *ctx;
