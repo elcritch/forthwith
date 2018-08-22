@@ -151,17 +151,9 @@ void docfa() {
 
 __fw_noinline__
 fw_call doemit() {
-  char c = (char)forth_pop();
-
-  uint8_t idx = ctx->vars->tob_idx;
-  uint8_t len = ctx->vars->tob_len;
-
-  if (idx < len) {
-    ctx->vars->tob_str[idx++] = c;
-    ctx->vars->tob_idx = idx;
-  } else {
-  }
+  write_char((char)forth_pop());
 }
+
 
 __fw_noinline__
 // ( *c l -- n e ) {tib} {tib_idx++}
@@ -226,22 +218,35 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-fcell_t emit_number(uint8_t len, char *tob,
-                    fcell_t number)
+__fw_noinline__
+void write_char(char c) {
+  uint8_t idx = ctx->vars->tob_idx;
+  uint8_t len = ctx->vars->tob_len;
+
+  if (idx < len) {
+    ctx->vars->tob_str[idx++] = c;
+    ctx->vars->tob_idx = idx;
+  } else {
+  }
+}
+
+__fw_noinline__
+void write_number(fcell_t number)
 {
+  uint8_t idx = ctx->vars->tob_idx;
+  uint8_t len = ctx->vars->tob_len;
+  char *tob = ctx->vars->tob_str;
+
   // Print Number
-  int i = 0;
   if ( len >= 2 ) {
-    tob[i++] = '0';
-    tob[i++] = 'x';
+    tob[idx++] = '0';
+    tob[idx++] = 'x';
   }
 
   do {
-    uint8_t basis_of = (number >> (i<<2)) & 0xF; 
-    tob[i++] = num_basis[basis_of];
-  } while (i < len && number);
-
-  return i;
+    uint8_t basis_of = (number >> (idx<<2)) & 0xF; 
+    tob[idx++] = num_basis[basis_of];
+  } while (idx < len && number);
 }
 
 fcell_t parse_number(uint8_t len, char *tib,
