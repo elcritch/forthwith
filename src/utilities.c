@@ -6,45 +6,20 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-fw_call doprintstate() {
-
-  for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
-    printf("-");
-
-  printf("-> \t\t regs: ");
-  fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
-  printf("x: %016p (%10s), ", ctx->regs->x, entry? entry->name : NULL);
-  printf("ip: %016p, ", ctx->regs->ip);
-  printf("w: %016p, ", ctx->regs->w);
-  /* printf(" stacks: "); */
-  /* printf("psp: %p, ", ctx->psp->head); */
-  /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %d - %016p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
-
-  printf(" --\t");
-
-  printf("(");
-
-  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}
-
-  printf(")");
-
-  printf("\n");
-  return;
-}
-
 // handle data stack underflow
 __fw_noinline__
 fw_call dosuf() {
   ctx->vars->error = FW_ERR_STACKUNDERFLOW;
-  exit(ctx->vars->error);
+  ctx->psp->head = ctx->psp->base;
+  /* exit(ctx->vars->error); */
 }
 
 // handle return stack underflow
 __fw_noinline__
 fw_call doruf(FORTH_REGISTERS) {
   ctx->vars->error = FW_ERR_RSTACKUNDERFLOW;
-  exit(ctx->vars->error);
+  ctx->rsp->head = ctx->rsp->base;
+  /* exit(ctx->vars->error); */
 }
 
 // ( n -- )
@@ -57,14 +32,12 @@ void doret() {
 // {*tib} {tib_idx++} ( -- cp n )
 __fw_noinline__
 void docreate() {
-  printf("<<< docreate\n");
   fcell_t len = forth_pop();
   char *cstr = (char*)forth_pop();
   fcell_xt *here = forth_alloc_var();
   /* *here = xt_docolon; */
   fword_t *entry = dict_create(F_HIDDEN, len, cstr, here);
   forth_push((fcell_t)entry);
-  printf(">>> docreate\n");
 }
 
 // ( n -- ) {*user}
@@ -111,13 +84,13 @@ void doword() {
 
   parse_word(idx, len, tib, &word_start, &word_stop);
 
-#ifdef FW_TRACE
-  printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop);
-  for (int i = 0; i < (word_stop - word_start); i++) {
-    printf("%c", word_start[i]);
-  }
-  printf("`\n");
-#endif // FW_TRACE
+/* #ifdef FW_TRACE */
+/*   printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop); */
+/*   for (int i = 0; i < (word_stop - word_start); i++) { */
+/*     printf("%c", word_start[i]); */
+/*   } */
+/*   printf("`\n"); */
+/* #endif // FW_TRACE */
 
   // Set results
   ctx->vars->tib_idx = word_stop - tib;

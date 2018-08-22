@@ -72,14 +72,14 @@ forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
 });
 #endif // FW_CORE_MULTIPLY
 
-#ifndef FW_NO_CORE_DIVIDE
-forth_core("/", 1, F_NORMAL, sdiv, "( n2 n1 -- n )",  {
-  popd(2);
-  divs_reg(s1, s2);
-  pushd(1);
-  jump(next);
-});
-#endif // FW_CORE_DIVIDE
+/* #ifndef FW_NO_CORE_DIVIDE */
+/* forth_core("/", 1, F_NORMAL, sdiv, "( n2 n1 -- n )",  { */
+/*   popd(2); */
+/*   divs_reg(s1, s2); */
+/*   pushd(1); */
+/*   jump(next); */
+/* }); */
+/* #endif // FW_CORE_DIVIDE */
 
 forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
   popd(2);

@@ -4,8 +4,8 @@ CFLAGS = -Wall -Os -DFW_TRACE -g $(BASE_CFLAGS)
 # CFLAGS = -Wall -Os $(BASE_CFLAGS)
 
 
-CC = clang
-# CC = gcc
+# CC = clang
+CC = gcc
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)

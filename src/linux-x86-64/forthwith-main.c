@@ -4,7 +4,6 @@
 #include "dict.h"
 #include "prompt.h"
 
-#include <stdio.h>
 #include <string.h>
 
 int main(int argc, char** argv) {
@@ -14,8 +13,6 @@ int main(int argc, char** argv) {
 
   char *rx_buff[128];
   char *tx_buff[128];
-
-  printf("OK.");
 
   for (;;) {
     doprompt((char*)rx_buff + 0, 128, (char*)tx_buff, 128);

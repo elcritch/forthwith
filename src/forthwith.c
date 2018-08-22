@@ -14,7 +14,6 @@ fw_ctx_regs_t *ctx_regs = NULL;
 /* fcell_xt xt_quits = (fcell_xt)&quits; */
 /* fcell_xt xt_exits = (fcell_xt)&exits; */
 
-#include <stdio.h>
 #include <string.h>
 
 __fw_noinline__
@@ -54,13 +53,6 @@ int forth_init() {
   ctx->user->base = ctx->user->head = calloc(1, ctx->user->size);
   ctx->dict->base = ctx->dict->head = calloc(1, ctx->dict->size);
   ctx->strings->base = ctx->strings->head = calloc(1, ctx->strings->size);
-
-#ifdef FW_TRACE
-  printf("psp base: %p\n", ctx->psp->base);
-  printf("rsp base: %p\n", ctx->rsp->base);
-  printf("user base: %p\n", ctx->user->base);
-  printf("dict base: %p\n", ctx->dict->base);
-#endif // FW_TRACE
 
   return -1;
 }

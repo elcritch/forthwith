@@ -97,8 +97,8 @@
 #define subu_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
 #define subs_reg(x, y) _fw_asm_const("subq", reg_##y, reg_##x)
 
-#define muls_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y)
-#define divs_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y)
+#define muls_reg(x, y) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y); copy_reg(x, xrax)
+#define divs_reg(x, y) copy_reg(xrax, x); _fw_asm_single("idivq", reg_##y); copy_reg(x, xrax)
 
 #define copy_reg(x, y) _fw_asm_const("movq", reg_##y, reg_##x)
 #define incr_reg(reg) add_const(reg, $word_sz)

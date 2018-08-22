@@ -583,14 +583,14 @@ void test_other(void) {
 #include "test_intp.c"
 
 TEST_LIST = {
-  /* { "basic", test_basic }, */
-  /* { "parsing", test_parsing }, */
-  /* { "create", test_create }, */
-  /* { "branches", test_branches }, */
-  /* { "ifesle", test_ifelse }, */
-  /* { "other", test_other }, */
+  { "basic", test_basic },
+  { "parsing", test_parsing },
+  { "create", test_create },
+  { "branches", test_branches },
+  { "ifesle", test_ifelse },
+  { "other", test_other },
   { "interpreter", test_interpreter },
-  /* { "colon", test_colon }, */
+  { "colon", test_colon },
   { 0 }
 };
 
