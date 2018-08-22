@@ -219,21 +219,28 @@ word:
 const char num_basis[] = "0123456789ABCDEF";
 
 void write_str(uint8_t l, char *c) {
-  uint8_t idx = ctx->vars->tob_idx;
-  uint8_t len = ctx->vars->tob_len;
+  fcell_t idx = ctx->vars->tob_idx;
+  fcell_t len = ctx->vars->tob_len;
 
-  for (uint8_t i = 0; i < l && (idx + i < len); i++) {
+  /* printf("WRITE_STRING: idx: %d, len: %d\n", idx, len); */
+  for (fcell_t i = 0; (i < l) && ((idx + i) < len); i++) {
+    /* printf("WRITE_STRING: i: %d, l: %d, idx: %d, len: %d \n", i, l, idx, len); */
     write_char(c[i]);
   }
 }
 
 __fw_noinline__
 void write_char(char c) {
-  uint8_t idx = ctx->vars->tob_idx;
-  uint8_t len = ctx->vars->tob_len;
+  fcell_t *idx = &ctx->vars->tob_idx; 
+  fcell_t *len = &ctx->vars->tob_len; 
+  char *str = ctx->vars->tob_str; 
 
-  if (idx < len) {
-    ctx->vars->tob_str[ctx->vars->tob_idx++] = c;
+  if (*idx < *len) {
+    str[*idx] = c;
+    *idx += 1;
+    /* printf("LEN: %c %d ", c, ctx->vars->tob_idx ); */
+  } else {
+    /* printf("XLEN: "); */
   }
 }
 
@@ -244,12 +251,13 @@ void write_number(fcell_t number)
   write_char('0');
   write_char('x');
 
-  uint8_t idx = 0;
-  do {
+  for (uint8_t i = 0; i < sizeof(fcell_t) >> 3; i++) {
+    number = number >> (i++ << 2);
     uint8_t basis_of = number & 0xF; 
-    number = number >> (idx++ << 2);
     write_char(num_basis[basis_of]);
-  } while (number);
+    if (number == 0)
+      return;
+  }
 }
 
 fcell_t parse_number(uint8_t len, char *tib,

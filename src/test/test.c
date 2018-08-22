@@ -9,9 +9,15 @@
 #include <stdio.h>
 #include <string.h>
 
+char out_buff[256] = {0};
+
 void test_setup() {
   forth_init();
   forth_bootstrap(ctx);
+
+  ctx->vars->tob_idx = 0;
+  ctx->vars->tob_str = calloc(1, 2048);
+  ctx->vars->tob_len = 2048;
 }
 
 /* #define TEST_CHECK_(args...) */
@@ -577,14 +583,14 @@ void test_other(void) {
 #include "test_intp.c"
 
 TEST_LIST = {
-  { "basic", test_basic },
-  { "parsing", test_parsing },
-  { "create", test_create },
-  { "branches", test_branches },
-  { "ifesle", test_ifelse },
-  { "other", test_other },
+  /* { "basic", test_basic }, */
+  /* { "parsing", test_parsing }, */
+  /* { "create", test_create }, */
+  /* { "branches", test_branches }, */
+  /* { "ifesle", test_ifelse }, */
+  /* { "other", test_other }, */
   { "interpreter", test_interpreter },
-  { "colon", test_colon },
+  /* { "colon", test_colon }, */
   { 0 }
 };
 

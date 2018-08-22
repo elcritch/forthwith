@@ -33,6 +33,7 @@ int forth_init() {
   ctx_psp = ctx->psp;
   ctx_rsp = ctx->rsp;
   ctx_regs = ctx->regs;
+  /* ctx_vars = ctx->vars; */
 
   // Configure default stack sizes
   ctx->psp->size =  128 * sizeof(fw_ctx_stack_t);
@@ -101,7 +102,7 @@ void forth_clear() {
 }
 
 __fw_noinline__
-int forth_bootstrap(fw_ctx_t* ctx) {
+int forth_bootstrap() {
 
   #define FORTH_DEFINE_DICT_ENTRIES
     #include "xmacros.h"

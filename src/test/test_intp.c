@@ -22,6 +22,12 @@ void test_interpreter(void) {
   test_setup();
 
   dict_print();
+  fcell_t dlen = ctx->vars->tob_idx;
+  printf("TOB SZ: %s\n", ctx->vars->tob_str);
+  for (fcell_t i = 0; i < dlen; i++) {
+    putchar(ctx->vars->tob_str[i]);
+  }
+  printf("TOB DONE\n");
 
   printf("ctx->rsp: %p\n", ctx->rsp);
   printf("ctx->psp: %p\n", ctx->psp);
@@ -85,6 +91,12 @@ void test_interpreter(void) {
 void test_colon(void) {
   test_setup();
 
+
+  /* dict_print(); */
+  /* printf("dict: %d\n", ctx->vars->tob_idx); */
+  /* for (uint8_t i = 0; i < ctx->vars->tob_idx; i++) { */
+  /*   putc(ctx->vars->tob_str[i], stdout); */
+  /* } */
 
   printf("\n<<<<<<<<<<<< TEST ':' <<<<<<<<<<<< \n\n");
 

@@ -104,8 +104,8 @@ struct forth_word {
   char *name;
 };
 
-int forth_bootstrap(fw_ctx_t* ctx);
-int forth_init();
+extern int forth_bootstrap();
+extern int forth_init();
 
 #define FW_OK 0
 #define FW_ERR_STACKOVERFLOW 1
@@ -130,7 +130,7 @@ extern fcell_t forth_pop();
 extern int forth_push(fcell_t val);
 
 extern int forth_init();
-extern int forth_bootstrap(fw_ctx_t* ctx);
+extern int forth_bootstrap();
 extern fw_call forth_exec(FORTH_REGISTERS);
 extern int forth_eval(fcell_xt *instr);
 extern fcell_t forth_count();
