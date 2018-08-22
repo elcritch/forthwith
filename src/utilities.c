@@ -65,6 +65,7 @@ void doxmask() {
 __fw_noinline__
 void dolbrac() {
   ctx->vars->state = IMMEDIATE_MODE;
+  ctx->vars->state = &docolon;
 }
 
 // ( -- ) {*var->state}

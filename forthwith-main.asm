@@ -1,6 +1,6 @@
 ;******************************************************************************
 ;* PRU C/C++ Codegen                                              Unix v2.2.1 *
-;* Date/Time created: Wed Aug 22 15:45:25 2018                                *
+;* Date/Time created: Wed Aug 22 17:46:51 2018                                *
 ;******************************************************************************
 	.compiler_opts --abi=eabi --endian=little --hll_source=on --object_format=elf --silicon_version=3 --symdebug:dwarf --symdebug:dwarf_version=3 
 
@@ -67,8 +67,8 @@ $C$DW$8	.dwtag  DW_TAG_variable
 	.dwattr $C$DW$8, DW_AT_decl_line(0x5c)
 	.dwattr $C$DW$8, DW_AT_decl_column(0x12)
 
-;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/optpru /tmp/TI2alsyP31n /tmp/TI2alALS6wP 
-;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/acpiapru -@/tmp/TI2alyiQzxB 
+;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/optpru /tmp/TI3EQFcAXGo /tmp/TI3EQ9P040F 
+;	/home/elcritch/.nerves/artifacts/toolchain_extras_pru_cgt-linux_x86_64-3.0.1/bin/acpiapru -@/tmp/TI3EQdsJOjN 
 	.sect	".text:main"
 	.clink
 	.global	||main||

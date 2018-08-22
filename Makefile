@@ -13,7 +13,7 @@ PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY
+PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 

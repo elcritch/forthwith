@@ -10,12 +10,12 @@ typedef intptr_t fcell_t;
 
 /* #define FORTHWITH_NO_CHECKS */
 
-#define $1 $1
-#define $0 $0
+#define $1 1
+#define $0 0
 
-#define $word_sz #4
+#define $word_sz 4
 #define $word_max 0xFFFFFFFF
-#define $word_ptr_sz #4
+#define $word_ptr_sz 4
 
 #ifdef __MACH__
 #define $ctx _ctx(xaddr)
