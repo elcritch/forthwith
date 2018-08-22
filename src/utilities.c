@@ -115,14 +115,12 @@ void doword() {
   printf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop);
   for (int i = 0; i < (word_stop - word_start); i++) {
     printf("%c", word_start[i]);
-    /* puts(word_start[i]); */
   }
   printf("`\n");
 #endif // FW_TRACE
 
   // Set results
   ctx->vars->tib_idx = word_stop - tib;
-  /* ctx->vars->tib_idx += word_stop - (fcell_t)(tib + idx); */
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
   forth_push( (fcell_t)(ctx->vars->tib_idx <= len ));
@@ -171,11 +169,8 @@ fw_call donumber() {
   fcell_t err = 0;
   uint8_t len = (uint8_t)forth_pop();
   char *addr = (char *)forth_pop();
-  /* uint8_t len = ctx->vars->tib_len; */
-  /* char   *addr = ctx->vars->tib_str + ctx->vars->tib_idx; */
 
   fcell_t number = 0;
-
   parse_number(len, addr, &number, &err);
 
   forth_push(number);
@@ -197,9 +192,6 @@ fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
 {
   uint8_t start;
   char c;
-
-  /* if (idx >= len) */
-    /* return 0; */
 
 whitespace:
   while ((c = tib[idx]) && ((idx < len) & is_whitespace(c)))
@@ -234,19 +226,19 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-fcell_t emit_number(uint8_t len, char *tib,
+fcell_t emit_number(uint8_t len, char *tob,
                     fcell_t number)
 {
   // Print Number
   int i = 0;
   if ( len >= 2 ) {
-    tib[i++] = '0';
-    tib[i++] = 'x';
+    tob[i++] = '0';
+    tob[i++] = 'x';
   }
 
   do {
     uint8_t basis_of = (number >> (i<<2)) & 0xF; 
-    tib[i++] = num_basis[basis_of];
+    tob[i++] = num_basis[basis_of];
   } while (i < len && number);
 
   return i;
