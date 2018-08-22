@@ -61,7 +61,7 @@ void docreate() {
   fcell_t len = forth_pop();
   char *cstr = (char*)forth_pop();
   fcell_xt *here = forth_alloc_var();
-  *here = &xt_docolon;
+  /* *here = xt_docolon; */
   fword_t *entry = dict_create(F_HIDDEN, len, cstr, here);
   forth_push((fcell_t)entry);
   printf(">>> docreate\n");
@@ -71,6 +71,8 @@ void docreate() {
 __fw_noinline__
 void docomma() {
   *ctx->user->head = forth_pop();
+  /* printf("\tcomma: %016p -> %016p (%lld)\n", ctx->user->head, *ctx->user->head, *ctx->user->head); */
+  forth_alloc_var();
 }
 
 // ( n -- ) {*user}

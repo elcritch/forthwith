@@ -125,10 +125,23 @@ void test_colon(void) {
   TEST_CHECK_(entry_a != NULL, "Expected non-null `:` word, got %p for %s", entry_a, "entry_a");
   printf("entry_a: %016p\n", entry_a);
 
-  fcell_xt cfa_a = (fcell_xt) dict_cfa(entry_a);
+  fcell_xt * cfa_a = (fcell_xt *) dict_cfa(entry_a);
   TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got %d for %s", cfa_a, "cfa_a");
 
   printf("cfa_aa: %016p\n", cfa_a);
+
+  fword_t *entry_prior = ctx->dict->head - 2;
+  fcell_xt * cfa_prior = *(fcell_xt *) dict_cfa(entry_prior);
+
+  /* cfa_a = *cfa_a; */
+  for (int j = 0; j < 6; j++) {
+    fcell_xt *aj = cfa_a[j];
+    fword_t *e = aj > 1000 ? dict_lookup(*aj) : aj;
+    printf("cfa_aa[%d]: %016p -> %s\n", j, cfa_a[j], e > 1000 ? e->name : NULL);
+    if (cfa_a[j] == cfa_prior)
+      printf("prior entry: %s\n", entry_prior->name);
+  }
+
 
   int idx_ra = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
@@ -146,7 +159,7 @@ void test_colon(void) {
   printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
 
 
-  int expi = 99;
+  int expi = 256;
   int expl = 1;
 
   int cnt = forth_count();

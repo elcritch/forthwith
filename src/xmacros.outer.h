@@ -86,10 +86,10 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
 forth_word(":", 1, F_NORMAL, colon, "( p -- )",
            XT(word), // Get the name of the new word
            XT(zbranch),
-              XCELLS(7),
+              XCELLS(6),
               XT(create), // CREATE the dictionary entry / header
               XT(lit),
-                XT(docolon),
+                *XT(docolon),
                 XT(comma), // Append DOCOLON (the codeword).
               XT(rbrac), // Go into compile mode.
            XT(semi), // Return from the function.
@@ -183,7 +183,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
               XT(zbranch),
                 XCELLS(6),
                 XT(tick),
-                XT(lit),
+                XT(tick),
                 XT(comma),
                 XT(comma),
                 XT(drop),
@@ -195,14 +195,15 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
            XT(zbranch),
-              XCELLS(13),
+              XCELLS(14),
 
               XTV(STATE),
               XT(fetch),
               XT(xor),
 
               XT(zbranch),
-                XCELLS(4),
+                XCELLS(5),
+                XT(cfa),
                 XT(comma),
               XT(branch),
                 XCELLS(3),
