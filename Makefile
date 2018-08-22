@@ -1,11 +1,11 @@
 BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function -Wno-format -Isrc/
 
-CFLAGS = -Wall -Os -DFW_TRACE -g $(BASE_CFLAGS)
-# CFLAGS = -Wall -Os $(BASE_CFLAGS)
+CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
+# CFLAGS = -Wall -O3 $(BASE_CFLAGS)
 
 
-# CC = clang
-CC = gcc
+CC = clang
+# CC = gcc
 
 # SRCS = src/forthwith.c src/utilities.c src/access.c src/dict.c src/inner.c src/core.c
 # OBJS = $(SRCS:src/%.c=_build/%.o)
