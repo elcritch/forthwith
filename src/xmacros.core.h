@@ -85,37 +85,37 @@ forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
 
 // =============== Bitwise Primitives ============== //
 
-forth_core("^", 1, F_NORMAL, xor, "( n n -- n )",  {
+forth_core("^", 1, F_NORMAL, xoru, "( n n -- n )",  {
     popd(2);
     xor_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-forth_core("&", 1, F_NORMAL, and, "( n n -- n )",  {
+forth_core("&", 1, F_NORMAL, andu, "( n n -- n )",  {
     popd(2);
     and_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-forth_core("|", 1, F_NORMAL, or, "( n n -- n )",  {
+forth_core("|", 1, F_NORMAL, oru, "( n n -- n )",  {
     popd(2);
     or_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-/* forth_core("<<", 1, F_NORMAL, lshift, "( n n -- n )",  { */
-/*     popd(2); */
-/*     rshift_reg(s1, s2); */
-/*     pushd(1); */
-/*     jump(next); */
-/*   }); */
+forth_core("<<", 1, F_NORMAL, lshiftu, "( n n -- n )",  {
+    popd(2);
+    rshift_reg(s1, s2);
+    pushd(1);
+    jump(next);
+});
 
-/* forth_core(">>", 1, F_NORMAL, rshift, "( n n -- n )",  { */
-/*     popd(2); */
-/*     lshift_reg(s1, s2); */
-/*     pushd(1); */
-/*     jump(next); */
-/*   }); */
+forth_core(">>", 1, F_NORMAL, rshiftu, "( n n -- n )",  {
+    popd(2);
+    lshift_reg(s1, s2);
+    pushd(1);
+    jump(next);
+});

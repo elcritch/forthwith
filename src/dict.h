@@ -18,6 +18,7 @@ fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body);
 fword_t* dict_find(int8_t len, char *name);
 fword_t* dict_lookup(fcell_xt addr);
 fcell_xt dict_cfa(fword_t *entry);
+void dict_add(fword_t *entry);
 void dict_print();
 
 #endif // _FW_DICT_H_

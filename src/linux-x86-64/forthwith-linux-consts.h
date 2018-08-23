@@ -94,6 +94,7 @@ typedef intptr_t fcell_t;
 #define reg_xrsi %rsi
 #define reg_xrdx %rdx
 #define reg_xrcx %rcx
+#define reg_xcl  %cl // mainly for shift ops
 #define reg_xrax %rax
 #define reg_xrip %rip
 #define reg_xrbp %rbp

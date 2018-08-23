@@ -55,7 +55,7 @@ void dict_add(fword_t *entry) {
   // C Requires compile time constants,
   // xt_<name> is not, but &xt_<name> _is_ a compile time
   // so we store &xt_<name> and deref here to fix it. Nifty!
-  entry->body = *entry->body;
+  entry->body = (fcell_xt*) *entry->body;
   word_ptr->prev = entry;
 }
 

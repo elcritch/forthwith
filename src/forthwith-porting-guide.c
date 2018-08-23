@@ -88,33 +88,46 @@ void examples_accessors_ctx() {
 
 // Bitwise //
 #define binary_ops(opname)                                 \
-  printf(#opname "  -> %ld \n", opname(14, 2));
+  printf(#opname "  -> %ld \n", ex_ ## opname(14, 2)); \
+  printf(#opname "  -> %ld \n", ex_ ## opname(9, 1));
 
 
 __fw_noinline__
-fcell_t lshift(fcell_t a, fcell_t b) {
+fcell_t ex_lshiftc(fcell_t a, fcell_t b) {
   return a << b;
 }
 
 __fw_noinline__
-fcell_t rshift(fcell_t a, fcell_t b) {
+fcell_t ex_rshiftc(fcell_t a, fcell_t b) {
   return a >> b;
 }
 
 __fw_noinline__
-fcell_t mul(fcell_t a, fcell_t b) {
+fcell_t ex_lshiftu(uint32_t a, uint32_t b) {
+  return a << b;
+}
+
+__fw_noinline__
+fcell_t ex_rshiftu(uint32_t a, uint32_t b) {
+  return a >> b;
+}
+
+__fw_noinline__
+fcell_t ex_mul(fcell_t a, fcell_t b) {
   return a * b;
 }
 
 __fw_noinline__
-fcell_t div(fcell_t a, fcell_t b) {
+fcell_t ex_div(fcell_t a, fcell_t b) {
   return a * b;
 }
 
 __fw_noinline__
 void examples_bitwise() {
-  binary_ops(lshift);
-  binary_ops(rshift);
+  binary_ops(lshiftc);
+  binary_ops(rshiftc);
+  binary_ops(lshiftu);
+  binary_ops(rshiftu);
   binary_ops(mul);
   binary_ops(div);
 }

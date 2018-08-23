@@ -138,7 +138,7 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
 
               XTV(STATE),
               XT(fetch),
-              XT(xor),
+              XT(xoru),
 
               XT(zbranch),
                 XCELLS(5),
