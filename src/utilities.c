@@ -224,12 +224,14 @@ void write_number(fcell_t number)
   write_char('0');
   write_char('x');
 
-  for (uint8_t i = 0; i < (sizeof(fcell_t) >> 2); i++) {
-    number = number >> (i++ << 2);
-    uint8_t basis_of = number & 0xF; 
+  uint8_t first_non = false;
+
+  for (int i = ( sizeof(fcell_t) << 1 ) - 1; i >= 0; i--) {
+    uint8_t basis_of = (number >> (i << 2)) & 0xF; 
+    if (basis_of == 0 & first_non == false & i != 0)
+      continue;
+    first_non = true;
     write_char(num_basis[basis_of]);
-    if (number == 0)
-      return;
   }
 }
 

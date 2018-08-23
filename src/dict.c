@@ -131,7 +131,7 @@ void dict_print() {
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
 
-    write_str(6, "DICT: ");
+    write_str(3, ":: ");
     write_number((fcell_t)word_ptr->body);
     write_char(' ');
     write_str(word_ptr->len, word_ptr->name);

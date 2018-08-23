@@ -112,58 +112,10 @@ forth_word(";", 1, F_NORMAL | F_IMMED, semicolon, "( p -- )",
            XT(semi), // Return from the function.
            );
 
-/* forth_word("ifthen", 6, F_IMMED, ifthen, "( -- )", */
-/*            XT(tick), XT(zbranch), XT(comma), */
-/*            XTV(HERE), */
-/*            XT(fetch), */
-/*            XT(lit), 0, */
-/*            XT(comma), */
-/*            ); */
-
-/* forth_word("else", 5, F_IMMED, else_, "( -- )", */
-/*            XT(tick), XT(branch), XT(comma), */
-/*            XTV(HERE), XT(fetch), */
-/*            XT(lit), 0, XT(comma), */
-/*            XT(swap), */
-/*            XT(dup), */
-/*            XTV(HERE), XT(fetch), XT(swap), XT(sub), */
-/*            XT(swap), XT(store), */
-/*            ); */
-
-/* forth_word("end", 5, F_IMMED, end, "( -- )", */
-/*            XT(dup), */
-/*            XTV(HERE), XT(fetch), XT(swap), XT(sub), */
-/*            XT(swap), XT(store), */
-/*            ); */
-
 
 /*
-  32 word find
-   ifthen
-      state @ =
-        ifthen
-          ,
-        else
-          execute
-        end
-   else
-      dup rot count >number
-        ifthen
-          state @
-            ifthen
-              last @ dup @ last ! dp !
-            end
-            abort
-        end
-        drop drop state @
-          ifthen
-            ' lit , ,
-          end
-   end
+  Interpret Numbers
 */
-
-// TODO: check indexes of branches ...
-// try parsing number and compiling or running
 forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(number),
            XT(zbranch),
@@ -217,6 +169,9 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            );
 
 
+/*
+  Magic Interpreter
+ */
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
            XT(zbranch),
