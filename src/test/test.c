@@ -52,12 +52,12 @@ void test_basic(void) {
 
   // Colons
   *var1 = (fcell_xt) xt_docolon;
-  *var2 = (fcell_xt) &xt_lit;
+  *var2 = (fcell_xt) &xt_tick;
   *var3 = (fcell_xt) 3;
-  *var4 = (fcell_xt) &xt_lit;
+  *var4 = (fcell_xt) &xt_tick;
   *var5 = (fcell_xt) 5;
   *var6 = (fcell_xt) &xt_sadd;
-  *var7 = (fcell_xt) &xt_lit;
+  *var7 = (fcell_xt) &xt_tick;
   *var8 = (fcell_xt) 1;
   *var9 = (fcell_xt) &xt_sadd;
   *varA = (fcell_xt) &xt_semi;

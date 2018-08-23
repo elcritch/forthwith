@@ -1,17 +1,4 @@
 
-// #include "forthwith.h"
-
-forth_core("lit", 3, F_NORMAL, lit, "( -- n)", {
-  popd(0);
-  // load addr and move IP
-  load_addr(x, ip);
-  incr_reg(ip);
-  // push on stack
-  copy_reg(s1, x);
-  pushd(1);
-  jump(next);
-});
-
 forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
     popd(0);
     // Get address of next word from codeword list (e.g. same as lit)
@@ -44,16 +31,16 @@ forth_docall("ret", 3, F_NORMAL, ret_, "( n -- )", doret);
 
 // Toggle hidden flag -- unhide the word
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
-           XT(lit), (fcell_xt)F_IMMED, XT(xmask),
+           XT(tick), (fcell_xt)F_IMMED, XT(xmask),
            );
 
-/* /\* Executes word on tos *\/ */
-/* forth_core("exec", 6, F_NORMAL, exec, "( n -- )", { */
-/*   popd(1); */
-/*   copy_reg(x, s1); */
-/*   pushd(0); */
-/*   jump_reg(x); */
-/* }); */
+/* Executes word on tos */
+forth_core("exec", 4, F_NORMAL, exec, "( n -- )", {
+  popd(1);
+  copy_reg(x, s1);
+  pushd(0);
+  jump_reg(x);
+});
 
 /* Increments the IP by offset to affect branching */
 forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
@@ -88,7 +75,7 @@ forth_word(":", 1, F_NORMAL, colon, "( p -- )",
            XT(zbranch),
               XCELLS(6),
               XT(create), // CREATE the dictionary entry / header
-              XT(lit),
+              XT(tick),
               *(fcell_xt*)XT(docolon),
                 XT(comma), // Append DOCOLON (the codeword).
               XT(rbrac), // Go into compile mode.
@@ -96,15 +83,15 @@ forth_word(":", 1, F_NORMAL, colon, "( p -- )",
            );
 
 forth_word(";", 1, F_NORMAL | F_IMMED, semicolon, "( p -- )",
-           XT(lit),
+           XT(tick),
               XT(semi),
                 XT(comma), // Append EXIT (so the word will return).
 
-           XT(lit),
+           XT(tick),
               (fcell_xt)F_HIDDEN,
               XT(xmask), // Toggle hidden flag -- unhide the word
 
-           XT(lit),
+           XT(tick),
               (fcell_xt)F_WORD,
               XT(xmask), // Toggle hidden flag -- unhide the word
 
@@ -121,7 +108,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(zbranch),
               XCELLS(7),
 
-              XT(lit),
+              XT(tick),
               (fcell_xt)FW_ERR_NOWORD,
               XT(ret_),
               XT(drop),
