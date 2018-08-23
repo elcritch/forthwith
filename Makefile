@@ -44,7 +44,9 @@ _build/%.o: src/test/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/%.o: src/linux-x86-64/%.c
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
+	${CC} ${CFLAGS} $< -E -o $@.post.c
+	${CC} ${CFLAGS} $< -S -o $@.S
+	${CC} ${CFLAGS} $< -c -o $@
 
 
 _build/%.o: src/beagle-pru/%.c
