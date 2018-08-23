@@ -40,10 +40,31 @@ char* alloc_string(uint8_t len) {
   return curr_string;
 }
 
+#include <stdio.h>
 __fw_noinline__
 void dict_add(fword_t *entry) {
-  ctx->dict->head++;
-  ctx->dict->head = entry;
+  /* printf("dict_add: %p <- %p: ", ctx->dict->head, entry); */
+  /* printf(" <prev: %p, body: %p, meta: %d, len: %d, name: '%s' > \n", */
+  /*        entry->prev, */
+  /*        entry->body, */
+  /*        entry->meta, */
+  /*        entry->len, */
+  /*        entry->name); */
+
+  // Load dictionary pointer
+  fword_t* word_ptr = ctx->dict->base;
+
+  // Quit if already bootstrapped by something 
+  /* if (ctx->dict->base->prev != NULL) */
+    /* return; */
+
+  // Iterate over words, find first word
+  while (word_ptr->prev != NULL) {
+    word_ptr = word_ptr->prev;
+  }
+
+  entry->body = *entry->body;
+  word_ptr->prev = entry;
 }
 
 __fw_noinline__
