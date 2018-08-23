@@ -41,6 +41,12 @@ char* alloc_string(uint8_t len) {
 }
 
 __fw_noinline__
+void dict_add(fword_t *entry) {
+  ctx->dict->head++;
+  ctx->dict->head = entry;
+}
+
+__fw_noinline__
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 
   fword_t *entry = alloc_dict();

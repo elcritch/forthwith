@@ -83,6 +83,10 @@
 #define xor_reg(x, y) _fw_asm_const("xorq", reg_##y, reg_##x)
 #define and_reg(x, y) _fw_asm_const("andq", reg_##y, reg_##x)
 #define or_reg(x, y) _fw_asm_const("orq", reg_##y, reg_##x)
+
+#define lshift_reg(x, y) copy_reg(xrcx, y); _fw_asm_const("shlq", reg_xrcx, reg_##x)
+#define rshift_reg(x, y) copy_reg(xrcx, y); _fw_asm_const("shrq", reg_xrcx, reg_##x)
+
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
 

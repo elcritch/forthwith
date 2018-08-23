@@ -93,6 +93,9 @@
 #define subu_reg(y, x) _fw_asm_op("sub      ", reg_##y, reg_##y, reg_##x)
 #define subs_reg(y, x) _fw_asm_op("sub      ", reg_##y, reg_##y, reg_##x)
 
+#define lshift_reg(y, x) _fw_asm_op("lsl      ", reg_##y, reg_##y, reg_##x)
+#define rshift_reg(y, x) _fw_asm_op("lsr      ", reg_##y, reg_##y, reg_##x)
+
 /* #define muls_reg(y, x) copy_reg(xrax, x); _fw_asm_single("imulq", reg_##y); copy_reg(x, xrax) */
 
 #define copy_reg(y, x) _fw_asm2("MOV      ", "", reg_##y, "", reg_##x)

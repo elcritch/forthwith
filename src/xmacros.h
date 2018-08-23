@@ -46,16 +46,17 @@ fw_call doprintstate();
 // implement the basic definition primitive
 #define forth_primitive(_name_str, _name_len, mask, func, _comt, BLOCK) \
   fw_call func(FORTH_REGISTERS) BLOCK \
-  fcell_xt xt_ ## func = (fcell_xt)&func
+  fcell_xt xt_ ## func = (fcell_xt)&func;     \
+  fword_t xw_ ## func = { NULL, &xt_ ## func, mask, _name_len, _name_str };
 
 #define forth_core(_name_str, _name_len, mask, func, _comt, BLOCK) \
   fw_call func(FORTH_REGISTERS) BLOCK \
-  fcell_xt xt_ ## func = (fcell_xt)&func
+  fcell_xt xt_ ## func = (fcell_xt)&func;     \
+  fword_t xw_ ## func = { NULL, &xt_ ## func, mask, _name_len, _name_str };
 
 // must be init'ed at bootstrap
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
   fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ];
-  /* fcell_xt xt_ ## lbl = NULL */
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_primitive(name_str, name_len, mask, func, comment, { \
@@ -66,7 +67,7 @@ fw_call doprintstate();
 
 // TODO: fix or remove
 #define forth_variable(name, _name_len, struct_name, member_name, offset) \
-  forth_primitive( #name, name_len, f_normal, var_ ## name, _comment, { \
+  forth_primitive( #name, _name_len, F_NORMAL, var_ ## name, _comment, { \
     load_const(x, $ctx);                                    \
     load_addr_off(s2, x, $ ## struct_name ## _of_ ## member_name);       \
     calc_addr_off(s1, s2, offset);                                      \
@@ -83,13 +84,14 @@ fw_call doprintstate();
 #ifdef FORTH_DEFINE_DICT_ENTRIES
 
 #define forth_primitive(name_str, name_len, mask, func, _comment, _BLOCK)
-  /* dict_create(mask, name_len, name_str, (fcell_xt*)&func) */
 
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK) \
-  dict_create(mask, name_len, name_str, (fcell_xt*)&func)
+  dict_add(&xw_ ## func)
+  /* dict_create(mask, name_len, name_str, (fcell_xt*)&func) */
 
 #define forth_variable(name, name_len, struct_name, member_name, offset) \
-  dict_create(F_NORMAL, name_len, #name, (fcell_xt*)&var_ ## name)
+  dict_add(&xw_var_ ## name)
+  /* dict_create(F_NORMAL, name_len, #name, (fcell_xt*)&var_ ## name) */
 
 // https://codecraft.co/2014/11/25/variadic-macros-tricks/
 
@@ -99,7 +101,8 @@ fw_call doprintstate();
   dict_create(F_WORD | mask, name_len, name_str, (fcell_xt*)xt_ ## lbl)
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
-  dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&func)
+  dict_add(&xw_ ## func)
+  /* dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&func) */
 
 #endif // FORTH_DEFINE_DICT_ENTRIES
 

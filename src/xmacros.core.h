@@ -105,3 +105,17 @@ forth_core("|", 1, F_NORMAL, or, "( n n -- n )",  {
     pushd(1);
     jump(next);
 });
+
+/* forth_core("<<", 1, F_NORMAL, lshift, "( n n -- n )",  { */
+/*     popd(2); */
+/*     rshift_reg(s1, s2); */
+/*     pushd(1); */
+/*     jump(next); */
+/*   }); */
+
+/* forth_core(">>", 1, F_NORMAL, rshift, "( n n -- n )",  { */
+/*     popd(2); */
+/*     lshift_reg(s1, s2); */
+/*     pushd(1); */
+/*     jump(next); */
+/*   }); */

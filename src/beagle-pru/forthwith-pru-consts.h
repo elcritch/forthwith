@@ -5,8 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef intptr_t fcell_t;
-
+typedef int32_t fcell_t;
 
 /* #define FORTHWITH_NO_CHECKS */
 
