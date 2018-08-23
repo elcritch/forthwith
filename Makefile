@@ -13,11 +13,11 @@ PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-PCFLAGS=-v3 -O2 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
+PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(STACK_SIZE) --heap_size=$(HEAP_SIZE)
 
-pru: _build/forthwith-pru.a
+pru: _build/forthwith-pru.lib
 linux: _build/forthwith-linux _build/test-forthwith-linux 
 
 _build/forthwith-linux.a: _build/forthwith-linux.o
@@ -32,7 +32,7 @@ _build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o
 
 
 # $(PRU_CGT)/bin/clpru --section_sizes=on $(PCFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(PLFLAGS) -o $@ $^ -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(PRU_LIBS)
-_build/forthwith-pru.a: _build/forthwith-main.o _build/forthwith-pru.o
+_build/forthwith-pru.lib: _build/forthwith-main.o _build/forthwith-pru.o
 	$(PRU_CGT)/bin/arpru r $@ $^
 
 _build/%.o: src/%.c

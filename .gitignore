@@ -1,6 +1,7 @@
 
 forthwith
 .env
+*.asm
 
 # Prerequisites
 *.d
