@@ -72,25 +72,18 @@ forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
 });
 #endif // FW_CORE_MULTIPLY
 
-/* #ifndef FW_NO_CORE_DIVIDE */
-/* forth_core("/", 1, F_NORMAL, sdiv, "( n2 n1 -- n )",  { */
-/*   popd(2); */
-/*   divs_reg(s1, s2); */
-/*   pushd(1); */
-/*   jump(next); */
-/* }); */
-/* #endif // FW_CORE_DIVIDE */
-
 forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
-  popd(2);
-  copy_reg(x, s1);
-  xor_reg(x, s2);
-  if (x) {
-    load_const(s1, $1);
-  }
-  pushd(1);
-  jump(next);
+    popd(2);
+    copy_reg(x, s1);
+    xor_reg(x, s2);
+    if (x) {
+      load_const(s1, $1);
+    }
+    pushd(1);
+    jump(next);
 });
+
+// =============== Bitwise Primitives ============== //
 
 forth_core("^", 1, F_NORMAL, xor, "( n n -- n )",  {
     popd(2);
@@ -99,3 +92,16 @@ forth_core("^", 1, F_NORMAL, xor, "( n n -- n )",  {
     jump(next);
 });
 
+forth_core("&", 1, F_NORMAL, and, "( n n -- n )",  {
+    popd(2);
+    and_reg(s1, s2);
+    pushd(1);
+    jump(next);
+});
+
+forth_core("|", 1, F_NORMAL, or, "( n n -- n )",  {
+    popd(2);
+    or_reg(s1, s2);
+    pushd(1);
+    jump(next);
+});
