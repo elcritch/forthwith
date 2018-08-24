@@ -139,6 +139,7 @@ __fw_noinline__ fw_call call_reg_rsp() {printf("rsp\n");}
 __fw_noinline__ fw_call call_reg_ip() {printf("ip\n");}
 __fw_noinline__ fw_call call_reg_x() {printf("x\n");}
 
+__fw_noinline__ 
 fw_call examples_call(FORTH_REGISTERS) {
   if (bpsp) { call_reg_bpsp(); }
   if (psp) { call_reg_psp(); }
@@ -150,6 +151,10 @@ fw_call examples_call(FORTH_REGISTERS) {
   if (x) { call_reg_x(); }
 }
 
+fw_call examples_call_run() {
+  examples_call(0,0,0,0,0,0);
+}
+
 int main(int argv, char **argc) {
   
   examples_accessors_regs();
@@ -158,5 +163,7 @@ int main(int argv, char **argc) {
   examples_accessors_ctx();
 
   examples_bitwise();
+
+  examples_call_run();
 }
 
