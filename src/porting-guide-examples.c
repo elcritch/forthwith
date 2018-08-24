@@ -132,6 +132,24 @@ void examples_bitwise() {
   binary_ops(div);
 }
 
+__fw_noinline__ fw_call call_reg_bpsp() {printf("bpsp\n");}
+__fw_noinline__ fw_call call_reg_psp() {printf("psp\n");}
+__fw_noinline__ fw_call call_reg_brsp() {printf("brsp\n");}
+__fw_noinline__ fw_call call_reg_rsp() {printf("rsp\n");}
+__fw_noinline__ fw_call call_reg_ip() {printf("ip\n");}
+__fw_noinline__ fw_call call_reg_x() {printf("x\n");}
+
+fw_call examples_call(FORTH_REGISTERS) {
+  if (bpsp) { call_reg_bpsp(); }
+  if (psp) { call_reg_psp(); }
+
+  if (brsp) { call_reg_brsp(); }
+  if (rsp) { call_reg_rsp(); }
+
+  if (ip) { call_reg_ip(); }
+  if (x) { call_reg_x(); }
+}
+
 int main(int argv, char **argc) {
   
   examples_accessors_regs();
