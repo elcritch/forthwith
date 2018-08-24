@@ -13,52 +13,52 @@ PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/ --pp_directory=_build/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
+PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(PHEAP_SIZE)
 
-pru: _build/forthwith-pru.lib _build/porting-guide-pru
+pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux: _build/forthwith-linux _build/test-forthwith-linux _build/porting-guide-linux
 
 _build/forthwith-linux.a: _build/forthwith-linux.o
 	ar rcs $@ $<
 
-_build/forthwith-linux: _build/forthwith-main.o _build/forthwith-linux.o
+_build/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@.S $(CFLAGS) -S $^
 	$(CC) -o $@ $(CFLAGS) $^
 
-_build/test-forthwith-linux: src/test/test.c _build/forthwith-linux.o
+_build/test-forthwith-linux: src/test/test.c _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
 
-_build/porting-guide-linux: src/linux-x86-64/porting-guide.c _build/forthwith-linux.o
+_build/porting-guide-linux: src/linux-x86-64/porting-guide.c _build/linux-x86-64/forthwith-linux.o
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	$(CC) -o $@ $(CFLAGS) $^
 	$(CC) -o $@.S $(CFLAGS) -S $^
 
-_build/porting-guide-pru: src/beagle-pru/porting-guide.c _build/forthwith-pru.lib
+_build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagle-pru/forthwith-pru.lib
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 	# $(PRU_CGT)/bin/clpru --section_sizes=on $(PCFLAGS) -z -i$(PRU_CGT)/lib -i$(PRU_CGT)/include $(PLFLAGS) -o $@ $^ -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(PRU_LIBS)
 	$(PRU_CGT)/bin/dispru --all $@ > $@.S
 
-_build/forthwith-pru.lib: _build/forthwith-main.o _build/forthwith-pru.o
+_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o
 	$(PRU_CGT)/bin/arpru r $@ $^
 
-_build/%.o: src/%.c
+# _build/%.o: src/%.c
+# 	${CC} ${CFLAGS} $< -E -o $@.post.c
+# 	${CC} ${CFLAGS} $< -S -o $@.S
+# 	${CC} ${CFLAGS} $< -c -o $@
+
+# _build/%.o: src/test/%.c
+#	${CC} ${CFLAGS} $< -c -o $@
+
+_build/linux-x86-64/%.o: src/linux-x86-64/%.c
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	${CC} ${CFLAGS} $< -S -o $@.S
 	${CC} ${CFLAGS} $< -c -o $@
 
-_build/%.o: src/test/%.c
-	${CC} ${CFLAGS} $< -c -o $@
 
-_build/%.o: src/linux-x86-64/%.c
-	${CC} ${CFLAGS} $< -E -o $@.post.c
-	${CC} ${CFLAGS} $< -S -o $@.S
-	${CC} ${CFLAGS} $< -c -o $@
-
-
-_build/%.o: src/beagle-pru/%.c
+_build/beagle-pru/%.o: src/beagle-pru/%.c
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 	$(PRU_CGT)/bin/dispru --all $@ > $@.S
 
@@ -69,6 +69,9 @@ test: forthwith
 
 clean:
 	rm -Rf _build/*
+	mkdir _build/linux-x86-64/
+	mkdir _build/linux-arm/
+	mkdir _build/beagle-pru/
 
 .PHONY: clean examples test
 
