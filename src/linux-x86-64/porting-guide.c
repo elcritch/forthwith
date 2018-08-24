@@ -8,5 +8,5 @@
 #include "dict.h"
 #include "prompt.h"
 
-#include "forthwith-porting-guide.c"
+#include "porting-guide.c"
 
