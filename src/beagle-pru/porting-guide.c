@@ -6,5 +6,5 @@
 #include "dict.h"
 #include "prompt.h"
 
-#include "porting-guide.c"
+#include "porting-guide-examples.c"
 
