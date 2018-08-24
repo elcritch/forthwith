@@ -18,20 +18,20 @@ PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=o
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(PHEAP_SIZE)
 
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
-linux: _build/forthwith-linux _build/test-forthwith-linux _build/porting-guide-linux
+linux: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
 
-_build/forthwith-linux.a: _build/forthwith-linux.o
+_build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
 	ar rcs $@ $<
 
-_build/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build/linux-x86-64/forthwith-linux.o
+_build/linux-x86-64/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@.S $(CFLAGS) -S $^
 	$(CC) -o $@ $(CFLAGS) $^
 
-_build/test-forthwith-linux: src/test/test.c _build/linux-x86-64/forthwith-linux.o
+_build/linux-x86-64/test-forthwith-linux: src/test/test.c _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
 
-_build/porting-guide-linux: src/linux-x86-64/porting-guide.c _build/linux-x86-64/forthwith-linux.o
+_build/linux-x86-64/porting-guide: src/linux-x86-64/porting-guide.c _build/linux-x86-64/forthwith-linux.o
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	$(CC) -o $@ $(CFLAGS) $^
 	$(CC) -o $@.S $(CFLAGS) -S $^
