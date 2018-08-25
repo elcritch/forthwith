@@ -26,6 +26,9 @@ void test_setup() {
   forth_init();
   forth_bootstrap(ctx);
 
+  if (ctx->vars->tob_str)
+    free(ctx->vars->tob_str);
+
   fcell_t tob_len = 16 << 10;
   ctx->vars->tob_idx = 0;
   ctx->vars->tob_str = calloc(1, tob_len);

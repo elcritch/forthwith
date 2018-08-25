@@ -72,7 +72,7 @@ forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
 });
 #endif // FW_CORE_MULTIPLY
 
-forth_core("=", 3, F_NORMAL, equals, "( n n -- n )",  {
+forth_core("=", 1, F_NORMAL, equals, "( n n -- n )",  {
     popd(2);
     copy_reg(x, s1);
     xor_reg(x, s2);
