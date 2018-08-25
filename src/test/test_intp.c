@@ -59,24 +59,24 @@ void test_interpreter(void) {
 
   int cnt = forth_count();
   fcell_t x = forth_pop();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
 
   print_stack(); printf("... stack done\n");
 
-  TEST_CHECK_(x == 9, "Expected %d, got %d", 9, x);
+  TEST_CHECK_(x == 9, "Expected "CELL_FMT", got "CELL_FMT"", 9, x);
 
   x = forth_pop();
   cnt = forth_count();
-  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(0 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 0, cnt);
   TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_ERR_STACKUNDERFLOW);
 
   forth_clear();
 
   TEST_CHECK_(forth_errno() == FW_OK,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_OK);
 
@@ -88,7 +88,7 @@ void test_colon(void) {
 
 
   /* dict_print(); */
-  /* printf("dict: %d\n", ctx_vars->tob_idx); */
+  /* printf("dict: "CELL_FMT"\n", ctx_vars->tob_idx); */
   /* for (uint8_t i = 0; i < ctx_vars->tob_idx; i++) { */
   /*   putc(ctx_vars->tob_str[i], stdout); */
   /* } */
@@ -110,7 +110,7 @@ void test_colon(void) {
 
   fword_t *entry_colon = dict_find(1, ":");
   printf("colon: `:` %16p \n", entry_colon);
-  TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got %d", entry_colon);
+  TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got "CELL_FMT"", entry_colon);
   printf("colon cfa: `:` %16p\n", dict_cfa(entry_colon));
   printf("xt_colon: `:` %16p -> %16p \n", xt_colon, *xt_colon);
 
@@ -134,7 +134,7 @@ void test_colon(void) {
   printf("entry_a: %16p\n", entry_a);
 
   fcell_xt * cfa_a = (fcell_xt *) dict_cfa(entry_a);
-  TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got %d for %s", cfa_a, "cfa_a");
+  TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got "CELL_FMT" for %s", cfa_a, "cfa_a");
 
   printf("cfa_aa: %16p\n", cfa_a);
 
@@ -142,10 +142,10 @@ void test_colon(void) {
   fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
 
   /* cfa_a = *cfa_a; */
-  for (int j = 0; j < 6; j++) {
+  for (fcell_t j = 0; j < 6; j++) {
     fcell_xt *aj = (fcell_xt *)cfa_a[j];
     fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
-    printf("cfa_aa[%d]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
+    printf("cfa_aa["CELL_FMT"]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
     if (aj == cfa_prior)
       printf("prior entry: %s\n", entry_prior->name);
   }
@@ -169,10 +169,10 @@ void test_colon(void) {
   int expl = 1;
 
   int cnt = forth_count();
-  TEST_CHECK_(cnt == expl, "Expected %d, got %d", expl, cnt);
+  TEST_CHECK_(cnt == expl, "Expected "CELL_FMT", got "CELL_FMT"", expl, cnt);
 
   fcell_t x = forth_pop();
-  TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
+  TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x);
 
 }
 
