@@ -133,12 +133,12 @@
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
 #define save_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_of_head) // size
+  call(  accessor_name(ctx_psp)  );                 \
+  store_addr_off(xresult, reg, $stack_of_head) // size
 
 #define load_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
+  call(  accessor_name(ctx_psp)  );                           \
+  load_addr_off(reg, xresult, $stack_of_head) // sizeof one word
 
 #define call(lbl) _call( __label(lbl) )
 

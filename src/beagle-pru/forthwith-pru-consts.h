@@ -80,6 +80,7 @@ typedef int32_t fcell_t;
 // Relative offset register
 #define reg_xaddr r0.w0
 #define reg_xret r3.w2
+#define reg_xresult r14
 
 #endif // __HEADER_IMPL_CONST_X86__
 
