@@ -1,10 +1,14 @@
 
+#define FW_CUSTOM_TOB_FLUSH
+
 #include "forthwith-linux.h"
 #include "forthwith.h"
 #include "dict.h"
 #include "prompt.h"
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char** argv) {
 

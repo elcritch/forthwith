@@ -36,15 +36,10 @@ typedef struct forth_word fword_t;
 
 typedef struct forthwith_regs { /**< FORTH environment */
   // ForthWith State
-  /* fcell_t *psp; */
-  /* fcell_t *rsp; */
   fcell_t w;
   fcell_t x;
   fcell_t ip;
-  fcell_t tos;
-  /* fcell_t tos; */
-  /* fcell_t *usp; */
-  /* fcell_t *bpsp; */
+  fcell_t z;
 } fw_ctx_regs_t;
 
 typedef struct forthwith_vars { /**< FORTH environment */
@@ -140,6 +135,7 @@ extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
 extern int forth_eval_string(char *input);
+extern void forth_flush_tob();
 
 // Basic Execution Tokens
 extern fcell_xt xt_dosys;

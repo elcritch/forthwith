@@ -106,11 +106,15 @@ int forth_bootstrap() {
   return FW_OK;
 }
 
+#include <setjmp.h>
+jmp_buf env;
+
 __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
   load_state();
   call(next);
   save_state();
+  longjmp(env, 1);
 }
 
 __fw_noinline__
@@ -127,8 +131,13 @@ int forth_eval(fcell_xt *instr) {
 
   forth_push((fcell_t)instr);
 
-  forth_exec(0, 0, 0, 0, 0, 0);
-  save_psp(psp);
+  int done = 0;
+
+  done = setjmp(env);
+  if (!done) {
+    forth_exec(0, 0, 0, 0, 0, 0);
+    save_psp(psp);
+  }
 
   return 0;
 }

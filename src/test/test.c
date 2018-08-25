@@ -1,6 +1,9 @@
 
+/* #define FW_MANUAL_TEST */
 
+#ifndef FW_MANUAL_TEST
 #include "acutest.h"
+#endif // FW_MANUAL_TEST
 
 #include "forthwith-linux.h"
 #include "forthwith.h"
@@ -8,19 +11,33 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 char out_buff[256] = {0};
+
+void print_psp_info() {
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %lld \n\n", (fcell_t)(ctx->psp->head - ctx->psp->base));
+}
 
 void test_setup() {
   forth_init();
   forth_bootstrap(ctx);
 
+  if (ctx->vars->tob_str)
+    free(ctx->vars->tob_str);
+
+  fcell_t tob_len = 16 << 10;
   ctx->vars->tob_idx = 0;
-  ctx->vars->tob_str = calloc(1, 2048);
-  ctx->vars->tob_len = 2048;
+  ctx->vars->tob_str = calloc(1, tob_len);
+  ctx->vars->tob_len = tob_len;
 }
 
-/* #define TEST_CHECK_(args...) */
+#ifdef FW_MANUAL_TEST
+#define TEST_CHECK_(args...)
+#endif // FW_MANUAL_TEST
 
 void dict_print();
 void docolon(FORTH_REGISTERS);
@@ -67,11 +84,8 @@ void test_basic(void) {
   printf("xt_docolon: %16p <- docolon: %16p \n\n", (fcell_xt*)xt_docolon, (fcell_xt*)docolon);
 
   forth_eval(var1);
+  forth_flush_tob();
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
 
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
@@ -79,7 +93,7 @@ void test_basic(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
 
   printf("... stack done\n");
@@ -155,7 +169,7 @@ void test_parsing(void)
   tib_idx = tib_idx + wl;
 
   expl = 4; expi = 4;
-  TEST_CHECK_(expl == wl, "Expected %ld, got %ld", expl, wl);
+  TEST_CHECK_(expl == wl, "Expected %lld, got %lld", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
@@ -235,7 +249,7 @@ void test_parsing(void)
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld (%p)\n", x, (void*)x);
+    printf("remaining stack: %lld (%p)\n", x, (void*)x);
   }
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
@@ -277,11 +291,9 @@ void test_create(void) {
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
+  forth_flush_tob();
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
@@ -289,7 +301,7 @@ void test_create(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
 
   printf("... stack done\n");
@@ -347,11 +359,12 @@ void test_branches(void) {
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 5, "tjmp", var[idx_b0]);
+  fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 4, "tjmp", var[idx_b0]);
   (void)tjmp;
 
   // Rust test true
-  forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tjmp")));
+  forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tjmp")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -398,6 +411,7 @@ void test_branches(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tifz5")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -419,6 +433,7 @@ void test_branches(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tifz0")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -483,6 +498,7 @@ void test_ifelse(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(7, "ts_true")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -503,6 +519,7 @@ void test_ifelse(void) {
 
   // Rust test true
   forth_eval((fcell_xt*)dict_cfa(dict_find(8, "ts_false")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -543,13 +560,11 @@ void test_other(void) {
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
+  forth_flush_tob();
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
-  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}; printf("\n");
+  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}; printf("\n");
 
   int cnt = forth_count();
   TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);
@@ -582,6 +597,7 @@ void test_other(void) {
 
 #include "test_intp.c"
 
+#ifndef FW_MANUAL_TEST
 TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
@@ -593,9 +609,13 @@ TEST_LIST = {
   { "colon", test_colon },
   { 0 }
 };
+#endif // FW_MANUAL_TEST
 
-/* int main() { */
-/*   test_basic(); */
+#ifdef FW_MANUAL_TEST
+int main() {
+  test_colon();
 
-/*   return forth_count(); */
-/* } */
+  return forth_count();
+}
+#endif // FW_MANUAL_TEST
+

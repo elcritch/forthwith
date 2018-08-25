@@ -6,6 +6,60 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifndef FW_CUSTOM_TOB_FLUSH
+void forth_flush_tob() {
+}
+#endif
+
+fw_call doprintstate() {
+
+  for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
+    write_str(1, "-");
+
+  write_str(12, "-> \t\t regs: ");
+
+  fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
+
+  write_str(3, "x: ");
+  write_number(ctx->regs->x);
+
+  write_str(2, " (");
+  if (entry) {
+    uint8_t i;
+    for (i = 0; entry->name[i] != '\0'; i++) write_char(entry->name[i]);
+    while (i++ < 10) write_char(' ');
+  }
+  else {
+    write_str(5, "(nil)");
+  }
+  write_str(2, ") ");
+
+  write_str(4, "ip: "); write_number((fcell_t)ctx->regs->ip);
+  write_str(5, ", w: "); write_number((fcell_t)ctx->regs->w);
+
+  write_str(6, " tibi ");
+  write_number(ctx->vars->tib_idx);
+
+  write_str(6, " tibs ");
+  write_number((fcell_t)ctx->vars->tib_str);
+
+  uint8_t wdof = ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx;
+  write_str(ctx->vars->tib_len - ctx->vars->tib_idx, ctx->vars->tib_str + wdof);
+
+  write_str(4, " --\t");
+
+  write_str(1, "(");
+    for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {
+      write_number((fcell_t)*i);
+      write_str(2, ", ");
+    }
+  write_str(1, ")");
+
+  write_str(1, "\n");
+
+  return;
+}
+
 // handle data stack underflow
 __fw_noinline__
 fw_call dosuf() {
@@ -191,7 +245,7 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-void write_str(uint8_t l, char *c) {
+void write_str(fcell_t l, char *c) {
   fcell_t idx = ctx->vars->tob_idx;
   fcell_t len = ctx->vars->tob_len;
 
@@ -204,16 +258,16 @@ void write_str(uint8_t l, char *c) {
 
 __fw_noinline__
 void write_char(char c) {
-  fcell_t *idx = &ctx->vars->tob_idx; 
-  fcell_t *len = &ctx->vars->tob_len; 
-  char *str = ctx->vars->tob_str; 
+  fcell_t *idx = &ctx->vars->tob_idx;
+  fcell_t *len = &ctx->vars->tob_len;
+  char *str = ctx->vars->tob_str;
 
   if (*idx < *len) {
     str[*idx] = c;
     *idx += 1;
     /* debugf("LEN: %c %d ", c, ctx->vars->tob_idx ); */
   } else {
-    /* debugf("XLEN: "); */
+    forth_flush_tob();
   }
 }
 
@@ -221,8 +275,7 @@ __fw_noinline__
 void write_number(fcell_t number)
 {
   // Print Number
-  write_char('0');
-  write_char('x');
+  write_str(2, "0x");
 
   uint8_t first_non = false;
 
