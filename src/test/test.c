@@ -47,11 +47,11 @@ void test_basic(void) {
 
   dict_print();
 
-  /* printf("\n\nxt_interpret: %d / %d\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3); */
+  /* printf("\n\nxt_interpret: "CELL_FMT" / "CELL_FMT"\n", sizeof(xt_interpret), sizeof(xt_interpret)>>3); */
   /* for (int i = 0; i < sizeof(xt_interpret) >> 3; i++) { */
   /*   fword_t *entry = dict_lookup(xt_interpret[i]); */
   /*   char *name = entry == NULL ? NULL : entry->name; */
-  /*   printf("xt_interpret[%d]: %p :: %s\n", i, xt_interpret[i], name); */
+  /*   printf("xt_interpret["CELL_FMT"]: %p :: %s\n", i, xt_interpret[i], name); */
   /* } */
   /* printf("\n\n"); */
 
@@ -88,7 +88,7 @@ void test_basic(void) {
 
 
   int cnt = forth_count();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
 
   fcell_t x = 0;
   while (forth_count()) {
@@ -97,20 +97,20 @@ void test_basic(void) {
   }
 
   printf("... stack done\n");
-  TEST_CHECK_(x == 9, "Expected %d, got %d", 9, x);
+  TEST_CHECK_(x == 9, "Expected "CELL_FMT", got "CELL_FMT"", 9, x);
 
   x = forth_pop();
   cnt = forth_count();
-  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(0 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 0, cnt);
   TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_ERR_STACKUNDERFLOW);
 
   forth_clear();
 
   TEST_CHECK_(forth_errno() == FW_OK,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_OK);
 
@@ -133,14 +133,14 @@ void test_parsing(void)
   /* printf("find word: '%s' -> %p\n", "test1", dict_find(5, "test1")); */
   TEST_CHECK_(item1 == b, "Expected %p, got %p", b, item1);
   TEST_CHECK_(item2 == c, "Expected %p, got %p", c, item2);
-  TEST_CHECK_(item3 == a, "Expected %d, got %d", a, item3);
+  TEST_CHECK_(item3 == a, "Expected "CELL_FMT", got "CELL_FMT"", a, item3);
 
 
   // test parsing 
   char *basic_words = "dup drop";
 
   int cnt = forth_count();
-  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(0 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 0, cnt);
 
   char *tib = basic_words;
   fcell_t tib_idx = 0;
@@ -212,8 +212,8 @@ void test_parsing(void)
   parse_number(wl, (char*)ws, &number, &errcode);
 
   expl = 0; expi = 1;
-  TEST_CHECK_(expl == errcode, "Expected %d, got %d", expl, errcode);
-  TEST_CHECK_(expi == number, "Expected %d, got %d", expi, number);
+  TEST_CHECK_(expl == errcode, "Expected "CELL_FMT", got "CELL_FMT"", expl, errcode);
+  TEST_CHECK_(expi == number, "Expected "CELL_FMT", got "CELL_FMT"", expi, number);
 
 
   // test nums -- part two //
@@ -230,8 +230,8 @@ void test_parsing(void)
   tib_idx = tib_idx + wl;
 
   expl = 0; expi = -0xF;
-  TEST_CHECK_(expl == errcode, "Expected %d, got %d", expl, errcode);
-  TEST_CHECK_(expi == number, "Expected %d, got %d", expi, number);
+  TEST_CHECK_(expl == errcode, "Expected "CELL_FMT", got "CELL_FMT"", expl, errcode);
+  TEST_CHECK_(expi == number, "Expected "CELL_FMT", got "CELL_FMT"", expi, number);
 
 
   // test nums -- part three //
@@ -296,7 +296,7 @@ void test_create(void) {
   print_psp_info();
 
   int cnt = forth_count();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
 
   fcell_t x = 0;
   while (forth_count()) {
@@ -305,20 +305,20 @@ void test_create(void) {
   }
 
   printf("... stack done\n");
-  TEST_CHECK_(x == 8, "Expected %d, got %d", 8, x);
+  TEST_CHECK_(x == 8, "Expected "CELL_FMT", got "CELL_FMT"", 8, x);
 
   x = forth_pop();
   cnt = forth_count();
-  TEST_CHECK_(0 == cnt, "Expected %d, got %d", 0, cnt);
+  TEST_CHECK_(0 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 0, cnt);
   TEST_CHECK_(forth_errno() == FW_ERR_STACKUNDERFLOW,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_ERR_STACKUNDERFLOW);
 
   forth_clear();
 
   TEST_CHECK_(forth_errno() == FW_OK,
-              "Expected %d, got %d",
+              "Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_OK);
 
@@ -368,8 +368,8 @@ void test_branches(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
-  TEST_CHECK_(x == 105, "Expected %d, got %d", 105, x);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
+  TEST_CHECK_(x == 105, "Expected "CELL_FMT", got "CELL_FMT"", 105, x);
 
 
   printf("<<< Run 0branch \n");
@@ -415,8 +415,8 @@ void test_branches(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(2 == cnt, "Expected %d, got %d", 2, cnt);
-  TEST_CHECK_(x == 7, "Expected %d, got %d", 7, x);
+  TEST_CHECK_(2 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 2, cnt);
+  TEST_CHECK_(x == 7, "Expected "CELL_FMT", got "CELL_FMT"", 7, x);
 
   // test `0 0branch` 
   int idx_tifz0 = i;
@@ -437,8 +437,8 @@ void test_branches(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(2 == cnt, "Expected %d, got %d", 2, cnt);
-  TEST_CHECK_(x == 5, "Expected %d, got %d", 5, x);
+  TEST_CHECK_(2 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 2, cnt);
+  TEST_CHECK_(x == 5, "Expected "CELL_FMT", got "CELL_FMT"", 5, x);
 
 }
 
@@ -502,8 +502,8 @@ void test_ifelse(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
-  TEST_CHECK_(x == 12, "Expected %d, got %d", 12, x);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
+  TEST_CHECK_(x == 12, "Expected "CELL_FMT", got "CELL_FMT"", 12, x);
 
   // test false
   printf("<<< Run Test False\n");
@@ -523,8 +523,8 @@ void test_ifelse(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
-  TEST_CHECK_(x == 7, "Expected %d, got %d", 7, x);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
+  TEST_CHECK_(x == 7, "Expected "CELL_FMT", got "CELL_FMT"", 7, x);
 
 }
 
@@ -567,28 +567,28 @@ void test_other(void) {
   printf("\n\n>> "); for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf(""CELL_FMT", ", *i);}; printf("\n");
 
   int cnt = forth_count();
-  TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);
+  TEST_CHECK_(3 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 3, cnt);
 
   fcell_t expi;
 
   expi = 1; fcell_t x = forth_pop();
-  TEST_CHECK_(x == expi, "Expected %d, got %d", expi, x);
+  TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x);
 
   expi = 3; fcell_t y = forth_pop();
-  TEST_CHECK_(y == expi, "Expected %d, got %d", expi, y);
+  TEST_CHECK_(y == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, y);
 
   expi = 2; fcell_t z = forth_pop();
-  TEST_CHECK_(z == expi, "Expected %d, got %d", expi, z);
+  TEST_CHECK_(z == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, z);
 
   TEST_CHECK_(forth_errno() == 0,
-              "stackunderflow: Expected %d, got %d",
+              "stackunderflow: Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               0);
 
   forth_clear();
 
   TEST_CHECK_(forth_errno() == FW_OK,
-              "errno: Expected %d, got %d",
+              "errno: Expected "CELL_FMT", got "CELL_FMT"",
               forth_errno(),
               FW_OK);
 
