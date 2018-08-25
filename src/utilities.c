@@ -16,7 +16,7 @@ fw_call doprintstate() {
   for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
     write_str(1, "-");
 
-  write_str(13, "-> \t\t regs: ");
+  write_str(12, "-> \t\t regs: ");
 
   fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
 
@@ -37,10 +37,10 @@ fw_call doprintstate() {
   write_str(4, "ip: "); write_number((fcell_t)ctx->regs->ip);
   write_str(5, ", w: "); write_number((fcell_t)ctx->regs->w);
 
-  write_str(5, "tibi ");
+  write_str(6, " tibi ");
   write_number(ctx->vars->tib_idx);
 
-  write_str(5, "tibs ");
+  write_str(6, " tibs ");
   write_number((fcell_t)ctx->vars->tib_str);
 
   uint8_t wdof = ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx;
@@ -245,7 +245,7 @@ word:
 
 const char num_basis[] = "0123456789ABCDEF";
 
-void write_str(uint8_t l, char *c) {
+void write_str(fcell_t l, char *c) {
   fcell_t idx = ctx->vars->tob_idx;
   fcell_t len = ctx->vars->tob_len;
 
@@ -258,9 +258,9 @@ void write_str(uint8_t l, char *c) {
 
 __fw_noinline__
 void write_char(char c) {
-  fcell_t *idx = &ctx->vars->tob_idx; 
-  fcell_t *len = &ctx->vars->tob_len; 
-  char *str = ctx->vars->tob_str; 
+  fcell_t *idx = &ctx->vars->tob_idx;
+  fcell_t *len = &ctx->vars->tob_len;
+  char *str = ctx->vars->tob_str;
 
   if (*idx < *len) {
     str[*idx] = c;
@@ -275,8 +275,7 @@ __fw_noinline__
 void write_number(fcell_t number)
 {
   // Print Number
-  write_char('0');
-  write_char('x');
+  write_str(2, "0x");
 
   uint8_t first_non = false;
 

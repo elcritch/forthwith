@@ -153,7 +153,7 @@ void dict_print() {
     write_str(3, ":: ");
     write_number((fcell_t)word_ptr->body);
     write_char(' ');
-    write_str(word_ptr->len, word_ptr->name);
+    write_str(word_ptr->len - 1, word_ptr->name);
     write_char(' ');
     write_number(word_ptr->meta);
     write_char('\n');
