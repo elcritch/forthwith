@@ -89,6 +89,7 @@ typedef int64_t fcell_t;
 
 // Relative offset register
 #define reg_xaddr %rip
+#define reg_xresult %rax
 
 #define reg_xrdi %rdi
 #define reg_xrsi %rsi

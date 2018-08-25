@@ -14,6 +14,14 @@ fw_ctx_regs_t *ctx_regs = NULL;
 /* fcell_xt xt_quits = (fcell_xt)&quits; */
 /* fcell_xt xt_exits = (fcell_xt)&exits; */
 
+#define accessor(struct_name)                               \
+  void *accessor_name(struct_name) () { return struct_name; }
+
+accessor(ctx);
+accessor(ctx_regs);
+accessor(ctx_psp);
+accessor(ctx_rsp);
+
 #include <string.h>
 
 __fw_noinline__

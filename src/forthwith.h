@@ -4,6 +4,9 @@
 
 #include <stdint.h>
 
+
+#include "default-impls.h"
+
 /* Standard Forth Cell */
 /* typedef intptr_t fcell_t; */
 
@@ -88,6 +91,7 @@ extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
 extern fw_ctx_stack_t *ctx_rsp;
 extern fw_ctx_regs_t *ctx_regs;
+
 
 typedef fcell_t (*forthwith_call_0)();
 typedef fcell_t (*forthwith_call_1)(fcell_t a);
