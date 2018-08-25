@@ -27,7 +27,7 @@ int doeval() {
 
 void print_stack() {
   printf(" (");
-  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}
+  for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf("%lld, ", *i);}
   printf(") ");
 }
 
@@ -44,24 +44,24 @@ int doprompt(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
 
   // Input Buffer
   rx_buff[bytes_read - 1] = '\0'; // replace newline
-  ctx->vars->tib_str = rx_buff;
-  ctx->vars->tib_len = bytes_read - 1;
-  ctx->vars->tib_idx = 0;
+  ctx_vars->tib_str = rx_buff;
+  ctx_vars->tib_len = bytes_read - 1;
+  ctx_vars->tib_idx = 0;
   // Output Buffer
-  ctx->vars->tob_str = tx_buff;
-  ctx->vars->tob_len = tx_len;
-  ctx->vars->tob_idx = 0;
+  ctx_vars->tob_str = tx_buff;
+  ctx_vars->tob_len = tx_len;
+  ctx_vars->tob_idx = 0;
   // Errors
-  ctx->vars->state = 0;
-  ctx->vars->error = 0;
+  ctx_vars->state = 0;
+  ctx_vars->error = 0;
 
   doeval();
 
   int errno = forth_errno();
 
-  if (ctx->vars->tob_idx > 0) {
-    for (int i = 0; i < ctx->vars->tob_idx; i++)
-      printf("%c", ctx->vars->tob_str[i]);
+  if (ctx_vars->tob_idx > 0) {
+    for (int i = 0; i < ctx_vars->tob_idx; i++)
+      printf("%c", ctx_vars->tob_str[i]);
     printf("\n");
   }
   /* printf(" (errno: %d) ", errno); */

@@ -11,8 +11,8 @@ forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
   });
 
 /*	STATE		Is the interpreter executing code (0) or compiling a word (non-zero)? */
-forth_variable(STATE, 5, ctx, vars, $vars_of_state);
-forth_variable(HERE, 5, ctx, user, $stack_of_head); // get pointer to current user word location
+forth_variable(STATE, 5, ctx_vars, state);
+forth_variable(HERE, 5, ctx_user, head); // get pointer to current user word location
 
 // Follows Jone's Forth here
 forth_docall("create", 6, F_NORMAL, create, "( n -- )", docreate);

@@ -13,15 +13,15 @@ void forth_flush_tob() {
 
 fw_call doprintstate() {
 
-  for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
+  for (fcell_t *i = ctx_rsp->base; i < ctx_rsp->head; i++)
     write_str(1, "-");
 
   write_str(12, "-> \t\t regs: ");
 
-  fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
+  fword_t *entry = dict_lookup((fcell_xt)ctx_regs->x);
 
   write_str(3, "x: ");
-  write_number(ctx->regs->x);
+  write_number(ctx_regs->x);
 
   write_str(2, " (");
   if (entry) {
@@ -34,22 +34,22 @@ fw_call doprintstate() {
   }
   write_str(2, ") ");
 
-  write_str(4, "ip: "); write_number((fcell_t)ctx->regs->ip);
-  write_str(5, ", w: "); write_number((fcell_t)ctx->regs->w);
+  write_str(4, "ip: "); write_number((fcell_t)ctx_regs->ip);
+  write_str(5, ", w: "); write_number((fcell_t)ctx_regs->w);
 
   write_str(6, " tibi ");
-  write_number(ctx->vars->tib_idx);
+  write_number(ctx_vars->tib_idx);
 
   write_str(6, " tibs ");
-  write_number((fcell_t)ctx->vars->tib_str);
+  write_number((fcell_t)ctx_vars->tib_str);
 
-  uint8_t wdof = ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx;
-  write_str(ctx->vars->tib_len - ctx->vars->tib_idx, ctx->vars->tib_str + wdof);
+  uint8_t wdof = ctx_vars->tib_idx > ctx_vars->tib_len ? ctx_vars->tib_len : ctx_vars->tib_idx;
+  write_str(ctx_vars->tib_len - ctx_vars->tib_idx, ctx_vars->tib_str + wdof);
 
   write_str(4, " --\t");
 
   write_str(1, "(");
-    for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {
+    for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {
       write_number((fcell_t)*i);
       write_str(2, ", ");
     }
@@ -63,24 +63,24 @@ fw_call doprintstate() {
 // handle data stack underflow
 __fw_noinline__
 fw_call dosuf() {
-  ctx->vars->error = FW_ERR_STACKUNDERFLOW;
-  ctx->psp->head = ctx->psp->base;
-  /* exit(ctx->vars->error); */
+  ctx_vars->error = FW_ERR_STACKUNDERFLOW;
+  ctx_psp->head = ctx_psp->base;
+  /* exit(ctx_vars->error); */
 }
 
 // handle return stack underflow
 __fw_noinline__
 fw_call doruf(FORTH_REGISTERS) {
-  ctx->vars->error = FW_ERR_RSTACKUNDERFLOW;
-  ctx->rsp->head = ctx->rsp->base;
-  /* exit(ctx->vars->error); */
+  ctx_vars->error = FW_ERR_RSTACKUNDERFLOW;
+  ctx_rsp->head = ctx_rsp->base;
+  /* exit(ctx_vars->error); */
 }
 
 // ( n -- )
 __fw_noinline__
 void doret() {
   fcell_t errorno = forth_pop();
-  ctx->vars->error = errorno;
+  ctx_vars->error = errorno;
 }
 
 // {*tib} {tib_idx++} ( -- cp n )
@@ -97,42 +97,42 @@ void docreate() {
 // ( n -- ) {*user}
 __fw_noinline__
 void docomma() {
-  *ctx->user->head = forth_pop();
-  /* debugf("\tcomma: %016p -> %016p (%lld)\n", ctx->user->head, *ctx->user->head, *ctx->user->head); */
+  *ctx_user->head = forth_pop();
+  /* debugf("\tcomma: %016p -> %016p (%lld)\n", ctx_user->head, *ctx_user->head, *ctx_user->head); */
   forth_alloc_var();
 }
 
 // ( n -- ) {*user}
 __fw_noinline__
 void dosavehere() {
-  forth_push(*ctx->user->head);
+  forth_push(*ctx_user->head);
 }
 
 // ( n -- ) {*user}
 __fw_noinline__
 void doxmask() {
-  fword_t *last_word = ctx->dict->head - 1;
+  fword_t *last_word = ctx_dict->head - 1;
   last_word->meta ^= forth_pop();
 }
 
 // ( -- ) {*var->state}
 __fw_noinline__
 void dolbrac() {
-  ctx->vars->state = IMMEDIATE_MODE;
+  ctx_vars->state = IMMEDIATE_MODE;
 }
 
 // ( -- ) {*var->state}
 __fw_noinline__
 void dorbrac() {
-  ctx->vars->state = COMPILE_MODE;
+  ctx_vars->state = COMPILE_MODE;
 }
 
 // ( -- *c l ) {tib} {tib_idx++}
 __fw_noinline__
 void doword() {
-  fcell_t idx = ctx->vars->tib_idx;
-  uint8_t len = ctx->vars->tib_len;
-  char   *tib = ctx->vars->tib_str;
+  fcell_t idx = ctx_vars->tib_idx;
+  uint8_t len = ctx_vars->tib_len;
+  char   *tib = ctx_vars->tib_str;
   char* word_start;
   char* word_stop;
 
@@ -147,10 +147,10 @@ void doword() {
 /* #endif // FW_TRACE */
 
   // Set results
-  ctx->vars->tib_idx = word_stop - tib;
+  ctx_vars->tib_idx = word_stop - tib;
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
-  forth_push( (fcell_t)(ctx->vars->tib_idx <= len ));
+  forth_push( (fcell_t)(ctx_vars->tib_idx <= len ));
 }
 
 // ( *c n -- *e n )
@@ -246,8 +246,8 @@ word:
 const char num_basis[] = "0123456789ABCDEF";
 
 void write_str(fcell_t l, char *c) {
-  fcell_t idx = ctx->vars->tob_idx;
-  fcell_t len = ctx->vars->tob_len;
+  fcell_t idx = ctx_vars->tob_idx;
+  fcell_t len = ctx_vars->tob_len;
 
   /* debugf("WRITE_STRING: idx: %d, len: %d\n", idx, len); */
   for (fcell_t i = 0; (i < l) && ((idx + i) < len); i++) {
@@ -258,14 +258,14 @@ void write_str(fcell_t l, char *c) {
 
 __fw_noinline__
 void write_char(char c) {
-  fcell_t *idx = &ctx->vars->tob_idx;
-  fcell_t *len = &ctx->vars->tob_len;
-  char *str = ctx->vars->tob_str;
+  fcell_t *idx = &ctx_vars->tob_idx;
+  fcell_t *len = &ctx_vars->tob_len;
+  char *str = ctx_vars->tob_str;
 
   if (*idx < *len) {
     str[*idx] = c;
     *idx += 1;
-    /* debugf("LEN: %c %d ", c, ctx->vars->tob_idx ); */
+    /* debugf("LEN: %c %d ", c, ctx_vars->tob_idx ); */
   } else {
     forth_flush_tob();
   }

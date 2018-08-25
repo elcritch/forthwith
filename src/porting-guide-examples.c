@@ -27,13 +27,6 @@ accessor(fw_ctx_stack_t, head);
 accessor(fw_ctx_stack_t, base);
 accessor(fw_ctx_stack_t, size);
 
-accessor(fw_ctx_t, regs);
-accessor(fw_ctx_t, vars);
-accessor(fw_ctx_t, psp);
-accessor(fw_ctx_t, rsp);
-accessor(fw_ctx_t, user);
-accessor(fw_ctx_t, dict);
-accessor(fw_ctx_t, strings);
 
 #undef accessor
 #define accessor(struct_name, var_name)                                 \
@@ -43,7 +36,6 @@ accessor(fw_ctx_t, strings);
 fw_ctx_regs_t var_fw_ctx_regs_t = { 1, 2, 3 };
 fw_ctx_vars_t var_fw_ctx_vars_t = { 1, 2, 3, 4, (char*)5, 6, 7, (char*)8 };
 fw_ctx_stack_t var_fw_ctx_stack_t = { (fcell_xt)1, (fcell_xt)2, 3 };
-fw_ctx_t var_fw_ctx_t = { (void*)1, (void*)2, (void*)3, (void*)4, (void*)5, (void*)6, (void*)7};
 
 fw_ctx_vars_t *var_ptr_fw_ctx_vars_t = &var_fw_ctx_vars_t; 
 fw_ctx_regs_t *var_ptr_fw_ctx_regs_t = &var_fw_ctx_regs_t; 
@@ -84,18 +76,6 @@ void examples_accessors_stack() {
   accessor(fw_ctx_stack_t, head);
   accessor(fw_ctx_stack_t, base);
   accessor(fw_ctx_stack_t, size);
-}
-
-__fw_noinline__
-void examples_accessors_ctx() {
-  fw_ctx_t *var_ptr_fw_ctx_t = &var_fw_ctx_t; 
-  accessor(fw_ctx_t, regs);
-  accessor(fw_ctx_t, vars);
-  accessor(fw_ctx_t, psp);
-  accessor(fw_ctx_t, rsp);
-  accessor(fw_ctx_t, user);
-  accessor(fw_ctx_t, dict);
-  accessor(fw_ctx_t, strings);
 }
 
 // Bitwise //
@@ -187,9 +167,9 @@ fw_call examples_pointer_sizes1() {
     (fcell_xt)&cells,
     (fcell_xt)&cells[0],
     (fcell_xt)&examples_accessors_vars,
-    (fcell_xt)&examples_accessors_ctx,
     (fcell_xt)&examples_accessors_stack,
     (fcell_xt)&examples_accessors_regs,
+    NULL,
   };
 
   pointer_sizes_print(cells, 5, ptrs, 6);
@@ -208,7 +188,6 @@ int main(int argv, char **argc) {
   examples_accessors_regs();
   examples_accessors_vars();
   examples_accessors_stack();
-  examples_accessors_ctx();
 
   examples_bitwise();
 

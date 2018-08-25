@@ -7,8 +7,8 @@
 
 fcell_xt *forth_alloc_var_len(fcell_t len) {
   // this incrs in multipls of IP_t size
-  ctx->user->head = ctx->user->head + len;
-  return (fcell_xt *)ctx->user->head;
+  ctx_user->head = ctx_user->head + len;
+  return (fcell_xt *)ctx_user->head;
 }
 
 fcell_xt *forth_alloc_var() {
@@ -17,12 +17,12 @@ fcell_xt *forth_alloc_var() {
 
 fword_t* alloc_dict() {
   // 'allocate' new entry in dict head
-  fword_t* curr_dict = ctx->dict->head;
-  fword_t* next_dict = ctx->dict->head + 1;
+  fword_t* curr_dict = ctx_dict->head;
+  fword_t* next_dict = ctx_dict->head + 1;
 
   // update dict head
   next_dict->prev = curr_dict;
-  ctx->dict->head = next_dict;
+  ctx_dict->head = next_dict;
 
   return curr_dict;
 }
@@ -30,11 +30,11 @@ fword_t* alloc_dict() {
 __fw_noinline__ 
 char* alloc_string(uint8_t len) {
   // 'allocate' new entry in dict head
-  char* curr_string = ctx->strings->head;
-  char* next_string = ctx->strings->head + len + 1; // for extra null term and len
+  char* curr_string = ctx_strings->head;
+  char* next_string = ctx_strings->head + len + 1; // for extra null term and len
 
   // update dict head
-  ctx->strings->head = next_string;
+  ctx_strings->head = next_string;
   curr_string[len] = '\0'; // just in case 
 
   return curr_string;
@@ -44,7 +44,7 @@ char* alloc_string(uint8_t len) {
 __fw_noinline__
 void dict_add(fword_t *entry) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict->base;
+  fword_t* word_ptr = ctx_dict->base;
 
   // Iterate over words, find first word
   while (word_ptr->prev != NULL) {
@@ -78,7 +78,7 @@ fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 __fw_noinline__ 
 fword_t* dict_find(int8_t len, char *name) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict->head;
+  fword_t* word_ptr = ctx_dict->head;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
@@ -108,7 +108,7 @@ fword_t* dict_find(int8_t len, char *name) {
 __fw_noinline__
 fword_t* dict_lookup(fcell_xt addr) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict->head;
+  fword_t* word_ptr = ctx_dict->head;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
@@ -128,7 +128,7 @@ fword_t* dict_lookup(fcell_xt addr) {
 __fw_noinline__
 fcell_xt dict_cfa(fword_t *entry) {
   if (entry == NULL) {
-    ctx->vars->error = FW_ERR_CFA;
+    ctx_vars->error = FW_ERR_CFA;
     return 0;
   } else {
     if (entry->meta & F_WORD) {
@@ -145,7 +145,7 @@ fcell_xt dict_cfa(fword_t *entry) {
 __fw_noinline__
 void dict_print() {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx->dict->head;
+  fword_t* word_ptr = ctx_dict->head;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {

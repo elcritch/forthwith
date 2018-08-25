@@ -76,21 +76,24 @@ typedef struct forthwith_str_stack { /**< FORTH environment */
   fcell_t size; // bytes
 } fw_ctx_str_stack_t;
 
-typedef struct forthwith_context { /**< FORTH environment */
-  fw_ctx_regs_t *regs;
-  fw_ctx_vars_t *vars;
-  fw_ctx_stack_t *psp;
-  fw_ctx_stack_t *rsp;
-  fw_ctx_stack_t *user;
-  fw_ctx_dict_stack_t *dict;
-  fw_ctx_str_stack_t *strings;
-} fw_ctx_t;
+/* typedef struct forthwith_context { /\**< FORTH environment *\/ */
+/*   fw_ctx_regs_t *regs; */
+/*   fw_ctx_vars_t *vars; */
+/*   fw_ctx_stack_t *psp; */
+/*   fw_ctx_stack_t *rsp; */
+/*   fw_ctx_stack_t *user; */
+/*   fw_ctx_dict_stack_t *dict; */
+/*   fw_ctx_str_stack_t *strings; */
+/* } fw_ctx_t; */
 
 /// Global Forthwith Context
-extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
 extern fw_ctx_stack_t *ctx_rsp;
+extern fw_ctx_stack_t *ctx_user;
 extern fw_ctx_regs_t *ctx_regs;
+extern fw_ctx_vars_t *ctx_vars;
+extern fw_ctx_dict_stack_t *ctx_dict;
+extern fw_ctx_str_stack_t *ctx_strings;
 
 
 typedef fcell_t (*forthwith_call_0)();

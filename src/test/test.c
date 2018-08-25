@@ -16,23 +16,23 @@
 char out_buff[256] = {0};
 
 void print_psp_info() {
-  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %lld \n\n", (fcell_t)(ctx->psp->head - ctx->psp->base));
+  printf("\n\nDone...\nerror: %lld\n", ctx_vars->error);
+  printf("psp->head: %p\n", ctx_psp->head);
+  printf("psp->base: %p\n", ctx_psp->base);
+  printf("psp stack size: %lld \n\n", (fcell_t)(ctx_psp->head - ctx_psp->base));
 }
 
 void test_setup() {
   forth_init();
-  forth_bootstrap(ctx);
+  forth_bootstrap();
 
-  if (ctx->vars->tob_str)
-    free(ctx->vars->tob_str);
+  if (ctx_vars->tob_str)
+    free(ctx_vars->tob_str);
 
   fcell_t tob_len = 16 << 10;
-  ctx->vars->tob_idx = 0;
-  ctx->vars->tob_str = calloc(1, tob_len);
-  ctx->vars->tob_len = tob_len;
+  ctx_vars->tob_idx = 0;
+  ctx_vars->tob_str = calloc(1, tob_len);
+  ctx_vars->tob_len = tob_len;
 }
 
 #ifdef FW_MANUAL_TEST
@@ -564,7 +564,7 @@ void test_other(void) {
 
   print_psp_info();
 
-  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}; printf("\n");
+  printf("\n\n>> "); for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf("%lld, ", *i);}; printf("\n");
 
   int cnt = forth_count();
   TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);

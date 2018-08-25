@@ -66,11 +66,14 @@ fw_call doprintstate();
   })
 
 // TODO: fix or remove
-#define forth_variable(name, _name_len, struct_name, member_name, offset) \
+/* load_const(x, $ctx);                                    \ */
+/* load_addr_off(s2, x, $ ## struct_name ## _of_ ## member_name);       \ */
+/* calc_addr_off(s1, s2, offset);                                      \ */
+#define forth_variable(name, _name_len, struct_name, member_name) \
+  void *get_var_ ## struct_name ## member_name () { return &struct_name->member_name; } \
   forth_primitive( #name, _name_len, F_NORMAL, var_ ## name, _comment, { \
-    load_const(x, $ctx);                                    \
-    load_addr_off(s2, x, $ ## struct_name ## _of_ ## member_name);       \
-    calc_addr_off(s1, s2, offset);                                      \
+      call(  get_var_ ## struct_name ## member_name  );       \
+      copy_reg(s1, xresult); \
     pushd(1);                                                         \
     jump(next);                                                       \
   })
@@ -89,7 +92,7 @@ fw_call doprintstate();
   dict_add(&xw_ ## func)
   /* dict_create(mask, name_len, name_str, (fcell_xt*)&func) */
 
-#define forth_variable(name, name_len, struct_name, member_name, offset) \
+#define forth_variable(name, name_len, struct_name, member_name) \
   dict_add(&xw_var_ ## name)
   /* dict_create(F_NORMAL, name_len, #name, (fcell_xt*)&var_ ## name) */
 
@@ -118,7 +121,7 @@ fw_call doprintstate();
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK)  \
   extern fcell_xt xt_ ## func
 
-#define forth_variable(name, name_len, struct_name, member_name, offset)
+#define forth_variable(name, name_len, struct_name, member_name)
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
   extern fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ]

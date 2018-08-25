@@ -20,13 +20,12 @@
 #include "prompt.c"
 
 
-extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
 
 
 void forth_flush_tob() {
-  fcell_t idx = ctx->vars->tob_idx;
-  char *buff = ctx->vars->tob_str;
+  fcell_t idx = ctx_vars->tob_idx;
+  char *buff = ctx_vars->tob_str;
 
   printf("tob_idx: %lld\n", idx);
 
@@ -37,6 +36,6 @@ void forth_flush_tob() {
       printf("%c", buff[i]);
   }
 
-  memset(ctx->vars->tob_str, 0, ctx->vars->tob_len);
-  ctx->vars->tob_idx = 0;
+  memset(ctx_vars->tob_str, 0, ctx_vars->tob_len);
+  ctx_vars->tob_idx = 0;
 }

@@ -23,17 +23,17 @@ void test_interpreter(void) {
   test_setup();
 
   dict_print();
-  fcell_t dlen = ctx->vars->tob_idx;
-  printf("TOB SZ: %s\n", ctx->vars->tob_str);
+  fcell_t dlen = ctx_vars->tob_idx;
+  printf("TOB SZ: %s\n", ctx_vars->tob_str);
   for (fcell_t i = 0; i < dlen; i++) {
-    putchar(ctx->vars->tob_str[i]);
+    putchar(ctx_vars->tob_str[i]);
   }
   printf("TOB DONE\n");
 
-  printf("ctx->rsp: %p\n", ctx->rsp);
-  printf("ctx->psp: %p\n", ctx->psp);
-  printf("ctx->vars: %p\n", ctx->vars);
-  printf("ctx->regs: %p\n", ctx->regs);
+  printf("ctx->rsp: %p\n", ctx_rsp);
+  printf("ctx->psp: %p\n", ctx_psp);
+  printf("ctx->vars: %p\n", ctx_vars);
+  printf("ctx->regs: %p\n", ctx_regs);
 
   // Vars
   int i, n;
@@ -48,9 +48,9 @@ void test_interpreter(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  ctx->vars->tib_str = "7 2 +";
-  ctx->vars->tib_len = 5;
-  ctx->vars->tib_idx = 0;
+  ctx_vars->tib_str = "7 2 +";
+  ctx_vars->tib_len = 5;
+  ctx_vars->tib_idx = 0;
 
   forth_eval(var[0]);
   forth_flush_tob();
@@ -88,17 +88,17 @@ void test_colon(void) {
 
 
   /* dict_print(); */
-  /* printf("dict: %d\n", ctx->vars->tob_idx); */
-  /* for (uint8_t i = 0; i < ctx->vars->tob_idx; i++) { */
-  /*   putc(ctx->vars->tob_str[i], stdout); */
+  /* printf("dict: %d\n", ctx_vars->tob_idx); */
+  /* for (uint8_t i = 0; i < ctx_vars->tob_idx; i++) { */
+  /*   putc(ctx_vars->tob_str[i], stdout); */
   /* } */
 
   printf("\n<<<<<<<<<<<< TEST ':' <<<<<<<<<<<< \n\n");
 
-  printf("ctx->rsp: %p\n", ctx->rsp);
-  printf("ctx->psp: %p\n", ctx->psp);
-  printf("ctx->vars: %p\n", ctx->vars);
-  printf("ctx->regs: %p\n", ctx->regs);
+  printf("ctx->rsp: %p\n", ctx_rsp);
+  printf("ctx->psp: %p\n", ctx_psp);
+  printf("ctx->vars: %p\n", ctx_vars);
+  printf("ctx->regs: %p\n", ctx_regs);
 
   // Vars
   int i, n;
@@ -118,9 +118,9 @@ void test_colon(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  ctx->vars->tib_str = ": aa 99 ;";
-  ctx->vars->tib_len = 9;
-  ctx->vars->tib_idx = 0;
+  ctx_vars->tib_str = ": aa 99 ;";
+  ctx_vars->tib_len = 9;
+  ctx_vars->tib_idx = 0;
 
   forth_eval(var[0]);
   forth_flush_tob();
@@ -138,7 +138,7 @@ void test_colon(void) {
 
   printf("cfa_aa: %16p\n", cfa_a);
 
-  fword_t *entry_prior = ctx->dict->head - 2;
+  fword_t *entry_prior = ctx_dict->head - 2;
   fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
 
   /* cfa_a = *cfa_a; */

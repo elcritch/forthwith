@@ -18,12 +18,3 @@
 /* #include "prompt.c" */
 
 
-extern fw_ctx_t *ctx;
-extern fw_ctx_stack_t *ctx_psp;
-
-/* __asm__("  .data"); */
-/* __asm__("  .retain"); */
-/* __asm__("||ABC||:  .set xt_fetch"); */
-/* __asm__("          .word 0"); */
-/* __asm__("  .global ||ABC||"); */
-
