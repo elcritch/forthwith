@@ -7,6 +7,12 @@
 
 typedef int32_t fcell_t;
 
+#ifdef __MACH__
+#define CELL_FMT "%ld"
+#else
+#define CELL_FMT "%ld"
+#endif
+
 /* #define FORTHWITH_NO_CHECKS */
 
 #define $1 1

@@ -16,10 +16,10 @@
 char out_buff[256] = {0};
 
 void print_psp_info() {
-  printf("\n\nDone...\nerror: %lld\n", ctx_vars->error);
+  printf("\n\nDone...\nerror: "CELL_FMT"\n", ctx_vars->error);
   printf("psp->head: %p\n", ctx_psp->head);
   printf("psp->base: %p\n", ctx_psp->base);
-  printf("psp stack size: %lld \n\n", (fcell_t)(ctx_psp->head - ctx_psp->base));
+  printf("psp stack size: "CELL_FMT" \n\n", (fcell_t)(ctx_psp->head - ctx_psp->base));
 }
 
 void test_setup() {
@@ -93,7 +93,7 @@ void test_basic(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld\n", x);
+    printf("remaining stack: "CELL_FMT"\n", x);
   }
 
   printf("... stack done\n");
@@ -169,7 +169,7 @@ void test_parsing(void)
   tib_idx = tib_idx + wl;
 
   expl = 4; expi = 4;
-  TEST_CHECK_(expl == wl, "Expected %lld, got %lld", expl, wl);
+  TEST_CHECK_(expl == wl, "Expected "CELL_FMT", got "CELL_FMT"", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
@@ -249,7 +249,7 @@ void test_parsing(void)
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld (%p)\n", x, (void*)x);
+    printf("remaining stack: "CELL_FMT" (%p)\n", x, (void*)x);
   }
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
@@ -301,7 +301,7 @@ void test_create(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %lld\n", x);
+    printf("remaining stack: "CELL_FMT"\n", x);
   }
 
   printf("... stack done\n");
@@ -564,7 +564,7 @@ void test_other(void) {
 
   print_psp_info();
 
-  printf("\n\n>> "); for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf("%lld, ", *i);}; printf("\n");
+  printf("\n\n>> "); for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf(""CELL_FMT", ", *i);}; printf("\n");
 
   int cnt = forth_count();
   TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);

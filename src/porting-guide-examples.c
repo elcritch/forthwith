@@ -30,7 +30,7 @@ accessor(fw_ctx_stack_t, size);
 
 #undef accessor
 #define accessor(struct_name, var_name)                                 \
-  printf(#struct_name " :: " #var_name " -> %lld \n", \
+  printf(#struct_name " :: " #var_name " -> "CELL_FMT" \n", \
          accessor_ ## struct_name ## _st_ ## var_name(var_ptr_ ## struct_name)); \
 
 fw_ctx_regs_t var_fw_ctx_regs_t = { 1, 2, 3 };
@@ -80,8 +80,8 @@ void examples_accessors_stack() {
 
 // Bitwise //
 #define binary_ops(opname)                                 \
-  printf(#opname "  -> %lld \n", ex_ ## opname(14, 2)); \
-  printf(#opname "  -> %lld \n", ex_ ## opname(9, 1));
+  printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(14, 2)); \
+  printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(9, 1));
 
 
 __fw_noinline__
@@ -151,7 +151,7 @@ __fw_noinline__
 fw_call pointer_sizes_print(fcell_t *cells, uint8_t cl, fcell_xt* ptrs, uint8_t pl) {
   printf("example cells: \n");
   for (int i = 0; i < cl; i++) {
-    printf("cell: %lld\n", cells[i]);
+    printf("cell: "CELL_FMT"\n", cells[i]);
   }
 
   printf("example pointer cells: \n");
@@ -184,7 +184,7 @@ fw_call examples_pointer_sizes2() {
 }
 
 int main(int argv, char **argc) {
-  printf("%lld", examples_accessors_regs_ip());
+  printf(""CELL_FMT"", examples_accessors_regs_ip());
   examples_accessors_regs();
   examples_accessors_vars();
   examples_accessors_stack();
@@ -198,6 +198,8 @@ int main(int argv, char **argc) {
 
   fcell_t a = 1;
   fcell_xt b = (void*)1;
+  (void)a;
+  (void)b;
 
   printf("sizeof(fcell_t): %lu %lu\n", sizeof(fcell_t), sizeof(a));
   printf("sizeof(fcell_xt): %lu %lu\n", sizeof(fcell_xt), sizeof(b));

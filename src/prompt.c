@@ -27,7 +27,7 @@ int doeval() {
 
 void print_stack() {
   printf(" (");
-  for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf("%lld, ", *i);}
+  for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf(""CELL_FMT", ", *i);}
   printf(") ");
 }
 

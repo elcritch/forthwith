@@ -2,6 +2,12 @@
 #ifndef _DEFAULT_IMPLS_H_
 #define _DEFAULT_IMPLS_H_
 
+#ifdef __MACH__
+#define CELL_FMT "%lld"
+#else
+#define CELL_FMT "%ld"
+#endif
+
 #define accessor_name(struct_name)              \
   get_ ## struct_name ## _addr
 

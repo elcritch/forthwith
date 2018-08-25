@@ -27,7 +27,7 @@ void forth_flush_tob() {
   fcell_t idx = ctx_vars->tob_idx;
   char *buff = ctx_vars->tob_str;
 
-  printf("tob_idx: %lld\n", idx);
+  printf("tob_idx: "CELL_FMT"\n", idx);
 
   for (fcell_t i = 0; i < idx; i++) {
     if (buff[i] == '\0')
