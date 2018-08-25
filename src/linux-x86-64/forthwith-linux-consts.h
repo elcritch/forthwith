@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-typedef intptr_t fcell_t;
+typedef int64_t fcell_t;
 
 #include <stddef.h>
 

@@ -18,13 +18,13 @@ fw_call doprintstate() {
   /* printf(" stacks: "); */
   /* printf("psp: %p, ", ctx->psp->head); */
   /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %ld - %16p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
+  printf("tib: %lld - %16p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
 
   printf(" --\t");
 
   printf("(");
 
-  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}
+  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}
 
   printf(")");
 
@@ -54,7 +54,7 @@ int doeval() {
 
 void print_stack() {
   printf(" (");
-  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}
+  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}
   printf(") ");
 }
 

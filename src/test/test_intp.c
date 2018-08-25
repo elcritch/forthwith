@@ -5,6 +5,7 @@
 #include "forthwith-linux.h"
 #include "forthwith.h"
 #include "dict.h"
+#include "prompt.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -53,21 +54,14 @@ void test_interpreter(void) {
 
   forth_eval(var[0]);
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
   int cnt = forth_count();
+  fcell_t x = forth_pop();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
 
-  fcell_t x = 0;
-  while (forth_count() > 0) {
-    x = forth_pop();
-    printf("remaining stack: %ld\n", x);
-  }
+  print_stack(); printf("... stack done\n");
 
-  printf("... stack done\n");
   TEST_CHECK_(x == 9, "Expected %d, got %d", 9, x);
 
   x = forth_pop();
@@ -165,10 +159,7 @@ void test_colon(void) {
 
   forth_eval(var[idx_ra]);
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
 
   int expi = 256;

@@ -11,6 +11,13 @@
 
 char out_buff[256] = {0};
 
+void print_psp_info() {
+  printf("\n\nDone...\nerror: %lld\n", ctx->vars->error);
+  printf("psp->head: %p\n", ctx->psp->head);
+  printf("psp->base: %p\n", ctx->psp->base);
+  printf("psp stack size: %lld \n\n", (fcell_t)(ctx->psp->head - ctx->psp->base));
+}
+
 void test_setup() {
   forth_init();
   forth_bootstrap(ctx);
@@ -68,10 +75,6 @@ void test_basic(void) {
 
   forth_eval(var1);
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
 
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
@@ -79,7 +82,7 @@ void test_basic(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
 
   printf("... stack done\n");
@@ -155,7 +158,7 @@ void test_parsing(void)
   tib_idx = tib_idx + wl;
 
   expl = 4; expi = 4;
-  TEST_CHECK_(expl == wl, "Expected %ld, got %ld", expl, wl);
+  TEST_CHECK_(expl == wl, "Expected %lld, got %lld", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected %p, got %p", tib + expi, ws);
 
@@ -235,7 +238,7 @@ void test_parsing(void)
   printf("\n <<<<<<<<<<<<<< parsing test: leftover stack: \n");
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld (%p)\n", x, (void*)x);
+    printf("remaining stack: %lld (%p)\n", x, (void*)x);
   }
 
   printf(" >>>>>>>>>>>>>> parsing test \n\n\n");
@@ -278,10 +281,7 @@ void test_create(void) {
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected %d, got %d", 1, cnt);
@@ -289,7 +289,7 @@ void test_create(void) {
   fcell_t x = 0;
   while (forth_count()) {
     x = forth_pop();
-    printf("remaining stack: %ld\n", x);
+    printf("remaining stack: %lld\n", x);
   }
 
   printf("... stack done\n");
@@ -544,12 +544,9 @@ void test_other(void) {
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
 
-  printf("\n\nDone...\nerror: %ld\n", ctx->vars->error);
-  printf("psp->head: %p\n", ctx->psp->head);
-  printf("psp->base: %p\n", ctx->psp->base);
-  printf("psp stack size: %ld \n\n", ctx->psp->head - ctx->psp->base);
+  print_psp_info();
 
-  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%ld, ", *i);}; printf("\n");
+  printf("\n\n>> "); for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}; printf("\n");
 
   int cnt = forth_count();
   TEST_CHECK_(3 == cnt, "Expected %d, got %d", 3, cnt);
