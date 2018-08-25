@@ -135,6 +135,7 @@ extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
 extern int forth_eval_string(char *input);
+extern void forth_flush_tob();
 
 // Basic Execution Tokens
 extern fcell_xt xt_dosys;

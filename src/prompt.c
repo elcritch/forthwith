@@ -5,33 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-fw_call doprintstate() {
-
-  for (fcell_t *i = ctx->rsp->base; i < ctx->rsp->head; i++)
-    printf("-");
-
-  printf("-> \t\t regs: ");
-  fword_t *entry = dict_lookup((fcell_xt)ctx->regs->x);
-  printf("x: %16p (%10s), ", (void*)ctx->regs->x, entry? entry->name : NULL);
-  printf("ip: %16p, ", (void*)ctx->regs->ip);
-  printf("w: %16p, ", (void*)ctx->regs->w);
-  /* printf(" stacks: "); */
-  /* printf("psp: %p, ", ctx->psp->head); */
-  /* printf("rsp: %p, ", ctx->rsp->head); */
-  printf("tib: %lld - %16p (%-10s) ", ctx->vars->tib_idx, ctx->vars->tib_str, ctx->vars->tib_str + ( ctx->vars->tib_idx > ctx->vars->tib_len ? ctx->vars->tib_len : ctx->vars->tib_idx));
-
-  printf(" --\t");
-
-  printf("(");
-
-  for (fcell_t *i = ctx->psp->base; i < ctx->psp->head; i++) {printf("%lld, ", *i);}
-
-  printf(")");
-
-  printf("\n");
-  return;
-}
-
 int doeval() {
   // Vars
   fcell_xt* var[3] = {0};

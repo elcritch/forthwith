@@ -1,11 +1,11 @@
-BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -m64 -Wno-unused-function -Isrc/
+BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -Wno-unused-function -Isrc/
 
 CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
 # CFLAGS = -Wall -O3 $(BASE_CFLAGS)
 
 
-# CC = clang
-CC = gcc
+CC = clang
+# CC = gcc
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x

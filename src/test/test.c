@@ -1,6 +1,9 @@
 
+/* #define FW_MANUAL_TEST */
 
+#ifndef FW_MANUAL_TEST
 #include "acutest.h"
+#endif // FW_MANUAL_TEST
 
 #include "forthwith-linux.h"
 #include "forthwith.h"
@@ -8,6 +11,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 char out_buff[256] = {0};
 
@@ -22,12 +26,15 @@ void test_setup() {
   forth_init();
   forth_bootstrap(ctx);
 
+  fcell_t tob_len = 16 << 10;
   ctx->vars->tob_idx = 0;
-  ctx->vars->tob_str = calloc(1, 2048);
-  ctx->vars->tob_len = 2048;
+  ctx->vars->tob_str = calloc(1, tob_len);
+  ctx->vars->tob_len = tob_len;
 }
 
-/* #define TEST_CHECK_(args...) */
+#ifdef FW_MANUAL_TEST
+#define TEST_CHECK_(args...)
+#endif // FW_MANUAL_TEST
 
 void dict_print();
 void docolon(FORTH_REGISTERS);
@@ -74,6 +81,7 @@ void test_basic(void) {
   printf("xt_docolon: %16p <- docolon: %16p \n\n", (fcell_xt*)xt_docolon, (fcell_xt*)docolon);
 
   forth_eval(var1);
+  forth_flush_tob();
 
 
   int cnt = forth_count();
@@ -280,6 +288,7 @@ void test_create(void) {
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
+  forth_flush_tob();
 
   print_psp_info();
 
@@ -347,11 +356,12 @@ void test_branches(void) {
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 5, "tjmp", var[idx_b0]);
+  fword_t *tjmp = dict_create(F_NORMAL | F_WORD, 4, "tjmp", var[idx_b0]);
   (void)tjmp;
 
   // Rust test true
-  forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tjmp")));
+  forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tjmp")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -398,6 +408,7 @@ void test_branches(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tifz5")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -419,6 +430,7 @@ void test_branches(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(5, "tifz0")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -483,6 +495,7 @@ void test_ifelse(void) {
   // Rust test true
   printf("<<< Run Test True\n");
   forth_eval((fcell_xt*)dict_cfa(dict_find(7, "ts_true")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -503,6 +516,7 @@ void test_ifelse(void) {
 
   // Rust test true
   forth_eval((fcell_xt*)dict_cfa(dict_find(8, "ts_false")));
+  forth_flush_tob();
 
   cnt = forth_count();
   x = forth_pop();
@@ -543,6 +557,7 @@ void test_other(void) {
   printf("entry: %p\n\n", entry);
 
   forth_eval((fcell_xt*)dict_cfa(dict_find(4, "tadd")));
+  forth_flush_tob();
 
   print_psp_info();
 
@@ -579,6 +594,7 @@ void test_other(void) {
 
 #include "test_intp.c"
 
+#ifndef FW_MANUAL_TEST
 TEST_LIST = {
   { "basic", test_basic },
   { "parsing", test_parsing },
@@ -590,9 +606,13 @@ TEST_LIST = {
   { "colon", test_colon },
   { 0 }
 };
+#endif // FW_MANUAL_TEST
 
-/* int main() { */
-/*   test_basic(); */
+#ifdef FW_MANUAL_TEST
+int main() {
+  test_branches();
 
-/*   return forth_count(); */
-/* } */
+  return forth_count();
+}
+#endif // FW_MANUAL_TEST
+

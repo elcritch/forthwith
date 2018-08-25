@@ -1,4 +1,6 @@
 
+#define FW_CUSTOM_TOB_FLUSH
+
 #include "forthwith-linux.h"
 #include "forthwith.h"
 #include "dict.h"
@@ -21,3 +23,13 @@
 extern fw_ctx_t *ctx;
 extern fw_ctx_stack_t *ctx_psp;
 
+
+void forth_flush_tob() {
+  int idx = ctx->vars->tob_idx;
+  char *buff = calloc(1, idx + 1);
+  stpncpy(buff, ctx->vars->tob_str, idx);
+  puts(buff);
+
+  memset(ctx->vars->tob_str, 0, ctx->vars->tob_len);
+  ctx->vars->tob_idx = 0;
+}

@@ -53,6 +53,7 @@ void test_interpreter(void) {
   ctx->vars->tib_idx = 0;
 
   forth_eval(var[0]);
+  forth_flush_tob();
 
   print_psp_info();
 
@@ -122,6 +123,7 @@ void test_colon(void) {
   ctx->vars->tib_idx = 0;
 
   forth_eval(var[0]);
+  forth_flush_tob();
 
   dict_print();
   // Try running new word!
@@ -158,6 +160,7 @@ void test_colon(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
   forth_eval(var[idx_ra]);
+  forth_flush_tob();
 
   print_psp_info();
 
