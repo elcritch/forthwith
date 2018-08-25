@@ -45,17 +45,29 @@ fw_ctx_vars_t var_fw_ctx_vars_t = { 1, 2, 3, 4, (char*)5, 6, 7, (char*)8 };
 fw_ctx_stack_t var_fw_ctx_stack_t = { (fcell_xt)1, (fcell_xt)2, 3 };
 fw_ctx_t var_fw_ctx_t = { (void*)1, (void*)2, (void*)3, (void*)4, (void*)5, (void*)6, (void*)7};
 
+fw_ctx_vars_t *var_ptr_fw_ctx_vars_t = &var_fw_ctx_vars_t; 
+fw_ctx_regs_t *var_ptr_fw_ctx_regs_t = &var_fw_ctx_regs_t; 
+
+__fw_noinline__
+fcell_t examples_accessors_regs_ip() {
+  return var_ptr_fw_ctx_regs_t->ip;
+}
+
 __fw_noinline__
 void examples_accessors_regs() {
   fw_ctx_regs_t *var_ptr_fw_ctx_regs_t = &var_fw_ctx_regs_t; 
-  accessor(fw_ctx_regs_t, w);
   accessor(fw_ctx_regs_t, x);
   accessor(fw_ctx_regs_t, ip);
+  accessor(fw_ctx_regs_t, w);
+}
+
+__fw_noinline__
+fcell_t examples_accessors_vars_tib_idx() {
+  return var_ptr_fw_ctx_vars_t->tib_idx;
 }
 
 __fw_noinline__
 void examples_accessors_vars() {
-  fw_ctx_vars_t *var_ptr_fw_ctx_vars_t = &var_fw_ctx_vars_t; 
   accessor(fw_ctx_vars_t, state);
   accessor(fw_ctx_vars_t, error);
   accessor(fw_ctx_vars_t, tib_idx);
@@ -174,10 +186,10 @@ fw_call examples_pointer_sizes1() {
   fcell_xt ptrs[6] = {
     (fcell_xt)&cells,
     (fcell_xt)&cells[0],
-    (fcell_xt)&examples_accessors_regs,
     (fcell_xt)&examples_accessors_vars,
-    (fcell_xt)&examples_accessors_stack,
     (fcell_xt)&examples_accessors_ctx,
+    (fcell_xt)&examples_accessors_stack,
+    (fcell_xt)&examples_accessors_regs,
   };
 
   pointer_sizes_print(cells, 5, ptrs, 6);
@@ -192,6 +204,7 @@ fw_call examples_pointer_sizes2() {
 }
 
 int main(int argv, char **argc) {
+  printf("%lld", examples_accessors_regs_ip());
   examples_accessors_regs();
   examples_accessors_vars();
   examples_accessors_stack();
