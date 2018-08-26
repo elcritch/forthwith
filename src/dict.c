@@ -40,7 +40,8 @@ char* alloc_string(uint8_t len) {
   return curr_string;
 }
 
-#include <stdio.h>
+#ifndef FW_CUSTOM_DICT_ADD
+#define FW_CUSTOM_DICT_ADD
 __fw_noinline__
 void dict_add(fword_t *entry) {
   // Load dictionary pointer
@@ -51,13 +52,14 @@ void dict_add(fword_t *entry) {
     word_ptr = word_ptr->prev;
   }
 
-  // Fix xw def... 
+  // Fix xw def...
   // C Requires compile time constants,
   // xt_<name> is not, but &xt_<name> _is_ a compile time
   // so we store &xt_<name> and deref here to fix it. Nifty!
   entry->body = (fcell_xt*) *entry->body;
   word_ptr->prev = entry;
 }
+#endif // FW_CUSTOM_DICT_ADD
 
 __fw_noinline__
 fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
@@ -160,7 +162,7 @@ void dict_print() {
 
     word_ptr = word_ptr->prev;
 
-    forth_flush_tob();
+    /* forth_flush_tob(); */
   }
 
 }

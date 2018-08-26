@@ -6,14 +6,14 @@ forth_core("@", 1, F_NORMAL, fetch, "( n -- n )", {
     load_addr(s1, x);
     pushd(1);
     jump(next);
-  });
+});
 
 forth_core("!", 1, F_NORMAL, store, "( n addr -- )",  {
     popd(2);
     store_addr(s2, s1);
     pushd(0);
     jump(next);
-  });
+});
 
 // =============== Stack Primitives ============== //
 forth_core("drop", 4, F_NORMAL, drop, "( n -- )",  {
@@ -106,16 +106,16 @@ forth_core("|", 1, F_NORMAL, oru, "( n n -- n )",  {
     jump(next);
 });
 
-forth_core("<<<", 3, F_NORMAL, lshiftu, "( n n -- n )",  {
-    popd(2);
-    rshift_reg(s1, s2);
-    pushd(1);
-    jump(next);
-});
+/* forth_core("<<<", 3, F_NORMAL, lshiftu, "( n n -- n )",  { */
+/*     popd(2); */
+/*     rshift_reg(s1, s2); */
+/*     pushd(1); */
+/*     jump(next); */
+/* }); */
 
-forth_core(">>>", 3, F_NORMAL, rshiftu, "( n n -- n )",  {
-    popd(2);
-    lshift_reg(s1, s2);
-    pushd(1);
-    jump(next);
-});
+/* forth_core(">>>", 3, F_NORMAL, rshiftu, "( n n -- n )",  { */
+/*     popd(2); */
+/*     lshift_reg(s1, s2); */
+/*     pushd(1); */
+/*     jump(next); */
+/* }); */
