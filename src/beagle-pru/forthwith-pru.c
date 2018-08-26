@@ -1,4 +1,8 @@
 
+#define FW_CUSTOM_TOB_FLUSH
+#define FW_TRACE
+#define FORTHWITH_NO_CHECKS
+
 #include "forthwith-pru.h"
 #include "forthwith.h"
 #include "dict.h"
@@ -18,3 +22,5 @@
 /* #include "prompt.c" */
 
 
+
+extern void forth_flush_tob();

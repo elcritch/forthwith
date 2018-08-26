@@ -57,6 +57,7 @@ fw_call doprintstate() {
 
   write_str(1, "\n");
 
+  forth_flush_tob();
   return;
 }
 

@@ -159,6 +159,8 @@ void dict_print() {
     write_char('\n');
 
     word_ptr = word_ptr->prev;
+
+    forth_flush_tob();
   }
 
 }

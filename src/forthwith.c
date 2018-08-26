@@ -48,8 +48,8 @@ int forth_init() {
   ctx_psp->size =  128 * sizeof(fw_ctx_stack_t);
   ctx_rsp->size =  128 * sizeof(fw_ctx_stack_t);
   ctx_user->size =   64 * sizeof(fw_ctx_stack_t);
-  ctx_dict->size = 512 * sizeof(fw_ctx_dict_stack_t);
-  ctx_strings->size = 512 * sizeof(fw_ctx_str_stack_t);
+  ctx_dict->size = 128 * sizeof(fw_ctx_dict_stack_t);
+  ctx_strings->size = 128 * sizeof(fw_ctx_str_stack_t);
 
   // ===== Allocate default stacks ===== //
 
@@ -110,7 +110,7 @@ int forth_bootstrap() {
     #include "xmacros.h"
     #include "xmacros.inner.h"
     #include "xmacros.core.h"
-    #include "xmacros.outer.h"
+    /* #include "xmacros.outer.h" */
   #undef FORTH_DEFINE_DICT_ENTRIES
 
   return FW_OK;
