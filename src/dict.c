@@ -147,7 +147,7 @@ fcell_xt dict_cfa(fword_t *entry) {
 __fw_noinline__
 void dict_print() {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx_dict->head;
+  fword_t* word_ptr = ctx_dict->head - 1;
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
