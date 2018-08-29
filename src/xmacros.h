@@ -86,11 +86,9 @@ fw_call doprintstate();
 
 #define forth_core(name_str, name_len, mask, func, _comment, _BLOCK) \
   dict_add(&xw_ ## func)
-  /* dict_create(mask, name_len, name_str, (fcell_xt*)&func) */
 
 #define forth_variable(name, name_len, struct_name, member_name) \
   dict_add(&xw_var_ ## name)
-  /* dict_create(F_NORMAL, name_len, #name, (fcell_xt*)&var_ ## name) */
 
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
@@ -100,7 +98,6 @@ fw_call doprintstate();
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   dict_add(&xw_ ## func)
-  /* dict_create(F_NORMAL, name_len, name_str, (fcell_xt*)&func) */
 
 #endif // FORTH_DEFINE_DICT_ENTRIES
 
