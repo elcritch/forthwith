@@ -46,8 +46,7 @@ fw_call doprintstate();
 // implement the basic definition primitive
 #define forth_primitive(_name_str, _name_len, mask, func, _comt, BLOCK) \
   fw_call func(FORTH_REGISTERS) BLOCK \
-  fcell_xt xt_ ## func = (fcell_xt)&func;     \
-  fword_t xw_ ## func = { NULL, &xt_ ## func, mask, _name_len, _name_str };
+  fcell_xt xt_ ## func = (fcell_xt)&func
 
 #define forth_core(_name_str, _name_len, mask, func, _comt, BLOCK) \
   fw_call func(FORTH_REGISTERS) BLOCK \
@@ -59,19 +58,15 @@ fw_call doprintstate();
   fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ];
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
-  forth_primitive(name_str, name_len, mask, func, comment, { \
+  forth_core(name_str, name_len, mask, func, comment, { \
     calc_addr_off(x, xaddr, __label(lbl)); \
     call(call00); \
     jump(next); \
   })
 
-// TODO: fix or remove
-/* load_const(x, $ctx);                                    \ */
-/* load_addr_off(s2, x, $ ## struct_name ## _of_ ## member_name);       \ */
-/* calc_addr_off(s1, s2, offset);                                      \ */
 #define forth_variable(name, _name_len, struct_name, member_name) \
   void *get_var_ ## struct_name ## member_name () { return &struct_name->member_name; } \
-  forth_primitive( #name, _name_len, F_NORMAL, var_ ## name, _comment, { \
+  forth_core( #name, _name_len, F_NORMAL, var_ ## name, _comment, { \
       call(  get_var_ ## struct_name ## member_name  );       \
       copy_reg(s1, xresult); \
     pushd(1);                                                         \
