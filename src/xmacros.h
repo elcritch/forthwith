@@ -68,8 +68,8 @@ fw_call doprintstate();
 #define forth_variable(name, _name_len, struct_name, member_name) \
   void *get_var_ ## struct_name ## member_name () { return &struct_name->member_name; } \
   forth_core( #name, _name_len, F_NORMAL, var_ ## name, _comment, { \
-      call(  get_var_ ## struct_name ## member_name  );       \
-      copy_reg(s1, xresult); \
+    call(  get_var_ ## struct_name ## member_name  );       \
+    copy_reg(s1, xresult); \
     pushd(1);                                                         \
     jump(next);                                                       \
   })
