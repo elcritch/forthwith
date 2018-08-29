@@ -4,7 +4,6 @@
 
 #include <stdint.h>
 
-
 #include "default-impls.h"
 
 /* Standard Forth Cell */
@@ -25,10 +24,6 @@ typedef fcell_t* fcell_xt;
 /* Extra Registers */
 typedef  fcell_t  X_t;  // Scratch Register
 /* typedef  struct forthwith_context*  Ctx_t;  // Scratch Register */
-
-/* Forth "native C" function return type */
-#define __fw_noinline__ __attribute__ ((noinline))
-#define fw_call void __attribute__ ((noinline))
 
 /* #define FORTH_CALL_PARAMS x, tos, w, ip, psp, rsp */
 

@@ -10,6 +10,12 @@
 #define CELL_FMT "%ld"
 #endif
 
+/* Forth "native C" function return type */
+#ifndef FW_CUSTOM_ATTRIBUTES
+#define __fw_noinline__ __attribute__ ((noinline))
+#define fw_call void __attribute__ ((noinline))
+#endif // FW_CUSTOM_ATTRIBUTES
+
 #define accessor_name(struct_name)              \
   get_ ## struct_name ## _addr
 

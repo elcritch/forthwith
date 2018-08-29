@@ -1,7 +1,7 @@
 BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -Wno-unused-function -Isrc/
 
-CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
-# CFLAGS = -Wall -O3 $(BASE_CFLAGS)
+# CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
+CFLAGS = -Wall -O3 $(BASE_CFLAGS)
 
 
 # CC = clang
@@ -11,6 +11,8 @@ CC = gcc
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
 PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
+
+ARM_CFLAGS=$(CFLAGS)
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
@@ -41,17 +43,17 @@ _build/linux-arm/forthwith-linux.a: _build/linux-arm/forthwith-linux.o
 	$(ARM_AR) rcs $@ $<
 
 _build/linux-arm/forthwith-linux: _build/linux-arm/forthwith-main.o _build/linux-arm/forthwith-linux.o
-	$(ARM_CC) -o $@.S $(CFLAGS) -S $^
-	$(ARM_CC) -o $@ $(CFLAGS) $^
+	$(ARM_CC) -o $@.S $(ARM_CFLAGS) -S $^
+	$(ARM_CC) -o $@ $(ARM_CFLAGS) $^
 
 _build/linux-arm/test-forthwith-linux: src/test/test.c _build/linux-arm/forthwith-linux.o
-	$(ARM_CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
+	$(ARM_CC) -o $@ $(ARM_CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
 
 _build/linux-arm/porting-guide: src/linux-arm/porting-guide.c 
-	${ARM_CC} ${CFLAGS} $< -E -o $@.post.c
-	$(ARM_CC) -o $@ $(CFLAGS) $^
-	$(ARM_CC) -o $@.S $(CFLAGS) -S $^
+	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
+	$(ARM_CC) -o $@ $(ARM_CFLAGS) $^
+	$(ARM_CC) -o $@.S $(ARM_CFLAGS) -S $^
 
 _build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagle-pru/forthwith-pru.lib
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
@@ -76,9 +78,9 @@ _build/linux-x86-64/%.o: src/linux-x86-64/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/linux-arm/%.o: src/linux-arm/%.c
-	${ARM_CC} ${CFLAGS} $< -E -o $@.post.c
-	${ARM_CC} ${CFLAGS} $< -S -o $@.S
-	${ARM_CC} ${CFLAGS} $< -c -o $@
+	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
+	${ARM_CC} ${ARM_CFLAGS} $< -S -o $@.S
+	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
 
 _build/beagle-pru/%.o: src/beagle-pru/%.c

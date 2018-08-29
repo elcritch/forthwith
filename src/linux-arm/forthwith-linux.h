@@ -1,8 +1,9 @@
 
-#ifndef __HEADER_IMPL_X86__
-#define __HEADER_IMPL_X86__
+#ifndef __HEADER_IMPL_ARM__
+#define __HEADER_IMPL_ARM__
 
 #include "forthwith-linux-consts.h"
+#include "forthwith.h"
 
 #include <stddef.h>
 
@@ -132,12 +133,12 @@
 #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
 #define save_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  store_addr_off(xrax, reg, $stack_of_head) // size
+  call(  accessor_name(ctx_psp)  );                 \
+  store_addr_off(xresult, reg, $stack_of_head) // size
 
 #define load_psp(reg) \
-  load_const(xrax, $ctx_psp);                   \
-  load_addr_off(reg, xrax, $stack_of_head) // sizeof one word
+  call(  accessor_name(ctx_psp)  );                           \
+  load_addr_off(reg, xresult, $stack_of_head) // sizeof one word
 
 #define call(lbl) _call( __label(lbl) )
 
@@ -148,28 +149,6 @@
 #define ret(reg)                                 \
   __asm__("ret");
 
-// improvement: load "reg file" from mem, not sure if x86_64 does that...
-#define save_state() \
-  load_const(s1, $ctx_psp);                    \
-  store_addr_off(s1, psp, $stack_of_head);  \
-  load_const(s1, $ctx_rsp);                    \
-  store_addr_off(s1, rsp, $stack_of_head);  \
-  load_const(s1, $ctx_regs);                    \
-  store_addr_off(s1, ip, $ctx_regs_of_ip);      \
-  store_addr_off(s1, x, $ctx_regs_of_x);      \
-  store_addr_off(s1, w, $ctx_regs_of_w)
-
-#define load_state() \
-  load_const(s1, $ctx_psp);                    \
-  load_addr_off(psp, s1, $stack_of_head);     \
-  load_addr_off(bpsp, s1, $stack_of_base);      \
-  load_const(s1, $ctx_rsp);                    \
-  load_addr_off(rsp, s1, $stack_of_head);     \
-  load_addr_off(brsp, s1, $stack_of_base);      \
-  load_const(s1, $ctx_regs);                    \
-  load_addr_off(ip, s1, $ctx_regs_of_ip);       \
-  load_addr_off(x, s1, $ctx_regs_of_x);       \
-  load_addr_off(w, s1, $ctx_regs_of_w)
 
 #define _checkd psp < bpsp
 #define _checkr rsp < brsp

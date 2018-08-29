@@ -33,6 +33,14 @@ accessor(fw_ctx_stack_t, size);
   printf(#struct_name " :: " #var_name " -> "CELL_FMT" \n", \
          accessor_ ## struct_name ## _st_ ## var_name(var_ptr_ ## struct_name)); \
 
+
+extern fw_ctx_regs_t var_fw_ctx_regs_t;
+extern fw_ctx_vars_t var_fw_ctx_vars_t;
+extern fw_ctx_stack_t var_fw_ctx_stack_t;
+
+extern fw_ctx_vars_t *var_ptr_fw_ctx_vars_t;
+extern fw_ctx_regs_t *var_ptr_fw_ctx_regs_t;
+
 fw_ctx_regs_t var_fw_ctx_regs_t = { 1, 2, 3 };
 fw_ctx_vars_t var_fw_ctx_vars_t = { 1, 2, 3, 4, (char*)5, 6, 7, (char*)8 };
 fw_ctx_stack_t var_fw_ctx_stack_t = { (fcell_xt)1, (fcell_xt)2, 3 };
@@ -83,6 +91,31 @@ void examples_accessors_stack() {
   printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(14, 2)); \
   printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(9, 1));
 
+__fw_noinline__
+fcell_t ex_add(fcell_t a, fcell_t b) {
+  return a + b;
+}
+
+
+__fw_noinline__
+fcell_t ex_sub(fcell_t a, fcell_t b) {
+  return a - b;
+}
+
+__fw_noinline__
+fcell_t ex_xor(fcell_t a, fcell_t b) {
+  return a ^ b;
+}
+
+__fw_noinline__
+fcell_t ex_and(fcell_t a, fcell_t b) {
+  return a & b;
+}
+
+__fw_noinline__
+fcell_t ex_or(fcell_t a, fcell_t b) {
+  return a | b;
+}
 
 __fw_noinline__
 fcell_t ex_lshiftc(fcell_t a, fcell_t b) {
@@ -116,6 +149,12 @@ fcell_t ex_div(fcell_t a, fcell_t b) {
 
 __fw_noinline__
 void examples_bitwise() {
+  binary_ops(add);
+  binary_ops(sub);
+  binary_ops(xor);
+  binary_ops(and);
+  binary_ops(or);
+
   binary_ops(lshiftc);
   binary_ops(rshiftc);
   binary_ops(lshiftu);
@@ -124,15 +163,15 @@ void examples_bitwise() {
   binary_ops(div);
 }
 
-__fw_noinline__ fw_call call_reg_bpsp() {printf("bpsp\n");}
-__fw_noinline__ fw_call call_reg_psp() {printf("psp\n");}
-__fw_noinline__ fw_call call_reg_brsp() {printf("brsp\n");}
-__fw_noinline__ fw_call call_reg_rsp() {printf("rsp\n");}
-__fw_noinline__ fw_call call_reg_ip() {printf("ip\n");}
-__fw_noinline__ fw_call call_reg_x() {printf("x\n");}
+__fw_noinline__ void call_reg_bpsp() {printf("bpsp\n");}
+__fw_noinline__ void call_reg_psp() {printf("psp\n");}
+__fw_noinline__ void call_reg_brsp() {printf("brsp\n");}
+__fw_noinline__ void call_reg_rsp() {printf("rsp\n");}
+__fw_noinline__ void call_reg_ip() {printf("ip\n");}
+__fw_noinline__ void call_reg_x() {printf("x\n");}
 
 __fw_noinline__ 
-fw_call examples_call(FORTH_REGISTERS) {
+void examples_call(FORTH_REGISTERS) {
   if (bpsp) { call_reg_bpsp(); }
   if (psp) { call_reg_psp(); }
 
@@ -148,7 +187,7 @@ fw_call examples_call_run() {
 }
 
 __fw_noinline__
-fw_call pointer_sizes_print(fcell_t *cells, uint8_t cl, fcell_xt* ptrs, uint8_t pl) {
+void pointer_sizes_print(fcell_t *cells, uint8_t cl, fcell_xt* ptrs, uint8_t pl) {
   printf("example cells: \n");
   for (int i = 0; i < cl; i++) {
     printf("cell: "CELL_FMT"\n", cells[i]);
