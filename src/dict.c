@@ -44,20 +44,7 @@ char* alloc_string(uint8_t len) {
 #define FW_CUSTOM_DICT_ADD
 __fw_noinline__
 void dict_add(fword_info_t *info) {
-  // Load dictionary pointer
-  /* fword_t* word_ptr = ctx_dict->base; */
-
-  // Iterate over words, find first word
-  /* while (word_ptr->prev != NULL) { */
-  /*   word_ptr = word_ptr->prev; */
-  /* } */
-
-  // Fix xw def...
-  // C Requires compile time constants,
-  // xt_<name> is not, but &xt_<name> _is_ a compile time
-  // so we store &xt_<name> and deref here to fix it. Nifty!
   dict_create(info->meta, info->len, info->name, (fcell_xt*) *info->body);
-  /* word_ptr->prev = entry; */
 }
 #endif // FW_CUSTOM_DICT_ADD
 
