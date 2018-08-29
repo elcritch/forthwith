@@ -38,20 +38,20 @@ _build/linux-x86-64/porting-guide: src/linux-x86-64/porting-guide.c
 	$(CC) -o $@.S $(CFLAGS) -S $^
 
 _build/linux-arm/forthwith-linux.a: _build/linux-arm/forthwith-linux.o
-	ar rcs $@ $<
+	$(ARM_AR) rcs $@ $<
 
 _build/linux-arm/forthwith-linux: _build/linux-arm/forthwith-main.o _build/linux-arm/forthwith-linux.o
-	$(CC) -o $@.S $(CFLAGS) -S $^
-	$(CC) -o $@ $(CFLAGS) $^
+	$(ARM_CC) -o $@.S $(CFLAGS) -S $^
+	$(ARM_CC) -o $@ $(CFLAGS) $^
 
 _build/linux-arm/test-forthwith-linux: src/test/test.c _build/linux-arm/forthwith-linux.o
-	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
+	$(ARM_CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
 
 _build/linux-arm/porting-guide: src/linux-arm/porting-guide.c 
-	${CC} ${CFLAGS} $< -E -o $@.post.c
-	$(CC) -o $@ $(CFLAGS) $^
-	$(CC) -o $@.S $(CFLAGS) -S $^
+	${ARM_CC} ${CFLAGS} $< -E -o $@.post.c
+	$(ARM_CC) -o $@ $(CFLAGS) $^
+	$(ARM_CC) -o $@.S $(CFLAGS) -S $^
 
 _build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagle-pru/forthwith-pru.lib
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
@@ -76,9 +76,9 @@ _build/linux-x86-64/%.o: src/linux-x86-64/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/linux-arm/%.o: src/linux-arm/%.c
-	${CC} ${CFLAGS} $< -E -o $@.post.c
-	${CC} ${CFLAGS} $< -S -o $@.S
-	${CC} ${CFLAGS} $< -c -o $@
+	${ARM_CC} ${CFLAGS} $< -E -o $@.post.c
+	${ARM_CC} ${CFLAGS} $< -S -o $@.S
+	${ARM_CC} ${CFLAGS} $< -c -o $@
 
 
 _build/beagle-pru/%.o: src/beagle-pru/%.c

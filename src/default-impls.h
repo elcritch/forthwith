@@ -4,6 +4,8 @@
 
 #ifdef __MACH__
 #define CELL_FMT "%lld"
+#elif __arm__
+#define CELL_FMT "%d"
 #else
 #define CELL_FMT "%ld"
 #endif

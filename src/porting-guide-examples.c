@@ -201,7 +201,7 @@ int main(int argv, char **argc) {
   (void)a;
   (void)b;
 
-  printf("sizeof(fcell_t): %lu %lu\n", sizeof(fcell_t), sizeof(a));
-  printf("sizeof(fcell_xt): %lu %lu\n", sizeof(fcell_xt), sizeof(b));
+  printf("sizeof(fcell_t): "CELL_FMT" "CELL_FMT"\n", sizeof(fcell_t), sizeof(a));
+  printf("sizeof(fcell_xt): "CELL_FMT" "CELL_FMT"\n", sizeof(fcell_xt), sizeof(b));
 }
 
