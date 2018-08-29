@@ -3,7 +3,7 @@
 #define FW_TRACE
 #undef FORTHWITH_NO_CHECKS
 #define FORTHWITH_NO_CHECKS
-#define FW_CUSTOM_DICT_ADD
+/* #define FW_CUSTOM_DICT_ADD */
 
 #include "forthwith-pru.h"
 #include "forthwith.h"
@@ -26,9 +26,3 @@
 
 extern void forth_flush_tob();
 
-__fw_noinline__
-void dict_add(fword_t *entry) {
-  // Load dictionary pointer
-  fcell_xt* body = (fcell_xt*) entry->body;
-  fword_t *ne = dict_create(entry->meta, entry->len, entry->name, body);
-}
