@@ -145,9 +145,9 @@ void test_colon(void) {
   for (fcell_t j = 0; j < 6; j++) {
     fcell_xt *aj = (fcell_xt *)cfa_a[j];
     fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
-    printf("cfa_aa["CELL_FMT"]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->name : NULL);
+    printf("cfa_aa["CELL_FMT"]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL);
     if (aj == cfa_prior)
-      printf("prior entry: %s\n", entry_prior->name);
+      printf("prior entry: %s\n", entry_prior->info.name);
   }
 
 

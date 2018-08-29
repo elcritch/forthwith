@@ -101,12 +101,17 @@ typedef fcell_t (*forthwith_call_1)(fcell_t a);
 typedef fcell_t (*forthwith_call_2)(fcell_t a, fcell_t b);
 typedef fcell_t (*forthwith_call_3)(fcell_t a, fcell_t b, fcell_t c);
 
-struct forth_word {
-  fword_t *prev;
+typedef struct forth_word_info fword_info_t;
+struct forth_word_info {
   fcell_xt *body;
   uint8_t meta;
   uint8_t len;
   char *name;
+};
+
+struct forth_word {
+  fword_t *prev;
+  fword_info_t info;
 };
 
 extern int forth_bootstrap();

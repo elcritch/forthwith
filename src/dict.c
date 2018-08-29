@@ -43,21 +43,21 @@ char* alloc_string(uint8_t len) {
 #ifndef FW_CUSTOM_DICT_ADD
 #define FW_CUSTOM_DICT_ADD
 __fw_noinline__
-void dict_add(fword_t *entry) {
+void dict_add(fword_info_t *info) {
   // Load dictionary pointer
-  fword_t* word_ptr = ctx_dict->base;
+  /* fword_t* word_ptr = ctx_dict->base; */
 
   // Iterate over words, find first word
-  while (word_ptr->prev != NULL) {
-    word_ptr = word_ptr->prev;
-  }
+  /* while (word_ptr->prev != NULL) { */
+  /*   word_ptr = word_ptr->prev; */
+  /* } */
 
   // Fix xw def...
   // C Requires compile time constants,
   // xt_<name> is not, but &xt_<name> _is_ a compile time
   // so we store &xt_<name> and deref here to fix it. Nifty!
-  entry->body = (fcell_xt*) *entry->body;
-  word_ptr->prev = entry;
+  dict_create(info->meta, info->len, info->name, (fcell_xt*) *info->body);
+  /* word_ptr->prev = entry; */
 }
 #endif // FW_CUSTOM_DICT_ADD
 
@@ -66,12 +66,12 @@ fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
 
   fword_t *entry = alloc_dict();
 
-  entry->body = body;
-  entry->meta = mask;
-  entry->len = len;
-  entry->name = alloc_string(len);
+  entry->info.body = body;
+  entry->info.meta = mask;
+  entry->info.len = len;
+  entry->info.name = alloc_string(len);
 
-  memcpy(entry->name, name, len);
+  memcpy(entry->info.name, name, len);
 
   return entry;
 }
@@ -84,7 +84,7 @@ fword_t* dict_find(int8_t len, char *name) {
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
-    fword_t word = *word_ptr;
+    fword_info_t word = word_ptr->info;
     if (word.len == len) {
       int8_t i;
       for (i = 0; i < len; i++) {
@@ -92,7 +92,7 @@ fword_t* dict_find(int8_t len, char *name) {
           break;
       }
 
-      if (word_ptr->meta & F_HIDDEN)
+      if (word.meta & F_HIDDEN)
         return NULL;
 
       // word found
@@ -101,7 +101,7 @@ fword_t* dict_find(int8_t len, char *name) {
     }
 
     // no match
-    word_ptr = word.prev;
+    word_ptr = word_ptr->prev;
   }
   return NULL;
 }
@@ -114,14 +114,14 @@ fword_t* dict_lookup(fcell_xt addr) {
 
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
-    fword_t word = *word_ptr;
+    fword_info_t word = word_ptr->info;
 
     if (word.body == (fcell_xt*)addr) {
       return word_ptr;
     }
 
     // no match
-    word_ptr = word.prev;
+    word_ptr = word_ptr->prev;
   }
   return NULL;
 }
@@ -133,11 +133,11 @@ fcell_xt dict_cfa(fword_t *entry) {
     ctx_vars->error = FW_ERR_CFA;
     return 0;
   } else {
-    if (entry->meta & F_WORD) {
-      return (fcell_xt) entry->body;
+    if (entry->info.meta & F_WORD) {
+      return (fcell_xt) entry->info.body;
     }
     else {
-      return (fcell_xt) &entry->body;
+      return (fcell_xt) &entry->info.body;
     }
   }
 }
@@ -153,11 +153,11 @@ void dict_print() {
   while (word_ptr != NULL) {
 
     write_str(3, ":: ");
-    write_number((fcell_t)word_ptr->body);
+    write_number((fcell_t)word_ptr->info.body);
     write_char(' ');
-    write_str(word_ptr->len, word_ptr->name);
+    write_str(word_ptr->info.len, word_ptr->info.name);
     write_char(' ');
-    write_number(word_ptr->meta);
+    write_number(word_ptr->info.meta);
     write_char('\n');
 
     word_ptr = word_ptr->prev;

@@ -52,7 +52,7 @@ fw_call doprintstate();
 #define forth_core(_name_str, _name_len, mask, func, _comt, BLOCK) \
   fw_call func(FORTH_REGISTERS) BLOCK \
   fcell_xt xt_ ## func = (fcell_xt)&func;     \
-  fword_t xw_ ## func = { NULL, &xt_ ## func, mask, _name_len, _name_str };
+  fword_info_t xw_ ## func = { &xt_ ## func, mask, _name_len, _name_str };
 
 // must be init'ed at bootstrap
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \

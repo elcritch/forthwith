@@ -26,7 +26,7 @@ fw_call doprintstate() {
   write_str(2, " (");
   if (entry) {
     uint8_t i;
-    for (i = 0; entry->name[i] != '\0'; i++) write_char(entry->name[i]);
+    for (i = 0; entry->info.name[i] != '\0'; i++) write_char(entry->info.name[i]);
     while (i++ < 10) write_char(' ');
   }
   else {
@@ -113,7 +113,7 @@ void dosavehere() {
 __fw_noinline__
 void doxmask() {
   fword_t *last_word = ctx_dict->head - 1;
-  last_word->meta ^= forth_pop();
+  last_word->info.meta ^= forth_pop();
 }
 
 // ( -- ) {*var->state}
@@ -166,7 +166,7 @@ void dofind() {
     forth_push(len);
   } else {
     forth_push((fcell_t)entry);
-    forth_push((fcell_t) !!(entry->meta & F_IMMED));
+    forth_push((fcell_t) !!(entry->info.meta & F_IMMED));
   }
   forth_push(entry == NULL ? 0 : 1);
 }
