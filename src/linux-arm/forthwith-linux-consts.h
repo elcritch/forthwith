@@ -12,6 +12,8 @@ typedef uint32_t fcell_t;
 #define fw_call void __attribute__ ((noinline))
 /* #define fw_call void __attribute__ ((target("thumb"), noinline)) */
 
+#define FW_STATE_FUNCS_NO_BASES
+
 #define FORTHWITH_NO_CHECKS
 
 #define $1 #1
@@ -44,21 +46,20 @@ typedef uint32_t fcell_t;
  registers. */
 
 #define FORTH_REGISTERS                         \
-    PSP_t bpsp,                                 \
-    PSP_t psp,                                  \
-    RSP_t brsp,                                 \
+    X_t   x,                                    \
     RSP_t rsp,                                  \
-    IP_t  ip, \
-    X_t   x
+    IP_t  ip,                                   \
+    W_t   w
+    
+
+#define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0
 
 // reg r %rdi %rsi
-#define reg_x       r0
-#define reg_psp     sp
+#define reg_x       R0
 #define reg_rsp     r1
 #define reg_ip      r2
-
-// ip_x_w_tl_s1_s2_s3_s4
 #define reg_w       r3
+#define reg_psp     sp
 
 #define reg_s1      r4
 #define reg_s2      r5

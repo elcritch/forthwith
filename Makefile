@@ -12,7 +12,7 @@ PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_pa
 PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
-ARM_CFLAGS=$(CFLAGS) -mfloat-abi=hard
+ARM_CFLAGS=$(CFLAGS) -ffunction-sections 
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
@@ -47,7 +47,7 @@ _build/linux-arm/forthwith-linux: _build/linux-arm/forthwith-main.o _build/linux
 	$(ARM_CC) -o $@ $(ARM_CFLAGS) $^
 
 _build/linux-arm/test-forthwith-linux: src/test/test.c _build/linux-arm/forthwith-linux.o
-	$(ARM_CC) -o $@ $(ARM_CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
+	$(ARM_CC) -o $@ $(ARM_CFLAGS) -Isrc/ -Isrc/linux-arm/ $^
 
 
 _build/linux-arm/porting-guide: src/linux-arm/porting-guide.c 

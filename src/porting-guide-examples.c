@@ -180,10 +180,10 @@ __fw_noinline__ void call_reg_x() {printf("x\n");}
 
 __fw_noinline__ 
 void examples_call(FORTH_REGISTERS) {
-  if (bpsp) { call_reg_bpsp(); }
-  if (psp) { call_reg_psp(); }
+  /* if (bpsp) { call_reg_bpsp(); } */
+  /* if (psp) { call_reg_psp(); } */
 
-  if (brsp) { call_reg_brsp(); }
+  /* if (brsp) { call_reg_brsp(); } */
   if (rsp) { call_reg_rsp(); }
 
   if (ip) { call_reg_ip(); }
@@ -191,7 +191,7 @@ void examples_call(FORTH_REGISTERS) {
 }
 
 fw_call examples_call_run() {
-  examples_call(0,0,0,0,0,0);
+  examples_call(FORTH_REGISTER_EMPTY_LIST);
 }
 
 __fw_noinline__

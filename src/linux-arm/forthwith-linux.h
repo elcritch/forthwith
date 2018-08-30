@@ -18,10 +18,8 @@
 /* #define fw_label(l) _fw_label(l) */
 #define _asm_jump() \
   __asm__ ("" :: "r" (ip));         \
-  __asm__ ("" :: "r" (psp));        \
+  __asm__ ("" :: "r" (w));        \
   __asm__ ("" :: "r" (rsp));        \
-  __asm__ ("" :: "r" (bpsp));        \
-  __asm__ ("" :: "r" (brsp));        \
   __asm__ ("" :: "r" (x))
 
 
@@ -46,7 +44,7 @@
 #define __jump_reg(r) ___jump_reg( "bx " #r )
 #define _jump_reg(r, x) __jump_reg( r )
 
-#define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
+#define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
 #define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "[", y, "]")
 #define _fw_asm_from_addr(c, x, y) _fw_asm(c, "", x, "", "[", y, "]")
@@ -76,7 +74,7 @@
 #define store_addr_off(y, x, o) _fw_asm_to_addr_off("str", reg_##y, reg_##x, o)
 
 
-#define _calc_addr_off(y, o) _fw_asm_const("ldr", reg_##y, = o)
+#define _calc_addr_off(y, o) _fw_asm_const("ldr", reg_##y, =o)
 #define calc_addr_off(y, o) _calc_addr_off(y, o)
 
 // Incr & Decr
@@ -143,7 +141,7 @@
 
 #define call(lbl) _call( __label(lbl) )
 
-#define __call_reg(r) __asm__("bl " #r )
+#define __call_reg(r) __asm__("bx " #r )
 #define _call_reg(r) __call_reg( r )
 #define call_reg(r) _call_reg( reg_ ## r )
 

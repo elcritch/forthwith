@@ -25,9 +25,29 @@ extern void* accessor_name(ctx_psp)();
 extern void* accessor_name(ctx_rsp)();
 
 #ifndef FW_CUSTOM_STATE_FUNCS
-// improvement: load "reg file" from mem, not sure if x86_64 does that...
-/* load_const(s1, $ctx_psp);                    \ */
-/* store_addr_off(s1, psp, $stack_of_head);  \ */
+
+#ifdef FW_STATE_FUNCS_NO_BASES
+#define save_state()                            \
+  call(  accessor_name(ctx_psp)  );             \
+  store_addr_off(xresult, psp, $stack_of_head); \
+  call(  accessor_name(ctx_rsp)  );             \
+  store_addr_off(xresult, rsp, $stack_of_head); \
+  call(  accessor_name(ctx_regs)  );            \
+  store_addr_off(xresult, ip, $ctx_regs_of_ip); \
+  store_addr_off(xresult, x, $ctx_regs_of_x);   \
+  store_addr_off(xresult, w, $ctx_regs_of_w)
+
+#define load_state()                            \
+  call(  accessor_name(ctx_psp)  );             \
+  load_addr_off(psp, xresult, $stack_of_head);  \
+  call(  accessor_name(ctx_rsp)  );             \
+  load_addr_off(rsp, xresult, $stack_of_head);  \
+  call(  accessor_name(ctx_regs)  );            \
+  load_addr_off(ip, xresult, $ctx_regs_of_ip);  \
+  load_addr_off(x, xresult, $ctx_regs_of_x);    \
+  load_addr_off(w, xresult, $ctx_regs_of_w)
+
+#else // FW_STATE_FUNCS_DEFAULT
 #define save_state() \
   call(  accessor_name(ctx_psp)  );   \
   store_addr_off(xresult, psp, $stack_of_head);  \
@@ -50,6 +70,10 @@ extern void* accessor_name(ctx_rsp)();
   load_addr_off(x, xresult, $ctx_regs_of_x);       \
   load_addr_off(w, xresult, $ctx_regs_of_w)
 
+#endif // FW_STATE_FUNCS_XXX
+
 #endif // FW_CUSTOM_STATE_FUNCS
+
+
 
 #endif // _DEFAULT_IMPLS_H_

@@ -145,7 +145,7 @@ int forth_eval(fcell_xt *instr) {
 
   done = setjmp(env);
   if (!done) {
-    forth_exec(0, 0, 0, 0, 0, 0);
+    forth_exec(FORTH_REGISTER_EMPTY_LIST);
     save_psp(psp);
   }
 
