@@ -1,5 +1,5 @@
 
-#define FW_MANUAL_TEST
+/* #define FW_MANUAL_TEST */
 
 #ifndef FW_MANUAL_TEST
 #include "acutest.h"
@@ -87,6 +87,8 @@ void test_basic(void) {
   forth_eval(var1);
   forth_flush_tob();
 
+
+  print_psp_info();
 
   int cnt = forth_count();
   TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
