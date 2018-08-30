@@ -60,7 +60,7 @@ fw_call doprintstate();
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_core(name_str, name_len, mask, func, comment, { \
-    calc_addr_off(x, xaddr, __label(lbl)); \
+    calc_addr_off(x, __label(lbl)); \
     call(call00); \
     jump(next); \
   })

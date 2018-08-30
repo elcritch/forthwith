@@ -14,8 +14,8 @@ typedef uint32_t fcell_t;
 
 #define FORTHWITH_NO_CHECKS
 
-#define $1 $1
-#define $0 $0
+#define $1 #1
+#define $0 #0
 
 #define $word_sz #4
 #define $word_max #0xFFFFFFFF
@@ -70,6 +70,7 @@ typedef uint32_t fcell_t;
 // Relative offset register
 /* #define reg_xaddr %rip */
 #define reg_xresult r0
+/* #define reg_xaddr  */
 
 #define reg_xsp sp 
 
