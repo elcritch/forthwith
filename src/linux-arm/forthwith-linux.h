@@ -16,10 +16,8 @@
 */
 
 /* #define fw_label(l) _fw_label(l) */
+/* #define _asm_jump()  */
 #define _asm_jump() \
-  __asm__ ("" :: "r" (ip));         \
-  __asm__ ("" :: "r" (w));        \
-  __asm__ ("" :: "r" (rsp));        \
   __asm__ ("" :: "r" (x))
 
 
@@ -65,14 +63,13 @@
 
 #define load_const(y, x) _fw_asm_const("mov", reg_##y, x)
 #define load_addr(y, x) _fw_asm_from_addr("ldr", reg_##y, reg_##x)
-#define store_addr(y, x) _fw_asm_to_addr("str", reg_##y, reg_##x)
+#define store_addr(x, y) _fw_asm_to_addr("str", reg_##y, reg_##x)
 
-#define load_addr_byte(y, x) _fw_asm_from_addr("ldr", reg_##y, reg_##x)
-#define store_addr_byte(y, x) _fw_asm_to_addr("str", reg_##y, reg_##x)
+#define load_addr_byte(y, x) _fw_asm_from_addr("ldrb", reg_##y, reg_##x)
+#define store_addr_byte(x, y) _fw_asm_to_addr("strb", reg_##y, reg_##x)
 
 #define load_addr_off(y, x, o) _fw_asm_from_addr_off("ldr", reg_##y, reg_##x, o)
-#define store_addr_off(y, x, o) _fw_asm_to_addr_off("str", reg_##y, reg_##x, o)
-
+#define store_addr_off(x, y, o) _fw_asm_to_addr_off("str", reg_##y, reg_##x, o)
 
 #define _calc_addr_off(y, o) _fw_asm_const("ldr", reg_##y, =o)
 #define calc_addr_off(y, o) _calc_addr_off(y, o)

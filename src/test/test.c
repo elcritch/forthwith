@@ -1,5 +1,5 @@
 
-/* #define FW_MANUAL_TEST */
+#define FW_MANUAL_TEST
 
 #ifndef FW_MANUAL_TEST
 #include "acutest.h"
@@ -79,9 +79,10 @@ void test_basic(void) {
   *var9 = (fcell_xt) &xt_sadd;
   *varA = (fcell_xt) &xt_semi;
 
-  printf(" ");
+  printf(" \n");
   /* for (fcell_xt *i = var1; i <= var5; i += 1) printf("\tinstr: %016p => %016p\n", i, *i); */
-  printf("xt_docolon: %16p <- docolon: %16p \n\n", (fcell_xt*)xt_docolon, (fcell_xt*)docolon);
+  printf("xt_docolon: %p <- docolon: %p \n", (fcell_xt*)xt_docolon, (fcell_xt*)docolon);
+  printf("instr: %p -> %p\n\n", var1, *var1);
 
   forth_eval(var1);
   forth_flush_tob();
@@ -613,7 +614,7 @@ TEST_LIST = {
 
 #ifdef FW_MANUAL_TEST
 int main() {
-  test_colon();
+  test_basic();
 
   return forth_count();
 }

@@ -5,14 +5,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
-typedef uint32_t fcell_t;
+typedef int32_t fcell_t;
 
 #define FW_CUSTOM_ATTRIBUTES
 #define __fw_noinline__ __attribute__ ((noinline))
 #define fw_call void __attribute__ ((noinline))
 /* #define fw_call void __attribute__ ((target("thumb"), noinline)) */
 
-#define FW_STATE_FUNCS_NO_BASES
+/* #define FW_STATE_FUNCS_NO_BASES */
 
 #define FORTHWITH_NO_CHECKS
 
@@ -21,7 +21,7 @@ typedef uint32_t fcell_t;
 
 #define $word_sz #4
 #define $word_max #0xFFFFFFFF
-#define $word_ptr_sz #8
+#define $word_ptr_sz #4
 
 /* #define $ctx ctx(%rip) */
 /* #define $ctx_psp ctx_psp(%rip) */
@@ -46,34 +46,37 @@ typedef uint32_t fcell_t;
  registers. */
 
 #define FORTH_REGISTERS                         \
-    X_t   x,                                    \
-    RSP_t rsp,                                  \
-    IP_t  ip,                                   \
-    W_t   w
+    X_t   _r1,                                   \
+    X_t   _r2,                                 \
+    X_t   _r3,                                 \
+    X_t   x
     
 
 #define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0
 
 // reg r %rdi %rsi
-#define reg_x       R0
-#define reg_rsp     r1
-#define reg_ip      r2
-#define reg_w       r3
-#define reg_psp     sp
+#define reg_rsp     r8
+#define reg_ip      r9
+#define reg_w       r10
 
-#define reg_s1      r4
-#define reg_s2      r5
-#define reg_s3      r6
-#define reg_s4      r7
+#define reg_x       r4
+#define reg_psp     r5
+#define reg_bpsp     r6
+#define reg_brsp     r7
+
+#define reg_s1      r0
+#define reg_s2      r1
+#define reg_s3      r2
+#define reg_s4      r3
 
 /* Define C params... compilers vary in which registers they use */
 
 // Relative offset register
 /* #define reg_xaddr %rip */
 #define reg_xresult r0
+#define reg_xlink lr
+#define reg_xpc pc
 /* #define reg_xaddr  */
-
-#define reg_xsp sp 
 
 #endif // __HEADER_IMPL_CONST_X86__
 

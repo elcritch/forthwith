@@ -1,20 +1,20 @@
 BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -Wno-unused-function -Isrc/
 
-# CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
-CFLAGS = -Wall -O3 $(BASE_CFLAGS)
+CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
+# CFLAGS = -Wall -O3 $(BASE_CFLAGS)
 
 
 # CC = clang
 CC = gcc
 
 ARM_CC ?= gcc
+ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables 
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
 PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
-ARM_CFLAGS=$(CFLAGS) -ffunction-sections 
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
@@ -50,6 +50,7 @@ _build/linux-arm/forthwith-linux: _build/linux-arm/forthwith-main.o _build/linux
 
 _build/linux-arm/test-forthwith-linux: src/test/test.c _build/linux-arm/forthwith-linux.o
 	$(ARM_CC) -o $@ $(ARM_CFLAGS) -Isrc/ -Isrc/linux-arm/ $^
+	$(ARM_CC) -S -o $@.S $(ARM_CFLAGS) -Isrc/ -Isrc/linux-arm/ $^
 
 
 _build/linux-arm/porting-guide: src/linux-arm/porting-guide.c 

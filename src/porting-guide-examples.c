@@ -184,9 +184,9 @@ void examples_call(FORTH_REGISTERS) {
   /* if (psp) { call_reg_psp(); } */
 
   /* if (brsp) { call_reg_brsp(); } */
-  if (rsp) { call_reg_rsp(); }
+  /* if (rsp) { call_reg_rsp(); } */
 
-  if (ip) { call_reg_ip(); }
+  /* if (ip) { call_reg_ip(); } */
   if (x) { call_reg_x(); }
 }
 
