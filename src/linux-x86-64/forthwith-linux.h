@@ -74,7 +74,7 @@
 
 #define load_addr_off(x, y, o) _fw_asm_from_addr_off("movq", reg_##y, reg_##x, o)
 #define store_addr_off(x, y, o) _fw_asm_to_addr_off("movq", reg_##y, reg_##x, o)
-#define calc_addr_off(x, y, o) _fw_asm_from_addr_off("leaq", reg_##y, reg_##x, o)
+#define calc_addr_off(x, o) _fw_asm_from_addr_off("leaq", reg_xaddr, reg_##x, o)
 
 // Incr & Decr
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)

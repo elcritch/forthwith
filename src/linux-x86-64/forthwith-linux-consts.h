@@ -68,6 +68,8 @@ typedef int64_t fcell_t;
     IP_t  ip, \
     X_t   x
 
+#define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0, 0, 0
+
 // reg r %rdi %rsi
 #define reg_bpsp    %rdi
 #define reg_psp    %rsi
