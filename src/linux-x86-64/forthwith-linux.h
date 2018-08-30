@@ -46,6 +46,9 @@
 #define __jump_reg(r) ___jump_reg( "jmpq *" #r )
 #define _jump_reg(r, x) __jump_reg( r )
 
+#define __jump_eq(r) __asm__( "je " #r )
+#define _jump_eq(r) __jump_eq( r )
+
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
 
 #define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
@@ -62,9 +65,6 @@
 // ========================================================================== //
 
 /* The forth impl interfaces */
-#define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
-#define jump(reg) _jump( reg ); _asm_jump()
-
 #define load_const(x, y) _fw_asm_const("movq", y, reg_##x)
 #define load_addr(x, y) _fw_asm_from_addr("movq", reg_##y, reg_##x)
 #define store_addr(x, y) _fw_asm_to_addr("movq", reg_##y, reg_##x)
@@ -77,6 +77,7 @@
 #define calc_addr_off(x, o) _fw_asm_from_addr_off("leaq", reg_xaddr, reg_##x, o)
 
 // Incr & Decr
+#define cmp_const(x, y) _fw_asm_const("cmpq", y, reg_##x)
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
 
@@ -92,7 +93,9 @@
 #define not_reg(y) _fw_asm_const("notq", reg_##y, "")
 
 // Jumps
-// ... unique labels? hmmm...
+#define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
+#define jump(reg) _jump( reg ); _asm_jump()
+#define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
 // -- gcc/clang seem to handle read-only if/else branches fine
 
 // Signed Arithmetic
@@ -149,6 +152,12 @@
 #define ret(reg)                                 \
   __asm__("ret");
 
+#define save_link()
+#define load_link()
+
+#define prepare_cenv() setjmp(env)
+#define save_cenv() 
+#define load_cenv() longjmp(env, 1)
 
 #define _checkd psp < bpsp
 #define _checkr rsp < brsp

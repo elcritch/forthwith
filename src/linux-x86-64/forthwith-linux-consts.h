@@ -13,6 +13,9 @@ typedef int64_t fcell_t;
 #define $1 $1
 #define $0 $0
 
+#define WORD_SZ 8
+#define WORD_PTR_SZ 8
+
 #define $word_sz $8
 #define $word_max $0xFFFFFFFFFFFFFFFF
 #define $word_ptr_sz $8
@@ -92,6 +95,7 @@ typedef int64_t fcell_t;
 // Relative offset register
 #define reg_xaddr %rip
 #define reg_xresult %rax
+#define reg_xlink %rax
 
 #define reg_xrdi %rdi
 #define reg_xrsi %rsi

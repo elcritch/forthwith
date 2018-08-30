@@ -121,13 +121,11 @@ jmp_buf env;
 
 __fw_noinline__
 fw_call forth_exec(FORTH_REGISTERS) {
-  asm volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");
-  /* pushr(xlink); */
+  save_cenv();
   load_state();
   call(starts);
   save_state();
-  /* popr(xlink); */
-  /* longjmp(env, 1); */
+  load_cenv();
 }
 
 __fw_noinline__
@@ -146,10 +144,9 @@ int forth_eval(fcell_xt *instr) {
 
   int done = 0;
 
-  done = setjmp(env);
+  done = prepare_cenv();
   if (!done) {
     forth_exec(FORTH_REGISTER_EMPTY_LIST);
-    /* save_psp(psp); */
   }
 
   return 0;
