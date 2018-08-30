@@ -7,6 +7,8 @@ CFLAGS = -Wall -O3 $(BASE_CFLAGS)
 # CC = clang
 CC = gcc
 
+ARM_CC ?= gcc
+
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
 PSTACK_SIZE=0x100
