@@ -55,15 +55,11 @@ forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
 forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
     // load stack
     popd(1);
-    copy_reg(x, s1);
+    /* copy_reg(x, s1); */
 
-    if (x == 0) {
-      load_addr(s1, ip);
-      adds_reg(ip, s1);
-    } else {
-      /* add_const(ip, $word_ptr_sz); */
-      incr_reg(ip);
-    }
+    jump_ifzero(s1, branch);
+    /* add_const(ip, $word_ptr_sz); */
+    incr_reg(ip);
 
     pushd(0);
     jump(next);

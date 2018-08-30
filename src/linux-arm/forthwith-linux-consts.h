@@ -23,6 +23,9 @@ typedef int32_t fcell_t;
 #define $word_max #0xFFFFFFFF
 #define $word_ptr_sz #4
 
+#define WORD_SZ 4
+#define WORD_PTR_SZ 4
+
 /* #define $ctx ctx(%rip) */
 /* #define $ctx_psp ctx_psp(%rip) */
 /* #define $ctx_rsp ctx_rsp(%rip) */
@@ -46,10 +49,10 @@ typedef int32_t fcell_t;
  registers. */
 
 #define FORTH_REGISTERS                         \
-    X_t   _r1,                                   \
-    X_t   _r2,                                 \
-    X_t   _r3,                                 \
-    X_t   x
+    X_t   _s1,                                   \
+    X_t   _s2,                                 \
+    X_t   _s3,                                 \
+    X_t   _s4
     
 
 #define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0

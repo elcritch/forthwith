@@ -74,9 +74,9 @@ forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
 
 forth_core("=", 1, F_NORMAL, equals, "( n n -- n )",  {
     popd(2);
-    copy_reg(x, s1);
-    xor_reg(x, s2);
-    if (x) {
+    /* copy_reg(x, s1); */
+    xor_reg(s1, s2);
+    if (1) {
       load_const(s1, $1);
     }
     pushd(1);

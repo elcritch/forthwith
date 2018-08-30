@@ -418,8 +418,11 @@ void test_branches(void) {
 
   cnt = forth_count();
   x = forth_pop();
+
   TEST_CHECK_(2 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 2, cnt);
   TEST_CHECK_(x == 7, "Expected "CELL_FMT", got "CELL_FMT"", 7, x);
+
+  forth_pop();
 
   // test `0 0branch` 
   int idx_tifz0 = i;
@@ -440,7 +443,7 @@ void test_branches(void) {
 
   cnt = forth_count();
   x = forth_pop();
-  TEST_CHECK_(2 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 2, cnt);
+  TEST_CHECK_(1 == cnt, "Expected "CELL_FMT", got "CELL_FMT"", 1, cnt);
   TEST_CHECK_(x == 5, "Expected "CELL_FMT", got "CELL_FMT"", 5, x);
 
 }
@@ -616,7 +619,8 @@ TEST_LIST = {
 
 #ifdef FW_MANUAL_TEST
 int main() {
-  test_basic();
+  /* test_basic(); */
+  test_branches();
 
   return forth_count();
 }

@@ -187,7 +187,7 @@ void examples_call(FORTH_REGISTERS) {
   /* if (rsp) { call_reg_rsp(); } */
 
   /* if (ip) { call_reg_ip(); } */
-  if (x) { call_reg_x(); }
+  /* if (x) { call_reg_x(); } */
 }
 
 fw_call examples_call_run() {

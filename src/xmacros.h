@@ -13,7 +13,7 @@ fw_call doprintstate();
 
 /* #define XT(n) (fcell_xt) xt_ ## n */
 #define XT(n) (fcell_xt) & xt_ ## n
-#define XCELLS(n) (fcell_xt)(n * 8)
+#define XCELLS(n) (fcell_xt)(n * WORD_PTR_SZ)
 #define XTV(n) (fcell_xt) &xt_ ## var_ ## n
 
 #endif // _XMACROS_H_

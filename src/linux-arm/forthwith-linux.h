@@ -16,9 +16,9 @@
 */
 
 /* #define fw_label(l) _fw_label(l) */
-/* #define _asm_jump()  */
-#define _asm_jump() \
-  __asm__ ("" :: "r" (x))
+#define _asm_jump()
+/* #define _asm_jump() \ */
+  /* __asm__ ("nop" :: "r" (s1, s2, s3, s4)) */
 
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
@@ -36,11 +36,14 @@
 #define __call(r) __asm__("bl " #r)
 #define _call(r) __call(r)
 
-#define _jump(r) __jump( r )
 #define ___jump_reg(r) __asm__(r); 
-
 #define __jump_reg(r) ___jump_reg( "bx " #r )
 #define _jump_reg(r, x) __jump_reg( r )
+
+#define _jump(r) __jump( r )
+
+#define __jump_eq(r) __asm__( "beq " #r )
+#define _jump_eq(r) __jump_eq( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
@@ -58,8 +61,7 @@
 // ========================================================================== //
 
 /* The forth impl interfaces */
-#define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
-#define jump(reg) _jump( reg ); _asm_jump()
+
 
 #define load_const(y, x) _fw_asm_const("mov", reg_##y, x)
 #define load_addr(y, x) _fw_asm_from_addr("ldr", reg_##y, reg_##x)
@@ -75,6 +77,7 @@
 #define calc_addr_off(y, o) _calc_addr_off(y, o)
 
 // Incr & Decr
+#define cmp_const(x, y) _fw_asm_const("cmp", reg_##x, y)
 #define add_const(x, y) _fw_asm_const("add", reg_##x, y)
 #define sub_const(x, y) _fw_asm_const("sub", reg_##x, y)
 
@@ -89,8 +92,9 @@
 #define not_reg(y) _fw_asm_const("movn", reg_##y, "")
 
 // Jumps
-// ... unique labels? hmmm...
-// -- gcc/clang seem to handle read-only if/else branches fine
+#define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
+#define jump(lbl) _jump( lbl )
+#define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
 
 // Signed Arithmetic
 #define adds_reg(y, x) _fw_asm_const("add", reg_##y, reg_##x)
