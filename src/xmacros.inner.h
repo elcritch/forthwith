@@ -89,8 +89,10 @@ forth_core("starts", 6, F_NORMAL, starts, "( -- )", {
 /* perform c calls to 00 calls `void (*func)()` */
 /* saves ForthWith regs to data stack */
 forth_core("call00", 6, F_NORMAL, call00, "{ctx->regs} ( -- )", {
+  save_link();
   save_state();
   call_reg(x);
   load_state();
+  load_link();
 });
 

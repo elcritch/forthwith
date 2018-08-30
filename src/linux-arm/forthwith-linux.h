@@ -142,13 +142,15 @@
 
 #define call(lbl) _call( __label(lbl) )
 
-#define __call_reg(r) __asm__("bx " #r )
+#define __call_reg(r) __asm__("blx " #r )
 #define _call_reg(r) __call_reg( r )
 #define call_reg(r) _call_reg( reg_ ## r )
 
 #define ret(reg)                                 \
   __asm__("bx lr");
 
+#define save_link() pushr(xlink)
+#define load_link() popr(xlink)
 
 #define _checkd psp < bpsp
 #define _checkr rsp < brsp

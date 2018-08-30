@@ -620,7 +620,8 @@ TEST_LIST = {
 #ifdef FW_MANUAL_TEST
 int main() {
   /* test_basic(); */
-  test_branches();
+  /* test_branches(); */
+  test_colon();
 
   return forth_count();
 }
