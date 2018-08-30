@@ -76,13 +76,13 @@ forth_core("runs", 4, F_NORMAL, runs, "( n -- )", {
 
 /* Quit inner interpreter */
 forth_core("quits", 5, F_NORMAL, quits, "( -- )", {
-  save_link();
+  load_link();
   return;
 });
 
 /* Quit inner interpreter */
 forth_core("starts", 6, F_NORMAL, starts, "( -- )", {
-    load_link();
+    save_link();
     jump(next);
 });
 
