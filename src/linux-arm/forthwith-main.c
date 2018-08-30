@@ -9,7 +9,7 @@
 int main(int argc, char** argv) {
 
   forth_init();
-  forth_bootstrap(ctx);
+  forth_bootstrap();
 
   char *rx_buff[128];
   char *tx_buff[128];

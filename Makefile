@@ -12,7 +12,7 @@ PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_pa
 PSTACK_SIZE=0x100
 PHEAP_SIZE=0x100
 
-ARM_CFLAGS=$(CFLAGS)
+ARM_CFLAGS=$(CFLAGS) -mfloat-abi=hard
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS
@@ -21,7 +21,7 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
-linux-arm: _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux _build/linux-arm/porting-guide
+linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux 
 
 _build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
 	ar rcs $@ $<
@@ -78,8 +78,8 @@ _build/linux-x86-64/%.o: src/linux-x86-64/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 _build/linux-arm/%.o: src/linux-arm/%.c
-	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
 	${ARM_CC} ${ARM_CFLAGS} $< -S -o $@.S
+	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
 	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
 
@@ -91,11 +91,22 @@ _build/beagle-pru/%.o: src/beagle-pru/%.c
 test: forthwith
 	./forthwith test.fth
 
-
 clean:
 	rm -Rf _build/*
 	mkdir _build/linux-x86-64/
 	mkdir _build/linux-arm/
+	mkdir _build/beagle-pru/
+
+clean-arm:
+	rm -Rf _build/linux-arm/
+	mkdir _build/linux-arm/
+
+clean-x86:
+	rm -Rf _build/linux-x86/
+	mkdir _build/linux-x86/
+
+clean-pru:
+	rm -Rf _build/beagle-pru/
 	mkdir _build/beagle-pru/
 
 .PHONY: clean examples test

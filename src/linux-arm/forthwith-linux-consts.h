@@ -5,13 +5,14 @@
 #include <stdint.h>
 #include <stddef.h>
 
-typedef intptr_t fcell_t;
+typedef uint32_t fcell_t;
 
 #define FW_CUSTOM_ATTRIBUTES
 #define __fw_noinline__ __attribute__ ((noinline))
-#define fw_call void __attribute__ ((target("thumb"), noinline))
+#define fw_call void __attribute__ ((noinline))
+/* #define fw_call void __attribute__ ((target("thumb"), noinline)) */
 
-/* #define FORTHWITH_NO_CHECKS */
+#define FORTHWITH_NO_CHECKS
 
 #define $1 $1
 #define $0 $0
@@ -51,21 +52,18 @@ typedef intptr_t fcell_t;
     X_t   x
 
 // reg r %rdi %rsi
-#define reg_bpsp    r4
-#define reg_psp     r1
-#define reg_brsp    r5
-#define reg_rsp     r12
+#define reg_x       r0
+#define reg_psp     sp
+#define reg_rsp     r1
 #define reg_ip      r2
-#define reg_x       r3
 
 // ip_x_w_tl_s1_s2_s3_s4
-#define reg_w       r6
-#define reg_tl      r7
+#define reg_w       r3
 
-#define reg_s1      r8
-#define reg_s2      r9
-#define reg_s3      r10
-#define reg_s4      r11
+#define reg_s1      r4
+#define reg_s2      r5
+#define reg_s3      r6
+#define reg_s4      r7
 
 /* Define C params... compilers vary in which registers they use */
 
@@ -73,7 +71,7 @@ typedef intptr_t fcell_t;
 /* #define reg_xaddr %rip */
 #define reg_xresult r0
 
-#define reg_xsp r13 
+#define reg_xsp sp 
 
 #endif // __HEADER_IMPL_CONST_X86__
 

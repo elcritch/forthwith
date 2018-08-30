@@ -96,6 +96,13 @@ fcell_t ex_add(fcell_t a, fcell_t b) {
   return a + b;
 }
 
+__fw_noinline__
+fcell_t ex_not(fcell_t a, fcell_t b) {
+  (void)b;
+  return ~a;
+}
+
+
 
 __fw_noinline__
 fcell_t ex_sub(fcell_t a, fcell_t b) {
@@ -144,11 +151,12 @@ fcell_t ex_mul(fcell_t a, fcell_t b) {
 
 __fw_noinline__
 fcell_t ex_div(fcell_t a, fcell_t b) {
-  return a * b;
+  return a / b;
 }
 
 __fw_noinline__
 void examples_bitwise() {
+  binary_ops(not);
   binary_ops(add);
   binary_ops(sub);
   binary_ops(xor);
