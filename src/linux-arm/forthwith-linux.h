@@ -15,12 +15,6 @@
   e.g. macro hackery. pretty sure there's some incantations to Cthululu somewhere in here... but not too much worse (IMHO) compared to asm macro's, much less 20 different asm macro syntaxes
 */
 
-/* #define fw_label(l) _fw_label(l) */
-#define _asm_jump()
-/* #define _asm_jump() \ */
-  /* __asm__ ("nop" :: "r" (s1, s2, s3, s4)) */
-
-
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #ifdef __MACH__
 #define __jump(r) __asm__("bl " "_" #r)
@@ -47,8 +41,8 @@
 #define __jump_eq(r) ___jump_cond("bleq", r)
 #define _jump_eq(r) __jump_eq( r )
 
-#define __jump_eq(r) ___jump_cond("bllo", r)
-#define _jump_eq(r) __jump_eq( r )
+#define __jump_lt(r) ___jump_cond("bllo", r)
+#define _jump_lt(r) __jump_lt( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
@@ -87,6 +81,7 @@
 #define sub_const(x, y) _fw_asm_const("sub", reg_##x, y)
 
 // Bitwise
+#define cmp_reg(x, y) _fw_asm_const("cmp", reg_##x, reg_##y)
 #define xor_reg(y, x) _fw_asm_const("eor", reg_##y, reg_##x)
 #define and_reg(y, x) _fw_asm_const("and", reg_##y, reg_##x)
 #define or_reg(y, x) _fw_asm_const("orr", reg_##y, reg_##x)
@@ -100,6 +95,7 @@
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(lbl) _jump( lbl )
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
+#define jump_ifless(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl ); 
 
 // Signed Arithmetic
 #define adds_reg(y, x) _fw_asm_const("add", reg_##y, reg_##x)
@@ -114,14 +110,6 @@
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 
-#define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz)
-#define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
-
-#define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
-#define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
-
-#define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
-#define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
 
 #define save_psp(reg) \
   call(  accessor_name(ctx_psp)  );                 \

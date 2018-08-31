@@ -8,7 +8,7 @@ CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
 CC = gcc
 
 ARM_CC ?= gcc
-ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
+ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables # -Wa,-mimplicit-it=thumb
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x

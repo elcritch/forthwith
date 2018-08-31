@@ -15,15 +15,6 @@
   e.g. macro hackery. pretty sure there's some incantations to Cthululu somewhere in here... but not too much worse (IMHO) compared to asm macro's, much less 20 different asm macro syntaxes
 */
 
-/* #define fw_label(l) _fw_label(l) */
-#define _asm_jump() \
-  __asm__ ("" :: "r" (ip));         \
-  __asm__ ("" :: "r" (psp));        \
-  __asm__ ("" :: "r" (rsp));        \
-  __asm__ ("" :: "r" (bpsp));        \
-  __asm__ ("" :: "r" (brsp));        \
-  __asm__ ("" :: "r" (x))
-
 
 // Define some specific jumps, by linux, this should support most unix-likes or proper unixes
 #ifdef __MACH__
@@ -100,7 +91,7 @@
 
 // Jumps
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
-#define jump(reg) _jump( reg ); _asm_jump()
+#define jump(reg) _jump( reg )
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
 #define jump_ifless(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl ); 
 
@@ -120,14 +111,14 @@
 #define incr_reg(reg) add_const(reg, $word_sz)
 #define decr_reg(reg) sub_const(reg, $word_sz)
 
-#define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz)
-#define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
+/* #define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz) */
+/* #define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp) */
 
-#define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
-#define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
+/* #define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz) */
+/* #define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp) */
 
-#define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
-#define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
+/* #define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz) */
+/* #define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u) */
 
 #define save_psp(reg) \
   call(  accessor_name(ctx_psp)  );                 \

@@ -28,6 +28,15 @@
 #define _checkd() check(psp, bpsp, dosuf)
 #define _checkr() check(rsp, brsp, doruf)
 
+#define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz)
+#define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
+
+#define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
+#define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
+
+#define _pushu(reg) store_addr(u, reg); add_const(u, $word_sz)
+#define _popu(reg)  sub_const(u, $word_sz); load_addr(reg, u)
+
 // Pushing and Popping
 #define _pushd_0
 #define _pushd_1 _pushd_cell(s1);

@@ -64,12 +64,12 @@ typedef int64_t fcell_t;
  registers. */
 
 #define FORTH_REGISTERS                         \
-    PSP_t bpsp,                                 \
-    PSP_t psp,                                  \
-    RSP_t brsp,                                 \
-    RSP_t rsp,                                  \
-    IP_t  ip, \
-    X_t   x
+    PSP_t _bpsp,                                 \
+    PSP_t _psp,                                  \
+    RSP_t _brsp,                                 \
+    RSP_t _rsp,                                  \
+    IP_t  _ip, \
+    X_t   _x
 
 #define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0, 0, 0
 
