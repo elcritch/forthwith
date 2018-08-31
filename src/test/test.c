@@ -1,5 +1,5 @@
 
-#define FW_MANUAL_TEST
+/* #define FW_MANUAL_TEST */
 
 #ifndef FW_MANUAL_TEST
 #include "acutest.h"
