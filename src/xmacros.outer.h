@@ -126,7 +126,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
            XT(semi),
            );
 
-// try finding word and run if compiling, or execute if immediate
+// try finding word and run if compiling, ortexecute if immediate
 forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
            XT(find),
            XT(zbranch),
