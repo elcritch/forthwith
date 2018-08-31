@@ -42,7 +42,7 @@
 
 #define _jump(r) __jump( r )
 
-#define __jump_eq(r) __asm__( "beq " #r )
+#define __jump_eq(r) __asm__( "bleq " #r )
 #define _jump_eq(r) __jump_eq( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)

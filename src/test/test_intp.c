@@ -174,6 +174,8 @@ void test_colon(void) {
   fcell_t x = forth_pop();
   TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x);
 
+  fcell_t err = forth_errno();
+  TEST_CHECK_(err == FW_OK, "Expected "CELL_FMT", got "CELL_FMT"", FW_OK, err);
 }
 
 /* TEST_LIST = { */

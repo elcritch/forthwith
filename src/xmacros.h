@@ -131,24 +131,27 @@ fw_call doprintstate();
 /* #define FORTHWITH_NO_CHECKS */
 
 #ifndef FORTHWITH_NO_CHECKS
-  #define check(cond, errfunc)                                             \
-    if ( cond ) {calc_addr_off(x, __label(errfunc)); call(call00);}
+#define check(a, b, errfunc)                                              \
+    copy_reg(x, a);                                                       \
+    incr_reg(x);                                                          \
+    xor_reg(x, b);                                                        \
+    jump_ifzero(x, errfunc)
 #else
-  #define check(cond, errfunc)
+#define check(a, b, errfunc)
 #endif // FORTHWITH_NO_CHECKS
 
 #define pushd(n) \
   _pushd(n)
 
 #define popd(n) \
-  check(_checkd, dosuf);                         \
+  check(psp, bpsp, dosuf);                      \
   _popd(n)
 
 #define pushr(reg) \
   _pushr(reg)
 
 #define popr(reg) \
-  check(_checkr, doruf); \
+  check(rsp, brsp, doruf);                      \
   _popr(reg)
 
 #endif // FORTH_STACK_PRIMS

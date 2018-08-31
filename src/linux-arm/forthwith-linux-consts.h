@@ -64,8 +64,8 @@ typedef int32_t fcell_t;
 
 #define reg_x       r4
 #define reg_psp     r5
-#define reg_bpsp     r6
-#define reg_brsp     r7
+#define reg_bpsp    r6
+#define reg_brsp    r7
 
 #define reg_s1      r0
 #define reg_s2      r1
