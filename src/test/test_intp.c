@@ -86,13 +86,6 @@ void test_interpreter(void) {
 void test_colon(void) {
   test_setup();
 
-
-  /* dict_print(); */
-  /* printf("dict: "CELL_FMT"\n", ctx_vars->tob_idx); */
-  /* for (uint8_t i = 0; i < ctx_vars->tob_idx; i++) { */
-  /*   putc(ctx_vars->tob_str[i], stdout); */
-  /* } */
-
   printf("\n<<<<<<<<<<<< TEST ':' <<<<<<<<<<<< \n\n");
 
   printf("ctx->rsp: %p\n", ctx_rsp);
@@ -139,32 +132,6 @@ void test_colon(void) {
 
   printf("cfa_aa: %p\n", cfa_a);
 
-  /* fword_t *entry_prior = ctx_dict->head - 2; */
-  /* fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior); */
-
-  /* cfa_a = *cfa_a; */
-  /* for (fcell_t j = 0; j < 6; j++) { */
-  /*   fcell_xt *aj = (fcell_xt *)cfa_a[j]; */
-  /*   fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj; */
-  /*   printf("cfa_aa["CELL_FMT"]: %p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL); */
-  /*   if (aj == cfa_prior) */
-  /*     printf("prior entry: %s\n", entry_prior->info.name); */
-  /* } */
-
-
-  /* int idx_ra = i; */
-  /* *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon")); */
-  /* *var[i++] = dict_cfa(dict_find(1, "'")); */
-  /* *var[i++] = (fcell_xt) 103; */
-  /* *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a")); */
-  /* *var[i++] = dict_cfa(dict_find(1, "+")); */
-  /* *var[i++] = dict_cfa(dict_find(4, "semi")); */
-
-  /* forth_eval(var[idx_ra]); */
-  /* forth_flush_tob(); */
-
-  /* print_psp_info(); */
-
   fword_t *semicolon = dict_find(1, ";");
   printf("semicolon: %p\n");
 
@@ -174,19 +141,7 @@ void test_colon(void) {
   fcell_t x;
   fcell_t err;
 
-  expi = 256;
-  expl = 1;
-
-  cnt = forth_count();
-  /* TEST_CHECK_(cnt == expl, "Expected "CELL_FMT", got "CELL_FMT"", expl, cnt); */
-
-  /* fcell_t x = forth_pop(); */
-  /* TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x); */
-
-  /* fcell_t err = forth_errno(); */
-  /* TEST_CHECK_(err == FW_OK, "Expected "CELL_FMT", got "CELL_FMT"", FW_OK, err); */
-
-  // test interpret new word 
+  // Good Case
   ctx_vars->tib_str = "a 1 +";
   ctx_vars->tib_len = 5;
   ctx_vars->tib_idx = 0;
@@ -205,15 +160,22 @@ void test_colon(void) {
   err = forth_errno();
   TEST_CHECK_(err == FW_OK, "Expected "CELL_FMT", got "CELL_FMT"", FW_OK, err);
 
+  // Bad Case
+  ctx_vars->tib_str = "b 1 +";
+  ctx_vars->tib_len = 5;
+  ctx_vars->tib_idx = 0;
+
+  forth_eval(var[0]);
+  forth_flush_tob();
+
+  expi = 0;
+  expl = 0;
+
+  cnt = forth_count();
+  TEST_CHECK_(cnt == expl, "Expected "CELL_FMT", got "CELL_FMT"", expl, cnt);
+
+  err = forth_errno();
+  TEST_CHECK_(err == FW_ERR_NOWORD, "Expected "CELL_FMT", got "CELL_FMT"", FW_ERR_NOWORD, err);
+
 }
 
-/* TEST_LIST = { */
-/*   /\* { "basic_intp", test_basic_interpreter }, *\/ */
-/*   { "test_full_interpreter", test_full_interpreter }, */
-/*   { 0 } */
-/* }; */
-
-
-/* int main() { */
-/*   test_interpreter(); */
-/* } */
