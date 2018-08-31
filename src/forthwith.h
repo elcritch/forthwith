@@ -123,6 +123,7 @@ typedef enum forthwith_the_states fw_state_t;
 enum forthwith_the_states {
   IMMEDIATE_MODE = 0,
   COMPILE_MODE = 1,
+  ERROR_MODE = 3,
 };
 
 #define F_NORMAL  1

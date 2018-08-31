@@ -43,9 +43,11 @@ fw_call doprintstate() {
   write_str(6, " tibs ");
   write_number((fcell_t)ctx_vars->tib_str);
 
+  write_str(2, " `");
   uint8_t wdof = ctx_vars->tib_idx > ctx_vars->tib_len ? ctx_vars->tib_len : ctx_vars->tib_idx;
   write_str(ctx_vars->tib_len - ctx_vars->tib_idx, ctx_vars->tib_str + wdof);
 
+  write_str(2, "` ");
   write_str(4, " --\t");
 
   write_str(1, "(");
@@ -79,9 +81,10 @@ fw_call doruf(FORTH_REGISTERS) {
 
 // ( n -- )
 __fw_noinline__
-void doret() {
+void doerr() {
   fcell_t errorno = forth_pop();
   ctx_vars->error = errorno;
+  ctx_vars->state = ERROR_MODE;
 }
 
 // {*tib} {tib_idx++} ( -- cp n )

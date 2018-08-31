@@ -114,6 +114,7 @@ void test_colon(void) {
   printf("colon cfa: `:` %p\n", dict_cfa(entry_colon));
   printf("xt_colon: `:` %p -> %p \n", xt_colon, *xt_colon);
 
+  int idx_interpret = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -138,44 +139,69 @@ void test_colon(void) {
 
   printf("cfa_aa: %p\n", cfa_a);
 
-  fword_t *entry_prior = ctx_dict->head - 2;
-  fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
+  /* fword_t *entry_prior = ctx_dict->head - 2; */
+  /* fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior); */
 
   /* cfa_a = *cfa_a; */
-  for (fcell_t j = 0; j < 6; j++) {
-    fcell_xt *aj = (fcell_xt *)cfa_a[j];
-    fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
-    printf("cfa_aa["CELL_FMT"]: %p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL);
-    if (aj == cfa_prior)
-      printf("prior entry: %s\n", entry_prior->info.name);
-  }
+  /* for (fcell_t j = 0; j < 6; j++) { */
+  /*   fcell_xt *aj = (fcell_xt *)cfa_a[j]; */
+  /*   fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj; */
+  /*   printf("cfa_aa["CELL_FMT"]: %p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL); */
+  /*   if (aj == cfa_prior) */
+  /*     printf("prior entry: %s\n", entry_prior->info.name); */
+  /* } */
 
 
-  int idx_ra = i;
-  *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
-  *var[i++] = (fcell_xt) 103;
-  *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a"));
-  *var[i++] = dict_cfa(dict_find(1, "+"));
-  *var[i++] = dict_cfa(dict_find(4, "semi"));
+  /* int idx_ra = i; */
+  /* *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon")); */
+  /* *var[i++] = dict_cfa(dict_find(1, "'")); */
+  /* *var[i++] = (fcell_xt) 103; */
+  /* *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a")); */
+  /* *var[i++] = dict_cfa(dict_find(1, "+")); */
+  /* *var[i++] = dict_cfa(dict_find(4, "semi")); */
 
-  forth_eval(var[idx_ra]);
+  /* forth_eval(var[idx_ra]); */
+  /* forth_flush_tob(); */
+
+  /* print_psp_info(); */
+
+  fcell_t expi;
+  fcell_t expl;
+  fcell_t cnt;
+  fcell_t x;
+  fcell_t err;
+
+  expi = 256;
+  expl = 1;
+
+  cnt = forth_count();
+  /* TEST_CHECK_(cnt == expl, "Expected "CELL_FMT", got "CELL_FMT"", expl, cnt); */
+
+  /* fcell_t x = forth_pop(); */
+  /* TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x); */
+
+  /* fcell_t err = forth_errno(); */
+  /* TEST_CHECK_(err == FW_OK, "Expected "CELL_FMT", got "CELL_FMT"", FW_OK, err); */
+
+  // test interpret new word 
+  ctx_vars->tib_str = "a 1 +";
+  ctx_vars->tib_len = 5;
+  ctx_vars->tib_idx = 0;
+
+  forth_eval(var[0]);
   forth_flush_tob();
 
-  print_psp_info();
+  expi = 154;
+  expl = 1;
 
-
-  int expi = 256;
-  int expl = 1;
-
-  int cnt = forth_count();
+  cnt = forth_count();
   TEST_CHECK_(cnt == expl, "Expected "CELL_FMT", got "CELL_FMT"", expl, cnt);
-
-  fcell_t x = forth_pop();
+  x = forth_pop();
   TEST_CHECK_(x == expi, "Expected "CELL_FMT", got "CELL_FMT"", expi, x);
 
-  fcell_t err = forth_errno();
+  err = forth_errno();
   TEST_CHECK_(err == FW_OK, "Expected "CELL_FMT", got "CELL_FMT"", FW_OK, err);
+
 }
 
 /* TEST_LIST = { */

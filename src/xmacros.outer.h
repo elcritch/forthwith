@@ -27,7 +27,7 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("cfa", 3, F_NORMAL, cfa, "( n -- )", docfa);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
-forth_docall("ret", 3, F_NORMAL, ret_, "( n -- )", doret);
+forth_docall("err", 3, F_NORMAL, err, "( n -- )", doerr);
 
 // Toggle hidden flag -- unhide the word
 forth_word("immed", 5, F_IMMED, immed, "( p -- )",
@@ -106,7 +106,7 @@ forth_word("itpnum", 6, F_NORMAL, itpnum, "{tib} ( -- *c l )",
 
               XT(tick),
               (fcell_xt)FW_ERR_NOWORD,
-              XT(ret_),
+              XT(err),
               XT(drop),
 
            XT(branch),
@@ -158,13 +158,24 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
            XT(zbranch),
-              XCELLS(5),
+              XCELLS(13),
               XT(itpnext),
-              XT(interpret),
+
+              XTV(STATE),
+                XT(fetch),
+              XT(tick),
+                (fcell_xt)FW_ERR_NOWORD,
+              XT(ssub),
+              XT(zbranch),
+                XCELLS(2),
+                XT(interpret),
+              XT(quits),
+
            XT(branch),
               XCELLS(3),
               XT(drop),
               XT(drop),
+
            XT(semi),
            );
 
