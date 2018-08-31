@@ -14,7 +14,7 @@ typedef int32_t fcell_t;
 
 /* #define FW_STATE_FUNCS_NO_BASES */
 
-#define FORTHWITH_NO_CHECKS
+/* #define FORTHWITH_NO_CHECKS */
 
 #define $1 #1
 #define $0 #0
