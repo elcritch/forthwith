@@ -613,15 +613,16 @@ TEST_LIST = {
   { "other", test_other },
   { "interpreter", test_interpreter },
   { "colon", test_colon },
+  { "colon2", test_colon2 },
   { 0 }
 };
 #endif // FW_MANUAL_TEST
 
 #ifdef FW_MANUAL_TEST
 int main() {
-  /* test_basic(); */
+  test_basic();
   /* test_branches(); */
-  test_interpreter();
+  /* test_interpreter(); */
   /* test_colon(); */
 
   return forth_count();

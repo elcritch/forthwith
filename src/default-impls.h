@@ -16,6 +16,47 @@
 #define fw_call void __attribute__ ((noinline))
 #endif // FW_CUSTOM_ATTRIBUTES
 
+/* #define FORTHWITH_NO_CHECKS */
+
+#ifndef FORTHWITH_NO_CHECKS
+#define check(a, b, errfunc)                 \
+  jump_ifless(a, b, errfunc)
+#else
+#define check(a, b, errfunc)
+#endif // FORTHWITH_NO_CHECKS
+
+#define _checkd() check(psp, bpsp, dosuf)
+#define _checkr() check(rsp, brsp, doruf)
+
+// Pushing and Popping
+#define _pushd_0
+#define _pushd_1 _pushd_cell(s1);
+#define _pushd_2 _pushd_cell(s2); _pushd_1;
+#define _pushd_3 _pushd_cell(s3); _pushd_2;
+#define _pushd_4 _pushd_cell(s4); _pushd_3;
+#define _pushd(n) _pushd_ ## n
+
+#define _popd_0
+#define _popd_1          _popd_cell(s1); _checkd()
+#define _popd_2 _popd_1; _popd_cell(s2); _checkd()
+#define _popd_3 _popd_2; _popd_cell(s3); _checkd()
+#define _popd_4 _popd_3; _popd_cell(s4); _checkd()
+#define _popd(n) _popd_ ## n
+
+#define pushd(n)                                \
+  _pushd(n)
+
+#define popd(n)                                 \
+  _popd(n)
+
+#define pushr(reg)                              \
+  _pushr(reg)
+
+#define popr(reg)                               \
+  _popr(reg); \
+  _checkr()
+
+// Global State Accessors
 #define accessor_name(struct_name)              \
   get_ ## struct_name ## _addr
 

@@ -128,31 +128,5 @@ fw_call doprintstate();
 #ifndef FORTH_STACK_PRIMS
 #define FORTH_STACK_PRIMS
 
-/* #define FORTHWITH_NO_CHECKS */
-
-#ifndef FORTHWITH_NO_CHECKS
-#define check(a, b, errfunc)                                              \
-    copy_reg(x, a);                                                       \
-    incr_reg(x);                                                          \
-    xor_reg(x, b);                                                        \
-    jump_ifzero(x, errfunc)
-#else
-#define check(a, b, errfunc)
-#endif // FORTHWITH_NO_CHECKS
-
-#define pushd(n) \
-  _pushd(n)
-
-#define popd(n) \
-  check(psp, bpsp, dosuf);                      \
-  _popd(n)
-
-#define pushr(reg) \
-  _pushr(reg)
-
-#define popr(reg) \
-  check(rsp, brsp, doruf);                      \
-  _popr(reg)
-
 #endif // FORTH_STACK_PRIMS
 
