@@ -164,6 +164,13 @@ void dofind() {
   char *str = (char*) forth_pop();
 
   fword_t *entry = dict_find(len, str);
+
+  /* printf("dofind: %d: `", len); */
+  /* for (uint8_t i = 0; i < len; i++) { */
+  /*   printf("%c", str[i]); */
+  /* } */
+  /* printf("` -- dofind: %p\n", entry); */
+
   if (!entry) {
     forth_push( (fcell_t)str);
     forth_push(len);

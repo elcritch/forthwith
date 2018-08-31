@@ -165,6 +165,9 @@ void test_colon(void) {
 
   /* print_psp_info(); */
 
+  fword_t *semicolon = dict_find(1, ";");
+  printf("semicolon: %p\n");
+
   fcell_t expi;
   fcell_t expl;
   fcell_t cnt;

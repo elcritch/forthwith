@@ -69,9 +69,12 @@ fword_t* dict_find(int8_t len, char *name) {
   // Load dictionary pointer
   fword_t* word_ptr = ctx_dict->head;
 
+  /* printf("dict_find: start: %s\n", name); */
+
   // Iterate over words, looking for match
   while (word_ptr != NULL) {
     fword_info_t word = word_ptr->info;
+    /* printf("dict_find: %s\n", word.name); */
     if (word.len == len) {
       int8_t i;
       for (i = 0; i < len; i++) {
@@ -79,12 +82,18 @@ fword_t* dict_find(int8_t len, char *name) {
           break;
       }
 
-      if (word.meta & F_HIDDEN)
-        return NULL;
-
       // word found
       if (i == len)
+      {
+        /* printf("dict_find: found\n"); */
         return word_ptr;
+
+        if (word.meta & F_HIDDEN)
+        {
+            /* printf("dict_find: hidden : %s meta: %d\n", word.name, word.meta); */
+            return NULL;
+        }
+      }
     }
 
     // no match

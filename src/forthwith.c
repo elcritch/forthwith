@@ -136,6 +136,7 @@ int forth_eval(fcell_xt *instr) {
     (fcell_xt) &xt_quits,
   };
 
+  ctx_vars->state = IMMEDIATE_MODE;
   ctx_regs->w = 0;
   ctx_regs->ip = (fcell_t) innerloop;
   ctx_regs->x = 0;
