@@ -76,6 +76,7 @@
 #define cmp_const(x, y) _fw_asm_const("cmpq", y, reg_##x)
 #define add_const(x, y) _fw_asm_const("addq", y, reg_##x)
 #define sub_const(x, y) _fw_asm_const("subq", y, reg_##x)
+#define and_const(x, y) _fw_asm_const("andq", y, reg_##x)
 
 // Bitwise
 #define cmp_reg(x, y) _fw_asm_const("cmpq", reg_##y, reg_##x)
@@ -141,8 +142,8 @@
 #define load_link() __asm__("pop %rbp")
 
 #define prepare_cenv() setjmp(env)
-#define save_cenv()
-#define load_cenv() longjmp(env, 1)
+#define save_cenv() decr_reg(xrsp); and_const(rsp, $-0x10)
+#define load_cenv() incr_reg(xrsp); and_const(rsp, $-0x10); longjmp(env, 1)
 
 #endif // __HEADER_IMPL_X86__
 
