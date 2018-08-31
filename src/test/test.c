@@ -621,7 +621,8 @@ TEST_LIST = {
 int main() {
   /* test_basic(); */
   /* test_branches(); */
-  test_colon();
+  test_interpreter();
+  /* test_colon(); */
 
   return forth_count();
 }

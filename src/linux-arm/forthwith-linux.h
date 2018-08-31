@@ -152,6 +152,9 @@
 #define save_link() pushr(xlink)
 #define load_link() popr(xlink)
 
+#define store_link() pushr(xlink)
+#define restore_link() popr(xlink)
+
 #define prepare_cenv() 0
 #define save_cenv() 
 #define load_cenv() asm volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");

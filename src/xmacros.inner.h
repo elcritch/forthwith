@@ -76,13 +76,20 @@ forth_core("runs", 4, F_NORMAL, runs, "( n -- )", {
 
 /* Quit inner interpreter */
 forth_core("quits", 5, F_NORMAL, quits, "( -- )", {
-  load_link();
+  copy_reg(s1, brsp);
+  decr_reg(s1);
+  load_addr(xlink, s1);
   return;
 });
 
+/* #define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz) */
+/* #define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp) */
+
 /* Quit inner interpreter */
 forth_core("starts", 6, F_NORMAL, starts, "( -- )", {
-    save_link();
+    copy_reg(s1, brsp);
+    decr_reg(s1);
+    store_addr(s1, xlink);
     jump(next);
 });
 

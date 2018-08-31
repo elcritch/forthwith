@@ -31,9 +31,10 @@ typedef int32_t fcell_t;
 /* #define $ctx_rsp ctx_rsp(%rip) */
 /* #define $ctx_regs ctx_regs(%rip) */
 
-#define $ctx_regs_of_w   #0
-#define $ctx_regs_of_x   #4
-#define $ctx_regs_of_ip  #8
+#define $ctx_regs_of_w     #0
+#define $ctx_regs_of_x     #4
+#define $ctx_regs_of_ip    #8
+#define $ctx_regs_of_link  #12
 
 #define $stack_of_head  #0
 #define $stack_of_base  #4

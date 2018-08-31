@@ -58,7 +58,10 @@ int forth_init() {
   ctx_psp->head++;
   ctx_psp->base = ctx_psp->head;
 
-  ctx_rsp->base = ctx_rsp->head = calloc(1, ctx_rsp->size);
+  /* ctx_rsp->base = ctx_rsp->head = calloc(1, ctx_rsp->size); */
+  ctx_rsp->head = calloc(1, ctx_rsp->size + 1);
+  ctx_rsp->head++;
+  ctx_rsp->base = ctx_rsp->head;
 
   ctx_user->base = ctx_user->head = calloc(1, ctx_user->size);
   ctx_dict->base = ctx_dict->head = calloc(1, ctx_dict->size);
