@@ -153,11 +153,11 @@
 #define ret(reg)                                 \
   __asm__("ret");
 
-#define save_link()
-#define load_link()
+#define save_link() __asm__("push %rbp")
+#define load_link() __asm__("pop %rbp")
 
 #define prepare_cenv() setjmp(env)
-#define save_cenv() 
+#define save_cenv()
 #define load_cenv() longjmp(env, 1)
 
 #define _checkd psp < bpsp
