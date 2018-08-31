@@ -46,8 +46,9 @@
 #define __jump_reg(r) ___jump_reg( "jmpq *" #r )
 #define _jump_reg(r, x) __jump_reg( r )
 
-#define __jump_eq(r) __asm__( "je " #r )
-#define _jump_eq(r) __jump_eq( r )
+#define ___jump_eq(r) __asm__( "je " #r )
+#define __jump_eq(r) ___jump_eq(r)
+#define _jump_eq(r) __jump_eq( __label(r) )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
 
