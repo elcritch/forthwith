@@ -85,14 +85,14 @@ fword_t* dict_find(int8_t len, char *name) {
       // word found
       if (i == len)
       {
-        /* printf("dict_find: found\n"); */
-        return word_ptr;
-
         if (word.meta & F_HIDDEN)
         {
             /* printf("dict_find: hidden : %s meta: %d\n", word.name, word.meta); */
             return NULL;
         }
+
+        /* printf("dict_find: found\n"); */
+        return word_ptr;
       }
     }
 

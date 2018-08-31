@@ -49,8 +49,8 @@ typedef int32_t fcell_t;
  get substituted with whats here. This helps with string concat of the various
  registers. */
 
-#define FORTH_REGISTERS                         \
-    X_t   _s1,                                   \
+#define FORTH_REGISTERS                        \
+    X_t   _s1,                                 \
     X_t   _s2,                                 \
     X_t   _s3,                                 \
     X_t   _s4
