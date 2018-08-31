@@ -109,17 +109,17 @@ void test_colon(void) {
     var[j] = forth_alloc_var();
 
   fword_t *entry_colon = dict_find(1, ":");
-  printf("colon: `:` %16p \n", entry_colon);
+  printf("colon: `:` %p \n", entry_colon);
   TEST_CHECK_(entry_colon != NULL, "Expected non-null `:` word, got "CELL_FMT"", entry_colon);
-  printf("colon cfa: `:` %16p\n", dict_cfa(entry_colon));
-  printf("xt_colon: `:` %16p -> %16p \n", xt_colon, *xt_colon);
+  printf("colon cfa: `:` %p\n", dict_cfa(entry_colon));
+  printf("xt_colon: `:` %p -> %p \n", xt_colon, *xt_colon);
 
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
-  ctx_vars->tib_str = ": aa 99 ;";
-  ctx_vars->tib_len = 9;
+  ctx_vars->tib_str = " : a 99 ;";
+  ctx_vars->tib_len = 10;
   ctx_vars->tib_idx = 0;
 
   forth_eval(var[0]);
@@ -129,14 +129,14 @@ void test_colon(void) {
   // Try running new word!
 
 
-  fword_t *entry_a = dict_find(2, "aa");
+  fword_t *entry_a = dict_find(1, "a");
   TEST_CHECK_(entry_a != NULL, "Expected non-null `:` word, got %p for %s", entry_a, "entry_a");
-  printf("entry_a: %16p\n", entry_a);
+  printf("entry_a: %p\n", entry_a);
 
   fcell_xt * cfa_a = (fcell_xt *) dict_cfa(entry_a);
   TEST_CHECK_(cfa_a != NULL, "Expected non-null `:` word, got "CELL_FMT" for %s", cfa_a, "cfa_a");
 
-  printf("cfa_aa: %16p\n", cfa_a);
+  printf("cfa_aa: %p\n", cfa_a);
 
   fword_t *entry_prior = ctx_dict->head - 2;
   fcell_xt * cfa_prior = *(fcell_xt **) dict_cfa(entry_prior);
@@ -145,7 +145,7 @@ void test_colon(void) {
   for (fcell_t j = 0; j < 6; j++) {
     fcell_xt *aj = (fcell_xt *)cfa_a[j];
     fword_t *e = (fcell_t)aj > 1000 ? dict_lookup(*aj) : (fword_t*)aj;
-    printf("cfa_aa["CELL_FMT"]: %16p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL);
+    printf("cfa_aa["CELL_FMT"]: %p -> %s\n", j, cfa_a[j], (fcell_t)e > 1000 ? e->info.name : NULL);
     if (aj == cfa_prior)
       printf("prior entry: %s\n", entry_prior->info.name);
   }
@@ -155,7 +155,7 @@ void test_colon(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = dict_cfa(dict_find(1, "'"));
   *var[i++] = (fcell_xt) 103;
-  *var[i++] = (fcell_xt) dict_cfa(dict_find(2, "aa"));
+  *var[i++] = (fcell_xt) dict_cfa(dict_find(1, "a"));
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
 
