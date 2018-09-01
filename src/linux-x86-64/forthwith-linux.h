@@ -42,9 +42,6 @@
 #define __jump_eq(r) ___jump_cond("je", r)
 #define _jump_eq(r) __jump_eq( __label(r) )
 
-#define __jump_lt(r) ___jump_cond("jl", r)
-#define _jump_lt(r) __jump_lt( __label(r) )
-
 #define __jump_le(r) ___jump_cond("jle", r)
 #define _jump_le(r) __jump_le( __label(r) )
 

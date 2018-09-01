@@ -41,8 +41,8 @@
 #define __jump_eq(r) ___jump_cond("bleq", r)
 #define _jump_eq(r) __jump_eq( r )
 
-#define __jump_lt(r) ___jump_cond("bllo", r)
-#define _jump_lt(r) __jump_lt( r )
+#define __jump_le(r) ___jump_cond("blls", r)
+#define _jump_le(r) __jump_lt( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
