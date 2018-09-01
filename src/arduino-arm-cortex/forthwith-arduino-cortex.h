@@ -2,7 +2,7 @@
 #ifndef __HEADER_IMPL_ARM__
 #define __HEADER_IMPL_ARM__
 
-#include "forthwith-linux-consts.h"
+#include "forthwith-arduino-cortex-consts.h"
 #include "../forthwith.h"
 
 #include <stddef.h>
@@ -42,7 +42,7 @@
 #define _jump_eq(r) __jump_eq( r )
 
 #define __jump_le(r) ___jump_cond("bls", r)
-#define _jump_le(r) __jump_lt( r )
+#define _jump_le(r) __jump_le( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 

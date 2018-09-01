@@ -65,8 +65,8 @@ int prompt_do(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
   ctx_vars->tob_len = tx_len;
   ctx_vars->tob_idx = 0;
 
-  printf("EEE\n\n");
-  prompt_eval();
+  if (bytes_read)
+    prompt_eval();
 
   int errno = forth_errno();
 

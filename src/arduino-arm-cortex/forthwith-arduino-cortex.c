@@ -1,11 +1,17 @@
 
 #define FW_CUSTOM_TOB_FLUSH
 #define FW_CUSTOM_READLINE
+#define FW_TRACE
 
 #include "forthwith-arduino-cortex.h"
 #include "../forthwith.h"
 #include "../dict.h"
 #include "../utilities.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // Define Primitives, including function bodies, etc
 #define FORTH_DEFINE_PRIMITIVES
@@ -24,4 +30,8 @@
 extern fw_ctx_stack_t *ctx_psp;
 extern void forth_flush_tob();
 extern int forth_tib_readline(char **buff, size_t *len);
+
+#ifdef __cplusplus
+}
+#endif
 

@@ -13,7 +13,7 @@ ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isr
 
 CORTEX_CC ?=
 CORTEX_AR ?=
-CORTEX_CFLAGS += --std=c99 --specs=nosys.specs -Wa,-mimplicit-it=thumb
+CORTEX_CFLAGS += -Isrc/ --std=c99 --specs=nosys.specs -Wa,-mimplicit-it=thumb
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x

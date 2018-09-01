@@ -124,12 +124,12 @@ extern int forth_init();
 #define FW_ERR_RSTACKUNDERFLOW 5
 #define FW_ERR_CFA 6
 
-typedef enum forthwith_the_states fw_state_t;
 enum forthwith_the_states {
   IMMEDIATE_MODE = 0,
   COMPILE_MODE = 1,
   ERROR_MODE = 3,
 };
+typedef enum forthwith_the_states fw_state_t;
 
 #define F_NORMAL  1
 #define F_IMMED   2
@@ -147,7 +147,10 @@ extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
 extern int forth_eval_string(char *input);
+
+// User Callbacks
 extern void forth_flush_tob();
+extern int forth_tib_readline(char **buff, size_t *len);
 
 // Basic Execution Tokens
 extern fcell_xt xt_dosys;
