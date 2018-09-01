@@ -10,6 +10,9 @@ CC = gcc
 ARM_CC ?= gcc
 ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
 
+CORTEX_CC ?= /home/elcritch/.arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-gcc 
+CORTEX_CFLAGS ?= -mcpu=cortex-m4 -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib -w -E -D__FPU_PRESENT -DARM_MATH_CM4 -DCRYSTALLESS -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DENABLE_CACHE 
+
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
 PSTACK_SIZE=0x100
