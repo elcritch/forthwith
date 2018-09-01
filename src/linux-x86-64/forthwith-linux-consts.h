@@ -75,8 +75,8 @@ typedef int64_t fcell_t;
 
 // reg r %rdi %rsi
 #define reg_bpsp    %rdi
-#define reg_psp    %rsi
-#define reg_brsp     %rdx
+#define reg_psp     %rsi
+#define reg_brsp    %rdx
 #define reg_rsp     %rcx
 #define reg_ip      %r8
 #define reg_x       %r9

@@ -45,6 +45,9 @@
 #define __jump_lt(r) ___jump_cond("jl", r)
 #define _jump_lt(r) __jump_lt( __label(r) )
 
+#define __jump_gt(r) ___jump_cond("jge", r)
+#define _jump_gt(r) __jump_gt( __label(r) )
+
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
 
 #define _fw_asm_to_addr(c, x, y) _fw_asm(c, "", x, "", "(", y, ")")
@@ -95,6 +98,7 @@
 #define jump(reg) _jump( reg )
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
 #define jump_ifless(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl ); 
+
 
 // -- gcc/clang seem to handle read-only if/else branches fine
 

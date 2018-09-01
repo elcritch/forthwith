@@ -18,9 +18,11 @@
 
 /* #define FORTHWITH_NO_CHECKS */
 
+#define call_ifless(x, y, lbl) cmp_reg(x, y); _jump_gt( 1f ); call( lbl ); __asm__("1: ")
+
 #ifndef FORTHWITH_NO_CHECKS
 #define check(a, b, errfunc)                 \
-  jump_ifless(a, b, errfunc)
+  call_ifless(a, b, errfunc)
 #else
 #define check(a, b, errfunc)
 #endif // FORTHWITH_NO_CHECKS

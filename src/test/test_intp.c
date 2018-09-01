@@ -133,7 +133,7 @@ void test_colon(void) {
   printf("cfa_aa: %p\n", cfa_a);
 
   fword_t *semicolon = dict_find(1, ";");
-  printf("semicolon: %p\n");
+  printf("semicolon: %p\n", semicolon);
 
   fcell_t expi;
   fcell_t expl;

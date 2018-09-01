@@ -588,8 +588,7 @@ void test_other(void) {
 
   TEST_CHECK_(forth_errno() == 0,
               "stackunderflow: Expected "CELL_FMT", got "CELL_FMT"",
-              forth_errno(),
-              0);
+              0, forth_errno());
 
   forth_clear();
 
