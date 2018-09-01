@@ -95,7 +95,6 @@
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(lbl) _jump( lbl )
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
-#define jump_ifless(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl ); 
 
 #define call_ifless(x, y, lbl) cmp_reg(x, y); _jump_le( 1f ); call( lbl ); __asm__("1: ")
 
