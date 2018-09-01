@@ -56,9 +56,9 @@ int prompt_do(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
   int bytes_read = forth_tib_readline(&rx_buff, &rx_len);
 
   // Input Buffer
-  rx_buff[bytes_read - 1] = '\0'; // replace newline
+  /* rx_buff[bytes_read - 1] = '\0'; // replace newline */
   ctx_vars->tib_str = rx_buff;
-  ctx_vars->tib_len = bytes_read - 1;
+  ctx_vars->tib_len = bytes_read ;
   ctx_vars->tib_idx = 0;
   // Output Buffer
   ctx_vars->tob_str = tx_buff;
