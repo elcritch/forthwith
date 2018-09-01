@@ -67,16 +67,16 @@ fw_call doprintstate() {
 __fw_noinline__
 fw_call dosuf() {
   ctx_vars->error = FW_ERR_STACKUNDERFLOW;
-  ctx_psp->head = ctx_psp->base;
-  exit(ctx_vars->error);
+  ctx_psp->head = ctx_psp->base + 1;
+  /* exit(ctx_vars->error); */
 }
 
 // handle return stack underflow
 __fw_noinline__
 fw_call doruf(FORTH_REGISTERS) {
   ctx_vars->error = FW_ERR_RSTACKUNDERFLOW;
-  ctx_rsp->head = ctx_rsp->base;
-  exit(ctx_vars->error);
+  ctx_rsp->head = ctx_rsp->base + 1;
+  /* exit(ctx_vars->error); */
 }
 
 // ( n -- )

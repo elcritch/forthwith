@@ -131,13 +131,13 @@ fw_call forth_exec(FORTH_REGISTERS) {
   load_cenv();
 }
 
+fcell_xt innerloop[2] = {
+  (fcell_xt) &xt_execs,
+  (fcell_xt) &xt_quits,
+};
+
 __fw_noinline__
 int forth_eval(fcell_xt *instr) {
-
-  fcell_xt innerloop[2] = {
-    (fcell_xt) &xt_execs,
-    (fcell_xt) &xt_quits,
-  };
 
   ctx_vars->state = IMMEDIATE_MODE;
   ctx_vars->error = FW_OK;

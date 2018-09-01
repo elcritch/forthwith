@@ -18,8 +18,9 @@ int main(int argc, char** argv) {
   char *rx_buff[128];
   char *tx_buff[128];
 
+  prompt_init();
   for (;;) {
-    doprompt((char*)rx_buff + 0, 128, (char*)tx_buff, 128);
-  } 
+    prompt_do((char*)rx_buff + 0, 128, (char*)tx_buff, 128);
+  }
 
 }
