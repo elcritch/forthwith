@@ -26,21 +26,29 @@ int doeval() {
 }
 
 void print_stack() {
-  printf(" (");
-  for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {printf(""CELL_FMT", ", *i);}
-  printf(") ");
+  write_str(2, " (");
+  for (fcell_t *i = ctx_psp->base; i < ctx_psp->head; i++) {
+    write_number(*i);
+  }
+  write_str(2, ") ");
 }
 
 void print_eol() {
-  printf("\n\3");
+  write_str(2, "\n\3");
 }
+
+#ifndef FW_CUSTOM_READLINE
+int forth_tib_readline(char **buff, size_t *len) {
+  return getline(buff, len, stdin);
+}
+#endif // FW_CUSTOM_READLINE
 
 int doprompt(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
 
   print_stack();
-  printf("> ");
+  write_str(2, "> ");
 
-  int bytes_read = getline(&rx_buff, &rx_len, stdin);
+  int bytes_read = forth_tib_readline(&rx_buff, &rx_len);
 
   // Input Buffer
   rx_buff[bytes_read - 1] = '\0'; // replace newline
@@ -59,24 +67,18 @@ int doprompt(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
 
   int errno = forth_errno();
 
-  if (ctx_vars->tob_idx > 0) {
-    for (int i = 0; i < ctx_vars->tob_idx; i++)
-      printf("%c", ctx_vars->tob_str[i]);
-    printf("\n");
-  }
-  /* printf(" (errno: %d) ", errno); */
   if (errno == FW_OK) {
     print_eol();
-    printf("OK.");
+    write_str(3, "OK.");
   } else if (errno == FW_ERR_STACKUNDERFLOW) {
     print_eol();
-    printf("<D?");
+    write_str(3, "<D?");
   } else if (errno == FW_ERR_RSTACKUNDERFLOW) {
     print_eol();
-    printf("<R?");
+    write_str(3, "<R?");
   } else if (errno == FW_ERR_NOWORD) {
     print_eol();
-    printf("W??");
+    write_str(3, "W??");
   }
 
 

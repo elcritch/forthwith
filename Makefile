@@ -8,10 +8,12 @@ CFLAGS = -Wall -O3 -DFW_TRACE -g $(BASE_CFLAGS)
 CC = gcc
 
 ARM_CC ?= gcc
+ARM_AR ?= ar
 ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
 
-CORTEX_CC ?= /home/elcritch/.arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-gcc 
-CORTEX_CFLAGS ?= -mcpu=cortex-m4 -mthumb -g --std=c99 -Os -w -Isrc/ -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib -D__FPU_PRESENT -DARM_MATH_CM4 -DCRYSTALLESS -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wa,-mimplicit-it=thumb
+CORTEX_CC ?=
+CORTEX_AR ?=
+CORTEX_CFLAGS += -Isrc/ --std=c99 --specs=nosys.specs -Wa,-mimplicit-it=thumb
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
@@ -26,8 +28,8 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
-linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux 
-arduino-cortex: _build/arduino-arm-cortex/porting-guide _build/arduino-arm-cortex/forthwith-linux _build/arduino-arm-cortex/test-forthwith-linux 
+linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux
+arduino-cortex: _build/arduino-arm-cortex/forthwith-cortex.a
 
 # ======= Linux x86 ======= #
 _build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
@@ -40,7 +42,7 @@ _build/linux-x86-64/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build
 _build/linux-x86-64/test-forthwith-linux: src/test/test.c _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
-_build/linux-x86-64/porting-guide: src/linux-x86-64/porting-guide.c 
+_build/linux-x86-64/porting-guide: src/linux-x86-64/porting-guide.c
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	$(CC) -o $@ $(CFLAGS) $^
 	$(CC) -o $@.S $(CFLAGS) -S $^
@@ -73,18 +75,14 @@ _build/linux-arm/%.o: src/linux-arm/%.c
 	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
 # ======= Arduino Arm Cortex ======= #
-_build/arduion-arm-cortex/forthwith-linux.a: _build/arduino-arm-cortex/forthwith-linux.o
+_build/arduino-arm-cortex/forthwith-cortex.a: _build/arduino-arm-cortex/forthwith-linux.o
 	$(CORTEX_AR) rcs $@ $<
 
-_build/arduino-arm-cortex/forthwith-linux: _build/arduino-arm-cortex/forthwith-main.o _build/arduino-arm-cortex/forthwith-linux.o
-	$(CORTEX_CC) -o $@.S $(CORTEX_CFLAGS) -S $^
-	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) $^
+# _build/arduino-arm-cortex/test-forthwith-linux: src/test/test.c _build/arduino-arm-cortex/forthwith-linux.o
+# 	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
+# 	$(CORTEX_CC) -S -o $@.S $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
 
-_build/arduino-arm-cortex/test-forthwith-linux: src/test/test.c _build/arduino-arm-cortex/forthwith-linux.o
-	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
-	$(CORTEX_CC) -S -o $@.S $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
-
-_build/arduino-arm-cortex/porting-guide: src/arduino-arm-cortex/porting-guide.c 
+_build/arduino-arm-cortex/porting-guide: src/arduino-arm-cortex/porting-guide.c
 	${CORTEX_CC} ${CORTEX_CFLAGS} $< -E -o $@.post.c
 	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) $^
 	$(CORTEX_CC) -o $@.S $(CORTEX_CFLAGS) -S $^
