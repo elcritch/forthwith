@@ -97,6 +97,8 @@
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
 #define jump_ifless(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl ); 
 
+#define call_ifless(x, y, lbl) cmp_reg(x, y); _jump_gt( 1f ); call( lbl ); __asm__("1: ")
+
 // Signed Arithmetic
 #define adds_reg(y, x) _fw_asm_const("add", reg_##y, reg_##x)
 #define addu_reg(y, x) _fw_asm_const("add", reg_##y, reg_##x)
