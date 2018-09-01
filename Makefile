@@ -11,7 +11,7 @@ ARM_CC ?= gcc
 ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
 
 CORTEX_CC ?= /home/elcritch/.arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin/arm-none-eabi-gcc 
-CORTEX_CFLAGS ?= -mcpu=cortex-m4 -mthumb -c -g -Os -w -std=gnu++11 -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib -w -E -D__FPU_PRESENT -DARM_MATH_CM4 -DCRYSTALLESS -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DENABLE_CACHE 
+CORTEX_CFLAGS ?= -mcpu=cortex-m4 -mthumb -c -g -Os -w -Isrc/ -ffunction-sections -fdata-sections -fno-threadsafe-statics -nostdlib -w -E -D__FPU_PRESENT -DARM_MATH_CM4 -DCRYSTALLESS -mfloat-abi=hard -mfpu=fpv4-sp-d16 
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
@@ -27,7 +27,9 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
 linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux 
+arduino-cortex: _build/arduino-arm-cortex/porting-guide _build/arduino-arm-cortex/forthwith-linux _build/arduino-arm-cortex/test-forthwith-linux 
 
+# ======= Linux x86 ======= #
 _build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
 	ar rcs $@ $<
 
@@ -38,12 +40,17 @@ _build/linux-x86-64/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build
 _build/linux-x86-64/test-forthwith-linux: src/test/test.c _build/linux-x86-64/forthwith-linux.o
 	$(CC) -o $@ $(CFLAGS) -Isrc/ -Isrc/linux-x86-64/ $^
 
-
 _build/linux-x86-64/porting-guide: src/linux-x86-64/porting-guide.c 
 	${CC} ${CFLAGS} $< -E -o $@.post.c
 	$(CC) -o $@ $(CFLAGS) $^
 	$(CC) -o $@.S $(CFLAGS) -S $^
 
+_build/linux-x86-64/%.o: src/linux-x86-64/%.c
+	${CC} ${CFLAGS} $< -E -o $@.post.c
+	${CC} ${CFLAGS} $< -S -o $@.S
+	${CC} ${CFLAGS} $< -c -o $@
+
+# ======= Linux Arm ======= #
 _build/linux-arm/forthwith-linux.a: _build/linux-arm/forthwith-linux.o
 	$(ARM_AR) rcs $@ $<
 
@@ -55,39 +62,45 @@ _build/linux-arm/test-forthwith-linux: src/test/test.c _build/linux-arm/forthwit
 	$(ARM_CC) -o $@ $(ARM_CFLAGS) -Isrc/ -Isrc/linux-arm/ $^
 	$(ARM_CC) -S -o $@.S $(ARM_CFLAGS) -Isrc/ -Isrc/linux-arm/ $^
 
-
 _build/linux-arm/porting-guide: src/linux-arm/porting-guide.c 
 	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
 	$(ARM_CC) -o $@ $(ARM_CFLAGS) $^
 	$(ARM_CC) -o $@.S $(ARM_CFLAGS) -S $^
-
-_build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagle-pru/forthwith-pru.lib
-	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
-	$(PRU_CGT)/bin/dispru --all $@ > $@.S
-
-_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o
-	$(PRU_CGT)/bin/arpru r $@ $^
-
-# $(PRU_CGT)/bin/clpru --section_sizes=on $(PCFLAGS) -z -i$(PRU_CGT)/lib \
-		-i$(PRU_CGT)/include $(PLFLAGS) -o $@ $^ -m$(MAP) $(LINKER_COMMAND_FILE) --library=libc.a $(PRU_LIBS)
-# _build/%.o: src/%.c
-# 	${CC} ${CFLAGS} $< -E -o $@.post.c
-# 	${CC} ${CFLAGS} $< -S -o $@.S
-# 	${CC} ${CFLAGS} $< -c -o $@
-
-# _build/%.o: src/test/%.c
-#	${CC} ${CFLAGS} $< -c -o $@
-
-_build/linux-x86-64/%.o: src/linux-x86-64/%.c
-	${CC} ${CFLAGS} $< -E -o $@.post.c
-	${CC} ${CFLAGS} $< -S -o $@.S
-	${CC} ${CFLAGS} $< -c -o $@
 
 _build/linux-arm/%.o: src/linux-arm/%.c
 	${ARM_CC} ${ARM_CFLAGS} $< -S -o $@.S
 	${ARM_CC} ${ARM_CFLAGS} $< -E -o $@.post.c
 	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
+# ======= Arduino Arm Cortex ======= #
+_build/arduion-arm-cortex/forthwith-linux.a: _build/arduino-arm-cortex/forthwith-linux.o
+	$(CORTEX_AR) rcs $@ $<
+
+_build/arduino-arm-cortex/forthwith-linux: _build/arduino-arm-cortex/forthwith-main.o _build/arduino-arm-cortex/forthwith-linux.o
+	$(CORTEX_CC) -o $@.S $(CORTEX_CFLAGS) -S $^
+	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) $^
+
+_build/arduino-arm-cortex/test-forthwith-linux: src/test/test.c _build/arduino-arm-cortex/forthwith-linux.o
+	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
+	$(CORTEX_CC) -S -o $@.S $(CORTEX_CFLAGS) -Isrc/ -Isrc/arduino-arm-cortex/ $^
+
+_build/arduino-arm-cortex/porting-guide: src/arduino-arm-cortex/porting-guide.c 
+	${CORTEX_CC} ${CORTEX_CFLAGS} $< -E -o $@.post.c
+	$(CORTEX_CC) -o $@ $(CORTEX_CFLAGS) $^
+	$(CORTEX_CC) -o $@.S $(CORTEX_CFLAGS) -S $^
+
+_build/arduino-arm-cortex/%.o: src/arduino-arm-cortex/%.c
+	${CORTEX_CC} ${CORTEX_CFLAGS} $< -S -o $@.S
+	${CORTEX_CC} ${CORTEX_CFLAGS} $< -E -o $@.post.c
+	${CORTEX_CC} ${CORTEX_CFLAGS} $< -c -o $@
+
+# ======= Beagle PRU ======= #
+_build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagle-pru/forthwith-pru.lib
+	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
+	$(PRU_CGT)/bin/dispru --all $@ > $@.S
+
+_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o
+	$(PRU_CGT)/bin/arpru r $@ $^
 
 _build/beagle-pru/%.o: src/beagle-pru/%.c
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
@@ -101,7 +114,12 @@ clean:
 	rm -Rf _build/*
 	mkdir _build/linux-x86-64/
 	mkdir _build/linux-arm/
+	mkdir _build/arduino-arm-cortex/
 	mkdir _build/beagle-pru/
+
+clean-cortex:
+	rm -Rf _build/arduino-arm-cortex/
+	mkdir _build/arduino-arm-cortex/
 
 clean-arm:
 	rm -Rf _build/linux-arm/
