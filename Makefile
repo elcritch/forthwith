@@ -13,7 +13,7 @@ ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isr
 
 CORTEX_CC ?=
 CORTEX_AR ?=
-CORTEX_CFLAGS += -Isrc/ --std=c99 --specs=nosys.specs -Wa,-mimplicit-it=thumb
+CORTEX_CFLAGS += --std=c99 --specs=nosys.specs -Wa,-mimplicit-it=thumb
 
 # PRU_LINKER_COMMAND_FILE=./AM335x_PRU.cmd
 PINCLUDE=--include_path=src/ --include_path=$(PRU_LIB)/pru/include/ --include_path=$(PRU_LIB)/pru/include/am335x
@@ -75,7 +75,7 @@ _build/linux-arm/%.o: src/linux-arm/%.c
 	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
 # ======= Arduino Arm Cortex ======= #
-_build/arduino-arm-cortex/forthwith-cortex.a: _build/arduino-arm-cortex/forthwith-linux.o
+_build/arduino-arm-cortex/forthwith-cortex.a: _build/arduino-arm-cortex/forthwith-arduino-cortex.o
 	$(CORTEX_AR) rcs $@ $<
 
 # _build/arduino-arm-cortex/test-forthwith-linux: src/test/test.c _build/arduino-arm-cortex/forthwith-linux.o

@@ -2,6 +2,10 @@
 #ifndef _FW_DICT_H_
 #define _FW_DICT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef _fword_t
 #define _fword_t
 typedef struct forth_word fword_t;
@@ -20,6 +24,10 @@ fword_t* dict_lookup(fcell_xt addr);
 fcell_xt dict_cfa(fword_t *entry);
 void dict_add(fword_info_t *entry);
 void dict_print();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _FW_DICT_H_
 

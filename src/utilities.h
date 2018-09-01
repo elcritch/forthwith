@@ -2,6 +2,10 @@
 #ifndef _FW_UTILITIES_H_
 #define _FW_UTILITIES_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 fcell_t parse_word(uint8_t idx, uint8_t len, char *tib,
                    char **word_start, char **word_stop);
 
@@ -28,5 +32,8 @@ void docfa();
 void doemit();
 void donumber();
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _FW_UTILITIES_H_

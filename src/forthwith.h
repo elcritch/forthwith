@@ -2,6 +2,10 @@
 #ifndef _FORTHWITH_HEADER_
 #define _FORTHWITH_HEADER_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #include "default-impls.h"
@@ -161,5 +165,9 @@ extern fcell_xt xt_exits;
   #include "xmacros.core.h"
   #include "xmacros.outer.h"
 #undef FORTH_DEFINE_HEADERS
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // _FORTHWITH_HEADER_
