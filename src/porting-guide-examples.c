@@ -155,6 +155,26 @@ fcell_t ex_div(fcell_t a, fcell_t b) {
 }
 
 __fw_noinline__
+fcell_t ex_gt(fcell_t a, fcell_t b) {
+  return a > b;
+}
+
+__fw_noinline__
+fcell_t ex_lt(fcell_t a, fcell_t b) {
+  return a < b;
+}
+
+__fw_noinline__
+fcell_t ex_ge(fcell_t a, fcell_t b) {
+  return a >= b;
+}
+
+__fw_noinline__
+fcell_t ex_le(fcell_t a, fcell_t b) {
+  return a <= b;
+}
+
+__fw_noinline__
 void examples_bitwise() {
   binary_ops(not);
   binary_ops(add);
@@ -169,6 +189,11 @@ void examples_bitwise() {
   binary_ops(rshiftu);
   binary_ops(mul);
   binary_ops(div);
+
+  binary_ops(gt);
+  binary_ops(lt);
+  binary_ops(ge);
+  binary_ops(le);
 }
 
 __fw_noinline__ void call_reg_bpsp() {printf("bpsp\n");}
