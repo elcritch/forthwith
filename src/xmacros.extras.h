@@ -4,14 +4,16 @@ forth_core("c@", 2, F_NORMAL, cfetch, "( n -- n )", {
     popd(1);
     copy_reg(x, s1);
     load_addr(s1, x);
-    and_const(s1, $FF);
+    load_const(x, $FF);
+    and_reg(s1, x);
     pushd(1);
     jump(next);
 });
 
 forth_core("c!", 2, F_NORMAL, cstore, "( n addr -- )",  {
     popd(2);
-    and_const(s1, $FF);
+    load_const(x, $FF);
+    and_reg(s1, x);
     store_addr(s2, s1);
     pushd(0);
     jump(next);

@@ -20,7 +20,7 @@ extern "C" {
   #include "../xmacros.core.h"
   #include "../xmacros.outer.h"
   #ifndef FW_NO_EXTRAS
-    #include "xmacros.extras.h"
+    #include "../xmacros.extras.h"
   #endif // FW_NO_EXTRAS
 #undef FORTH_DEFINE_PRIMITIVES
 
