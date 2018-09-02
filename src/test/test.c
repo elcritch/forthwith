@@ -279,9 +279,9 @@ void test_create(void) {
   // Colons
   i = 0;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)3;
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -349,15 +349,15 @@ void test_branches(void) {
   int idx_b0 = i;
   printf("<<< Run branch \n");
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)100;
   // jmp
   *var[i++] = dict_cfa(dict_find(6, "branch"));
   *var[i++] = XCELLS(3); // index
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)2;
   // end
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -383,10 +383,10 @@ void test_branches(void) {
   // jmp
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
     *var[i++] = XCELLS(3); // index
-    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = dict_cfa(dict_find(3, "[']"));
     *var[i++] = (fcell_xt)2;
   // end
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -402,7 +402,7 @@ void test_branches(void) {
   // test `5 0branch` 
   int idx_tifz5 = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(4, "tifz"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -427,7 +427,7 @@ void test_branches(void) {
   // test `0 0branch` 
   int idx_tifz0 = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)0;
   *var[i++] = dict_cfa(dict_find(4, "tifz"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -467,15 +467,15 @@ void test_ifelse(void) {
   // if !x 
   *var[i++] = dict_cfa(dict_find(7, "0branch"));
     *var[i++] = XCELLS(5); // index
-    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = dict_cfa(dict_find(3, "[']"));
     *var[i++] = (fcell_xt)7;
     // else
   *var[i++] = dict_cfa(dict_find(6, "branch"));
     *var[i++] = XCELLS(3); // index
-    *var[i++] = dict_cfa(dict_find(1, "'"));
+    *var[i++] = dict_cfa(dict_find(3, "[']"));
     *var[i++] = (fcell_xt)2;
   // fi
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)5;
   *var[i++] = dict_cfa(dict_find(1, "+"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -493,7 +493,7 @@ void test_ifelse(void) {
   // test true
   int idx_t = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt) 1;
   *var[i++] = dict_cfa(dict_find(3, "tif"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -515,7 +515,7 @@ void test_ifelse(void) {
   printf("<<< Run Test False\n");
   int idx_f = i;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt) 0;
   *var[i++] = dict_cfa(dict_find(3, "tif"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
@@ -549,11 +549,11 @@ void test_other(void) {
   // Colons
   i = 0;
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)1;
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)2;
-  *var[i++] = dict_cfa(dict_find(1, "'"));
+  *var[i++] = dict_cfa(dict_find(3, "[']"));
   *var[i++] = (fcell_xt)3;
   *var[i++] = dict_cfa(dict_find(3, "rot"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));

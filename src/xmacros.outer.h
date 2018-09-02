@@ -1,11 +1,9 @@
 
-forth_core("'", 1, F_NORMAL, tick, "( -- n )", {
+forth_core("[']", 3, F_NORMAL, tick, "( -- n )", {
     popd(0);
     // Get address of next word from codeword list (e.g. same as lit)
-    load_addr(x, ip);
+    load_addr(s1, ip);
     incr_reg(ip);
-    // push on stack
-    copy_reg(s1, x);
     pushd(1);
     jump(next);
   });

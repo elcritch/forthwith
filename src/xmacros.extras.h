@@ -47,3 +47,15 @@ forth_core("j", 1, F_NORMAL, loopj, "( --  n1 )",  {
     pushd(1);
     jump(next);
   });
+
+
+forth_core("cell", 4, F_NORMAL, cellsz, "()",  {
+    popd(0);
+    load_const(s1, $word_sz);
+    pushd(1);
+    jump(next);
+  });
+
+
+// =============== Math Primitives ============== //
+
