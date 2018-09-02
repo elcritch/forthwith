@@ -48,34 +48,6 @@ forth_core("rot", 3, F_NORMAL, rot, "( n3 n2 n1  --  n2 n1 n3 )",  {
   jump(next);
 });
 
-forth_core(">r", 2, F_NORMAL, rpush, "( n1  --   )",  {
-    popd(1);
-    pushr(s1);
-    pushd(0);
-    jump(next);
-});
-
-forth_core("r>", 2, F_NORMAL, rpop, "( --  n1 )",  {
-    popd(0);
-    popr(s1);
-    pushd(1);
-    jump(next);
-});
-
-forth_core("i", 1, F_NORMAL, loopi, "( --  n1 )",  {
-    popd(0);
-    load_addr_off(s1, rsp, 0);
-    pushd(1);
-    jump(next);
-});
-
-forth_core("j", 1, F_NORMAL, loopj, "( --  n1 )",  {
-    popd(0);
-    load_addr_off(s1, rsp, 2*WORD_SZ);
-    pushd(1);
-    jump(next);
-});
-
 // =============== Math Primitives ============== //
 forth_core("+", 1, F_NORMAL, sadd, "( n n -- n )",  {
   popd(2);
