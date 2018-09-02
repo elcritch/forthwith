@@ -28,8 +28,10 @@ forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
 forth_docall("err", 3, F_NORMAL, err, "( n -- )", doerr);
 
 // Toggle hidden flag -- unhide the word
-forth_word("immed", 5, F_IMMED, immed, "( p -- )",
-           XT(tick), (fcell_xt)F_IMMED, XT(xmask),
+forth_word("immediate", 9, F_IMMED, immed, "( p -- )",
+           XT(tick),
+           (fcell_xt)F_IMMED,
+           XT(xmask),
            );
 
 /* Executes word on tos */
