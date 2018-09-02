@@ -43,7 +43,7 @@
 #define _jump_eq(r) __jump_eq( __label(r) )
 
 #define __jump_le(r) ___jump_cond("jle", r)
-#define _jump_le(r) __jump_le( __label(r) )
+#define _jump_le(r) __jump_le( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b "," c #y d)
 

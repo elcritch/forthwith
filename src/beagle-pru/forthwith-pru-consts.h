@@ -15,6 +15,7 @@ typedef int32_t fcell_t;
 
 /* #define FORTHWITH_NO_CHECKS */
 
+#define $2 2
 #define $1 1
 #define $0 0
 

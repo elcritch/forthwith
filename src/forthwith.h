@@ -167,6 +167,9 @@ extern fcell_xt xt_exits;
   #include "xmacros.inner.h"
   #include "xmacros.core.h"
   #include "xmacros.outer.h"
+  #ifndef FW_NO_EXTRAS
+    #include "xmacros.extras.h"
+  #endif // FW_NO_EXTRAS
 #undef FORTH_DEFINE_HEADERS
 
 #ifdef __cplusplus

@@ -114,6 +114,9 @@ int forth_bootstrap() {
     #include "xmacros.inner.h"
     #include "xmacros.core.h"
     #include "xmacros.outer.h"
+    #ifndef FW_NO_EXTRAS
+      #include "xmacros.extras.h"
+    #endif // FW_NO_EXTRAS
   #undef FORTH_DEFINE_DICT_ENTRIES
 
   return FW_OK;

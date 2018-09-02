@@ -18,10 +18,11 @@ int main(int argc, char** argv) {
   char *rx_buff[128];
   char *tx_buff[128];
 
-  prompt_init((char*)rx_buff + 0, 128, (char*)tx_buff, 128);
+  prompt_init((char*)rx_buff, 128, (char*)tx_buff, 128);
 
+  int prompt_read = 1;
   for (;;) {
-    prompt_do();
+    prompt_read = prompt_do(prompt_read);
   }
 
 }
