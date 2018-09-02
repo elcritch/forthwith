@@ -84,5 +84,24 @@ forth_core("rp!", 3, F_NORMAL, rp_store, "()",  {
     jump(next);
   });
 
+forth_core("over", 4, F_NORMAL, rp_store, "( a b -- a b a )",  {
+    popd(2);
+    copy_reg(s3, s1);
+    pushd(3);
+    jump(next);
+  });
+
+forth_word("2dup", 4, F_NORMAL, dup2, "( a b -- a b a b )",
+           XT(over),
+           XT(over),
+           XT(semi)
+           );
+
+forth_word("tuck", 4, F_NORMAL, dup2, "( a b -- a b a b )",
+           XT(swap),
+           XT(over),
+           XT(semi)
+           );
+
 // =============== Math Primitives ============== //
 
