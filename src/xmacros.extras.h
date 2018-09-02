@@ -56,6 +56,33 @@ forth_core("cell", 4, F_NORMAL, cellsz, "()",  {
     jump(next);
   });
 
+forth_core("sp@", 3, F_NORMAL, sp_at, "()",  {
+    popd(0);
+    copy_reg(s1, psp);
+    pushd(1);
+    jump(next);
+  });
+
+forth_core("sp!", 3, F_NORMAL, sp_store, "()",  {
+    popd(1);
+    copy_reg(psp, s1);
+    pushd(0);
+    jump(next);
+  });
+
+forth_core("rp@", 3, F_NORMAL, rp_at, "()",  {
+    popd(0);
+    copy_reg(s1, rsp);
+    pushd(1);
+    jump(next);
+  });
+
+forth_core("rp!", 3, F_NORMAL, rp_store, "()",  {
+    popd(1);
+    copy_reg(rsp, s1);
+    pushd(0);
+    jump(next);
+  });
 
 // =============== Math Primitives ============== //
 
