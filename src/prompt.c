@@ -53,7 +53,7 @@ int prompt_eval() {
 
 #ifndef FW_CUSTOM_READLINE
 fcell_t forth_tib_readline() {
-  return getline(&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_idx, stdin);
+  return getline(&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
 }
 #endif // FW_CUSTOM_READLINE
 
