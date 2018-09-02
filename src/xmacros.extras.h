@@ -20,14 +20,14 @@ forth_core("c!", 2, F_NORMAL, cstore, "( n addr -- )",  {
 });
 
 // =============== Stack Primitives ============== //
-forth_core(">r", 2, F_NORMAL, rpush, "( n1  --   )",  {
+forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
     popd(1);
     pushr(s1);
     pushd(0);
     jump(next);
   });
 
-forth_core("r>", 2, F_NORMAL, rpop, "( --  n1 )",  {
+forth_core("r>", 2, F_NORMAL, fromrstack, "( --  n1 )",  {
     popd(0);
     popr(s1);
     pushd(1);
