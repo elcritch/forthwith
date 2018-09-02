@@ -41,8 +41,18 @@
 #define __jump_eq(r) ___jump_cond("bleq", r)
 #define _jump_eq(r) __jump_eq( r )
 
-#define __jump_le(r) ___jump_cond("bls", r)
+#define __jump_ule(r) ___jump_cond("bls", r)
+#define _jump_ule(r) __jump_ule( r )
+
+#define __jump_lt(r) ___jump_cond("blt", r)
+#define _jump_lt(r) __jump_lt( r )
+#define __jump_le(r) ___jump_cond("ble", r)
 #define _jump_le(r) __jump_le( r )
+
+#define __jump_gt(r) ___jump_cond("bgt", r)
+#define _jump_gt(r) __jump_gt( r )
+#define __jump_ge(r) ___jump_cond("bge", r)
+#define _jump_ge(r) __jump_ge( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
@@ -94,9 +104,14 @@
 // Jumps
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(lbl) _jump( lbl )
-#define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl ); 
+#define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl )
 
-#define call_ifless(x, y, lbl) cmp_reg(y, x); _jump_le( 1f ); call( lbl ); __asm__("1: ")
+#define jump_lt(x, y, lbl) cmp_reg(y, x); _jump_lt( lbl )
+#define jump_gt(x, y, lbl) cmp_reg(y, x); _jump_gt( lbl )
+#define jump_le(x, y, lbl) cmp_reg(y, x); _jump_le( lbl )
+#define jump_ge(x, y, lbl) cmp_reg(y, x); _jump_ge( lbl )
+
+#define call_ifless(x, y, lbl) cmp_reg(y, x); _jump_ule( 1f ); call( lbl ); __asm__("1: ")
 
 // Signed Arithmetic
 #define adds_reg(y, x) _fw_asm_const("add", reg_##y, reg_##x)
