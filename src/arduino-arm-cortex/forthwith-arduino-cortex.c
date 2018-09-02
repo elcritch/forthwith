@@ -29,7 +29,7 @@ extern "C" {
 
 extern fw_ctx_stack_t *ctx_psp;
 extern void forth_flush_tob();
-extern int forth_tib_readline(char **buff, size_t *len);
+extern fcell_t forth_tib_readline();
 
 #ifdef __cplusplus
 }

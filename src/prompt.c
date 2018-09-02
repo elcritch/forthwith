@@ -19,8 +19,9 @@ void print_eol() {
 }
 
 fcell_xt* var[3] = {0};
+fcell_t tib_str_size = 0;
 
-void prompt_init() {
+void prompt_init(char *rx_buff, fcell_t rx_len, char *tx_buff, fcell_t tx_len) {
   // Vars
 
   int i = 0, n = 3;
@@ -33,6 +34,16 @@ void prompt_init() {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
+
+  // Input Buffer
+  ctx_vars->tib_str = rx_buff;
+  ctx_vars->tib_len = rx_len;
+  tib_str_size = rx_len;
+  ctx_vars->tib_idx = 0;
+  // Output Buffer
+  ctx_vars->tob_str = tx_buff;
+  ctx_vars->tob_len = tx_len;
+  ctx_vars->tob_idx = 0;
 }
 
 int prompt_eval() {
@@ -41,32 +52,35 @@ int prompt_eval() {
 }
 
 #ifndef FW_CUSTOM_READLINE
-int forth_tib_readline(char **buff, size_t *len) {
-  return getline(buff, len, stdin);
+fcell_t forth_tib_readline() {
+  return getline(ctx_vars->tib_idx, ctx_vars->tib_len, stdin);
 }
 #endif // FW_CUSTOM_READLINE
 
-int prompt_do(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
+int prompt_do(int read) {
 
-  print_stack();
-  write_str(2, "> ");
+  if (read > 0) {
+    print_stack();
+    write_str(2, "> ");
+    forth_flush_tob();
+  }
 
-  forth_flush_tob();
-
-  int bytes_read = forth_tib_readline(&rx_buff, &rx_len);
-
-  // Input Buffer
-  /* rx_buff[bytes_read - 1] = '\0'; // replace newline */
-  ctx_vars->tib_str = rx_buff;
-  ctx_vars->tib_len = bytes_read ;
+  // Buffers Pre Read
+  memset(ctx_vars->tib_str, 0, tib_str_size);
+  ctx_vars->tib_len = tib_str_size;
   ctx_vars->tib_idx = 0;
-  // Output Buffer
-  ctx_vars->tob_str = tx_buff;
-  ctx_vars->tob_len = tx_len;
+
+  fcell_t bytes_read = forth_tib_readline();
+
+  // Buffers Post Read
+  ctx_vars->tib_len = bytes_read;
   ctx_vars->tob_idx = 0;
 
-  if (bytes_read)
-    prompt_eval();
+
+  if (bytes_read <= 0)
+    return -1;
+
+  prompt_eval();
 
   int errno = forth_errno();
 
@@ -86,6 +100,6 @@ int prompt_do(char *rx_buff, size_t rx_len, char *tx_buff, size_t tx_len) {
 
   forth_flush_tob();
 
-  return errno;
+  return bytes_read;
 }
 

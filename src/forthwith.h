@@ -150,7 +150,7 @@ extern int forth_eval_string(char *input);
 
 // User Callbacks
 extern void forth_flush_tob();
-extern int forth_tib_readline(char **buff, size_t *len);
+extern fcell_t forth_tib_readline();
 
 // Basic Execution Tokens
 extern fcell_xt xt_dosys;
