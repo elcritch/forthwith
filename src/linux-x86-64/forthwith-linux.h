@@ -2,10 +2,14 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
+#define _GNU_SOURCE
 #include "forthwith-linux-consts.h"
 #include "forthwith.h"
 
 #include <stddef.h>
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
 // ========================================================================== //
 // Platform "Helpers"

@@ -51,11 +51,15 @@ int prompt_eval() {
   return forth_errno();
 }
 
+#ifdef FW_STDIO
 #ifndef FW_CUSTOM_READLINE
+
 fcell_t forth_tib_readline() {
-  return getline(&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
+  return getline((char**)&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
 }
+
 #endif // FW_CUSTOM_READLINE
+#endif // FW_STDIO
 
 int prompt_do(int read) {
 

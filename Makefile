@@ -1,4 +1,4 @@
-BASE_CFLAGS = -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -Wno-unused-function -Isrc/
+BASE_CFLAGS = -std=c99 -Wall -fomit-frame-pointer -fno-asynchronous-unwind-tables -Wno-unused-function -Isrc/
 
 CFLAGS = -Wall -O3 -g $(BASE_CFLAGS)
 # CFLAGS = -Wall -O3 $(BASE_CFLAGS)

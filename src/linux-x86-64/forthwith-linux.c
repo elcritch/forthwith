@@ -1,4 +1,8 @@
 
+#define _GNU_SOURCE
+#define FW_STDIO
+#include <stdio.h>
+
 #define FW_CUSTOM_TOB_FLUSH
 
 #include "forthwith-linux.h"

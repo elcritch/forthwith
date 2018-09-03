@@ -2,9 +2,26 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include "forthwith.h"
+
+#include <stdarg.h>
+
+#ifdef FW_STDIO
+__fw_noinline__
+void dprint(char *fmt, ...) {
+  va_list myargs;
+
+  va_start(myargs, fmt);
+  ret = vprintf(fmt, myargs);
+  va_end(myargs);
+}
+#else
+__fw_noinline__
+void dprint(char *fmt, ...) {
+}
+#endif
+
 
 #define accessor(struct_name, var_name) \
   __fw_noinline__ \
@@ -30,7 +47,7 @@ accessor(fw_ctx_stack_t, size);
 
 #undef accessor
 #define accessor(struct_name, var_name)                                 \
-  printf(#struct_name " :: " #var_name " -> "CELL_FMT" \n", \
+  dprint(#struct_name " :: " #var_name " -> "CELL_FMT" \n", \
          accessor_ ## struct_name ## _st_ ## var_name(var_ptr_ ## struct_name)); \
 
 
@@ -88,8 +105,8 @@ void examples_accessors_stack() {
 
 // Bitwise //
 #define binary_ops(opname)                                 \
-  printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(14, 2)); \
-  printf(#opname "  -> "CELL_FMT" \n", ex_ ## opname(9, 1));
+  dprint(#opname "  -> "CELL_FMT" \n", ex_ ## opname(14, 2)); \
+  dprint(#opname "  -> "CELL_FMT" \n", ex_ ## opname(9, 1));
 
 __fw_noinline__
 fcell_t ex_add(fcell_t a, fcell_t b) {
@@ -196,12 +213,12 @@ void examples_bitwise() {
   binary_ops(le);
 }
 
-__fw_noinline__ void call_reg_bpsp() {printf("bpsp\n");}
-__fw_noinline__ void call_reg_psp() {printf("psp\n");}
-__fw_noinline__ void call_reg_brsp() {printf("brsp\n");}
-__fw_noinline__ void call_reg_rsp() {printf("rsp\n");}
-__fw_noinline__ void call_reg_ip() {printf("ip\n");}
-__fw_noinline__ void call_reg_x() {printf("x\n");}
+__fw_noinline__ void call_reg_bpsp() {dprint("bpsp\n");}
+__fw_noinline__ void call_reg_psp() {dprint("psp\n");}
+__fw_noinline__ void call_reg_brsp() {dprint("brsp\n");}
+__fw_noinline__ void call_reg_rsp() {dprint("rsp\n");}
+__fw_noinline__ void call_reg_ip() {dprint("ip\n");}
+__fw_noinline__ void call_reg_x() {dprint("x\n");}
 
 __fw_noinline__ 
 void examples_call(FORTH_REGISTERS) {
@@ -221,14 +238,14 @@ fw_call examples_call_run() {
 
 __fw_noinline__
 void pointer_sizes_print(fcell_t *cells, uint8_t cl, fcell_xt* ptrs, uint8_t pl) {
-  printf("example cells: \n");
+  dprint("example cells: \n");
   for (int i = 0; i < cl; i++) {
-    printf("cell: "CELL_FMT"\n", cells[i]);
+    dprint("cell: "CELL_FMT"\n", cells[i]);
   }
 
-  printf("example pointer cells: \n");
+  dprint("example pointer cells: \n");
   for (int i = 0; i < pl; i++) {
-    printf("ptr: %p\n", ptrs[i]);
+    dprint("ptr: %p\n", ptrs[i]);
   }
 }
 
@@ -256,7 +273,7 @@ fw_call examples_pointer_sizes2() {
 }
 
 int main(int argv, char **argc) {
-  printf(""CELL_FMT"", examples_accessors_regs_ip());
+  dprint(""CELL_FMT"", examples_accessors_regs_ip());
   examples_accessors_regs();
   examples_accessors_vars();
   examples_accessors_stack();
@@ -273,7 +290,7 @@ int main(int argv, char **argc) {
   (void)a;
   (void)b;
 
-  printf("sizeof(fcell_t): %d %d\n", (int) sizeof(fcell_t), (int)sizeof(a));
-  printf("sizeof(fcell_xt): %d %d\n", (int)sizeof(fcell_xt), (int)sizeof(b));
+  dprint("sizeof(fcell_t): %d %d\n", (int) sizeof(fcell_t), (int)sizeof(a));
+  dprint("sizeof(fcell_xt): %d %d\n", (int)sizeof(fcell_xt), (int)sizeof(b));
 }
 
