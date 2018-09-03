@@ -103,3 +103,7 @@ int prompt_do(int read) {
   return bytes_read;
 }
 
+
+#ifdef FW_PROMPT_EXTRA_FEATURES
+
+#endif
