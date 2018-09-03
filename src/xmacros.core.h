@@ -106,6 +106,13 @@ forth_core("|", 1, F_NORMAL, oru, "( n n -- n )",  {
     jump(next);
 });
 
+forth_core("invert", 6, F_NORMAL, invert, "( n n -- n )",  {
+    popd(1);
+    not_reg(s1);
+    pushd(1);
+    jump(next);
+  });
+
 /* forth_core("<<<", 3, F_NORMAL, lshiftu, "( n n -- n )",  { */
 /*     popd(2); */
 /*     rshift_reg(s1, s2); */

@@ -99,7 +99,7 @@
 #define lshift_reg(y, x) copy_reg(xrcx, y); _fw_asm_const("lsl", reg_xcl, reg_##x)
 #define rshift_reg(y, x) copy_reg(xrcx, y); _fw_asm_const("lsr", reg_xcl, reg_##x)
 
-#define not_reg(y) _fw_asm_const("movn", reg_##y, "")
+#define not_reg(y) _fw_asm_const("mvn", reg_##y, reg_##y)
 
 // Jumps
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )

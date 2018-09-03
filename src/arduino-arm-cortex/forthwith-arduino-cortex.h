@@ -46,13 +46,6 @@
 
 #define __jump_lt(r) ___jump_cond("blt", r)
 #define _jump_lt(r) __jump_lt( r )
-#define __jump_le(r) ___jump_cond("ble", r)
-#define _jump_le(r) __jump_le( r )
-
-#define __jump_gt(r) ___jump_cond("bgt", r)
-#define _jump_gt(r) __jump_gt( r )
-#define __jump_ge(r) ___jump_cond("bge", r)
-#define _jump_ge(r) __jump_ge( r )
 
 #define _fw_asm(r, a, x, b, c, y, d) __asm__(r " " a #x b ", " c #y d)
 
@@ -99,7 +92,7 @@
 #define lshift_reg(y, x) copy_reg(xrcx, y); _fw_asm_const("lsl", reg_xcl, reg_##x)
 #define rshift_reg(y, x) copy_reg(xrcx, y); _fw_asm_const("lsr", reg_xcl, reg_##x)
 
-#define not_reg(y) _fw_asm_const("movn", reg_##y, "")
+#define not_reg(y) _fw_asm_const("mvn", reg_##y, reg_##y)
 
 // Jumps
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
