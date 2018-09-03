@@ -29,7 +29,7 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
 linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux
-arduino-cortex: _build/arduino-arm-cortex/forthwith-cortex.a
+arduino-cortex: _build/arduino-arm-cortex/porting-guide  _build/arduino-arm-cortex/forthwith-cortex.a
 
 # ======= Linux x86 ======= #
 _build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
