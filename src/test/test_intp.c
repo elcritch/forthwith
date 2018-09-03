@@ -111,6 +111,7 @@ void test_colon(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
+  (void)idx_interpret;
 
   ctx_vars->tib_str = " : a 99 ;";
   ctx_vars->tib_len = 10;
@@ -208,6 +209,7 @@ void test_colon2(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
+  (void)idx_interpret;
 
   ctx_vars->tib_str = ": z 1 2 3 4 5 6 7 8 9 ;";
   ctx_vars->tib_len = 23;
@@ -285,6 +287,7 @@ void test_colon_failed(void) {
   *var[i++] = (fcell_xt) dict_cfa(dict_find(7, "docolon"));
   *var[i++] = (fcell_xt) dict_cfa(dict_find(9, "interpret"));
   *var[i++] = dict_cfa(dict_find(4, "semi"));
+  (void)idx_interpret;
 
   ctx_vars->tib_str = ": z 1 2 3 4 5 6 7 8 9 ;";
   ctx_vars->tib_len = 22;

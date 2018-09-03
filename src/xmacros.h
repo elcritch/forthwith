@@ -99,7 +99,7 @@ fw_call doprintstate();
 
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
-  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { (fcell_xt)xt_docolon, WORDS }; \
+  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 2 ] = { (fcell_xt)xt_docolon, WORDS }; \
   memcpy(xt_ ## lbl, fw_ ## lbl,  sizeof(xt_ ## lbl)); \
   dict_create(F_WORD | mask, name_len, name_str, (fcell_xt*)xt_ ## lbl)
 
