@@ -105,20 +105,6 @@ forth_word("tuck", 4, F_NORMAL, tuck, "( a b -- a b a b )",
 
 // =============== Math Primitives ============== //
 
-forth_primitive("0'", 2, F_NORMAL, l0, "( a -- a )",  {
-    popd(0);
-    load_const(s1, $0);
-    pushd(1);
-    jump(next);
-  });
-
-forth_primitive("1'", 2, F_NORMAL, l1, "( a -- a )",  {
-    popd(0);
-    load_const(s1, $1);
-    pushd(1);
-    jump(next);
-  });
-
 forth_core(">", 1, F_NORMAL, lgt, "( a -- a )",  {
     popd(2);
     jump_gt(s1, s2, l1);

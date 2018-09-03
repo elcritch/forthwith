@@ -72,15 +72,25 @@ forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
 });
 #endif // FW_CORE_MULTIPLY
 
-forth_core("=", 1, F_NORMAL, equals, "( n n -- n )",  {
-    popd(2);
-    /* copy_reg(x, s1); */
-    xor_reg(s1, s2);
-    if (1) {
-      load_const(s1, $1);
-    }
+forth_primitive("0'", 2, F_NORMAL, l0, "( a -- a )",  {
+    popd(0);
+    load_const(s1, $0);
     pushd(1);
     jump(next);
+  });
+
+forth_primitive("1'", 2, F_NORMAL, l1, "( a -- a )",  {
+    popd(0);
+    load_const(s1, $1);
+    pushd(1);
+    jump(next);
+  });
+
+forth_core("=", 1, F_NORMAL, equals, "( n n -- n )",  {
+    popd(2);
+    xor_reg(s1, s2);
+    jump_ifzero(s1, l1);
+    jump(l0);
 });
 
 // =============== Bitwise Primitives ============== //
