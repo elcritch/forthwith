@@ -9,6 +9,7 @@ typedef int64_t fcell_t;
 #include <stddef.h>
 
 /* #define FORTHWITH_NO_CHECKS */
+#define FW_TRACE
 
 #define $FF $255
 #define $2 $2

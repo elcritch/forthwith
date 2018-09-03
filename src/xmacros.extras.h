@@ -27,13 +27,6 @@ forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
     jump(next);
   });
 
-forth_core("r>", 2, F_NORMAL, fromrstack, "( --  n1 )",  {
-    popd(0);
-    popr(s1);
-    pushd(1);
-    jump(next);
-  });
-
 forth_core("i", 1, F_NORMAL, loopi, "( --  n1 )",  {
     popd(0);
     load_addr_off(s1, rsp, 0);

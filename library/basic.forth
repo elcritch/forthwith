@@ -22,6 +22,7 @@
 : bi* ( a b xt1 xt2 -- xt1.a xt2.b ) ['] dip dip exec ;
 : bi@ ( a b xt -- xt.a xt.b ) dup bi* ;
 
+: 2drop ( a b -- ) drop drop ;
 : 3dup ( a b c -- a b c a b c) dup 2over rot ;
 : 3drop ( a b c -- ) 2drop drop ;
 

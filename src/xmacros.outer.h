@@ -32,6 +32,7 @@ forth_word("immediate", 9, F_IMMED, immed, "( p -- )",
            XT(tick),
            (fcell_xt)F_IMMED,
            XT(xmask),
+           XT(semi),
            );
 
 /* Executes word on tos */
@@ -50,6 +51,13 @@ forth_core("branch", 6, F_NORMAL, branch, "{offset} ( -- )", {
     pushd(0);
     jump(next);
 });
+
+forth_core("r>", 2, F_NORMAL, rstack_pop, "( --  n1 )",  {
+    popd(0);
+    popr(s1);
+    pushd(1);
+    jump(next);
+  });
 
 /* Increments the IP by offset to affect branching */
 forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
@@ -158,7 +166,7 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
            XT(word),
            XT(zbranch),
-              XCELLS(13),
+              XCELLS(14),
               XT(itpnext),
 
               XTV(STATE),
@@ -167,8 +175,9 @@ forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
                 (fcell_xt)FW_ERR_NOWORD,
               XT(ssub),
               XT(zbranch),
-                XCELLS(2),
-                XT(interpret),
+                XCELLS(3),
+                XT(branch),
+                  XCELLS(-12),
               XT(quits),
 
            XT(branch),

@@ -76,6 +76,7 @@ forth_core("runs", 4, F_NORMAL, runs, "( n -- )", {
 
 /* Quit inner interpreter */
 forth_core("quits", 5, F_NORMAL, quits, "( -- )", {
+  /* popr(x); // cleanup */
   copy_reg(s1, brsp);
   decr_reg(s1);
   load_addr(xlink, s1);
