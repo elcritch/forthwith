@@ -51,16 +51,6 @@ int prompt_eval() {
   return forth_errno();
 }
 
-#ifdef FW_STDIO
-#ifndef FW_CUSTOM_READLINE
-
-fcell_t forth_tib_readline() {
-  return getline((char**)&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
-}
-
-#endif // FW_CUSTOM_READLINE
-#endif // FW_STDIO
-
 int prompt_do(int read) {
 
   if (read > 0) {
@@ -106,6 +96,17 @@ int prompt_do(int read) {
 
   return bytes_read;
 }
+
+#ifdef FW_STDIO
+#ifndef FW_CUSTOM_READLINE
+
+fcell_t forth_tib_readline() {
+  int read = getline((char**)&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
+  return read;
+}
+
+#endif // FW_CUSTOM_READLINE
+#endif // FW_STDIO
 
 
 #ifdef FW_PROMPT_EXTRA_FEATURES

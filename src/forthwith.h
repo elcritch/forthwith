@@ -8,7 +8,7 @@ extern "C" {
 
 #include <stdint.h>
 
-#include "default-impls.h"
+#include "default.ximpls.h"
 
 /* Standard Forth Cell */
 /* typedef intptr_t fcell_t; */

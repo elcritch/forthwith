@@ -45,7 +45,14 @@ fw_call doprintstate() {
 
   write_str(2, " `");
   uint8_t wdof = ctx_vars->tib_idx > ctx_vars->tib_len ? ctx_vars->tib_len : ctx_vars->tib_idx;
-  write_str(ctx_vars->tib_len - ctx_vars->tib_idx, ctx_vars->tib_str + wdof);
+  /* write_str(ctx_vars->tib_len - ctx_vars->tib_idx, ctx_vars->tib_str + wdof); */
+  char *w0 = ctx_vars->tib_str + wdof;
+  for (char *w = w0; w < w0 + ctx_vars->tib_len - ctx_vars->tib_idx; w++) {
+    if (*w == '\n')
+      write_str(2, "\\n");
+    else
+      write_char(*w);
+  }
 
   write_str(2, "` ");
   write_str(4, " --\t");
