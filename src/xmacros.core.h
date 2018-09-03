@@ -58,7 +58,8 @@ forth_core("+", 1, F_NORMAL, sadd, "( n n -- n )",  {
 
 forth_core("-", 1, F_NORMAL, ssub, "( n2 n1 -- n )",  {
   popd(2);
-  subu_reg(s1, s2);
+  subu_reg(s2, s1);
+  copy_reg(s1, s2);
   pushd(1);
   jump(next);
 });
@@ -66,7 +67,8 @@ forth_core("-", 1, F_NORMAL, ssub, "( n2 n1 -- n )",  {
 #ifndef FW_NO_CORE_MULTIPLY
 forth_core("*", 1, F_NORMAL, smul, "( n2 n1 -- n )",  {
   popd(2);
-  muls_reg(s1, s2);
+  muls_reg(s2, s1);
+  copy_reg(s1, s2);
   pushd(1);
   jump(next);
 });
