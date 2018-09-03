@@ -121,25 +121,32 @@ forth_primitive("1'", 2, F_NORMAL, l1, "( a -- a )",  {
 
 forth_core(">", 1, F_NORMAL, lgt, "( a -- a )",  {
     popd(2);
-    jump_gt(s2, s1, l1);
+    jump_gt(s1, s2, l1);
     jump(l0);
   });
 
 forth_core("<", 1, F_NORMAL, llt, "( a -- a )",  {
     popd(2);
-    jump_lt(s2, s1, l1);
+    jump_lt(s1, s2, l1);
     jump(l0);
   });
 
 forth_core("<=", 2, F_NORMAL, lle, "( a -- a )",  {
     popd(2);
-    jump_le(s2, s1, l1);
+    jump_le(s1, s2, l1);
     jump(l0);
   });
 
 forth_core(">=", 2, F_NORMAL, lge, "( a -- a )",  {
     popd(2);
-    jump_ge(s2, s1, l1);
+    jump_ge(s1, s2, l1);
     jump(l0);
   });
+
+
+// Others //
+
+forth_docall("/", 1, F_NORMAL, divs, "( a b -- c )", dodiv);
+forth_docall("lshift", 6, F_NORMAL, lshift, "( a b -- c )", dolss);
+forth_docall("rshift", 6, F_NORMAL, rshift, "( a b -- c )", dorss);
 
