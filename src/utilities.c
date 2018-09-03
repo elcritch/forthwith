@@ -28,6 +28,20 @@ fw_call doprintstate() {
     uint8_t i;
     for (i = 0; entry->info.name[i] != '\0'; i++) write_char(entry->info.name[i]);
     while (i++ < 10) write_char(' ');
+    char *sdo = "docolon";
+    for (i = 0; entry->info.name[i] != '\0'; i++) if (entry->info.name[i] != sdo[i]) break; 
+    if (i == 7) {
+      fword_t *word = dict_lookup(((fcell_xt)ctx_regs->w) - 1);
+      write_str(3, "<- ");
+      if (word != NULL)
+        for (i = 0; i < word->info.len; i++ ) write_char(word->info.name[i]);
+      else
+        write_str(3, "n/a");
+      write_str(1, " ");
+    }
+    else {
+      
+    }
   }
   else {
     write_str(5, "(nil)");

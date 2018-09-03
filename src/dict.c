@@ -151,6 +151,12 @@ void dict_print() {
     write_str(3, ":: ");
     write_number((fcell_t)word_ptr->info.body);
     write_char(' ');
+    write_number((fcell_t)*word_ptr->info.body);
+    write_char(' ');
+    write_number((fcell_t)&word_ptr->info.body);
+    write_char(' ');
+    write_number((fcell_t)word_ptr);
+    write_char(' ');
     write_str(word_ptr->info.len, word_ptr->info.name);
     write_char(' ');
     write_number(word_ptr->info.meta);

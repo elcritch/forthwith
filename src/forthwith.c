@@ -142,7 +142,7 @@ fcell_xt innerloop[2] = {
 __fw_noinline__
 int forth_eval(fcell_xt *instr) {
 
-  ctx_vars->state = IMMEDIATE_MODE;
+  /* ctx_vars->state = IMMEDIATE_MODE; */
   ctx_vars->error = FW_OK;
 
   ctx_regs->w = 0;

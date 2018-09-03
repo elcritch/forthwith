@@ -78,7 +78,10 @@ int prompt_do(int read) {
 
   int errno = forth_errno();
 
-  if (errno == FW_OK) {
+  if (ctx_vars->state == COMPILE_MODE) {
+    print_eol();
+    write_str(5, "CONT-");
+  }else if (errno == FW_OK) {
     print_eol();
     write_str(3, "OK.");
   } else if (errno == FW_ERR_STACKUNDERFLOW) {

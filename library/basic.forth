@@ -18,9 +18,7 @@
 
 : dip ( a xt -- a ) swap >r exec r> ;
 : keep ( a xt -- xt.a a ) over >r exec r> ;
-: bi ( a xt1 xt2 -- xt1.a xt2.a ) ['] keep dip exec ;
-: bi* ( a b xt1 xt2 -- xt1.a xt2.b ) ['] dip dip exec ;
-: bi@ ( a b xt -- xt.a xt.b ) dup bi* ;
+: 2over ( ) over over ;
 
 : 2drop ( a b -- ) drop drop ;
 : 3dup ( a b c -- a b c a b c) dup 2over rot ;
