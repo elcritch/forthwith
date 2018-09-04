@@ -19,7 +19,14 @@ fw_call dodictprintword() {
 fw_call doprintstate() {
 
   for (fcell_t *i = ctx_rsp->base; i < ctx_rsp->head; i++)
-    write_str(1, "-");
+  {
+    write_number(*i);
+    write_str(2, "- ");
+    /* write_str(1, "-"); */
+  }
+  write_str(9, "\trstack: ");
+  write_number(ctx_rsp->head);
+  write_str(2, "\n\t");
 
   write_str(12, "-> \t\t regs: ");
 

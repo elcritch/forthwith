@@ -27,19 +27,19 @@ forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
     jump(next);
   });
 
-forth_core("i", 1, F_NORMAL, loopi, "( --  n1 )",  {
-    popd(0);
-    load_addr_off(s1, rsp, 0);
-    pushd(1);
-    jump(next);
-  });
+/* forth_core("i", 1, F_NORMAL, loopi, "( --  n1 )",  { */
+/*     popd(0); */
+/*     load_addr_off(s1, rsp, 1*WORD_SZ); */
+/*     pushd(1); */
+/*     jump(next); */
+/*   }); */
 
-forth_core("j", 1, F_NORMAL, loopj, "( --  n1 )",  {
-    popd(0);
-    load_addr_off(s1, rsp, 2*WORD_SZ);
-    pushd(1);
-    jump(next);
-  });
+/* forth_core("j", 1, F_NORMAL, loopj, "( --  n1 )",  { */
+/*     popd(0); */
+/*     load_addr_off(s1, rsp, 3*WORD_SZ); */
+/*     pushd(1); */
+/*     jump(next); */
+/*   }); */
 
 
 forth_core("cell", 4, F_NORMAL, cellsz, "()",  {
@@ -66,6 +66,7 @@ forth_core("sp!", 3, F_NORMAL, sp_store, "()",  {
 forth_core("rp@", 3, F_NORMAL, rp_at, "()",  {
     popd(0);
     copy_reg(s1, rsp);
+    /* decr_reg(s1); */
     pushd(1);
     jump(next);
   });

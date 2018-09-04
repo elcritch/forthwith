@@ -8,9 +8,10 @@
 : compile-time nop ;
 
 : cells cell * ;
+: 2cell 2 cell * ;
 
 : interpret? STATE @ 0= ;
-: backref, HERE - , ;
+: backref, HERE @ - , ;
 
 : begin immediate compile-time HERE ;
 : again immediate compile-time ['] branch , backref, ;
@@ -29,6 +30,8 @@
 
 : +! ( n var -- ) tuck @ + swap ! ;
 : -! ( n var -- ) tuck @ swap - swap ! ;
+: i ( -- n ) rp@ 2cell - @ ;
+: j ( -- n ) rp@ cell 4 * - @ ;
 
 : prepare-forward-ref ( -- a ) HERE @ 0 , ;
 : resolve-forward-ref ( a -- ) HERE @ over - swap ! ;
@@ -47,28 +50,16 @@
 
 : loop immediate compile-time
        ['] r> , ['] 1+ , ['] >r ,
-       ['] i , ['] rp@ , ['] cell , ['] + , ['] @ , \ index limit
+       ['] i , ['] rp@ , ['] 2cell , ['] - , ['] @ , \ index limit
        ['] >= ,
        ['] 0branch , backref,
        ifthen ( ?do ) resolve-forward-ref fi
        ['] unloop , ;
 
-: end? ( increment -- bool )
-  rp@ cell + @                   \ i+increment
-  rp@ 2 cell * + @                \ limit
-  - dup rot - ^ 0< ;           \ (index-limit) and (index-limit+increment) have difthenferent sign?
-
-: +loop immediate compile-time
-        ['] dup ,                      \ increment
-        ['] rp@ , ['] +! ,  
-        ['] end? ,  
-        ['] 0branch , backref,  
-        ifthen ( ?do ) resolve-forward-ref fi 
-        ['] unloop , ;
 
 : while immediate compile-time ['] 0branch , prepare-forward-ref ;
 : repeat immediate compile-time swap ['] branch , backref, resolve-forward-ref ;
 
+: t 5 0 do -1 loop ; 
 
-: t 5 0 do 1 loop ; 
 

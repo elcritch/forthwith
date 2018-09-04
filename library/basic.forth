@@ -48,7 +48,7 @@
 : ? ( a -- ) @ . ;
 
 : unloop r> r> r> 2drop >r ;
-: do immediate compile-time ['] swap , ['] >r , ['] >r , 0 ( do ) HERE ( backref ) ;
+: do immediate compile-time ['] swap , ['] >r , ['] >r , 0 ( do ) HERE @ ( backref ) ;
 : ?do immediate compile-time
     ['] 2dup , ['] swap , ['] >r , ['] >r ,
     ['] <> , ['] 0branch , prepare-forward-ref
