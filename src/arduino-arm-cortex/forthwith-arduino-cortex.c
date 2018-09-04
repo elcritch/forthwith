@@ -1,7 +1,7 @@
 
 #define FW_CUSTOM_TOB_FLUSH
 #define FW_CUSTOM_READLINE
-#define FW_TRACE
+/* #define FW_TRACE */
 
 #include "forthwith-arduino-cortex.h"
 #include "../forthwith.h"

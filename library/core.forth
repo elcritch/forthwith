@@ -68,5 +68,8 @@
 
 : t3 9 4 begin swap 1- dup 0> while 7 repeat ; 
 
-: var-alloc create 4 xmask 0x10 xmask ['] variable , ;
+1 ." abcd" init-variable: 
 
+: time-loop micros t0 3drop 2drop micros swap - ;
+
+: time-loop-t2 micros t2 3drop 2drop micros swap - ;

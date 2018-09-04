@@ -4,7 +4,7 @@ import serial
 from time import sleep
 
 port = "/dev/ttyACM1"
-ser = serial.Serial(port, 115200, timeout=0.5)
+ser = serial.Serial(port, 115200, timeout=0.2)
 
 with open('core.forth', 'r') as core:
     for line in core.readlines():
