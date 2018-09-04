@@ -12,9 +12,9 @@
 : interpret? STATE @ 0= ;
 : backref, HERE - , ;
 
-: begin compile-time HERE ; immediate
-: again compile-time ['] branch , backref, ; immediate
-: until compile-time ['] 0branch , backref, ; immediate
+: begin immediate compile-time HERE ;
+: again immediate compile-time ['] branch , backref, ;
+: until immediate compile-time ['] 0branch , backref, ;
 
 : dip ( a xt -- a ) swap >r exec r> ;
 : keep ( a xt -- xt.a a ) over >r exec r> ;
@@ -27,10 +27,16 @@
 : cr ( -- ) 13 emit 10 emit ;
 : space ( -- ) 32 emit ;
 
-: prepare-forward-ref ( -- a ) HERE 0 , ;
-: resolve-forward-ref ( a -- ) HERE over - swap ! ;
+: prepare-forward-ref ( -- a ) HERE @ 0 , ;
+: resolve-forward-ref ( a -- ) HERE @ over - swap ! ;
 
-: ifthen compile-time ['] 0branch , prepare-forward-ref ; immediate
-: else compile-time ['] branch , prepare-forward-ref swap resolve-forward-ref ; immediate
-: fi compile-time resolve-forward-ref ; immediate
+: ifthen immediate compile-time ['] 0branch , prepare-forward-ref ;
+: else immediate compile-time ['] branch , prepare-forward-ref swap resolve-forward-ref ;
+: fi immediate compile-time resolve-forward-ref ;
+
+
+dict: 
+
+: a ifthen 7 fi ;
+
 

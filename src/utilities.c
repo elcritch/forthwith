@@ -11,6 +11,11 @@ void forth_flush_tob() {
 }
 #endif
 
+
+fw_call dodictprintword() {
+  dict_print_body((fword_t*)dict_lookup(forth_pop()));
+}
+
 fw_call doprintstate() {
 
   for (fcell_t *i = ctx_rsp->base; i < ctx_rsp->head; i++)

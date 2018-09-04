@@ -10,7 +10,7 @@ forth_core("@", 1, F_NORMAL, fetch, "( n -- n )", {
 
 forth_core("!", 1, F_NORMAL, store, "( n addr -- )",  {
     popd(2);
-    store_addr(s2, s1);
+    store_addr(s1, s2);
     pushd(0);
     jump(next);
 });

@@ -79,7 +79,9 @@ forth_core("rp!", 3, F_NORMAL, rp_store, "()",  {
 
 forth_core("over", 4, F_NORMAL, over, "( a b -- a b a )",  {
     popd(2);
-    copy_reg(s3, s1);
+    copy_reg(s3, s2);
+    copy_reg(s2, s1);
+    copy_reg(s1, s3);
     pushd(3);
     jump(next);
   });
@@ -126,6 +128,7 @@ forth_core(">=", 2, F_NORMAL, lge, "( a -- a )",  {
 // Others //
 
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
+forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
 forth_docall("/", 1, F_NORMAL, divs, "( a b -- c )", dodiv);
 forth_docall("lshift", 6, F_NORMAL, lshift, "( a b -- c )", dolss);
 forth_docall("rshift", 6, F_NORMAL, rshift, "( a b -- c )", dorss);

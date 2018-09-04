@@ -138,6 +138,30 @@ fcell_xt dict_cfa(fword_t *entry) {
   }
 }
 
+/* lookup (name? – address). */
+__fw_noinline__
+void dict_print_body(fword_t *word_ptr) {
+  if (word_ptr == NULL) {
+  } else {
+    write_str(3, ":: ");
+    write_number((fcell_t)word_ptr->info.body);
+    write_char(' ');
+    write_str(word_ptr->info.len, word_ptr->info.name);
+    write_char(' ');
+    write_number(word_ptr->info.meta);
+    write_char('\n');
+
+    for (int i = 0; word_ptr->info.body[i+1] != (fcell_xt)xt_docolon; i++) {
+      write_char(' ');
+      write_number((fcell_t)&word_ptr->info.body[i]);
+      write_str(3, " : ");
+      write_number((fcell_t)word_ptr->info.body[i]);
+      write_char('\n');
+      if (i > 20) break;
+    }
+  }
+}
+
 
 /* FIND (name? – address). */
 __fw_noinline__
@@ -151,20 +175,12 @@ void dict_print() {
     write_str(3, ":: ");
     write_number((fcell_t)word_ptr->info.body);
     write_char(' ');
-    write_number((fcell_t)*word_ptr->info.body);
-    write_char(' ');
-    write_number((fcell_t)&word_ptr->info.body);
-    write_char(' ');
-    write_number((fcell_t)word_ptr);
-    write_char(' ');
     write_str(word_ptr->info.len, word_ptr->info.name);
     write_char(' ');
     write_number(word_ptr->info.meta);
     write_char('\n');
 
     word_ptr = word_ptr->prev;
-
-    /* forth_flush_tob(); */
   }
 
 }
