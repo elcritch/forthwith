@@ -95,6 +95,13 @@ forth_core("=", 1, F_NORMAL, equals, "( n n -- n )",  {
     jump(l0);
 });
 
+forth_core("<>", 2, F_NORMAL, noteq, "( n n -- n )",  {
+    popd(2);
+    xor_reg(s1, s2);
+    jump_ifzero(s1, l0);
+    jump(l1);
+  });
+
 // =============== Bitwise Primitives ============== //
 
 forth_core("^", 1, F_NORMAL, xoru, "( n n -- n )",  {

@@ -129,7 +129,7 @@ forth_core(">=", 2, F_NORMAL, lge, "( a -- a )",  {
 
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
-forth_docall("/", 1, F_NORMAL, divs, "( a b -- c )", dodiv);
+forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
 forth_docall("lshift", 6, F_NORMAL, lshift, "( a b -- c )", dolss);
 forth_docall("rshift", 6, F_NORMAL, rshift, "( a b -- c )", dorss);
 

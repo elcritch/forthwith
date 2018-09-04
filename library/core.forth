@@ -1,5 +1,5 @@
 : 0> 0 > ;
-: >0 0 < ;
+: 0< 0 < ;
 : 0= 0 = ;
 
 : 1+ 1 + ;
@@ -34,9 +34,11 @@
 : else immediate compile-time ['] branch , prepare-forward-ref swap resolve-forward-ref ;
 : fi immediate compile-time resolve-forward-ref ;
 
+: ?dup ( a -- a a | 0 ) dup ifthen dup fi ;
 
-dict: 
 
-: a ifthen 7 fi ;
+: do immediate compile-time ['] swap , ['] >r , ['] >r , 0 HERE @ ;
+
+
 
 
