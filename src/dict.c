@@ -57,7 +57,7 @@ fword_t* dict_create(uint8_t mask, uint8_t len, char *name, fcell_xt *body) {
   entry->info.meta = mask;
   entry->info.len = len;
 
-  if (name == ctx_strings->head) {
+  if (name != ctx_strings->head) {
     entry->info.name = alloc_string(len);
     memcpy(entry->info.name, name, len);
   } else {
