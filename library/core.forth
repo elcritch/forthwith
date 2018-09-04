@@ -31,7 +31,9 @@
 : +! ( n var -- ) tuck @ + swap ! ;
 : -! ( n var -- ) tuck @ swap - swap ! ;
 : i ( -- n ) rp@ 2cell - @ ;
+: n ( -- n ) rp@ cell 3 * - @ ;
 : j ( -- n ) rp@ cell 4 * - @ ;
+: o ( -- n ) rp@ cell 5 * - @ ;
 
 : prepare-forward-ref ( -- a ) HERE @ 0 , ;
 : resolve-forward-ref ( a -- ) HERE @ over - swap ! ;
@@ -50,7 +52,7 @@
 
 : loop immediate compile-time
        ['] r> , ['] 1+ , ['] >r ,
-       ['] i , ['] rp@ , ['] 2cell , ['] - , ['] @ , \ index limit
+       ['] i , ['] n , \ index limit
        ['] >= ,
        ['] 0branch , backref,
        ifthen ( ?do ) resolve-forward-ref fi
