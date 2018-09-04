@@ -49,6 +49,13 @@ forth_core("cell", 4, F_NORMAL, cellsz, "()",  {
     jump(next);
   });
 
+forth_core("xcell", 5, F_NORMAL, xcellsz, "()",  {
+    popd(0);
+    load_const(s1, $word_ptr_sz);
+    pushd(1);
+    jump(next);
+  });
+
 forth_core("sp@", 3, F_NORMAL, sp_at, "()",  {
     popd(0);
     copy_reg(s1, psp);
