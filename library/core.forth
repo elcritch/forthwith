@@ -62,6 +62,7 @@
 : while immediate compile-time ['] 0branch , prepare-forward-ref ;
 : repeat immediate compile-time swap ['] branch , backref, resolve-forward-ref ;
 
-: t 5 0 do -1 loop ; 
+: t0 5 0 do -1 loop ; 
+: t1 5 0 do -1 i loop ; 
 
 
