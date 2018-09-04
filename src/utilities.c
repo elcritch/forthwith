@@ -15,7 +15,7 @@ fcell_t parse_string(uint8_t idx, uint8_t len, char *tib,
                      char **word_start, char **word_stop);
 
 fw_call dodictprintword() {
-  dict_print_body((fword_t*)dict_lookup(forth_pop()));
+  dict_print_body((fword_t*)dict_lookup((fcell_xt)forth_pop()));
 }
 
 fw_call doprintstate() {
@@ -141,10 +141,10 @@ void doinitvariable() {
   fcell_xt *here = forth_alloc_var_len(size + 4);
   fword_t *entry = dict_create(F_VAR | F_WORD, len, cstr, here);
 
-  *(here + 0) = xt_docolon;
-  *(here + 1) = &xt_tick;
-  *(here + 2) = &here[4]; 
-  *(here + 3) = &xt_semi;
+  *(here + 0) = (fcell_xt)xt_docolon;
+  *(here + 1) = (fcell_xt)&xt_tick;
+  *(here + 2) = (fcell_xt)&here[4]; 
+  *(here + 3) = (fcell_xt)&xt_semi;
 
   forth_push((fcell_t)entry);
   forth_push((fcell_t)here[1]);
