@@ -105,10 +105,10 @@
 #define jump(lbl) _jump( lbl )
 #define jump_ifzero(reg, lbl) cmp_const(reg, $0); _jump_eq( lbl )
 
-#define jump_lt(x, y, lbl) cmp_reg(y, x); _jump_lt( lbl )
-#define jump_gt(x, y, lbl) cmp_reg(y, x); _jump_gt( lbl )
-#define jump_le(x, y, lbl) cmp_reg(y, x); _jump_le( lbl )
-#define jump_ge(x, y, lbl) cmp_reg(y, x); _jump_ge( lbl )
+#define jump_lt(x, y, lbl) cmp_reg(x, y); _jump_lt( lbl )
+#define jump_gt(x, y, lbl) cmp_reg(x, y); _jump_gt( lbl )
+#define jump_le(x, y, lbl) cmp_reg(x, y); _jump_le( lbl )
+#define jump_ge(x, y, lbl) cmp_reg(x, y); _jump_ge( lbl )
 
 #define call_ifless(x, y, lbl) cmp_reg(y, x); _jump_ule( 1f ); call( lbl ); __asm__("1: ")
 
