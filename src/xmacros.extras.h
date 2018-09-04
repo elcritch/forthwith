@@ -140,4 +140,17 @@ forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword
 forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
 forth_docall("lshift", 6, F_NORMAL, lshift, "( a b -- c )", dolss);
 forth_docall("rshift", 6, F_NORMAL, rshift, "( a b -- c )", dorss);
+forth_docall(".\"", 2, F_NORMAL, fw_string, "( a b -- c )", dostring);
+
+
+forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable);
+
+forth_core("var", 3, F_NORMAL, dovar, "()", {
+    popd(0);
+    // Get address of next word from codeword list (e.g. same as lit)
+    load_addr(s1, ip);
+    incr_reg(ip);
+    pushd(1);
+    jump(next);
+  });
 

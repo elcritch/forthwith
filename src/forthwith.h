@@ -135,6 +135,7 @@ typedef enum forthwith_the_states fw_state_t;
 #define F_IMMED   2
 #define F_HIDDEN  4
 #define F_WORD    8
+#define F_VAR    16
 
 extern fcell_t forth_pop();
 extern int forth_push(fcell_t val);

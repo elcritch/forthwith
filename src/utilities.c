@@ -11,6 +11,8 @@ void forth_flush_tob() {
 }
 #endif
 
+fcell_t parse_string(uint8_t idx, uint8_t len, char *tib,
+                     char **word_start, char **word_stop);
 
 fw_call dodictprintword() {
   dict_print_body((fword_t*)dict_lookup(forth_pop()));
@@ -126,9 +128,26 @@ void docreate() {
   fcell_t len = forth_pop();
   char *cstr = (char*)forth_pop();
   fcell_xt *here = forth_alloc_var();
-  /* *here = xt_docolon; */
   fword_t *entry = dict_create(F_HIDDEN, len, cstr, here);
   forth_push((fcell_t)entry);
+}
+
+__fw_noinline__
+void doinitvariable() {
+  fcell_t len = forth_pop();
+  char *cstr = (char*)forth_pop();
+  fcell_t size = forth_pop();
+
+  fcell_xt *here = forth_alloc_var_len(size + 4);
+  fword_t *entry = dict_create(F_VAR | F_WORD, len, cstr, here);
+
+  *(here + 0) = xt_docolon;
+  *(here + 1) = &xt_tick;
+  *(here + 2) = &here[4]; 
+  *(here + 3) = &xt_semi;
+
+  forth_push((fcell_t)entry);
+  forth_push((fcell_t)here[1]);
 }
 
 // ( n -- ) {*user}
@@ -175,19 +194,35 @@ void doword() {
 
   parse_word(idx, len, tib, &word_start, &word_stop);
 
-/* #ifdef FW_TRACE */
-/*   debugf("\tdoword:: idx: %d tib: %p wstart: %p, wstop: %p -- `", idx, tib, word_start, word_stop); */
-/*   for (int i = 0; i < (word_stop - word_start); i++) { */
-/*     debugf("%c", word_start[i]); */
-/*   } */
-/*   debugf("`\n"); */
-/* #endif // FW_TRACE */
-
   // Set results
   ctx_vars->tib_idx = word_stop - tib;
   forth_push( (fcell_t)word_start);
   forth_push( (fcell_t)(word_stop - word_start));
   forth_push( (fcell_t)(ctx_vars->tib_idx <= len ));
+}
+
+// ( -- *c l ) {tib} {tib_idx++}
+__fw_noinline__
+void dostring() {
+  fcell_t idx = ctx_vars->tib_idx;
+  uint8_t len = ctx_vars->tib_len;
+  char   *tib = ctx_vars->tib_str;
+  char* word_start;
+  char* word_stop;
+
+  fcell_t cnt = parse_string(idx, len, tib, &word_start, &word_stop);
+
+  // Set results
+  ctx_vars->tib_idx += cnt;
+  char* str_start = (char *)word_start;
+  fcell_t str_len = (fcell_t)(word_stop - word_start);
+  /* forth_push( (fcell_t)(ctx_vars->tib_idx <= len )); */
+
+  char *new_str = alloc_string(str_len + 1);
+  memcpy(new_str, str_start, str_len);
+
+  forth_push((fcell_t)new_str);
+  forth_push((fcell_t)str_len);
 }
 
 // ( *c n -- *e n )
@@ -288,6 +323,22 @@ word:
 }
 
 const char num_basis[] = "0123456789ABCDEF";
+
+fcell_t parse_string(uint8_t idx, uint8_t len, char *tib,
+                   char **word_start, char **word_stop)
+{
+  uint8_t start;
+  char c;
+
+  // Goto next "
+  start = ++idx;
+  while ((c = tib[idx]) && ((idx < len) & (c != '"')))
+    idx++;
+
+  *word_start = (tib + start);
+  *word_stop = (tib + idx);
+  return idx - start + 2;
+}
 
 void write_str(fcell_t l, char *c) {
   fcell_t idx = ctx_vars->tob_idx;

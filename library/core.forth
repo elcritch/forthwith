@@ -64,6 +64,9 @@
 
 : t0 5 0 do -1 loop ; 
 : t1 5 0 do -1 i loop ; 
-: t2 4 begin 7 swap 1- dup 0< until ;
+: t2 4 begin 7 swap 1- dup 0< until drop ;
 
+: t3 9 4 begin swap 1- dup 0> while 7 repeat ; 
+
+: var-alloc create 4 xmask 0x10 xmask ['] variable , ;
 
