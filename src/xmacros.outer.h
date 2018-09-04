@@ -19,7 +19,7 @@ forth_docall("[", 1, F_IMMED, lbrac, "( n -- )", dolbrac);
 forth_docall("]", 1, F_NORMAL, rbrac, "( n -- )", dorbrac);
 forth_docall("xmask", 5, F_NORMAL, xmask, "( n -- )", doxmask);
 
-forth_docall("word", 4, F_NORMAL, word, "( -- )", doword);
+forth_docall("word", 4, F_NORMAL, fw_word, "( -- )", doword);
 forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("cfa", 3, F_NORMAL, cfa, "( n -- )", docfa);
@@ -75,7 +75,7 @@ forth_core("0branch", 7, F_NORMAL, zbranch, "{offset} ( n -- )", {
 
 // Forth Words in Forth (pihsnoipmahc FWW!)
 forth_word(":", 1, F_NORMAL, colon, "( p -- )",
-           XT(word), // Get the name of the new word
+           XT(fw_word), // Get the name of the new word
            XT(zbranch),
               XCELLS(7),
               XT(create), // CREATE the dictionary entry / header
@@ -164,7 +164,7 @@ forth_word("itpnext", 7, F_NORMAL, itpnext, "{tib} ( -- *c l )",
   Magic Interpreter
  */
 forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
-           XT(word),
+           XT(fw_word),
            XT(zbranch),
               XCELLS(13),
               XT(itpnext),
