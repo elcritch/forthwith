@@ -13,7 +13,7 @@
 : interpret? STATE @ 0= ;
 : backref, HERE @ - , ;
 
-: begin immediate compile-time HERE ;
+: begin immediate compile-time HERE @ ;
 : again immediate compile-time ['] branch , backref, ;
 : until immediate compile-time ['] 0branch , backref, ;
 
@@ -64,5 +64,6 @@
 
 : t0 5 0 do -1 loop ; 
 : t1 5 0 do -1 i loop ; 
+: t2 4 begin 7 swap 1- dup 0< until ;
 
 
