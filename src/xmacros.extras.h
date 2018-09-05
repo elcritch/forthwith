@@ -132,6 +132,11 @@ forth_core(">=", 2, F_NORMAL, lge, "( a -- a )",  {
     jump(l0);
   });
 
+forth_core("zdrop", 5, F_NORMAL, zdrop, "( ... -- )",  {
+    copy_reg(psp, bpsp);
+    jump(next);
+  });
+
 
 // Others //
 

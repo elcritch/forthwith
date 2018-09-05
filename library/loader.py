@@ -2,11 +2,16 @@
 
 import serial
 from time import sleep
+import sys
 
-port = "/dev/ttyACM1"
-ser = serial.Serial(port, 115200, timeout=0.2)
+port = sys.argv[1]
+file = sys.argv[2]
 
-with open('core.forth', 'r') as core:
+print("Port: {}, File: {}".format(port, file))
+
+ser = serial.Serial(port, 115200, timeout=0.1)
+
+with open(file, 'r') as core:
     for line in core.readlines():
         if not line.strip():
             continue
