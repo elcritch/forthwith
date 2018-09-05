@@ -47,9 +47,9 @@ int forth_init() {
   // Configure default stack sizes
   ctx_psp->size =  256 * sizeof(fw_ctx_stack_t);
   ctx_rsp->size =  256 * sizeof(fw_ctx_stack_t);
-  ctx_user->size =   256 * sizeof(fw_ctx_stack_t);
-  ctx_dict->size = 256 * sizeof(fw_ctx_dict_stack_t);
-  ctx_strings->size = 256 * sizeof(fw_ctx_str_stack_t);
+  ctx_user->size =   4096 * sizeof(fw_ctx_stack_t);
+  ctx_dict->size = 2048 * sizeof(fw_ctx_dict_stack_t);
+  ctx_strings->size = 4096 * sizeof(fw_ctx_str_stack_t);
 
   // ===== Allocate default stacks ===== //
 
