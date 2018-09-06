@@ -1,4 +1,4 @@
-#!/usr/bin/python3 
+#!/usr/bin/python3
 
 import serial
 from time import sleep
@@ -29,13 +29,35 @@ for file in files:
     print("Loading File: ", file)
     load_file(file)
 
-# while True:
-#     data = ser.read(9999)
-#     if len(data) > 0:
-#         print 'Got:', data
+import os
+import sys
+import readline
+import code
+import atexit
+from pathlib import Path
 
-#     sleep(0.5)
-#     print 'not blocked'
+HISTORY_FILE = str(Path.home() / ".forthwith-history")
+
+if not os.path.isfile(HISTORY_FILE):
+    with open(HISTORY_FILE, 'w') as hs:
+        hs.write('')
+
+# bind tab as a completion trigger
+if "libedit" in readline.__doc__ :
+        readline.parse_and_bind( "bind ^I rl_complete" )
+else :
+        readline.parse_and_bind( "tab: complete" )
+
+
+readline.read_history_file(HISTORY_FILE)
+
+try:
+    while True:
+        line = input()
+        print("### line: ", line)
+except (EOFError) as err:
+    readline.write_history_file(HISTORY_FILE)
+    print("Goodbye.")
 
 ser.close()
 
