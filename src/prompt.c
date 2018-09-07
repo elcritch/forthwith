@@ -55,7 +55,7 @@ int prompt_do(int read) {
 
   if (read > 0) {
     print_stack();
-    write_str(2, "> 3");
+    write_str(3, "> \3");
     forth_flush_tob();
   }
 

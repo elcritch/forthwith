@@ -9,7 +9,7 @@ files = sys.argv[2:]
 
 print("Port: {}".format(port))
 
-ser = serial.Serial(port, 115200, timeout=0.1)
+ser = serial.Serial(port, 115200, timeout=0.05)
 
 def load_file(file):
     with open(file, 'r') as core:
@@ -45,7 +45,7 @@ if not os.path.isfile(HISTORY_FILE):
 # bind tab as a completion trigger
 if "libedit" in readline.__doc__ :
         readline.parse_and_bind( "bind ^I rl_complete" )
-else :
+else:
         readline.parse_and_bind( "tab: complete" )
 
 
@@ -58,7 +58,7 @@ try:
         line += "\n"
         ser.write(line.encode())
 
-        res = ser.read_until("\3").decode()
+        res = ser.read_until('\3').decode()
 
         res = res.split("\n")
         if res[0].strip() == line.strip():
