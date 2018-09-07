@@ -54,7 +54,17 @@ readline.read_history_file(HISTORY_FILE)
 try:
     while True:
         line = input()
-        print("### line: ", line)
+
+        line += "\n"
+        ser.write(line.encode())
+
+        res = ser.read_until("\3").decode()
+
+        res = res.split("\n")
+        if res[0].strip() == line.strip():
+            res.pop(0)
+        print("\n".join(res))
+
 except (EOFError) as err:
     readline.write_history_file(HISTORY_FILE)
     print("Goodbye.")
