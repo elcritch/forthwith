@@ -18,8 +18,31 @@ The primary functionality of ForthWith is laid out in various C function buildin
 
 Building on C and the XMacros pattern make it easy to define feature flags using ifdef's. This makes it possible to selectively enable ordisable features like data stack and return stack underflow or overflow checks at compile time. This enables safety while developing new code, but extra speed when running well tested production code. 
 
+## Building
 
+See Makefile for various targets: 
 
+```sh
+make clean; make linux-x86; # works on MacOS x86-64
+make clean; make linux-arm;
+make clean; make arduino-cortex; 
 
+```
 
+Running it: 
 
+```sh
+./_build/linux-x86-64/forthwith-linux
+```
+
+Run test suite (currently only on platforms with printf):
+
+```sh
+./_build/linux-x86-64/test-forthwith-linux
+```
+
+## TODO
+
+- Finish the Beagle PRU port. It partially works, but was throwing Linux Kernel exceptions due to mis-aligned memory access, which I don't currently have time to debug. Getting around the size limitations will likely require splitting out the dictionary and providing a list of word addresses. Though alternatives to RPMsg like DMA might free up more space. 
+- Implement more of the core-forth words, with appropriate unit testing. 
+- Implement optional multi-tasking. 
