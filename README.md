@@ -1,6 +1,6 @@
 # ForthWith
 
-__**ForthWith**__ is designed to make it easy to write programs with deterministic timing in scripting languge setting. There is no GC. There be danger. There be low-level assembly. There be fun. This project started with the desire to create a Forth-variant to run on the BeagleBone PRU units which use a vendor provided C compiler and assembler. C functions with embedded assembly proved a convenient method to write the core interpreted threaded code (ITC) abstractions. Currently the PRU port has stalled, however, the system of using XMacros via the C preprocessor results in a very portable Forth implementation. It already works on Linux x86-64, Linux ARM (thumb), MacOS x86-64, and ARM Cortex M4. 
+**ForthWith** is designed to make it easy to write programs with deterministic timing in scripting languge setting. There is no GC. There be danger. There be low-level assembly. There be fun. This project started with the desire to create a Forth-variant to run on the BeagleBone PRU units which use a vendor provided C compiler and assembler. C functions with embedded assembly proved a convenient method to write the core interpreted threaded code (ITC) abstractions. Currently the PRU port has stalled, however, the system of using XMacros via the C preprocessor results in a very portable Forth implementation. It already works on Linux x86-64, Linux ARM (thumb), MacOS x86-64, and ARM Cortex M4. 
 
 ## Goals 
 
