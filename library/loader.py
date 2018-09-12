@@ -9,7 +9,7 @@ files = sys.argv[2:]
 
 print("Port: {}".format(port))
 
-ser = serial.Serial(port, 115200, timeout=0.05)
+ser = serial.Serial(port, 115200, timeout=0.2)
 
 def load_file(file):
     with open(file, 'r') as core:
@@ -22,7 +22,7 @@ def load_file(file):
 
             ser.write(line.encode())
 
-            res = ser.read_until("\3").decode()
+            res = ser.read_until("\4".encode()).decode()
             print("result:\t", res)
 
 for file in files:
@@ -58,7 +58,7 @@ try:
         line += "\n"
         ser.write(line.encode())
 
-        res = ser.read_until('\3').decode()
+        res = ser.read_until("\4").decode()
 
         res = res.split("\n")
         if res[0].strip() == line.strip():

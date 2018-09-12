@@ -5,7 +5,8 @@
 : 1+ 1 + ;
 : 1- 1 - ;
 : nop ;
-: compile-time nop ;
+: compile-time ;
+: |> ;
 
 : cells cell * ;
 : 2cell 2 cell * ;

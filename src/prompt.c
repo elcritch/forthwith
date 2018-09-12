@@ -55,7 +55,7 @@ int prompt_do(int read) {
 
   if (read > 0) {
     print_stack();
-    write_str(3, "> \3");
+    write_str(3, "> \4");
     forth_flush_tob();
   }
 
@@ -95,6 +95,7 @@ int prompt_do(int read) {
     write_str(3, "W??");
   }
 
+  /* write_str(1, "\4"); */
   forth_flush_tob();
 
   return bytes_read;
