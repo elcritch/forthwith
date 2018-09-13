@@ -14,9 +14,13 @@ void print_stack() {
   write_str(2, ") ");
 }
 
-void print_eol() {
-  write_str(2, "\n\3");
+#ifdef FW_STDIO
+#ifndef FW_CUSTOM_PRINT_EOL
+extern void forth_print_eol() {
+  write_str(3, "\r\n\3");
 }
+#endif // FW_STDIO
+#endif // FW_CUSTOM_PRINT_EOL
 
 fcell_xt* var[3] = {0};
 fcell_t tib_str_size = 0;
@@ -79,19 +83,19 @@ int prompt_do(int read) {
   int errno = forth_errno();
 
   if (ctx_vars->state == COMPILE_MODE) {
-    print_eol();
+    forth_print_eol();
     write_str(5, "CONT-");
   }else if (errno == FW_OK) {
-    print_eol();
+    forth_print_eol();
     write_str(3, "OK.");
   } else if (errno == FW_ERR_STACKUNDERFLOW) {
-    print_eol();
+    forth_print_eol();
     write_str(3, "<D?");
   } else if (errno == FW_ERR_RSTACKUNDERFLOW) {
-    print_eol();
+    forth_print_eol();
     write_str(3, "<R?");
   } else if (errno == FW_ERR_NOWORD) {
-    print_eol();
+    forth_print_eol();
     write_str(3, "W??");
   }
 
