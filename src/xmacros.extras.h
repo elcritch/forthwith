@@ -129,3 +129,10 @@ forth_docall("/", 1, F_NORMAL, divs, "( a b -- c )", dodiv);
 forth_docall("lshift", 6, F_NORMAL, lshift, "( a b -- c )", dolss);
 forth_docall("rshift", 6, F_NORMAL, rshift, "( a b -- c )", dorss);
 
+
+#ifdef FW_STDIO
+
+forth_docall("import", 6, F_NORMAL, import_file, "( a b -- c )", doimportfile);
+
+#endif // FW_STDIO
+

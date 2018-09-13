@@ -249,6 +249,9 @@ whitespace:
     goto whitespace;
   }
 
+#ifdef FW_PARSE_STRINGS
+#endif // FW_PARSE_STRINGS
+
   goto word;
 
 word:

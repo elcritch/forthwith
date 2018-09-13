@@ -1,6 +1,6 @@
 
 __fw_noinline__
-fw_call doload() {
+fw_call doimportfile() {
   fcell_t b = forth_pop();
   fcell_t a = forth_pop();
 
