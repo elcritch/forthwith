@@ -13,7 +13,7 @@ fw_call doprintstate();
 
 void prompt_init(char *rx_buff, fcell_t rx_len, char *tx_buff, fcell_t tx_len);
 int prompt_do(int read);
-extern void forth_print_eol();
+void forth_print_eol();
 
 #ifdef __cplusplus
 }
