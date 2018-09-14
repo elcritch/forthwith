@@ -151,7 +151,7 @@ extern int forth_eval_string(char *input);
 
 // User Callbacks
 extern void forth_flush_tob();
-extern fcell_t forth_tib_readline();
+extern int forth_tib_readline();
 extern void forth_print_eol();
 
 // Basic Execution Tokens

@@ -33,7 +33,7 @@ extern "C" {
 
 extern fw_ctx_stack_t *ctx_psp;
 extern void forth_flush_tob();
-extern fcell_t forth_tib_readline();
+extern int forth_tib_readline();
 
 #ifdef __cplusplus
 }

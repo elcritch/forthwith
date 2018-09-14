@@ -57,7 +57,7 @@ int prompt_eval() {
 
 int prompt_do(int read) {
 
-  if (read > 0) {
+  if (read == 0) {
     print_stack();
     write_str(2, "> ");
     forth_print_eol();
@@ -69,7 +69,7 @@ int prompt_do(int read) {
   ctx_vars->tib_len = tib_str_size;
   ctx_vars->tib_idx = 0;
 
-  fcell_t bytes_read = forth_tib_readline();
+  int bytes_read = forth_tib_readline();
 
   // Buffers Post Read
   ctx_vars->tib_len = bytes_read;
@@ -99,6 +99,11 @@ int prompt_do(int read) {
     forth_print_eol();
     write_str(3, "W??");
   }
+
+    print_stack();
+    write_str(2, "> ");
+    forth_print_eol();
+    forth_flush_tob();
 
   /* write_str(1, "\4"); */
   forth_flush_tob();

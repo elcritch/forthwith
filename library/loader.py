@@ -1,13 +1,20 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import serial
 from time import sleep
 import sys
+import getopt
 
-port = sys.argv[1]
-files = sys.argv[2:]
+optlist, args = getopt.getopt(sys.argv[1:], '', ['port=', 'baud='])
+optmap = dict(optlist)
 
-print("Port: {}".format(port))
+print("optmap:", optmap)
+port = optmap.get("--port", "/dev/ttyO2")
+baud = optmap.get("--baud", 38400)
+
+files = args[:]
+
+print("Port: {} Baud: {}, Forth Files: {}".format(port, baud, "\n".join(files)))
 
 line_ending = "\6".encode()
 
@@ -65,13 +72,15 @@ def read_serial_prompt():
 
 try:
     while True:
+        sleep(0.1)
+        while ser.in_waiting:
+            read_serial_prompt()
+
         line = input().strip()
         line += "\n"
         #print("input: ", line.encode())
         ser.write(line.encode())
 
-        while ser.in_waiting:
-            read_serial_prompt()
 
 except (EOFError) as err:
     readline.write_history_file(HISTORY_FILE)
