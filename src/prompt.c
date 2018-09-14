@@ -14,13 +14,13 @@ void print_stack() {
   write_str(2, ") ");
 }
 
-#ifdef FW_STDIO
 #ifndef FW_CUSTOM_PRINT_EOL
-extern void forth_print_eol() {
-  write_str(3, "\r\n\3");
+void forth_print_eol() {
+  write_str(3, "\r\n\6");
 }
+#else
+extern void forth_print_eol();
 #endif // FW_STDIO
-#endif // FW_CUSTOM_PRINT_EOL
 
 fcell_xt* var[3] = {0};
 fcell_t tib_str_size = 0;
@@ -59,7 +59,8 @@ int prompt_do(int read) {
 
   if (read > 0) {
     print_stack();
-    write_str(3, "> \4");
+    write_str(2, "> ");
+    forth_print_eol();
     forth_flush_tob();
   }
 
