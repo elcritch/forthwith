@@ -114,7 +114,7 @@ int prompt_do(int read) {
 #ifdef FW_STDIO
 #ifndef FW_CUSTOM_READLINE
 
-fcell_t forth_tib_readline() {
+int forth_tib_readline() {
   int read = getline((char**)&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
   return read;
 }
