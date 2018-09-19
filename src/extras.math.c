@@ -31,7 +31,7 @@ fw_call dopick() {
 
   if (n <= ctx_psp->head - ctx_psp->base ) {
     // pick nth
-    fcell_t s = ctx_psp->head[n];
+    fcell_t s = ctx_psp->head[-n - 1];
     forth_push(s);
   } else {
     // set error, n is too large
