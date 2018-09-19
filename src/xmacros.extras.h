@@ -146,7 +146,7 @@ forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
 forth_docall("lshift", 6, F_NORMAL, lshift, "( N s -- N' )", dolss);
 forth_docall("rshift", 6, F_NORMAL, rshift, "( N s -- N' )", dorss);
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
-
+forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
 
 forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable);
 
