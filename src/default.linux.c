@@ -29,6 +29,5 @@
 #include "extras.math.c"
 #include "extras.prompt.c"
 
-
 extern fw_ctx_stack_t *ctx_psp;
 
