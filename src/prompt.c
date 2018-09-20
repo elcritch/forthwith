@@ -113,10 +113,7 @@ int prompt_do(int read) {
 }
 
 int prompt_load_core() {
-  int len = fw_core_lib_len;
-
   int err = 0;
-
 
   // Buffers Pre Read
   const char *line;
@@ -135,7 +132,8 @@ int prompt_load_core() {
     err = err | ctx_vars->error;
   }
 
-  printf("core load status: %d\n", err);
+  /* printf("core load status: %d\n", err); */
+  forth_push(err);
   return err;
 }
 

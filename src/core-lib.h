@@ -5,8 +5,6 @@
 
 #include "core-lib.c"
 
-#define fw_core_lib_len (sizeof (fw_core_lib) / sizeof (const char *))
-
 
 #endif // __FW_CORE_LIB_STR_H__
 
