@@ -104,11 +104,13 @@ _build/beagle-pru/%.o: src/beagle-pru/%.c
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 	$(PRU_CGT)/bin/dispru --all $@ > $@.S
 
+src/core-lib.c: library/core.fth
+	library/update-core.sh
 
 test: forthwith
 	./forthwith test.fth
 
-clean:
+clean: src/core-lib.c
 	rm -Rf _build/*
 	mkdir _build/linux-x86-64/
 	mkdir _build/linux-arm/

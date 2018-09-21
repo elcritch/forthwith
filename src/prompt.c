@@ -1,6 +1,7 @@
 
 #include "forthwith.h"
 #include "dict.h"
+#include "core-lib.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -111,10 +112,35 @@ int prompt_do(int read) {
   return bytes_read;
 }
 
+int prompt_load_core() {
+  int err = 0;
+
+  // Buffers Pre Read
+  const char *line;
+  int i = 0;
+  for (int i = 0; (line = fw_core_lib[i]) != NULL; i++) {
+    /* printf("line: %s\n", line); */
+    int line_len = strnlen(line, 128);
+
+    memcpy(ctx_vars->tib_str, line, line_len);
+    ctx_vars->tib_len = line_len;
+    ctx_vars->tib_idx = 0;
+    ctx_vars->tob_idx = 0;
+
+    prompt_eval();
+
+    err = err | ctx_vars->error;
+  }
+
+  /* printf("core load status: %d\n", err); */
+  forth_push(err);
+  return err;
+}
+
 #ifdef FW_STDIO
 #ifndef FW_CUSTOM_READLINE
 
-fcell_t forth_tib_readline() {
+int forth_tib_readline() {
   int read = getline((char**)&ctx_vars->tib_str, (size_t*)&ctx_vars->tib_len, stdin);
   return read;
 }

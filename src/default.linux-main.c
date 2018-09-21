@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
 
   prompt_init((char*)rx_buff, buff_sz, (char*)tx_buff, buff_sz);
 
+  prompt_load_core();
+
   int prompt_read = 1;
   for (;;) {
     prompt_read = prompt_do(prompt_read);
