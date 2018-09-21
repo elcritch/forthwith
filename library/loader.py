@@ -14,7 +14,7 @@ baud = optmap.get("--baud", 38400)
 
 files = args[:]
 
-print("Port: {} Baud: {}, Forth Files: {}".format(port, baud, "\n".join(files)))
+print("Port: {} Baud: {}, Forth Files: {}".format(port, baud, " ".join(files)))
 
 line_ending = "\6".encode()
 
@@ -26,8 +26,8 @@ def load_file(file):
             if not line.strip():
                 continue
 
-            line = line.rstrip()
-            # print(line)
+            line = line.rstrip() + "\n"
+            print(line)
 
             ser.write(line.encode())
 
@@ -65,8 +65,8 @@ def read_serial_prompt():
     res = res.decode().strip('\6')
     res = [ r.strip() for r in res.split("\n") if r.strip() ]
 
-    if len(res) > 0 and res[0].strip() == line.strip():
-        res.pop(0)
+    # if len(res) > 0 and res[0].strip() == line.strip():
+        # res.pop(0)
     print("\n".join(res))
     ser.flush()
 
