@@ -31,21 +31,23 @@ ARCH := $(shell uname -m)
 IS_ARM :=$(filter arm,$(shell uname -m))
 
 ifeq ($(ARCH), x86_64)
-FW_TARGET=linux-x86
+FW_TARGET=linux-x86-64
 endif
 ifneq ($(IS_ARM),)
 FW_TARGET=linux-arm
 endif
 
 default: $(FW_TARGET)
+	cd _build/
+	ln -sf $(FW_TARGET)/forthwith.a _build/forthwith.a
 
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
-linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
-linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux
-arduino-cortex: _build/arduino-arm-cortex/porting-guide  _build/arduino-arm-cortex/forthwith-cortex.a
+linux-x86-64: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide _build/linux-x86-64/forthwith.a
+linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux  _build/linux-arm/forthwith.a
+arduino-cortex: _build/arduino-arm-cortex/porting-guide  _build/arduino-arm-cortex/forthwith.a
 
 # ======= Linux x86 ======= #
-_build/linux-x86-64/forthwith-linux.a: _build/linux-x86-64/forthwith-linux.o
+_build/linux-x86-64/forthwith.a: _build/linux-x86-64/forthwith-linux.o
 	ar rcs $@ $<
 
 _build/linux-x86-64/forthwith-linux: _build/linux-x86-64/forthwith-main.o _build/linux-x86-64/forthwith-linux.o
@@ -66,7 +68,7 @@ _build/linux-x86-64/%.o: src/linux-x86-64/%.c
 	${CC} ${CFLAGS} $< -c -o $@
 
 # ======= Linux Arm ======= #
-_build/linux-arm/forthwith-linux.a: _build/linux-arm/forthwith-linux.o
+_build/linux-arm/forthwith.a: _build/linux-arm/forthwith-linux.o
 	$(ARM_AR) rcs $@ $<
 
 _build/linux-arm/forthwith-linux: _build/linux-arm/forthwith-main.o _build/linux-arm/forthwith-linux.o
@@ -88,7 +90,7 @@ _build/linux-arm/%.o: src/linux-arm/%.c
 	${ARM_CC} ${ARM_CFLAGS} $< -c -o $@
 
 # ======= Arduino Arm Cortex ======= #
-_build/arduino-arm-cortex/forthwith-cortex.a: _build/arduino-arm-cortex/forthwith-arduino-cortex.o
+_build/arduino-arm-cortex/forthwith.a: _build/arduino-arm-cortex/forthwith-arduino-cortex.o
 	$(CORTEX_AR) rcs $@ $<
 
 # _build/arduino-arm-cortex/test-forthwith-linux: src/test/test.c _build/arduino-arm-cortex/forthwith-linux.o
