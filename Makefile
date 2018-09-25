@@ -26,6 +26,19 @@ PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=o
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(PHEAP_SIZE)
 
+# Build for default arch
+ARCH := $(shell uname -m)
+IS_ARM :=$(filter arm,$(shell uname -m))
+
+ifeq ($(ARCH), x86_64)
+FW_TARGET=linux-x86
+endif
+ifneq ($(IS_ARM),)
+FW_TARGET=linux-arm
+endif
+
+default: $(FW_TARGET)
+
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide
 linux-arm: _build/linux-arm/porting-guide _build/linux-arm/forthwith-linux _build/linux-arm/test-forthwith-linux
