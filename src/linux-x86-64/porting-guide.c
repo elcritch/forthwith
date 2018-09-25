@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "forthwith-linux-consts.h"
+#include "forthwith-consts.h"
 
 #include "forthwith.h"
 #include "dict.h"

@@ -2,7 +2,7 @@
 #ifndef __HEADER_IMPL__
 #define __HEADER_IMPL__
 
-#include "forthwith-arduino-cortex-consts.h"
+#include "forthwith-consts.h"
 #include "../forthwith.h"
 
 #include <stddef.h>

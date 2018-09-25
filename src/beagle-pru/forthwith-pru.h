@@ -2,7 +2,7 @@
 #ifndef __HEADER_IMPL_X86__
 #define __HEADER_IMPL_X86__
 
-#include "forthwith-pru-consts.h"
+#include "forthwith-consts.h"
 
 #include <stddef.h>
 

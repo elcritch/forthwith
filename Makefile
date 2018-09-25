@@ -40,6 +40,8 @@ endif
 default: $(FW_TARGET)
 	cd _build/
 	ln -sf $(FW_TARGET)/forthwith.a _build/forthwith.a
+	ln -sf ../src/forthwith.h _build/forthwith.h
+	ln -sf ../src/$(FW_TARGET)/forthwith-consts.h _build/forthwith-consts.h
 
 pru: _build/beagle-pru/forthwith-pru.lib _build/beagle-pru/porting-guide-pru
 linux-x86-64: _build/linux-x86-64/forthwith-linux _build/linux-x86-64/test-forthwith-linux _build/linux-x86-64/porting-guide _build/linux-x86-64/forthwith.a
