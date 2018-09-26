@@ -9,7 +9,7 @@ CC = gcc
 
 ARM_CC ?= gcc
 ARM_AR ?= ar
-ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
+ARM_CFLAGS=-g -Os -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
 
 CORTEX_CC ?=
 CORTEX_AR ?=
