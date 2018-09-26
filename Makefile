@@ -28,7 +28,7 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 
 # Build for default arch
 ARCH := $(shell uname -m)
-IS_ARM :=$(filter arm,$(shell uname -m))
+IS_ARM :=$(filter arm,$(shell uname -m | cut -c1-3))
 
 ifeq ($(ARCH), x86_64)
 FW_TARGET=linux-x86-64
