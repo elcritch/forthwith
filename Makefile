@@ -39,7 +39,7 @@ endif
 
 default: $(FW_TARGET)
 	cd _build/
-	ln -sf $(FW_TARGET)/forthwith.a _build/forthwith.a
+	ln -sf $(FW_TARGET)/forthwith.a _build/libforthwith.a
 	ln -sf ../src/forthwith.h _build/forthwith.h
 	ln -sf ../src/$(FW_TARGET)/forthwith-consts.h _build/forthwith-consts.h
 
