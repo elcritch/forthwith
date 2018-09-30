@@ -29,6 +29,7 @@
 
 : nl ( -- ) 0xA emit ;
 : space ( -- ) 0x20 emit ;
+: tab ( -- )  0x9 emit ;
 
 : +! ( n var -- ) tuck @ + swap ! ;
 : -! ( n var -- ) tuck @ swap - swap ! ;
