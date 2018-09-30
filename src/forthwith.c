@@ -31,7 +31,8 @@ accessor(ctx_strings);
 #include <string.h>
 
 __fw_noinline__
-int forth_init() {
+int forth_init(struct forth_init_sizes init_sizes)
+{
   // Initialize contexts
 
   ctx_regs = calloc(1, sizeof(fw_ctx_regs_t));
@@ -45,11 +46,11 @@ int forth_init() {
   /* ctx_vars = ctx->vars; */
 
   // Configure default stack sizes
-  ctx_psp->size =  256 * sizeof(fw_ctx_stack_t);
-  ctx_rsp->size =  256 * sizeof(fw_ctx_stack_t);
-  ctx_user->size =   4096 * sizeof(fw_ctx_stack_t);
-  ctx_dict->size = 2048 * sizeof(fw_ctx_dict_stack_t);
-  ctx_strings->size = 4096 * sizeof(fw_ctx_str_stack_t);
+  ctx_psp->size =     init_sizes.psp * sizeof(fw_ctx_stack_t);
+  ctx_rsp->size =     init_sizes.rsp * sizeof(fw_ctx_stack_t);
+  ctx_user->size =    init_sizes.user * sizeof(fw_ctx_stack_t);
+  ctx_dict->size =    init_sizes.dict * sizeof(fw_ctx_dict_stack_t);
+  ctx_strings->size = init_sizes.strings * sizeof(fw_ctx_str_stack_t);
 
   // ===== Allocate default stacks ===== //
 
@@ -67,7 +68,11 @@ int forth_init() {
   ctx_dict->base = ctx_dict->head = calloc(1, ctx_dict->size);
   ctx_strings->base = ctx_strings->head = calloc(1, ctx_strings->size);
 
-  return -1;
+  return (ctx_psp->base == NULL)
+         | (ctx_rsp->base == NULL)
+         | (ctx_user->base == NULL)
+         | (ctx_dict->base == NULL)
+         | (ctx_strings->base == NULL) ;
 }
 
 __fw_noinline__

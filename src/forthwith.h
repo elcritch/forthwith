@@ -113,9 +113,6 @@ struct forth_word {
   fword_info_t info;
 };
 
-extern int forth_bootstrap();
-extern int forth_init();
-
 #define FW_OK 0
 #define FW_ERR_STACKOVERFLOW 1
 #define FW_ERR_STACKUNDERFLOW 2
@@ -140,7 +137,16 @@ typedef enum forthwith_the_states fw_state_t;
 extern fcell_t forth_pop();
 extern int forth_push(fcell_t val);
 
-extern int forth_init();
+struct forth_init_sizes {
+    uint16_t psp;
+    uint16_t rsp;
+    uint16_t user;
+    uint16_t dict;
+    uint16_t strings;
+};
+
+extern int forth_init(struct forth_init_sizes init_sizes);
+
 extern int forth_bootstrap();
 extern fw_call forth_exec(FORTH_REGISTERS);
 extern int forth_eval(fcell_xt *instr);
