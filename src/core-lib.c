@@ -26,6 +26,7 @@ const char *fw_core_lib[MAX_CORE_LIBS] = {
     ": 3drop ( a b c -- ) 2drop drop ;",
     ": nl ( -- ) 0xA emit ;",
     ": space ( -- ) 0x20 emit ;",
+    ": tab ( -- )  0x9 emit ;",
     ": +! ( n var -- ) tuck @ + swap ! ;",
     ": -! ( n var -- ) tuck @ swap - swap ! ;",
     ": i ( -- n ) rp@ 2cell - @ ;",
