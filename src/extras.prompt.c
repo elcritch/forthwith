@@ -1,13 +1,4 @@
 
-__fw_noinline__
-fw_call doload() {
-  fcell_t b = forth_pop();
-  fcell_t a = forth_pop();
-
-  forth_push(a / b);
-}
-
-
 #ifdef FW_STDIO
 
 void forth_flush_tob() {

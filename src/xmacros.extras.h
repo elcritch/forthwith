@@ -140,6 +140,8 @@ forth_core("zdrop", 5, F_NORMAL, zdrop, "( ... -- )",  {
 
 // Others //
 
+forth_docall("user_cb", 7, F_NORMAL, fw_dousercalls, "( a b -- c )", dousercalls);
+
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
 forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
@@ -158,4 +160,5 @@ forth_core("var", 3, F_NORMAL, dovar, "()", {
     pushd(1);
     jump(next);
   });
+
 

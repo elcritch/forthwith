@@ -117,7 +117,6 @@ int prompt_load_core() {
 
   // Buffers Pre Read
   const char *line;
-  int i = 0;
   for (int i = 0; (line = fw_core_lib[i]) != NULL; i++) {
     /* printf("line: %s\n", line); */
     int line_len = strnlen(line, 128);
