@@ -29,6 +29,7 @@ extern "C" {
 #include "../utilities.c"
 #include "../prompt.c"
 #include "../extras.math.c"
+#include "../extras.system.c"
 
 
 extern fw_ctx_stack_t *ctx_psp;
