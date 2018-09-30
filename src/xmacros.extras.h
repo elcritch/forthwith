@@ -140,11 +140,16 @@ forth_core("zdrop", 5, F_NORMAL, zdrop, "( ... -- )",  {
 
 // Others //
 
+forth_docall("user_cb", 7, F_NORMAL, fw_dousercalls, "( a b -- c )", dousercalls);
+
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
 forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
-forth_docall("lshift", 6, F_NORMAL, lshift, "( N s -- N' )", dolss);
-forth_docall("rshift", 6, F_NORMAL, rshift, "( N s -- N' )", dorss);
+
+forth_docall("<<<", 6, F_NORMAL, fw_lshift, "( N s -- N' )", dolss);
+forth_docall(">>>a", 6, F_NORMAL, fw_rshift_signed, "( N s -- N' )", dorss);
+forth_docall(">>>", 6, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
+
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
 forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
 
@@ -158,4 +163,5 @@ forth_core("var", 3, F_NORMAL, dovar, "()", {
     pushd(1);
     jump(next);
   });
+
 

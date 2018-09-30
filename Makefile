@@ -9,7 +9,7 @@ CC = gcc
 
 ARM_CC ?= gcc
 ARM_AR ?= ar
-ARM_CFLAGS=-g -Os -DFW_TRACE -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
+ARM_CFLAGS=-g -Os -ffunction-sections -Wall -Wno-unused-function -Isrc/ -fno-asynchronous-unwind-tables -Wa,-mimplicit-it=thumb
 
 CORTEX_CC ?=
 CORTEX_AR ?=
@@ -28,7 +28,7 @@ PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(
 
 # Build for default arch
 ARCH := $(shell uname -m)
-IS_ARM :=$(filter arm,$(shell uname -m))
+IS_ARM :=$(filter arm,$(shell uname -m | cut -c1-3))
 
 ifeq ($(ARCH), x86_64)
 FW_TARGET=linux-x86-64
@@ -39,7 +39,7 @@ endif
 
 default: $(FW_TARGET)
 	cd _build/
-	ln -sf $(FW_TARGET)/forthwith.a _build/forthwith.a
+	ln -sf $(FW_TARGET)/forthwith.a _build/libforthwith.a
 	ln -sf ../src/forthwith.h _build/forthwith.h
 	ln -sf ../src/$(FW_TARGET)/forthwith-consts.h _build/forthwith-consts.h
 
