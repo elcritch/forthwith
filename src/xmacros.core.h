@@ -104,31 +104,31 @@ forth_core("<>", 2, F_NORMAL, noteq, "( n n -- n )",  {
 
 // =============== Bitwise Primitives ============== //
 
-forth_core("^", 1, F_NORMAL, xoru, "( n n -- n )",  {
+forth_core("^^^", 3, F_NORMAL, bit_xor, "( n n -- n )",  {
     popd(2);
     xor_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-forth_core("&", 1, F_NORMAL, andu, "( n n -- n )",  {
+forth_core("&&&", 3, F_NORMAL, bit_and, "( n n -- n )",  {
     popd(2);
     and_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-forth_core("|", 1, F_NORMAL, oru, "( n n -- n )",  {
+forth_core("|||", 3, F_NORMAL, bit_or, "( n n -- n )",  {
     popd(2);
     or_reg(s1, s2);
     pushd(1);
     jump(next);
 });
 
-forth_core("invert", 6, F_NORMAL, invert, "( n n -- n )",  {
+forth_core("not", 3, F_NORMAL, invert, "( n n -- n )",  {
     popd(1);
     not_reg(s1);
     pushd(1);
     jump(next);
-  });
+});
 
