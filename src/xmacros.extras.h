@@ -146,9 +146,9 @@ forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
 forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
 
-forth_docall("<<<", 6, F_NORMAL, fw_lshift, "( N s -- N' )", dolss);
-forth_docall(">>>a", 6, F_NORMAL, fw_rshift_signed, "( N s -- N' )", dorss);
-forth_docall(">>>", 6, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
+forth_docall("<<<", 3, F_NORMAL, fw_lshift, "( N s -- N' )", dolss);
+forth_docall(">>>a", 4, F_NORMAL, fw_rshift_signed, "( N s -- N' )", dorss);
+forth_docall(">>>", 3, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
 
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
 forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
