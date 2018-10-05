@@ -46,10 +46,12 @@ int forth_init(struct forth_init_sizes init_sizes)
   /* ctx_vars = ctx->vars; */
 
   // Configure default stack sizes
-  ctx_psp->size =     init_sizes.psp * sizeof(ctx_psp->base);
-  ctx_rsp->size =     init_sizes.rsp * sizeof(ctx_rsp->base);
-  ctx_user->size =    init_sizes.user * sizeof(ctx_user->base);
-  ctx_dict->size =    init_sizes.dict * sizeof(ctx_dict->base);
+  ctx_psp->size =     init_sizes.psp * sizeof(fcell_t);
+  ctx_rsp->size =     init_sizes.rsp * sizeof(fcell_t);
+  ctx_user->size =    init_sizes.user * sizeof(fcell_t);
+
+  // Configure default stack sizes for non-fcell_t stacks
+  ctx_dict->size =    init_sizes.dict * sizeof(fword_t);
   ctx_strings->size = init_sizes.strings * sizeof(char);
 
   // ===== Allocate default stacks ===== //
