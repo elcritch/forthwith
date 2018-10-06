@@ -143,7 +143,7 @@ void doinitvariable() {
 
   *(here + 0) = (fcell_xt)xt_docolon;
   *(here + 1) = (fcell_xt)&xt_tick;
-  *(here + 2) = (fcell_xt)&here[4]; 
+  *(here + 2) = (fcell_xt)&here[4];
   *(here + 3) = (fcell_xt)&xt_semi;
 
   forth_push((fcell_t)entry);

@@ -19,6 +19,16 @@ forth_core("c!", 2, F_NORMAL, cstore, "( n addr -- )",  {
     jump(next);
 });
 
+forth_docall("var-ptr-init", 12, F_NORMAL, fw_user_ptr_init, "( size count idx -- ptr )", douserptrsalloca);
+forth_docall("var-ptr", 7, F_NORMAL, fw_user_ptr, "( idx -- ptr )", douserptrs);
+forth_docall("var-ptr-off", 11, F_NORMAL, fw_user_ptr_off, "( offset idx -- ptr )", douserptrsoff);
+forth_docall("var-ptr-free", 12, F_NORMAL, fw_user_ptr_free, "( idx -- )", douserptrsfree);
+
+forth_docall("var-ptr!", 8, F_NORMAL, fw_user_ptr_set, "( offset idx -- ptr )", douserptrsset);
+forth_docall("var-ptr@", 8, F_NORMAL, fw_user_ptr_get, "( offset idx -- ptr )", douserptrsget);
+
+forth_docall("user-cb", 7, F_NORMAL, fw_dousercalls, "( idx -- <call-results> )", dousercalls);
+
 // =============== Stack Primitives ============== //
 forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
     popd(1);
@@ -140,8 +150,6 @@ forth_core("zdrop", 5, F_NORMAL, zdrop, "( ... -- )",  {
 
 // Others //
 
-forth_docall("user_cb", 7, F_NORMAL, fw_dousercalls, "( a b -- c )", dousercalls);
-
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
 forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
@@ -153,15 +161,15 @@ forth_docall(">>>", 3, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
 forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
 
-forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable);
+/* forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable); */
 
-forth_core("var", 3, F_NORMAL, dovar, "()", {
-    popd(0);
-    // Get address of next word from codeword list (e.g. same as lit)
-    load_addr(s1, ip);
-    incr_reg(ip);
-    pushd(1);
-    jump(next);
-  });
+/* forth_core("var", 3, F_NORMAL, dovar, "()", { */
+/*     popd(0); */
+/*     // Get address of next word from codeword list (e.g. same as lit) */
+/*     load_addr(s1, ip); */
+/*     incr_reg(ip); */
+/*     pushd(1); */
+/*     jump(next); */
+/* }); */
 
 

@@ -75,6 +75,14 @@ typedef struct forthwith_str_stack { /**< FORTH environment */
   fcell_t size; // bytes
 } fw_ctx_str_stack_t;
 
+struct user_ptr {
+  uint8_t *data;
+  uint8_t elem_count;
+  uint8_t elem_size;
+};
+
+typedef struct user_ptr user_ptr_t;
+
 /* typedef struct forthwith_context { /\**< FORTH environment *\/ */
 /*   fw_ctx_regs_t *regs; */
 /*   fw_ctx_vars_t *vars; */
