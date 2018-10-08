@@ -42,7 +42,7 @@ forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
 /*   }); */
 
 
-forth_core("cell", 4, F_NORMAL, cellsz, "()",  {
+forth_core("cells", 5, F_NORMAL, cellsz, "()",  {
     popd(0);
     load_const(s1, $word_sz);
     pushd(1);
