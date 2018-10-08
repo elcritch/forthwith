@@ -52,20 +52,6 @@ forth_core(">r", 2, F_NORMAL, torstack, "( n1  --   )",  {
 /*   }); */
 
 
-forth_core("cells", 5, F_NORMAL, cellsz, "()",  {
-    popd(0);
-    load_const(s1, $word_sz);
-    pushd(1);
-    jump(next);
-  });
-
-forth_core("xcell", 5, F_NORMAL, xcellsz, "()",  {
-    popd(0);
-    load_const(s1, $word_ptr_sz);
-    pushd(1);
-    jump(next);
-  });
-
 forth_core("sp@", 3, F_NORMAL, sp_at, "()",  {
     popd(0);
     copy_reg(s1, psp);
@@ -160,17 +146,5 @@ forth_docall(">>>", 3, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
 
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
 forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
-forth_docall("cell", 4, F_NORMAL, fw_cell, "( -- sizeof(fcell_t) )", docellsz);
-
-/* forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable); */
-
-/* forth_core("var", 3, F_NORMAL, dovar, "()", { */
-/*     popd(0); */
-/*     // Get address of next word from codeword list (e.g. same as lit) */
-/*     load_addr(s1, ip); */
-/*     incr_reg(ip); */
-/*     pushd(1); */
-/*     jump(next); */
-/* }); */
-
+forth_docall("cells", 5, F_NORMAL, fw_cell, "( -- sizeof(fcell_t) )", docellsz);
 
