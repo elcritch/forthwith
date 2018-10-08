@@ -10,11 +10,16 @@
 #include <stdlib.h>
 
 int main(int argc, char** argv) {
+  struct forth_init_sizes init_sizes = { .psp = 512,
+                                         .rsp = 512,
+                                         .user = 16384,
+                                         .dict = 16384,
+                                         .strings = 16384 };
 
-  forth_init();
+  forth_init(init_sizes);
   forth_bootstrap();
 
-  const int buff_sz = 1024;
+  const int buff_sz = 8192;
   char *rx_buff = calloc(1, buff_sz);
   char *tx_buff = calloc(1, buff_sz);
 

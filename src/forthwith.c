@@ -43,14 +43,20 @@ int forth_init(struct forth_init_sizes init_sizes)
   ctx_dict = calloc(1, sizeof(fw_ctx_dict_stack_t));
   ctx_strings = calloc(1, sizeof(fw_ctx_str_stack_t));
 
+#ifdef FW_SUPPORT_NUMBER_BASES
+  ctx_vars->base = 10;
+#endif // FW_SUPPORT_DECIMAL_BASE
+
   /* ctx_vars = ctx->vars; */
 
   // Configure default stack sizes
-  ctx_psp->size =     init_sizes.psp * sizeof(fw_ctx_stack_t);
-  ctx_rsp->size =     init_sizes.rsp * sizeof(fw_ctx_stack_t);
-  ctx_user->size =    init_sizes.user * sizeof(fw_ctx_stack_t);
-  ctx_dict->size =    init_sizes.dict * sizeof(fw_ctx_dict_stack_t);
-  ctx_strings->size = init_sizes.strings * sizeof(fw_ctx_str_stack_t);
+  ctx_psp->size =     init_sizes.psp * sizeof(fcell_t);
+  ctx_rsp->size =     init_sizes.rsp * sizeof(fcell_t);
+  ctx_user->size =    init_sizes.user * sizeof(fcell_t);
+
+  // Configure default stack sizes for non-fcell_t stacks
+  ctx_dict->size =    init_sizes.dict * sizeof(fword_t);
+  ctx_strings->size = init_sizes.strings * sizeof(char);
 
   // ===== Allocate default stacks ===== //
 

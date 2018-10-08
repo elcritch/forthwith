@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "default.ximpls.h"
 
@@ -47,6 +48,9 @@ typedef struct forthwith_regs { /**< FORTH environment */
 typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t state;
   fcell_t error;
+#ifdef FW_SUPPORT_NUMBER_BASES
+  fcell_t base;
+#endif // FW_SUPPORT_NUMBER_BASES
 
   fcell_t tib_idx;
   fcell_t tib_len;
@@ -74,6 +78,19 @@ typedef struct forthwith_str_stack { /**< FORTH environment */
   char *base;
   fcell_t size; // bytes
 } fw_ctx_str_stack_t;
+
+struct user_ptr {
+  uint8_t *data;
+  uint8_t elem_count;
+  uint8_t elem_size;
+};
+
+typedef struct user_ptr user_ptr_t;
+
+struct user_ptrs_array {
+  user_ptr_t *ptrs;
+  fcell_t count;
+};
 
 /* typedef struct forthwith_context { /\**< FORTH environment *\/ */
 /*   fw_ctx_regs_t *regs; */
