@@ -1,11 +1,27 @@
 
 __fw_noinline__
 fw_call dodivquot() {
-  fcell_t b = forth_pop();
-  fcell_t a = forth_pop();
+  if (sizeof(fcell_t) == 2) {
+    int32_t b = forth_pop();
+    int32_t a = forth_pop();
 
-  forth_push(a % b);
-  forth_push(a / b);
+    forth_push(a % b);
+    forth_push(a / b);
+  }
+  else if (sizeof(fcell_t) == 4) {
+    int64_t b = forth_pop();
+    int64_t a = forth_pop();
+
+    forth_push(a % b);
+    forth_push(a / b);
+  }
+  else if (sizeof(fcell_t) == 8) {
+    __int128 b = forth_pop();
+    __int128 a = forth_pop();
+
+    forth_push(a % b);
+    forth_push(a / b);
+  }
 }
 
 __fw_noinline__

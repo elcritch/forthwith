@@ -13,7 +13,7 @@ forth_variable(STATE, 5, ctx_vars, state);
 forth_variable(HERE, 4, ctx_user, head); // get pointer to current user word location
 
 #ifdef FW_SUPPORT_NUMBER_BASES
-forth_variable(BASE, 4, ctx_user, base); // get pointer to current user word location
+forth_variable(BASE, 4, ctx_vars, base); // get pointer to current user word location
 #endif // FW_SUPPORT_NUMBER_BASES
 
 // Follows Jone's Forth here
