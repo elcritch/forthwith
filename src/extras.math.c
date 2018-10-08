@@ -16,8 +16,8 @@ fw_call dodivquot() {
     forth_push(a / b);
   }
   else if (sizeof(fcell_t) == 8) {
-    __int128 b = forth_pop();
-    __int128 a = forth_pop();
+    int64_t b = forth_pop();
+    int64_t a = forth_pop();
 
     forth_push(a % b);
     forth_push(a / b);

@@ -2,6 +2,8 @@
 #include "core-lib.h"
 
 const char *fw_core_lib[MAX_CORE_LIBS] = {
+    ": //  /mod rot drop ;",
+    ": %  //mod drop ;",
     ": 0> 0 > ;",
     ": 0< 0 < ;",
     ": 0= 0 = ;",
