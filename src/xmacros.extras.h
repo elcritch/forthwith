@@ -19,13 +19,13 @@ forth_core("c!", 2, F_NORMAL, cstore, "( n addr -- )",  {
     jump(next);
 });
 
-forth_docall("var-ptr-init", 12, F_NORMAL, fw_user_ptr_init, "( size count idx -- ptr )", douserptrsalloca);
+forth_docall("var-ptr-init", 12, F_NORMAL, fw_user_ptr_init, "( count size idx -- ptr )", douserptrsalloca);
 forth_docall("var-ptr", 7, F_NORMAL, fw_user_ptr, "( idx -- ptr )", douserptrs);
 forth_docall("var-ptr-off", 11, F_NORMAL, fw_user_ptr_off, "( offset idx -- ptr )", douserptrsoff);
 forth_docall("var-ptr-free", 12, F_NORMAL, fw_user_ptr_free, "( idx -- )", douserptrsfree);
 
-forth_docall("var-ptr!", 8, F_NORMAL, fw_user_ptr_set, "( offset idx -- ptr )", douserptrsset);
-forth_docall("var-ptr@", 8, F_NORMAL, fw_user_ptr_get, "( offset idx -- ptr )", douserptrsget);
+forth_docall("var!", 4, F_NORMAL, fw_user_ptr_set, "( offset idx -- ptr )", douserptrsset);
+forth_docall("var@", 4, F_NORMAL, fw_user_ptr_get, "( offset idx -- ptr )", douserptrsget);
 
 forth_docall("user-cb", 7, F_NORMAL, fw_dousercalls, "( idx -- <call-results> )", dousercalls);
 
