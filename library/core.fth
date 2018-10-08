@@ -10,8 +10,7 @@
 : compile-time ;
 : |> ;
 
-: n-cells cells * ;
-: 2cells 2 cells * ;
+: cells ( n1 -- n2 ) cell * ;
 
 : interpret? STATE @ 0= ;
 : backref, HERE @ - , ;
@@ -34,10 +33,10 @@
 
 : +! ( n var -- ) tuck @ + swap ! ;
 : -! ( n var -- ) tuck @ swap - swap ! ;
-: i ( -- n ) rp@ 2cells - @ ;
-: n ( -- n ) rp@ cells 3 * - @ ;
-: j ( -- n ) rp@ cells 4 * - @ ;
-: o ( -- n ) rp@ cells 5 * - @ ;
+: i ( -- n ) rp@ 2 cells - @ ;
+: n ( -- n ) rp@ cell 3 * - @ ;
+: j ( -- n ) rp@ cell 4 * - @ ;
+: o ( -- n ) rp@ cell 5 * - @ ;
 
 : prepare-forward-ref ( -- a ) HERE @ 0 , ;
 : resolve-forward-ref ( a -- ) HERE @ over - swap ! ;
