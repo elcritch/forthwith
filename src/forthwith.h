@@ -55,6 +55,11 @@ typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t tob_idx;
   fcell_t tob_len;
   char   *tob_str;
+
+#ifdef FW_SUPPORT_NUMBER_BASES
+  uint8_t base;
+#endif // FW_SUPPORT_NUMBER_BASES
+
 } fw_ctx_vars_t;
 
 typedef struct forthwith_stack { /**< FORTH environment */
@@ -82,6 +87,11 @@ struct user_ptr {
 };
 
 typedef struct user_ptr user_ptr_t;
+
+struct user_ptrs_array {
+  user_ptr_t *ptrs;
+  fcell_t count;
+};
 
 /* typedef struct forthwith_context { /\**< FORTH environment *\/ */
 /*   fw_ctx_regs_t *regs; */

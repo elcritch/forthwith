@@ -366,7 +366,32 @@ void write_char(char c) {
   }
 }
 
-__fw_noinline__
+#ifdef FW_SUPPORT_NUMBER_BASES
+void write_number(fcell_t number)
+{
+  uint8_t base = ctx_vars->base; // hardcode hex base
+  char number_chars[64] = {0};
+
+  /* convert to the indicated base */
+  int idx = 0;
+
+  while (number != 0)
+  {
+    number_chars[idx++] = number % base;
+    number /= base;
+  }
+
+  // Print Number
+  if (base == 16) {
+    write_str(2, "0x");
+  }
+
+  for (int i = idx - 1; i >= 0; i--) /* go backward through array */
+  {
+    write_char(num_basis[number_chars[i]]);
+  }
+}
+#else // only support hex output
 void write_number(fcell_t number)
 {
   // Print Number
@@ -375,41 +400,50 @@ void write_number(fcell_t number)
   uint8_t first_non = false;
 
   for (int i = ( sizeof(fcell_t) << 1 ) - 1; i >= 0; i--) {
-    uint8_t basis_of = (number >> (i << 2)) & 0xF; 
+    uint8_t basis_of = (number >> (i << 2)) & 0xF;
     if ((basis_of == 0) & (first_non == false) & (i != 0))
       continue;
     first_non = true;
     write_char(num_basis[basis_of]);
   }
 }
+#endif // FW_SUPPORT_NUMBER_BASES
 
 fcell_t parse_number(uint8_t len, char *tib,
                      fcell_t *number, fcell_t *errcode)
 {
-  uint8_t hex_base = 16; // hardcode hex base
   bool err = false;
   char c;
 
-  uint8_t idx = 0;
   fcell_t neg = 1;
   fcell_t num = 0;
+#ifdef FW_SUPPORT_NUMBER_BASES
+  uint8_t base = ctx_vars->base; // hardcode hex base
+#else
+  uint8_t base = 10; // hardcode hex base
+#endif // FW_SUPPORT_NUMBER_BASES
 
   // Check for 0x hex prefix, elide if found
-  if (len >= 2 && tib[0] == '0' && tib[1] == 'x')
+  uint8_t idx = 0;
+
+  if (tib[idx] == '-') {
+    neg = -1;
+    idx++;
+  }
+
+  if ( len >= (2 + idx) && tib[idx+0] == '0' && tib[idx+1] == 'x' ) {
     idx += 2;
+    base = 16;
+    printf("hex: %d -- %d \n", idx, base);
+  }
 
   while (idx < len) {
     c = tib[idx++];
     err = true;
 
-    if (c == '-') {
-      neg = -1;
-      continue;
-    }
-
-    for (int i = 0; i < hex_base; i++) {
+    for (int i = 0; i < base; i++) {
       if (num_basis[i] == c) {
-        num = hex_base * num + i;
+        num = (base * num) + i;
         err = false;
         break;
       }

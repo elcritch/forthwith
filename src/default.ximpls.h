@@ -18,6 +18,10 @@
 
 /* #define FORTHWITH_NO_CHECKS */
 
+#ifdef FW_NUMBER_BASES
+#define FW_SUPPORT_NUMBER_BASES
+#endif
+
 
 #ifndef FORTHWITH_NO_CHECKS
 #define check(a, b, errfunc)                 \

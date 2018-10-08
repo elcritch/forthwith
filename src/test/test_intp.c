@@ -113,8 +113,8 @@ void test_colon(void) {
   *var[i++] = dict_cfa(dict_find(4, "semi"));
   (void)idx_interpret;
 
-  ctx_vars->tib_str = " : a 99 ;";
-  ctx_vars->tib_len = 10;
+  ctx_vars->tib_str = " : a 0x99 ;";
+  ctx_vars->tib_len = strlen(ctx_vars->tib_str);
   ctx_vars->tib_idx = 0;
 
   forth_eval(var[0]);

@@ -23,7 +23,13 @@ void print_psp_info() {
 }
 
 void test_setup() {
-  forth_init();
+  struct forth_init_sizes init_sizes = { .psp = 256,
+                                         .rsp = 256,
+                                         .user = 16384,
+                                         .dict = 16384,
+                                         .strings = 16384 };
+
+  forth_init(init_sizes);
   forth_bootstrap();
 
   if (ctx_vars->tob_str)
@@ -198,13 +204,14 @@ void test_parsing(void)
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, ws);
 
-  // test nums -- part one // 
-  char *basic_add = "1 -F +";
+  // test nums -- part one //
+  char *basic_add = "1 -0xF +";
   tib = basic_add;
   tib_idx = 0;
 
   parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  wl = we - ws; tib_idx = tib_idx + wl;
+  wl = we - ws;
+  tib_idx = we - tib;
 
   expl = 1; expi = 0;
   TEST_CHECK_(expl == wl, "Expected %p, got %p", expl, wl);
@@ -221,16 +228,25 @@ void test_parsing(void)
 
   // test nums -- part two //
   parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  wl = we - ws; tib_idx = tib_idx + wl;
+  printf("TEST_PARSE_WORD_PRE: tib_idx `%d`\n", tib_idx );
+  wl = we - ws;
+  tib_idx = we - tib;
 
-  expl = 2; expi = 2;
+  printf("TEST_PARSE_WORD: ws `%4s`\n", ws );
+  printf("TEST_PARSE_WORD: tib_idx `%d`\n", tib_idx );
+  printf("TEST_PARSE_WORD: wl `%d`\n", wl);
+
+  expl = 4; expi = 2;
   TEST_CHECK_(expl == wl, "Expected %p, got %p", expl, wl);
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%4s`, got `%4s`", tib + expi, ws);
 
   // test nums -- part two.a //
   wl = parse_number(wl, (char*)ws, &number, &errcode);
-  tib_idx = tib_idx + wl;
+  printf("TEST_PARSE_NUM: wl `%d`\n", wl);
+  printf("TEST_PARSE_NUM: number `%ld`\n", number);
+  printf("TEST_PARSE_NUM: errcode `%d`\n", errcode);
+  /* tib_idx = tib_idx + wl; */
 
   expl = 0; expi = -0xF;
   TEST_CHECK_(expl == errcode, "Expected "CELL_FMT", got "CELL_FMT"", expl, errcode);
@@ -238,11 +254,15 @@ void test_parsing(void)
 
 
   // test nums -- part three //
-  wl = parse_word(tib_idx, strlen(tib), tib, &ws, &we);
-  tib_idx = tib_idx + wl;
+  printf("TEST_PARSE_WORD: idx `%d`\n", tib_idx);
 
-  expl = 1; expi = 5;
-  TEST_CHECK_(expl == wl, "Expected %p, got %p", expl, wl);
+  printf("TEST_PARSE_WORD: `%s`\n", (char*)(tib + tib_idx));
+  wl = parse_word(tib_idx, strlen(tib), tib, &ws, &we);
+  tib_idx = we - tib;
+
+  expl = 1; expi = 7;
+  TEST_CHECK_(expl == wl, "Expected len %x, got %x", expl, wl);
+  TEST_CHECK_(expi == (ws - tib), "Expected idx %d, got %d", expi, (ws - tib) );
   TEST_CHECK_(tib + expi == (char*)ws, "Expected %p, got %p", tib + expi, ws);
   TEST_CHECK_(strncmp(tib + expi, (char*)ws, expl) == 0, "Expected `%1s`, got `%1s`", tib + expi, ws);
 
