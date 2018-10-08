@@ -18,7 +18,7 @@
 
 /* #define FORTHWITH_NO_CHECKS */
 
-#ifdef FW_NUMBER_BASES
+#ifndef FW_NO_NUMBER_BASES
 #define FW_SUPPORT_NUMBER_BASES
 #endif
 

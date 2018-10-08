@@ -43,6 +43,10 @@ int forth_init(struct forth_init_sizes init_sizes)
   ctx_dict = calloc(1, sizeof(fw_ctx_dict_stack_t));
   ctx_strings = calloc(1, sizeof(fw_ctx_str_stack_t));
 
+#ifdef FW_SUPPORT_NUMBER_BASES
+  ctx_vars->base = 10;
+#endif // FW_SUPPORT_DECIMAL_BASE
+
   /* ctx_vars = ctx->vars; */
 
   // Configure default stack sizes

@@ -160,6 +160,7 @@ forth_docall(">>>", 3, F_NORMAL, fw_rshift, "( N s -- N' )", dorsu);
 
 forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
 forth_docall("pick", 4, F_NORMAL, fw_pick, "( nth -- stack[n] )", dopick);
+forth_docall("cell", 4, F_NORMAL, fw_cell, "( -- sizeof(fcell_t) )", docellsz);
 
 /* forth_docall("init-variable:", 14, F_NORMAL, fw_variable, "( a b -- c )", doinitvariable); */
 

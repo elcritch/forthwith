@@ -49,18 +49,3 @@ fw_call dorsu() {
   return;
 }
 
-
-__fw_noinline__
-fw_call dopick() {
-  fcell_t n = forth_pop();
-
-  if (n <= ctx_psp->head - ctx_psp->base ) {
-    // pick nth
-    fcell_t s = ctx_psp->head[-n - 1];
-    forth_push(s);
-  } else {
-    // set error, n is too large
-    ctx_vars->error = FW_ERR_STACKUNDERFLOW;
-  }
-}
-

@@ -386,9 +386,13 @@ void write_number(fcell_t number)
     write_str(2, "0x");
   }
 
-  for (int i = idx - 1; i >= 0; i--) /* go backward through array */
-  {
-    write_char(num_basis[number_chars[i]]);
+  if (idx == 0) {
+    write_char('0');
+  } else {
+    for (int i = idx - 1; i >= 0; i--) /* go backward through array */
+    {
+      write_char(num_basis[number_chars[i]]);
+    }
   }
 }
 #else // only support hex output
@@ -434,7 +438,6 @@ fcell_t parse_number(uint8_t len, char *tib,
   if ( len >= (2 + idx) && tib[idx+0] == '0' && tib[idx+1] == 'x' ) {
     idx += 2;
     base = 16;
-    printf("hex: %d -- %d \n", idx, base);
   }
 
   while (idx < len) {

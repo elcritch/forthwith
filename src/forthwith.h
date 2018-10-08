@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "default.ximpls.h"
 
@@ -47,6 +48,9 @@ typedef struct forthwith_regs { /**< FORTH environment */
 typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t state;
   fcell_t error;
+#ifdef FW_SUPPORT_NUMBER_BASES
+  fcell_t base;
+#endif // FW_SUPPORT_NUMBER_BASES
 
   fcell_t tib_idx;
   fcell_t tib_len;
@@ -55,11 +59,6 @@ typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t tob_idx;
   fcell_t tob_len;
   char   *tob_str;
-
-#ifdef FW_SUPPORT_NUMBER_BASES
-  uint8_t base;
-#endif // FW_SUPPORT_NUMBER_BASES
-
 } fw_ctx_vars_t;
 
 typedef struct forthwith_stack { /**< FORTH environment */

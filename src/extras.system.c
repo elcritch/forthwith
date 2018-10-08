@@ -26,6 +26,25 @@ fw_call dousercalls() {
 struct user_ptrs_array user_ptrs;
 
 __fw_noinline__
+fw_call docellsz() {
+  forth_push(sizeof(fcell_t));
+}
+
+__fw_noinline__
+fw_call dopick() {
+  fcell_t n = forth_pop();
+
+  if (n <= ctx_psp->head - ctx_psp->base ) {
+    // pick nth
+    fcell_t s = ctx_psp->head[-n - 1];
+    forth_push(s);
+  } else {
+    // set error, n is too large
+    ctx_vars->error = FW_ERR_STACKUNDERFLOW;
+  }
+}
+
+__fw_noinline__
 fw_call douserptrsalloca() {
   fcell_t idx = forth_pop();
   fcell_t elem_size = forth_pop();
