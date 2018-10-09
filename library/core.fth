@@ -1,8 +1,10 @@
 
 : /  /mod rot drop ;
 : %  /mod drop ;
-: var! ( val var-id -- ) 0 swap var-idx! ;
-: var@ ( var-id -- val ) 0 swap var-idx@ ;
+
+: var-alloca ( size var-id -- ) 1 rot rot var-arr-alloca ;
+: var! ( val var-id -- ) 1 swap var-idx! ;
+: var@ ( var-id -- val ) 1 swap var-idx@ ;
 
 : 0> 0 > ;
 : 0< 0 < ;

@@ -24,8 +24,8 @@ forth_docall("var-ptr", 7, F_NORMAL, fw_user_ptr, "( idx -- ptr )", douserptrs);
 forth_docall("var-ptr-off", 11, F_NORMAL, fw_user_ptr_off, "( offset idx -- ptr )", douserptrsoff);
 forth_docall("var-free", 8, F_NORMAL, fw_user_ptr_free, "( idx -- )", douserptrsfree);
 
-forth_docall("var-idx!", 8, F_NORMAL, fw_user_ptr_set, "( offset idx -- ptr )", douserptrsset);
-forth_docall("var-idx@", 8, F_NORMAL, fw_user_ptr_get, "( offset idx -- ptr )", douserptrsget);
+forth_docall("var-idx!", 8, F_NORMAL, fw_user_ptr_set, "( val offset idx -- )", douserptrsset);
+forth_docall("var-idx@", 8, F_NORMAL, fw_user_ptr_get, "( offset idx -- val )", douserptrsget);
 
 forth_docall("user-cb", 7, F_NORMAL, fw_dousercalls, "( idx -- <call-results> )", dousercalls);
 
