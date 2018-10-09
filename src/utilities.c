@@ -375,6 +375,12 @@ void write_number(fcell_t number)
   /* convert to the indicated base */
   int idx = 0;
 
+  fcell_t is_neg = 0;
+  if (number < 0) {
+    is_neg = 1;
+    number = -1 * number;
+  }
+
   while (number != 0)
   {
     number_chars[idx++] = number % base;
@@ -382,6 +388,10 @@ void write_number(fcell_t number)
   }
 
   // Print Number
+  if (is_neg) {
+    write_str(1, "-");
+  }
+
   if (base == 16) {
     write_str(2, "0x");
   }
