@@ -4,13 +4,6 @@
 const char *fw_core_lib[MAX_CORE_LIBS] = {
     ": //  /mod rot drop ;",
     ": %  //mod drop ;",
-    "\ : var-arr-alloca ( count size idx -- ptr ) ;",
-    "\ : var-ptr ( idx -- ptr )",
-    "\ : var-ptr-off ( offset idx -- ptr )",
-    "\ : var-free ( idx -- )",
-    "\ : var-idx! ( val offset idx -- )",
-    "\ : var-idx@ ( offset idx -- val )",
-    "\ : user-cb ( idx -- <call-results> )",
     ": 1st 0 ;",
     ": 2nd 1 ;",
     ": 3rd 2 ;",
