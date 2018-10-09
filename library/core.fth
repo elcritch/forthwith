@@ -1,6 +1,8 @@
 
 : /  /mod rot drop ;
 : %  /mod drop ;
+: var! ( val var-id -- ) 0 swap var-idx! ;
+: var@ ( var-id -- val ) 0 swap var-idx@ ;
 
 : 0> 0 > ;
 : 0< 0 < ;
