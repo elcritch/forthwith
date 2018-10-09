@@ -84,7 +84,7 @@ fw_call douserptrs() {
 
 __fw_noinline__
 fw_call douserptrsoff() {
-  user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
+  fcell_t idx = forth_pop();
   fcell_t offset = forth_pop();
 
   user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
@@ -144,7 +144,7 @@ fw_call douserptrsget() {
 
 __fw_noinline__
 fw_call douserptrsfree() {
-  user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
+  fcell_t idx = forth_pop();
 
   user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
