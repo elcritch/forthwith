@@ -1,5 +1,5 @@
 
-: /  /mod rot drop ;
+: /  /mod swap drop ;
 : %  /mod drop ;
 
 \ : var-arr-alloca ( count size idx -- ptr ) ;
