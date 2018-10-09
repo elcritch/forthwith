@@ -2,9 +2,22 @@
 : /  /mod rot drop ;
 : %  /mod drop ;
 
+\ : var-arr-alloca ( count size idx -- ptr ) ;
+\ : var-ptr ( idx -- ptr )
+\ : var-ptr-off ( offset idx -- ptr )
+\ : var-free ( idx -- )
+\ : var-idx! ( val offset idx -- )
+\ : var-idx@ ( offset idx -- val )
+\ : user-cb ( idx -- <call-results> )
+
+: 1st 0 ;
+: 2nd 1 ;
+: 3rd 2 ;
+: 4th 3 ;
+
 : var-alloca ( size var-id -- ) 1 rot rot var-arr-alloca ;
-: var! ( val var-id -- ) 1 swap var-idx! ;
-: var@ ( var-id -- val ) 1 swap var-idx@ ;
+: var! ( val var-id -- ) 0 swap var-idx! ;
+: var@ ( var-id -- val ) 0 swap var-idx@ ;
 
 : 0> 0 > ;
 : 0< 0 < ;
