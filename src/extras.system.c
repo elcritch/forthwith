@@ -44,41 +44,42 @@ fw_call dopick() {
   }
 }
 
+user_ptr_t *_userptr(fcell_t idx) {
+  if (idx >= user_ptrs.count || idx < 0)
+    return NULL;
+
+  user_ptr_t *user_ptr = user_ptrs.ptrs + idx;
+  return user_ptr;
+}
+
 __fw_noinline__
 fw_call douserptrsalloca() {
   fcell_t idx = forth_pop();
   fcell_t elem_size = forth_pop();
   fcell_t elem_count = forth_pop();
 
-  if (idx >= user_ptrs.count) {
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
     forth_push(0);
     return;
   }
 
-  user_ptr_t *user_ptr = &user_ptrs.ptrs[idx];
-
-  if (user_ptr->elem_count > 0)
+  if (user_ptr->elem_count > 0 || user_ptr->elem_size)
     free(user_ptr->data);
 
   user_ptr->data = calloc(elem_count, elem_size);
   user_ptr->elem_count = elem_count;
   user_ptr->elem_size = elem_size;
 
-  forth_push( (fcell_t) user_ptr );
+  forth_push( (fcell_t) user_ptr->data );
 }
 
 __fw_noinline__
 fw_call douserptrs() {
   fcell_t idx = forth_pop();
 
-  if (idx >= user_ptrs.count) {
-    forth_push(0);
-    return;
-  }
-
-  user_ptr_t *user_ptr = user_ptrs.ptrs + idx;
-
-  forth_push( (fcell_t)user_ptr);
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  forth_push( user_ptr == NULL ? 0 : user_ptr->data );
 }
 
 __fw_noinline__
@@ -86,6 +87,7 @@ fw_call douserptrsoff() {
   user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
   fcell_t offset = forth_pop();
 
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
     forth_push(0);
     return;
@@ -101,10 +103,11 @@ fw_call douserptrsoff() {
 
 __fw_noinline__
 fw_call douserptrsset() {
-  user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
+  fcell_t idx = forth_pop();
   fcell_t offset = forth_pop();
   fcell_t value = forth_pop();
 
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
     forth_push(0);
     return;
@@ -120,16 +123,16 @@ fw_call douserptrsset() {
 
 __fw_noinline__
 fw_call douserptrsget() {
-  user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
+  fcell_t idx = forth_pop();
   fcell_t offset = forth_pop();
 
-  fcell_t value;
-
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
     forth_push(0);
     return;
   }
 
+  fcell_t value;
   if (offset < user_ptr->elem_count) {
     uint8_t *ptr = user_ptr->data + (offset * user_ptr->elem_size);
     memcpy(&value, ptr, user_ptr->elem_size);
@@ -143,6 +146,7 @@ __fw_noinline__
 fw_call douserptrsfree() {
   user_ptr_t *user_ptr = (user_ptr_t*) forth_pop();
 
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
     forth_push(0);
     return;

@@ -4,6 +4,7 @@
 const char *fw_core_lib[MAX_CORE_LIBS] = {
     ": //  /mod rot drop ;",
     ": %  //mod drop ;",
+    ": var-alloca ( size var-id -- ) 0 rot rot var-arr-alloca ;",
     ": var! ( val var-id -- ) 0 swap var-idx! ;",
     ": var@ ( var-id -- val ) 0 swap var-idx@ ;",
     ": 0> 0 > ;",
