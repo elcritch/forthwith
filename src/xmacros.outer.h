@@ -29,6 +29,7 @@ forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
 forth_docall("cfa", 3, F_NORMAL, cfa, "( n -- )", docfa);
 
 forth_docall("emit", 4, F_NORMAL, emit, "( n -- )", doemit);
+forth_docall("flush", 5, F_NORMAL, flush, "( n -- )", doflush);
 forth_docall("err", 3, F_NORMAL, err, "( n -- )", doerr);
 
 // Toggle hidden flag -- unhide the word

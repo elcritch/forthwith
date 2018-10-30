@@ -260,6 +260,10 @@ fw_call doemit() {
   write_char((char)forth_pop());
 }
 
+__fw_noinline__
+fw_call doflush() {
+  forth_flush_tob();
+}
 
 __fw_noinline__
 // ( *c l -- n e ) {tib} {tib_idx++}

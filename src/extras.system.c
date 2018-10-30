@@ -220,9 +220,10 @@ fw_call douserptrsfree() {
     return;
   }
 
-  if (user_ptr->elem_count > 0)
+  if (user_ptr->data != NULL)
     free(user_ptr->data);
 
+  user_ptr->data = NULL;
   user_ptr->elem_size = 0;
   user_ptr->elem_count = 0;
 }
