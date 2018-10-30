@@ -70,6 +70,7 @@ fw_call douserptrsalloca() {
   user_ptr->data = calloc(elem_count, elem_size);
   user_ptr->elem_count = elem_count;
   user_ptr->elem_size = elem_size;
+  user_ptr->elem_idx = 0;
 
   forth_push( (fcell_t) user_ptr->data );
 }
@@ -140,6 +141,73 @@ fw_call douserptrsget() {
   } else {
     forth_push( 0 );
   }
+}
+
+__fw_noinline__
+fw_call douserptrspush() {
+  fcell_t idx = forth_pop();
+  fcell_t value = forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    forth_push(0);
+    return;
+  }
+
+  if (user_ptr->elem_idx < user_ptr->elem_count) {
+    uint8_t *ptr = user_ptr->data + (user_ptr->elem_idx * user_ptr->elem_size);
+    memcpy(ptr, &value, user_ptr->elem_size);
+    user_ptr->elem_idx++;
+  } else {
+    forth_push( 0 );
+  }
+}
+
+__fw_noinline__
+fw_call douserptrspop() {
+  fcell_t idx = forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    forth_push(0);
+    return;
+  }
+
+  fcell_t value;
+  if (user_ptr->elem_idx > 0 ) {
+    --user_ptr->elem_idx;
+    uint8_t *ptr = user_ptr->data + (user_ptr->elem_idx * user_ptr->elem_size);
+    memcpy(&value, ptr, user_ptr->elem_size);
+    forth_push(value);
+  } else {
+    forth_push( 0 );
+  }
+}
+
+__fw_noinline__
+fw_call douserptrsgetidx() {
+  fcell_t idx = forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    forth_push(-1);
+    return;
+  }
+
+  forth_push( user_ptr->elem_idx );
+}
+
+__fw_noinline__
+fw_call douserptrssetidx() {
+  fcell_t idx = forth_pop();
+  uint16_t elem_idx = (uint16_t) forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    return;
+  }
+
+  user_ptr->elem_idx = elem_idx;
 }
 
 __fw_noinline__

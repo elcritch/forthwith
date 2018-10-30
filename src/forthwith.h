@@ -80,9 +80,10 @@ typedef struct forthwith_str_stack { /**< FORTH environment */
 } fw_ctx_str_stack_t;
 
 struct user_ptr {
-  uint8_t *data;
-  uint8_t elem_count;
-  uint8_t elem_size;
+  uint16_t *data;
+  uint16_t elem_count;
+  uint16_t elem_size;
+  uint16_t elem_idx;
 };
 
 typedef struct user_ptr user_ptr_t;
