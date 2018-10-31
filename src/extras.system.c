@@ -103,6 +103,34 @@ fw_call douserptrsoff() {
 }
 
 __fw_noinline__
+fw_call douserptrselemsize() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    forth_push(0);
+    return;
+  }
+
+  forth_push(user_ptr->elem_size);
+}
+
+__fw_noinline__
+fw_call douserptrselemcount() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = forth_pop();
+
+  user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
+  if (user_ptr == NULL) {
+    forth_push(0);
+    return;
+  }
+
+  forth_push(user_ptr->elem_count);
+}
+
+__fw_noinline__
 fw_call douserptrsset() {
   fcell_t idx = forth_pop();
   fcell_t offset = forth_pop();
