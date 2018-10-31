@@ -20,11 +20,6 @@ fw_call dousercalls() {
   }
 }
 
-/* user_ptr_t *user_ptrs; */
-/* fcell_t user_ptrs_count = 0; */
-
-struct user_ptrs_array user_ptrs;
-
 __fw_noinline__
 fw_call docellsz() {
   forth_push(sizeof(fcell_t));
@@ -43,6 +38,11 @@ fw_call dopick() {
     ctx_vars->error = FW_ERR_STACKUNDERFLOW;
   }
 }
+
+// User Variable Pointers and Handling
+
+/* Must be set by end user of ForthWith, e.g. manually decalred before using */
+struct user_ptrs_array user_ptrs;
 
 user_ptr_t *_userptr(fcell_t idx) {
   if (idx >= user_ptrs.count || idx < 0)
@@ -226,5 +226,6 @@ fw_call douserptrsfree() {
   user_ptr->data = NULL;
   user_ptr->elem_size = 0;
   user_ptr->elem_count = 0;
+  user_ptr->elem_idx = 0;
 }
 
