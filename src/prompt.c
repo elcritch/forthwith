@@ -112,14 +112,16 @@ int prompt_do(int read) {
   return bytes_read;
 }
 
-int prompt_load_lines(char **lines) {
+int MAX_EVAL_LINE = 4096;
+
+int prompt_load_lines(const char **lines) {
   int err = 0;
 
   // Buffers Pre Read
   const char *line;
   for (int i = 0; (line = lines[i]) != NULL; i++) {
     /* printf("line: %s\n", line); */
-    int line_len = strnlen(line, 128);
+    int line_len = strnlen(line, MAX_EVAL_LINE );
 
     memcpy(ctx_vars->tib_str, line, line_len);
     ctx_vars->tib_len = line_len;
