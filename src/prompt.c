@@ -112,12 +112,12 @@ int prompt_do(int read) {
   return bytes_read;
 }
 
-int prompt_load_core() {
+int prompt_load_lines(char **lines) {
   int err = 0;
 
   // Buffers Pre Read
   const char *line;
-  for (int i = 0; (line = fw_core_lib[i]) != NULL; i++) {
+  for (int i = 0; (line = lines[i]) != NULL; i++) {
     /* printf("line: %s\n", line); */
     int line_len = strnlen(line, 128);
 
@@ -134,6 +134,10 @@ int prompt_load_core() {
   /* printf("core load status: %d\n", err); */
   forth_push(err);
   return err;
+}
+
+int prompt_load_core() {
+  prompt_load_lines(fw_core_lib);
 }
 
 #ifdef FW_STDIO
