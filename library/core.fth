@@ -16,8 +16,8 @@
 : 4th 3 ;
 
 : var-alloca ( size var-id -- ) 1 rot rot var-arr-alloca ;
-: var! ( val var-id -- ) 0 swap var-idx! ;
-: var@ ( var-id -- val ) 0 swap var-idx@ ;
+: var! ( val var-id -- ) 0 swap var-elem! ;
+: var@ ( var-id -- val ) 0 swap var-elem@ ;
 
 : 0> 0 > ;
 : 0< 0 < ;

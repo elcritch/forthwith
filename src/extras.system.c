@@ -131,10 +131,7 @@ fw_call douserptrselemcount() {
 }
 
 __fw_noinline__
-fw_call douserptrsset() {
-  fcell_t idx = forth_pop();
-  fcell_t offset = forth_pop();
-  fcell_t value = forth_pop();
+fw_call user_ptrs_set(fcell_t idx, fcell_t offset, fcell_t value) {
 
   user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
@@ -151,9 +148,7 @@ fw_call douserptrsset() {
 }
 
 __fw_noinline__
-fw_call douserptrsget() {
-  fcell_t idx = forth_pop();
-  fcell_t offset = forth_pop();
+fw_call user_ptrs_get(fcell_t idx, fcell_t offset) {
 
   user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
@@ -169,6 +164,40 @@ fw_call douserptrsget() {
   } else {
     forth_push( 0 );
   }
+}
+
+__fw_noinline__
+fw_call douserptrsset() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = forth_pop();
+  fcell_t value = forth_pop();
+
+  user_ptrs_set(idx, offset, value);
+}
+
+__fw_noinline__
+fw_call douserptrsget() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = forth_pop();
+
+  user_ptrs_get(idx, offset);
+}
+
+__fw_noinline__
+fw_call douserptrssetval() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = 0;
+  fcell_t value = forth_pop();
+
+  user_ptrs_set(idx, offset, value);
+}
+
+__fw_noinline__
+fw_call douserptrsgetval() {
+  fcell_t idx = forth_pop();
+  fcell_t offset = 0;
+
+  user_ptrs_get(idx, offset);
 }
 
 __fw_noinline__
