@@ -33,7 +33,7 @@ forth_docall("var-elem!", 9, F_NORMAL, fw_user_ptr_set, "( val offset idx -- )",
 forth_docall("var-elem@", 9, F_NORMAL, fw_user_ptr_get, "( offset idx -- val )", douserptrsget);
 
 forth_docall("var-st-push", 11, F_NORMAL, fw_user_ptr_push, "( val idx -- )", douserptrspush);
-forth_docall("var-st-pop",  10, F_NORMAL, fw_user_ptr_pop, "( idx -- val )", douserptrspop);
+/* forth_docall("var-st-pop",  10, F_NORMAL, fw_user_ptr_pop, "( idx -- val )", douserptrspop); */
 forth_docall("var-st-idx@", 11, F_NORMAL, fw_user_ptr_idx_get, "( idx -- st-idx )", douserptrsgetidx);
 forth_docall("var-st-idx!", 11, F_NORMAL, fw_user_ptr_idx_set, "( st-idx idx -- )", douserptrssetidx);
 

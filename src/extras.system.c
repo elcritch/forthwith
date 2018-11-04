@@ -105,7 +105,6 @@ fw_call douserptrsoff() {
 __fw_noinline__
 fw_call douserptrselemsize() {
   fcell_t idx = forth_pop();
-  fcell_t offset = forth_pop();
 
   user_ptr_t *user_ptr = (fcell_t)_userptr(idx);
   if (user_ptr == NULL) {
