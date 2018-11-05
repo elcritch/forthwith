@@ -139,6 +139,13 @@ struct forth_word {
 #define FW_ERR_RSTACKUNDERFLOW 5
 #define FW_ERR_CFA 6
 
+enum ForthErrorCodes {
+  ERR_VAR_FREE,
+  ERR_VAR_NOENT,
+  ERR_VAR_IDX_OF,
+  ERR_VAR_ST_PUSH,
+};
+
 enum forthwith_the_states {
   IMMEDIATE_MODE = 0,
   COMPILE_MODE = 1,
