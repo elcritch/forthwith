@@ -131,19 +131,27 @@ struct forth_word {
   fword_info_t info;
 };
 
-#define FW_OK 0
-#define FW_ERR_STACKOVERFLOW 1
-#define FW_ERR_STACKUNDERFLOW 2
-#define FW_ERR_NOWORD 3
-#define FW_ERR_RSTACKOVERFLOW 4
-#define FW_ERR_RSTACKUNDERFLOW 5
-#define FW_ERR_CFA 6
+/* #define FW_OK 0 */
+/* #define FW_ERR_STACKOVERFLOW 1 */
+/* #define FW_ERR_STACKUNDERFLOW 2 */
+/* #define FW_ERR_NOWORD 3 */
+/* #define FW_ERR_RSTACKOVERFLOW 4 */
+/* #define FW_ERR_RSTACKUNDERFLOW 5 */
+/* #define FW_ERR_CFA 6 */
 
 enum ForthErrorCodes {
+  FW_OK = 0,
+  FW_ERR_STACKOVERFLOW = 1,
+  FW_ERR_STACKUNDERFLOW = 2,
+  FW_ERR_NOWORD = 3,
+  FW_ERR_RSTACKOVERFLOW = 4,
+  FW_ERR_RSTACKUNDERFLOW = 5,
+  FW_ERR_CFA = 6,
   ERR_VAR_FREE,
   ERR_VAR_NOENT,
   ERR_VAR_IDX_OF,
   ERR_VAR_ST_PUSH,
+  ERR_VAR_MALLOC,
 };
 
 enum forthwith_the_states {

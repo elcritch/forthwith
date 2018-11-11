@@ -87,7 +87,7 @@ int prompt_do(int read) {
   if (ctx_vars->state == COMPILE_MODE) {
     forth_print_eol();
     write_str(5, "CONT-");
-  }else if (errno == FW_OK) {
+  } else if (errno == FW_OK) {
     forth_print_eol();
     write_str(3, "OK.");
   } else if (errno == FW_ERR_STACKUNDERFLOW) {
@@ -99,12 +99,15 @@ int prompt_do(int read) {
   } else if (errno == FW_ERR_NOWORD) {
     forth_print_eol();
     write_str(3, "W??");
+  } else {
+    forth_print_eol();
+    write_str(3, "ERR");
   }
 
-    print_stack();
-    write_str(2, "> ");
-    forth_print_eol();
-    forth_flush_tob();
+  print_stack();
+  write_str(2, "> ");
+  forth_print_eol();
+  forth_flush_tob();
 
   /* write_str(1, "\4"); */
   forth_flush_tob();

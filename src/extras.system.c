@@ -69,12 +69,25 @@ fw_call douserptrsalloca() {
       free(user_ptr->data);
     }
 
-    user_ptr->data = calloc(elem_count, elem_size);
-    user_ptr->elem_count = elem_count;
-    user_ptr->elem_size = elem_size;
+    user_ptr->data = NULL;
+    user_ptr->elem_count = 0;
+    user_ptr->elem_size = 0;
     user_ptr->elem_idx = 0;
 
-    forth_push( (fcell_t) user_ptr->data );
+    uint8_t *ptr = calloc(elem_count, elem_size);
+    if (ptr != NULL) {
+      user_ptr->data = ptr;
+      user_ptr->elem_count = elem_count;
+      user_ptr->elem_size = elem_size;
+      user_ptr->elem_idx = 0;
+      forth_push( (fcell_t) user_ptr->data );
+    } else {
+      char errmsg[128] = {0};
+      sprintf(errmsg, "(!!! error allocating array [%d] !!!)", idx);
+      write_str(strnlen(errmsg, 128), errmsg);
+      ctx_vars->error = ERR_VAR_MALLOC;
+      forth_push( (fcell_t) 0);
+    }
   }
 }
 
