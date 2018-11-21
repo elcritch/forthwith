@@ -25,6 +25,32 @@ fw_call dodivquot() {
 }
 
 __fw_noinline__
+fw_call dostartslash() {
+  fcell_t n3 = forth_pop();
+  fcell_t n2 = forth_pop();
+  fcell_t n1 = forth_pop();
+
+  if (sizeof(fcell_t) == 2) {
+    int32_t acc0 = (int32_t) n1 * (int32_t) n2;
+    int32_t acc1 = (int32_t) acc0 / (int32_t) n3;
+
+    forth_push((fcell_t)acc1);
+  }
+  else if (sizeof(fcell_t) == 4) {
+    int64_t acc0 = (int64_t) n1 * (int64_t) n2;
+    int64_t acc1 = (int64_t) acc0 / (int64_t) n3;
+
+    forth_push((fcell_t) acc1);
+  }
+  else if (sizeof(fcell_t) == 8) {
+    int64_t acc0 = (int64_t) n1 * (int64_t) n2;
+    int64_t acc1 = (int64_t) acc0 / (int64_t) n3;
+
+    forth_push((fcell_t) acc1);
+  }
+}
+
+__fw_noinline__
 fw_call dolss() {
   fcell_t s = forth_pop();
   fcell_t N = forth_pop();

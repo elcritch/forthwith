@@ -162,7 +162,8 @@ forth_core("zdrop", 5, F_NORMAL, zdrop, "( ... -- )",  {
 
 forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
 forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
-forth_docall("/mod", 4, F_NORMAL, divs, "( a b -- c )", dodivquot);
+forth_docall("/mod",  4, F_NORMAL, divs, "( a b -- c )", dodivquot);
+forth_docall("*/",    2, F_NORMAL, fw_slash_star, "( a b -- c )", dostartslash);
 
 forth_docall("<<<", 3, F_NORMAL, fw_lshift, "( N s -- N' )", dolss);
 forth_docall(">>>a", 4, F_NORMAL, fw_rshift_signed, "( N s -- N' )", dorss);
