@@ -17,7 +17,7 @@ void print_stack() {
 
 #ifndef FW_CUSTOM_PRINT_EOL
 void forth_print_eol() {
-  write_str(3, "\r\n\6");
+  write_str(2, "\n\6");
 }
 #else
 extern void forth_print_eol();
@@ -101,16 +101,16 @@ int prompt_do(int read) {
     write_str(3, "W??");
   } else {
     forth_print_eol();
-    write_str(3, "ERR");
+    write_str(4, "ERR!");
   }
 
   print_stack();
   write_str(2, "> ");
-  forth_print_eol();
+  /* forth_print_eol(); */
   forth_flush_tob();
 
   /* write_str(1, "\4"); */
-  forth_flush_tob();
+  /* forth_flush_tob(); */
 
   return bytes_read;
 }
