@@ -48,6 +48,7 @@ typedef struct forthwith_regs { /**< FORTH environment */
 typedef struct forthwith_vars { /**< FORTH environment */
   fcell_t state;
   fcell_t error;
+  fcell_t quiet;
 #ifdef FW_SUPPORT_NUMBER_BASES
   fcell_t base;
 #endif // FW_SUPPORT_NUMBER_BASES

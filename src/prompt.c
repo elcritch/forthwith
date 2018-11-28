@@ -84,6 +84,11 @@ int prompt_do(int read) {
 
   int errno = forth_errno();
 
+  if (ctx_vars->quiet > 0) {
+    // Suppress output
+    return bytes_read;
+  }
+
   if (ctx_vars->state == COMPILE_MODE) {
     forth_print_eol();
     write_str(5, "CONT-");
@@ -106,7 +111,7 @@ int prompt_do(int read) {
 
   print_stack();
   write_str(2, "> ");
-  /* forth_print_eol(); */
+  forth_print_eol();
   forth_flush_tob();
 
   /* write_str(1, "\4"); */
