@@ -361,7 +361,7 @@ void write_char(char c) {
   fcell_t *len = &ctx_vars->tob_len;
   char *str = ctx_vars->tob_str;
 
-  if (*idx < *len) {
+  if (*idx < *len - 1) {
     str[*idx] = c;
     *idx += 1;
     /* debugf("LEN: %c %d ", c, ctx_vars->tob_idx ); */
