@@ -17,7 +17,7 @@ void print_stack() {
 
 #ifndef FW_CUSTOM_PRINT_EOL
 void forth_print_eol() {
-  write_str(2, "\n\6");
+  write_str(1, "\n");
 }
 #else
 extern void forth_print_eol();
