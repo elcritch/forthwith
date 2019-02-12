@@ -358,15 +358,18 @@ void write_str(fcell_t l, char *c) {
 __fw_noinline__
 void write_char(char c) {
   fcell_t *idx = &ctx_vars->tob_idx;
-  fcell_t *len = &ctx_vars->tob_len;
+  fcell_t len = ctx_vars->tob_len;
   char *str = ctx_vars->tob_str;
 
-  if (*idx < *len - 1) {
+  if (*idx < len - 1) {
     str[*idx] = c;
     *idx += 1;
     /* debugf("LEN: %c %d ", c, ctx_vars->tob_idx ); */
   } else {
     forth_flush_tob();
+    // then write char
+    str[*idx] = c;
+    *idx += 1;
   }
 }
 
