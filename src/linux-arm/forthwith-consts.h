@@ -81,7 +81,7 @@ typedef int32_t fcell_t;
 /* #define reg_xaddr %rip */
 #define reg_xresult r0
 #define reg_xlink lr
-#define reg_xpc pc
+/* #define reg_xpc pc */
 /* #define reg_xaddr  */
 
 #endif // __HEADER_IMPL_CONST_X86__

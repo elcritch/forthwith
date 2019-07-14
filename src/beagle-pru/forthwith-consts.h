@@ -13,42 +13,37 @@ typedef int32_t fcell_t;
 #define CELL_FMT "%ld"
 #endif
 
+#define FW_CUSTOM_ATTRIBUTES
+#define __fw_noinline__ __attribute__ ((noinline))
+#define fw_call void __attribute__ ((noinline))
 /* #define FORTHWITH_NO_CHECKS */
 
-#define $FF 255
-#define $2 2
-#define $1 1
-#define $0 0
+#define $FF #255
+#define $2 #2
+#define $1 #1
+#define $0 #0
 
-#define $word_sz 4
-#define $word_max 0xFFFFFFFF
-#define $word_ptr_sz 4
+#define $word_sz #4
+#define $word_max #0xFFFFFFFF
+#define $word_ptr_sz #4
 
-#define $ctx      ||ctx||
-#define $ctx_psp  ||ctx_psp||
-#define $ctx_rsp  ||ctx_rsp||
-#define $ctx_regs ||ctx_regs||
+#define WORD_SZ 4
+#define WORD_PTR_SZ 4
 
-#define $ctx_of_regs 0
-#define $ctx_of_vars 4
-#define $ctx_of_psp 8
-#define $ctx_of_rsp 12
-#define $ctx_of_user 16
-#define $ctx_of_dict 20
-#define $ctx_of_strs 24
+/* #define $ctx ctx(%rip) */
+/* #define $ctx_psp ctx_psp(%rip) */
+/* #define $ctx_rsp ctx_rsp(%rip) */
+/* #define $ctx_regs ctx_regs(%rip) */
 
-#define $ctx_regs_of_w   0
-#define $ctx_regs_of_x   4
-#define $ctx_regs_of_ip  8
+#define $ctx_regs_of_w     #0
+#define $ctx_regs_of_x     #4
+#define $ctx_regs_of_ip    #8
+#define $ctx_regs_of_link  #12
 
-#define $stack_of_head  0
-#define $stack_of_base  4
-#define $stack_of_size  8
+#define $stack_of_head  #0
+#define $stack_of_base  #4
+#define $stack_of_size  #8
 
-#define $vars_of_state      0
-#define $vars_of_tib_idx    4
-#define $vars_of_tib_len    8
-#define $vars_of_tib_str    12
 
 // ========================================================================== //
 // Platform Registers 
@@ -59,12 +54,15 @@ typedef int32_t fcell_t;
  registers. */
 
 #define FORTH_REGISTERS                         \
-    PSP_t bpsp,                                 \
-    PSP_t psp,                                  \
-    RSP_t brsp,                                 \
-    RSP_t rsp,                                  \
-    IP_t  ip, \
-    X_t   x
+  PSP_t _bpsp,                                  \
+    PSP_t _psp,                                 \
+    RSP_t _brsp,                                \
+    RSP_t _rsp,                                 \
+    IP_t  _ip,                                  \
+    X_t   _x
+
+#define FORTH_REGISTER_EMPTY_LIST 0, 0, 0, 0, 0, 0
+
 
 // reg r %rdi %rsi
 #define reg_bpsp    r15
@@ -89,6 +87,9 @@ typedef int32_t fcell_t;
 #define reg_xaddr r0.w0
 #define reg_xret r3.w2
 #define reg_xresult r14
+
+/* #define reg_xlink r2.w2 */
+/* #define reg_xpc pc */
 
 #endif // __HEADER_IMPL_CONST_X86__
 

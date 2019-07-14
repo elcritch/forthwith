@@ -203,6 +203,9 @@ extern fcell_xt xt_exits;
 
 #include "dict.h"
 #include "utilities.h"
+#ifndef FW_NO_STD_STRING
+#include "str_utilities.h"
+#endif // FW_NO_STD_STRING
 
 #define FORTH_DEFINE_HEADERS
   #include "xmacros.h"

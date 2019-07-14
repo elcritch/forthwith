@@ -11,6 +11,10 @@
 #include "dict.h"
 #include "utilities.h"
 
+#ifndef FW_NO_STD_STRING
+#include "str_utilities.h"
+#endif // FW_NO_STD_STRING
+
 // Define Primitives, including function bodies, etc
 #define FORTH_DEFINE_PRIMITIVES
 #include "xmacros.h"

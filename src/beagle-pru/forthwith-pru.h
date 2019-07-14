@@ -25,7 +25,7 @@
 #define __jump(r) ___jump( r )
 #define _jump(r) __jump( _label( r ) )
 
-#define ___jump_reg(r) __asm__(r); 
+#define ___jump_reg(r) __asm__(r);
 #define __jump_reg(r) ___jump_reg(S_ "JMP       " #r ".w0" )
 #define _jump_reg(r, x) __jump_reg( r )
 
@@ -106,20 +106,6 @@
 #define _pushd_cell(reg) store_addr(psp, reg); add_const(psp, $word_sz)
 #define _popd_cell(reg)  sub_const(psp, $word_sz); load_addr(reg, psp)
 
-#define _pushd_0
-#define _pushd_1 _pushd_cell(s1);
-#define _pushd_2 _pushd_cell(s2); _pushd_1;
-#define _pushd_3 _pushd_cell(s3); _pushd_2;
-#define _pushd_4 _pushd_cell(s4); _pushd_3;
-#define _pushd(n) _pushd_ ## n
-
-#define _popd_0
-#define _popd_1          _popd_cell(s1)
-#define _popd_2 _popd_1; _popd_cell(s2)
-#define _popd_3 _popd_2; _popd_cell(s3)
-#define _popd_4 _popd_3; _popd_cell(s4)
-#define _popd(n) _popd_ ## n
-
 #define _pushr(reg) store_addr(rsp, reg); add_const(rsp, $word_sz)
 #define _popr(reg)  sub_const(rsp, $word_sz); load_addr(reg, rsp)
 
@@ -139,8 +125,15 @@
 
 #define ret(reg) _jump_reg( xret )
 
-#define _checkd psp < bpsp
-#define _checkr rsp < brsp
+#define save_link() pushr(xlink)
+#define load_link() popr(xlink)
+
+#define store_link() pushr(xlink)
+#define restore_link() popr(xlink)
+
+#define prepare_cenv() 0
+#define save_cenv()
+#define load_cenv() __asm__ volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");
 
 #endif // __HEADER_IMPL_X86__
 
