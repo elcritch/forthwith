@@ -11,7 +11,7 @@ extern "C" {
 
 // https://codecraft.co/2014/11/25/variadic-macros-tricks/
 #define _GET_NTH_ARG(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, N, ...) N
-#define COUNT_VARARGS(...) _GET_NTH_ARG(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
+#define COUNT_VARARGS(...) _GET_NTH_ARG(__VA_ARGS__, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1)
 
 fw_call doprintstate();
 
@@ -63,7 +63,7 @@ fw_call doprintstate();
 
 // must be init'ed at bootstrap
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
-  fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ];
+  fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) ];
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl) \
   forth_core(name_str, name_len, mask, func, comment, { \
@@ -99,7 +99,7 @@ fw_call doprintstate();
 
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...)  \
-  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 2 ] = { (fcell_xt)xt_docolon, WORDS }; \
+  fcell_xt fw_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ] = { (fcell_xt)xt_docolon, WORDS }; \
   memcpy(xt_ ## lbl, fw_ ## lbl,  sizeof(xt_ ## lbl)); \
   dict_create(F_WORD | mask, name_len, name_str, (fcell_xt*)xt_ ## lbl)
 
@@ -123,7 +123,7 @@ fw_call doprintstate();
 #define forth_variable(name, name_len, struct_name, member_name)
 
 #define forth_word(name_str, name_len, mask, lbl, _comt, WORDS...) \
-  extern fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) + 1 ]
+  extern fcell_xt xt_ ## lbl[ COUNT_VARARGS(WORDS) ]
 
 #define forth_docall(name_str, name_len, mask, func, comment, lbl)
 
