@@ -124,8 +124,11 @@ _build/beagle-pru/%.o: src/beagle-pru/%.c
 src/core-lib.c: library/core.fth
 	library/update-core.sh
 
-test: forthwith
-	./forthwith test.fth
+run: default
+	_build/$(FW_TARGET)/forthwith-linux
+
+test: default
+	_build/$(FW_TARGET)/test-forthwith-linux
 
 clean: src/core-lib.c
 	rm -Rf _build/*
