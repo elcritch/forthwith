@@ -57,3 +57,4 @@ Mkfile.old
 dkms.conf
 .#*
 .gdb_history
+.vscode
