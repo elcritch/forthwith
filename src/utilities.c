@@ -97,6 +97,4 @@ void docfa() {
 }
 
 
-#endif // #ifndef FORTH_OVERRIDE_PARSERS
-
 
