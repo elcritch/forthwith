@@ -114,7 +114,7 @@ _build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagl
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 	$(PRU_CGT)/bin/dispru --all $@ > $@.S
 
-_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o
+_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o _build/beagle-pru/default-pru.o
 	$(PRU_CGT)/bin/arpru r $@ $^
 
 _build/beagle-pru/%.o: src/beagle-pru/%.c

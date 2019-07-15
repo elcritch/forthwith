@@ -19,6 +19,7 @@ extern "C" {
   #include "../xmacros.inner.h"
   #include "../xmacros.core.h"
   #include "../xmacros.outer.h"
+  #include "../xmacros.prompt.h"
   #ifndef FW_NO_EXTRAS
     #include "../xmacros.extras.h"
   #endif // FW_NO_EXTRAS
