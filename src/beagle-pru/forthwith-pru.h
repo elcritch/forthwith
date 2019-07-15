@@ -33,6 +33,17 @@
 #define __call(x, r) ___call( x, #r)
 #define _call(r) __call( reg_xret, r)
 
+#define __jump_cond(c, ra, rb, lbl) __asm__(S_ "QB" #c "      " #lbl ", " #ra ", " #rb)
+
+// #define __jump_ule(r) ___jump_cond("jbe", r)
+// #define _jump_ule(r) __jump_le( r )
+
+#define _jump_eq(r1, r2, lbl) __jump_cond(EQ, r1, r2, lbl) 
+#define _jump_lt(r1, r2, lbl) __jump_cond(LT, r1, r2, lbl) 
+#define _jump_gt(r1, r2, lbl) __jump_cond(GT, r1, r2, lbl)
+#define _jump_le(r1, r2, lbl) __jump_cond(LE, r1, r2, lbl)
+#define _jump_ge(r1, r2, lbl) __jump_cond(GE, r1, r2, lbl)
+
 #define __fw_asm(x) __asm__(x)
 #define _fw_asm1(r, a, x, b, y) __asm__(S_ r " " a #x)
 
@@ -60,17 +71,26 @@
 /* The forth impl interfaces */
 #define jump_reg(r) _jump_reg( reg_ ## r, __jump_reg )
 #define jump(reg) _jump( reg )
+#define jump_ifzero(r, lbl) _jump_eq( reg_##r, $0, _label( lbl ) )
+
+#define jump_lt(x, y, lbl)  _jump_lt( reg_##x, reg_##y, lbl )
+#define jump_gt(x, y, lbl)  _jump_gt( reg_##x, reg_##y, lbl )
+#define jump_le(x, y, lbl)  _jump_le( reg_##x, reg_##y, lbl )
+#define jump_ge(x, y, lbl)  _jump_ge( reg_##x, reg_##y, lbl )
 
 #define load_const(y, x) _fw_asm2("LDI      ", "", reg_##y, "", x)
 #define load_addr(y, x) _fw_asm_from_addr("LBBO     ", reg_##y, reg_##x)
 #define store_addr(y, x) _fw_asm_to_addr("SBBO     ", reg_##y, reg_##x)
+#define calc_addr_off(x, z) load_const(x, z)
 
 /* #define load_addr_byte(y, x) _fw_asm_from_addr("lbbo", reg_##y, reg_##x, $0) */
 /* #define store_addr_byte(y, x) _fw_asm_to_addr("sbbo", reg_##y, reg_##x, $0) */
 
 #define load_addr_off(y, x, o) _fw_asm_from_addr_off("LBBO     ", reg_##y, reg_##x, o, $word_sz)
 #define store_addr_off(y, x, o) _fw_asm_to_addr_off("SBBO     ", reg_##y, reg_##x, o, $word_sz)
-#define calc_addr_off(x, y, z) load_const(x, z)
+
+// #define _calc_addr_off(y, o) _fw_asm_const("ldr", reg_##y, =o)
+// #define calc_addr_off(y, o) _calc_addr_off(y, o)
 
 // Incr & Decr
 #define add_const(y, x) _fw_asm_op("ADD", reg_##y, reg_##y, x)
@@ -133,7 +153,7 @@
 
 #define prepare_cenv() 0
 #define save_cenv()
-#define load_cenv() __asm__ volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");
+#define load_cenv() 
 
 #endif // __HEADER_IMPL_X86__
 

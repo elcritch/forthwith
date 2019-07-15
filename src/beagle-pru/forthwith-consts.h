@@ -18,14 +18,14 @@ typedef int32_t fcell_t;
 #define fw_call void __attribute__ ((noinline))
 /* #define FORTHWITH_NO_CHECKS */
 
-#define $FF #255
-#define $2 #2
-#define $1 #1
-#define $0 #0
+#define $FF 255
+#define $2 2
+#define $1 1
+#define $0 0
 
-#define $word_sz #4
-#define $word_max #0xFFFFFFFF
-#define $word_ptr_sz #4
+#define $word_sz 4
+#define $word_max 0xFFFFFFFF
+#define $word_ptr_sz 4
 
 #define WORD_SZ 4
 #define WORD_PTR_SZ 4
@@ -35,14 +35,14 @@ typedef int32_t fcell_t;
 /* #define $ctx_rsp ctx_rsp(%rip) */
 /* #define $ctx_regs ctx_regs(%rip) */
 
-#define $ctx_regs_of_w     #0
-#define $ctx_regs_of_x     #4
-#define $ctx_regs_of_ip    #8
-#define $ctx_regs_of_link  #12
+#define $ctx_regs_of_w     0
+#define $ctx_regs_of_x     4
+#define $ctx_regs_of_ip    8
+#define $ctx_regs_of_link  12
 
-#define $stack_of_head  #0
-#define $stack_of_base  #4
-#define $stack_of_size  #8
+#define $stack_of_head  0
+#define $stack_of_base  4
+#define $stack_of_size  8
 
 
 // ========================================================================== //
@@ -85,6 +85,7 @@ typedef int32_t fcell_t;
 
 // Relative offset register
 #define reg_xaddr r0.w0
+#define reg_xlink r30
 #define reg_xret r3.w2
 #define reg_xresult r14
 
