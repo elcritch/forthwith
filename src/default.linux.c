@@ -29,6 +29,7 @@
 #include "dict.c"
 #include "forthwith.c"
 #include "utilities.c"
+#include "str_utilities.c"
 #include "prompt.c"
 #include "extras.math.c"
 #include "extras.prompt.c"
