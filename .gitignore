@@ -58,3 +58,4 @@ dkms.conf
 .#*
 .gdb_history
 .vscode
+_build
