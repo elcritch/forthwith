@@ -22,7 +22,7 @@ PHEAP_SIZE=0x100
 
 
 #Common compiler and linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
-PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS -DFW_NO_VARS
+PCFLAGS=-v3 -O3 --c99 -k --display_error_number --endian=little --hardware_mac=on --obj_directory=_build/beagle-pru/ --pp_directory=_build/beagle-pru/ -ppd -ppa -DFW_NO_CORE_MULTIPLY -DFORTHWITH_NO_CHECKS -DFW_NO_VARS -DFW_HEADLESS -DFW_NO_STD_STRING
 #Linker flags (Defined in 'PRU Optimizing C/C++ Compiler User's Guide)
 PLFLAGS=--reread_libs --warn_sections --stack_size=$(PSTACK_SIZE) --heap_size=$(PHEAP_SIZE)
 
@@ -114,7 +114,8 @@ _build/beagle-pru/porting-guide-pru: src/beagle-pru/porting-guide.c _build/beagl
 	$(PRU_CGT)/bin/clpru --include_path=$(PRU_CGT)/include $(PINCLUDE) $(PCFLAGS) -fe $@ $<
 	$(PRU_CGT)/bin/dispru --all $@ > $@.S
 
-_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o _build/beagle-pru/default-pru.o
+_build/beagle-pru/forthwith-pru.lib: _build/beagle-pru/forthwith-pru.o
+	# _build/beagle-pru/default-pru.o
 	$(PRU_CGT)/bin/arpru r $@ $^
 
 _build/beagle-pru/%.o: src/beagle-pru/%.c

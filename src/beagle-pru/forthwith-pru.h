@@ -165,9 +165,10 @@
 #define store_link() pushr(xlink)
 #define restore_link() popr(xlink)
 
-/* #define prepare_cenv() 0 */
-/* #define save_cenv() */
-/* #define load_cenv() __asm__ volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14"); */
+#define prepare_cenv() 0
+#define save_cenv()
+#define load_cenv()
+// __asm__ volatile ( "nop" : : : "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r14");
 
 /* #define _checkd psp < bpsp */
 /* #define _checkr rsp < brsp */

@@ -1,6 +1,6 @@
 
 #define FW_CUSTOM_TOB_FLUSH
-#define FW_TRACE
+/* #define FW_TRACE */
 #undef FORTHWITH_NO_CHECKS
 #define FORTHWITH_NO_CHECKS
 /* #define FW_CUSTOM_DICT_ADD */
@@ -25,7 +25,7 @@
 #include "forthwith.c"
 #include "utilities.c"
 #include "extras.math.c"
-// #include "extras.system.c"
+#include "extras.system.c"
 /* #include "prompt.c" */
 
 

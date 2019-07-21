@@ -1,4 +1,6 @@
 
+#ifndef FW_HEADLESS
+
 forth_docall("word", 4, F_NORMAL, fw_word, "( -- )", doword);
 forth_docall("number", 6, F_NORMAL, number, "( c n -- n )", donumber);
 forth_docall("find", 4, F_NORMAL, find, "( c n -- )", dofind);
@@ -118,4 +120,20 @@ forth_word("interpret", 9, F_NORMAL, interpret, "( p -- )",
 
            XT(semi),
            );
+
+forth_docall(".\"", 2, F_NORMAL, fw_string, "( N s -- N' )", dostring);
+forth_docall("dict:", 5, F_NORMAL, fw_dictprint, "( a b -- c )", dict_print);
+forth_docall("word:", 5, F_NORMAL, fw_bodyprint, "( a b -- c )", dodictprintword);
+
+#endif // FW_HEADLESS
+
+#ifdef FW_HEADLESS
+
+
+
+
+
+
+#endif // FW_HEADLESS
+
 
