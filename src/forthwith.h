@@ -153,6 +153,7 @@ enum ForthErrorCodes {
   ERR_VAR_IDX_OF,
   ERR_VAR_ST_PUSH,
   ERR_VAR_MALLOC,
+  ERR_USER = 1024
 };
 
 enum forthwith_the_states {
