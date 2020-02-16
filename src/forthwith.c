@@ -113,6 +113,10 @@ fcell_t forth_errno() {
   return ctx_vars->error;
 }
 
+void forth_set_errno(fcell_t error) {
+  ctx_vars->error = error;
+}
+
 void forth_clear() {
   ctx_vars->error = FW_OK;
 }
