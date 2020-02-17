@@ -153,6 +153,7 @@ enum ForthErrorCodes {
   ERR_VAR_IDX_OF,
   ERR_VAR_ST_PUSH,
   ERR_VAR_MALLOC,
+  ERR_USER = 1024
 };
 
 enum forthwith_the_states {
@@ -187,6 +188,7 @@ extern int forth_eval(fcell_xt *instr);
 extern fcell_t forth_count();
 extern void forth_clear();
 extern fcell_t forth_errno();
+extern void forth_set_errno(fcell_t error);
 extern int forth_eval_string(char *input);
 
 // User Callbacks
