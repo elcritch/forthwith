@@ -147,7 +147,7 @@ int prompt_load_lines(const char **lines) {
 }
 
 int prompt_load_core() {
-  prompt_load_lines(fw_core_lib);
+  return prompt_load_lines(fw_core_lib);
 }
 
 #ifdef FW_STDIO

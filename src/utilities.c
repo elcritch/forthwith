@@ -408,7 +408,7 @@ void write_number(fcell_t number)
   } else {
     for (int i = idx - 1; i >= 0; i--) /* go backward through array */
     {
-      write_char(num_basis[number_chars[i]]);
+      write_char(num_basis[(uint8_t)number_chars[i]]);
     }
   }
 }
