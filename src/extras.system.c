@@ -61,11 +61,7 @@ fw_call douserptrsalloca() {
   fcell_t elem_size = forth_pop();
   fcell_t elem_count = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     forth_push(0);
   } else {
@@ -99,11 +95,7 @@ __fw_noinline__
 fw_call douserptrs() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   forth_push( user_ptr == NULL ? 0 : user_ptr->data );
 }
 
@@ -112,11 +104,7 @@ fw_call douserptrsoff() {
   fcell_t idx = forth_pop();
   fcell_t offset = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     forth_push( 0 );
   } else if (offset < user_ptr->elem_count) {
@@ -131,11 +119,7 @@ __fw_noinline__
 fw_call douserptrselemsize() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   forth_push(user_ptr == NULL ? 0 : user_ptr->elem_size);
 }
 
@@ -143,22 +127,14 @@ __fw_noinline__
 fw_call douserptrselemcount() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   forth_push(user_ptr == NULL ? 0 : user_ptr->elem_count);
 }
 
 __fw_noinline__
 fw_call user_ptrs_set(fcell_t idx, fcell_t offset, fcell_t value) {
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     return;
   } else if ( 0 <= offset && offset < user_ptr->elem_count) {
@@ -172,11 +148,7 @@ fw_call user_ptrs_set(fcell_t idx, fcell_t offset, fcell_t value) {
 __fw_noinline__
 fw_call do_user_ptrs_get(fcell_t idx, fcell_t offset) {
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     forth_push( 0 );
   } else if ( 0 <= offset && offset < user_ptr->elem_count) {
@@ -229,11 +201,7 @@ fw_call douserptrspush() {
   fcell_t idx = forth_pop();
   fcell_t value = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     return;
   } else if (user_ptr->elem_idx < user_ptr->elem_count
@@ -250,11 +218,7 @@ __fw_noinline__
 fw_call douserptrspop() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     forth_push( 0 );
   } else if (user_ptr->elem_idx > 0 ) {
@@ -272,11 +236,7 @@ __fw_noinline__
 fw_call douserptrsgetidx() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     forth_push(-1);
   } else {
@@ -289,11 +249,7 @@ fw_call douserptrssetidx() {
   fcell_t idx = forth_pop();
   fcell_t elem_idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     return;
   } else if ( 0 <= elem_idx && elem_idx < user_ptr->elem_count) {
@@ -308,11 +264,7 @@ __fw_noinline__
 fw_call douserptrsfree() {
   fcell_t idx = forth_pop();
 
-<<<<<<< HEAD
   user_ptr_t *user_ptr = (user_ptr_t)get_userptr(idx);
-=======
-  user_ptr_t *user_ptr = (fcell_t)get_userptr(idx);
->>>>>>> b7200283c62a2b0e619191666fcc1060e0a5a707
   if (user_ptr == NULL) {
     ctx_vars->error = ERR_VAR_FREE;
   } else {
